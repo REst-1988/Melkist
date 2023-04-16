@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Melkist"
         tools:targetApi="31">
+
+        <!--TODO: Check every ativity and fragment direction in each layout-->
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"

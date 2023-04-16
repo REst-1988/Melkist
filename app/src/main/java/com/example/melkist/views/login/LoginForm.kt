@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragmentLoginFormBinding
 
@@ -18,8 +21,18 @@ class LoginForm : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_form, container, false)
+        binding = FragmentLoginFormBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val animFade = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_anim)
+        val animScale = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_in_anim)
+        binding.cardLogin.startAnimation(animFade)
+        binding.imgLogo.startAnimation(animScale)
+        binding.btnSignup.setOnClickListener{
+            findNavController().navigate(R.id.action_loginForm_to_choosingRealEstateOrUserFragment)
+        }
+    }
 }

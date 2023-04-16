@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Melkist</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="hint_username">نام کاربری</string>
+    <string name="signup">ثبت نام</string>
+    <string name="login">ورود</string>
+    <string name="hint_password">کلمه عبور</string>
+    <string name="forget_user_pass">فراموشی نام کاربری و یا کلمه عبور</string>
+    <string name="choosing_real_estate_header">مشاور املاک</string>
+    <string name="choosing_real_estate_header2">دارای قراداد همکاری با ملکیست</string>
+    <string name="choosing_real_estate_body">درصورتی که مشاوراملاک می‌باشید و با ملکیست قرارداد ندارید می توانید با ما تماس گرفته تا در خصوص نحوه همکاری و برخورداری از امکانات نرم‌افزار گفتگو نماییم.</string>
 </resources>

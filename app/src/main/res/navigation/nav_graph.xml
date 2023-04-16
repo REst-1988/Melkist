@@ -9,5 +9,14 @@
         android:id="@+id/loginForm"
         android:name="com.example.melkist.views.login.LoginForm"
         android:label="fragment_login_form"
-        tools:layout="@layout/fragment_login_form" />
+        tools:layout="@layout/fragment_login_form" >
+        <action
+            android:id="@+id/action_loginForm_to_choosingRealEstateOrUserFragment"
+            app:destination="@id/choosingRealEstateOrUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosingRealEstateOrUserFragment"
+        android:name="com.example.melkist.views.login.signup.ChoosingRealEstateOrUserFragment"
+        android:label="fragment_choosing_real_estate_or_user"
+        tools:layout="@layout/fragment_choosing_real_estate_or_user" />
 </navigation>

@@ -1,54 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layoutDirection="rtl"
     tools:context=".views.login.signup.ChoosingRealEstateOrUserFragment">
 
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.LoginViewModel"/>
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.login.signup.ChoosingRealEstateOrUserFragment"/>
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:clickable="true"
-        android:focusable="true">
+        android:layoutDirection="rtl">
 
-        <ImageView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+            <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                >
+                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_splash_screen">
+
+                    <TextView
+                        android:id="@+id/txt_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:fontFamily="@font/byekan"
+                        android:gravity="center_vertical"
+                        android:text="@string/signup"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="ثبت نام" />
+
+                    <ImageButton
+                        android:id="@+id/ibtn_close"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_baseline_close_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="@{() -> fragment.cancel()}"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:fontFamily="@font/byekan"
+            android:text="@string/choosing_real_estate_user_header"
+            android:textSize="@dimen/txt_size_h2" />
+
+        <LinearLayout
+            android:id="@+id/ll_real_estate"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9"
-            android:src="avatar_real_estate"
-            android:scaleType="fitCenter"/>
+            android:layout_margin="@dimen/large_margin"
+            android:layout_weight="0.5"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:onClick="@{() -> fragment.setState(viewmodel.STATE_REAL_ESTATE)}">
 
-        <TextView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.9"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_real_estate" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:text="@string/choosing_real_estate_header"
+                android:textSize="@dimen/txt_size_h1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:text="@string/choosing_real_estate_header2"
+                android:textSize="@dimen/txt_size_h2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/choosing_real_estate_body" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_normal_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choosing_real_estate_header"
-            android:fontFamily="@font/byekan"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choosing_real_estate_header2"
-            android:fontFamily="@font/byekan"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choosing_real_estate_body"
-            android:fontFamily="@font/byekan"/>
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/extra_large_margin"
+            android:layout_weight="0.5"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:onClick="@{() -> fragment.setState(viewmodel.STATE_USER)}">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.9"
+                android:padding="@dimen/normal_margin"
+                android:scaleType="fitCenter"
+                android:src="@drawable/avatar_user" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:text="@string/choosing_user_header"
+                android:textSize="@dimen/txt_size_h1" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:text="@string/choosing_user_header2"
+                android:textSize="@dimen/txt_size_h2" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/choosing_user_body" />
+
+        </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:clickable="true"
-        android:focusable="true">
-
-
-    </LinearLayout>
-</LinearLayout>
+</layout>

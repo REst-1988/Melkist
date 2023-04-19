@@ -18,5 +18,30 @@
         android:id="@+id/choosingRealEstateOrUserFragment"
         android:name="com.example.melkist.views.login.signup.ChoosingRealEstateOrUserFragment"
         android:label="fragment_choosing_real_estate_or_user"
-        tools:layout="@layout/fragment_choosing_real_estate_or_user" />
+        tools:layout="@layout/fragment_choosing_real_estate_or_user" >
+        <action
+            android:id="@+id/action_choosingRealEstateOrUserFragment_to_choosingSubFragment"
+            app:destination="@id/choosingSubFragment" />
+        <action
+            android:id="@+id/action_choosingRealEstateOrUserFragment_to_loginForm"
+            app:destination="@id/loginForm"
+            app:popUpTo="@id/loginForm"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosingSubFragment"
+        android:name="com.example.melkist.views.login.signup.ChoosingSubFragment"
+        android:label="fragment_choosing_sub"
+        tools:layout="@layout/fragment_choosing_sub" >
+        <action
+            android:id="@+id/action_choosingSubFragment_to_choosingRealEstateOrUserFragment"
+            app:destination="@id/choosingRealEstateOrUserFragment"
+            app:popUpTo="@id/choosingRealEstateOrUserFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_choosingSubFragment_to_loginForm"
+            app:destination="@id/loginForm"
+            app:popUpTo="@id/loginForm"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

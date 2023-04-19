@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.login.signup.ChoosingSubFragment">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.LoginViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.login.signup.ChoosingSubFragment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layoutDirection="rtl"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_splash_screen">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/byekan"
+                        android:gravity="center_vertical"
+                        android:text="@string/signup"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="ثبت نام" />
+
+                    <ImageButton
+                        android:id="@+id/ibtn_close"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.cancel()}"
+                        android:src="@drawable/ic_baseline_close_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/app_bar">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_sub_title"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/large_margin"
+                android:fontFamily="@font/byekan"
+                android:text="@string/choosing_sub_header"
+                android:textSize="@dimen/txt_size_h2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/large_margin"
+                android:layout_marginBottom="@dimen/extra_large_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_sub_title">
+
+                <RelativeLayout
+                    android:id="@+id/rl_1"
+                    android:layout_width="@dimen/sub_choosing_buttons_width"
+                    android:layout_height="@dimen/sub_choosing_buttons_height"
+                    android:layout_marginEnd="@dimen/short_margin"
+                    android:background="@drawable/background_choosing_post">
+
+                    <ImageView
+                        android:id="@+id/img_sub_choosing_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="@dimen/short_margin"
+                        android:layout_marginStart="@dimen/short_margin"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginEnd="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:scaleType="fitCenter"
+                        tools:src="@drawable/consultant" />
+
+                    <TextView
+                        android:id="@+id/txt_sub_choosing_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/item_margins"
+                        android:fontFamily="@font/byekan"
+                        tools:text="مشاور"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/short_text_size"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_2"
+                    android:layout_width="@dimen/sub_choosing_buttons_width"
+                    android:layout_height="@dimen/sub_choosing_buttons_height"
+                    android:layout_marginEnd="@dimen/short_margin"
+                    android:layout_marginStart="@dimen/short_margin"
+                    android:background="@drawable/background_choosing_post"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_sub_title">
+
+                    <ImageView
+                        android:id="@+id/img_sub_choosing_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="@dimen/short_margin"
+                        android:layout_marginStart="@dimen/short_margin"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginEnd="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:scaleType="fitCenter"
+                        tools:src="@drawable/supervisor" />
+
+                    <TextView
+                        android:id="@+id/txt_sub_choosing_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/item_margins"
+                        android:fontFamily="@font/byekan"
+                        tools:text="سرپرست"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/short_text_size"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_3"
+                    android:layout_width="@dimen/sub_choosing_buttons_width"
+                    android:layout_height="@dimen/sub_choosing_buttons_height"
+                    android:layout_marginStart="@dimen/short_margin"
+                    android:background="@drawable/background_choosing_post"
+                    android:clickable="true"
+                    android:focusable="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/img_sub_choosing_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_margin="@dimen/short_margin"
+                        android:layout_centerInParent="true"
+                        android:scaleType="fitCenter"
+                        tools:src="@drawable/manager" />
+
+                    <TextView
+                        android:id="@+id/txt_sub_choosing_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/item_margins"
+                        android:fontFamily="@font/byekan"
+                        tools:text="مدیر"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/short_text_size"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

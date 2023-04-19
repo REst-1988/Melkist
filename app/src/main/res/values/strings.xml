@@ -4,7 +4,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
     <string name="hint_username">نام کاربری</string>
     <string name="signup">ثبت نام</string>
     <string name="login">ورود</string>
@@ -13,4 +12,10 @@
     <string name="choosing_real_estate_header">مشاور املاک</string>
     <string name="choosing_real_estate_header2">دارای قراداد همکاری با ملکیست</string>
     <string name="choosing_real_estate_body">درصورتی که مشاوراملاک می‌باشید و با ملکیست قرارداد ندارید می توانید با ما تماس گرفته تا در خصوص نحوه همکاری و برخورداری از امکانات نرم‌افزار گفتگو نماییم.</string>
+    <string name="choosing_user_header">کاربرد عادی</string>
+    <string name="choosing_user_header2">بدون قرارداد همکاری با ملکیست</string>
+    <string name="choosing_user_body">درصورتی که کاربر عادی هستید و با ملکیست قرارداد ندارید می‌توانید از طریق ثبت نام به سیستم وارد شوید. برخی از امکانات نرم‌افزار برای شما قابل استفاده نمی‌باشد.</string>
+    <string name="choosing_real_estate_user_header">لطفا از میان گزینه های مشاور املاک و یا کاربر عادی یکی را انتخاب کنید</string>
+    <string name="choosing_sub_header">لطفا از میان گزینه ها انتخاب نمایید.</string>
+
 </resources>

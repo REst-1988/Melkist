@@ -4,42 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginForm">
-
     <fragment
         android:id="@+id/loginForm"
         android:name="com.example.melkist.views.login.LoginForm"
         android:label="fragment_login_form"
         tools:layout="@layout/fragment_login_form" >
         <action
-            android:id="@+id/action_loginForm_to_choosingRealEstateOrUserFragment"
-            app:destination="@id/choosingRealEstateOrUserFragment" />
+            android:id="@+id/action_loginForm_to_page1ChoosingRealEstateOrUserFragment"
+            app:destination="@id/page1ChoosingRealEstateOrUserFragment" />
     </fragment>
     <fragment
-        android:id="@+id/choosingRealEstateOrUserFragment"
-        android:name="com.example.melkist.views.login.signup.ChoosingRealEstateOrUserFragment"
-        android:label="fragment_choosing_real_estate_or_user"
-        tools:layout="@layout/fragment_choosing_real_estate_or_user" >
+        android:id="@+id/page1ChoosingRealEstateOrUserFragment"
+        android:name="com.example.melkist.views.login.signup.Page1ChoosingRealEstateOrUserFragment"
+        android:label="fragment_page1_choosing_real_estate_or_user"
+        tools:layout="@layout/fragment_page1_choosing_real_estate_or_user" >
         <action
-            android:id="@+id/action_choosingRealEstateOrUserFragment_to_choosingSubFragment"
-            app:destination="@id/choosingSubFragment" />
+            android:id="@+id/action_page1ChoosingRealEstateOrUserFragment_to_page2ChoosingSubFragment"
+            app:destination="@id/page2ChoosingSubFragment" />
         <action
-            android:id="@+id/action_choosingRealEstateOrUserFragment_to_loginForm"
+            android:id="@+id/action_page1ChoosingRealEstateOrUserFragment_to_loginForm"
             app:destination="@id/loginForm"
             app:popUpTo="@id/loginForm"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/choosingSubFragment"
-        android:name="com.example.melkist.views.login.signup.ChoosingSubFragment"
-        android:label="fragment_choosing_sub"
-        tools:layout="@layout/fragment_choosing_sub" >
+        android:id="@+id/page2ChoosingSubFragment"
+        android:name="com.example.melkist.views.login.signup.Page2ChoosingSubFragment"
+        android:label="fragment_page2_choosing_sub"
+        tools:layout="@layout/fragment_page2_choosing_sub" >
         <action
-            android:id="@+id/action_choosingSubFragment_to_choosingRealEstateOrUserFragment"
-            app:destination="@id/choosingRealEstateOrUserFragment"
-            app:popUpTo="@id/choosingRealEstateOrUserFragment"
+            android:id="@+id/action_page2ChoosingSubFragment_to_page3ChoosingCityManagerSupervisorFragment"
+            app:destination="@id/page3ChoosingCityManagerSupervisorFragment" />
+        <action
+            android:id="@+id/action_page2ChoosingSubFragment_to_page1ChoosingRealEstateOrUserFragment"
+            app:destination="@id/page1ChoosingRealEstateOrUserFragment"
+            app:popUpTo="@id/page1ChoosingRealEstateOrUserFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_choosingSubFragment_to_loginForm"
+            android:id="@+id/action_page2ChoosingSubFragment_to_loginForm"
+            app:destination="@id/loginForm"
+            app:popUpTo="@id/loginForm"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/page3ChoosingCityManagerSupervisorFragment"
+        android:name="com.example.melkist.views.login.signup.Page3ChoosingCityManagerSupervisorFragment"
+        android:label="fragment_page3_choosing_city_manager_supervisor"
+        tools:layout="@layout/fragment_page3_choosing_city_manager_supervisor" >
+        <action
+            android:id="@+id/action_page3ChoosingCityManagerSupervisorFragment_to_page2ChoosingSubFragment"
+            app:destination="@id/page2ChoosingSubFragment"
+            app:popUpTo="@id/page2ChoosingSubFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_page3ChoosingCityManagerSupervisorFragment_to_loginForm"
+            app:destination="@id/loginForm"
+            app:popUpTo="@id/loginForm"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_page3ChoosingCityManagerSupervisorFragment_to_page4SignupFormFragment"
+            app:destination="@id/page4SignupFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/page4SignupFormFragment"
+        android:name="com.example.melkist.views.login.signup.Page4SignupFormFragment"
+        android:label="fragment_page4_signup_form"
+        tools:layout="@layout/fragment_page4_signup_form" >
+        <action
+            android:id="@+id/action_page4SignupFormFragment_to_page3ChoosingCityManagerSupervisorFragment"
+            app:destination="@id/page3ChoosingCityManagerSupervisorFragment"
+            app:popUpTo="@id/page3ChoosingCityManagerSupervisorFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_page4SignupFormFragment_to_loginForm"
             app:destination="@id/loginForm"
             app:popUpTo="@id/loginForm"
             app:popUpToInclusive="true" />

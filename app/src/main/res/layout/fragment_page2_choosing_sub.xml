@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.login.signup.ChoosingSubFragment">
+    tools:context=".views.login.signup.Page2ChoosingSubFragment">
 
     <data>
         <variable
@@ -11,7 +11,7 @@
 
         <variable
             name="fragment"
-            type="com.example.melkist.views.login.signup.ChoosingSubFragment" />
+            type="com.example.melkist.views.login.signup.Page2ChoosingSubFragment" />
     </data>
 
     <RelativeLayout
@@ -35,7 +35,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@drawable/background_splash_screen">
+                    android:background="@drawable/background_tool_bar">
 
                     <ImageButton
                         android:id="@+id/ibtn_back"
@@ -97,6 +97,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/ll_real_estate"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginStart="@dimen/large_margin"
@@ -112,7 +113,10 @@
                     android:layout_width="@dimen/sub_choosing_buttons_width"
                     android:layout_height="@dimen/sub_choosing_buttons_height"
                     android:layout_marginEnd="@dimen/short_margin"
-                    android:background="@drawable/background_choosing_post">
+                    android:background="@drawable/background_choosing_post"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_CONSOLTANT)}">
 
                     <ImageView
                         android:id="@+id/img_sub_choosing_1"
@@ -152,10 +156,7 @@
                     android:background="@drawable/background_choosing_post"
                     android:clickable="true"
                     android:focusable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_sub_title">
+                    android:onClick="@{()-> fragment.setSubCondition(viewmodel.SUB_STATE_SUPERVISER)}">
 
                     <ImageView
                         android:id="@+id/img_sub_choosing_2"
@@ -194,6 +195,7 @@
                     android:background="@drawable/background_choosing_post"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_MANAGER)}"
                     >
 
                     <ImageView
@@ -221,6 +223,101 @@
 
                 </RelativeLayout>
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_normal_user"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/large_margin"
+                android:layout_marginBottom="@dimen/extra_large_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_sub_title"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/rl_4"
+                    android:layout_width="@dimen/sub_choosing_buttons_width"
+                    android:layout_height="@dimen/sub_choosing_buttons_height"
+                    android:layout_marginEnd="@dimen/short_margin"
+                    android:background="@drawable/background_choosing_post"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_NORMAL_USER)}">
+
+                    <ImageView
+                        android:id="@+id/img_sub_choosing_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="@dimen/short_margin"
+                        android:layout_marginStart="@dimen/short_margin"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginEnd="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:scaleType="fitCenter"
+                        tools:src="@drawable/normal_user" />
+
+                    <TextView
+                        android:id="@+id/txt_sub_choosing_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/item_margins"
+                        android:fontFamily="@font/byekan"
+                        tools:text="کاربر عادی"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/short_text_size"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_5"
+                    android:layout_width="@dimen/sub_choosing_buttons_width"
+                    android:layout_height="@dimen/sub_choosing_buttons_height"
+                    android:layout_marginEnd="@dimen/short_margin"
+                    android:layout_marginStart="@dimen/short_margin"
+                    android:background="@drawable/background_choosing_post"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_DEALER)}">
+
+                    <ImageView
+                        android:id="@+id/img_sub_choosing_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="@dimen/short_margin"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginEnd="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:scaleType="fitCenter"
+                        tools:src="@drawable/dealer" />
+
+                    <TextView
+                        android:id="@+id/txt_sub_choosing_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/item_margins"
+                        android:fontFamily="@font/byekan"
+                        tools:text="معامله گر"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/short_text_size"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

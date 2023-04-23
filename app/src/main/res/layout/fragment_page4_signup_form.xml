@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.login.signup.Page4SignupFormFragment">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.LoginViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.login.signup.Page4SignupFormFragment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layoutDirection="rtl"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_tool_bar">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/byekan"
+                        android:gravity="center_vertical"
+                        android:text="@string/signup"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="ثبت نام" />
+
+                    <ImageButton
+                        android:id="@+id/ibtn_close"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.cancel()}"
+                        android:src="@drawable/ic_baseline_close_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/app_bar"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!--real estate field-->
+                <Space
+                    android:id="@+id/spacer"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_real_estate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_house_siding_24"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_real_estate_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        android:visibility="gone"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_real_estate"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--first name-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_first_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_person_outline_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_first_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--last name-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_last_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_people_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_last_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--mobile TODO: CHECK IF MOBILE FORMAT IS CORRECT-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_phone_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_phone_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_phone_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_phone_no"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--national code TODO: CHECK IF NATIONAL CODE FORMAT IS CORRECT-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_national_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_world_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_national_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_national_code"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--email TODO: CHECK IF TYPING CORRECT-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_email_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_email"
+                            android:imeOptions="actionNext"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--password-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/icon_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/short_margin"
+                        android:src="@drawable/ic_baseline_lock_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/hint_password_signup"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:textColor="@color/main_dark_color2"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/short_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--TODO: SHOW HIDE PASSWORD-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/bti_commit"
+                        style="@style/Theme.Melkist.Buttons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/normal_margin"
+                        android:fontFamily="@font/byekan"
+                        android:onClick="@{() -> fragment.onCommit()}"
+                        android:text="@string/commit" />
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+</layout>

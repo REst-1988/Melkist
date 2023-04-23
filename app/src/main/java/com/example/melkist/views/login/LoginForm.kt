@@ -32,7 +32,7 @@ class LoginForm : Fragment() {
         binding.cardLogin.startAnimation(animFade)
         binding.imgLogo.startAnimation(animScale)
         binding.btnSignup.setOnClickListener{
-            findNavController().navigate(R.id.action_loginForm_to_choosingRealEstateOrUserFragment)
+            findNavController().navigate(R.id.action_loginForm_to_page1ChoosingRealEstateOrUserFragment)
         }
     }
 }

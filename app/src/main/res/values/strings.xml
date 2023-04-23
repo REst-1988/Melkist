@@ -15,7 +15,30 @@
     <string name="choosing_user_header">کاربرد عادی</string>
     <string name="choosing_user_header2">بدون قرارداد همکاری با ملکیست</string>
     <string name="choosing_user_body">درصورتی که کاربر عادی هستید و با ملکیست قرارداد ندارید می‌توانید از طریق ثبت نام به سیستم وارد شوید. برخی از امکانات نرم‌افزار برای شما قابل استفاده نمی‌باشد.</string>
-    <string name="choosing_real_estate_user_header">لطفا از میان گزینه های مشاور املاک و یا کاربر عادی یکی را انتخاب کنید</string>
-    <string name="choosing_sub_header">لطفا از میان گزینه ها انتخاب نمایید.</string>
+    <string name="choosing_real_estate_user_header">انتخاب نمایید.</string>
+    <string name="choosing_sub_header">انتخاب نمایید.</string>
+    <string name="choosing_province">انتخاب استانی که در آن مشغول به کار هستید</string>
+    <string name="choosing_city">انتخاب شهری که در آن مشغول به کار هستید</string>
+    <string name="choosing_real_estate">انتخاب مشاور املاکی که در آن مشغول به کار هستید</string>
+    <string name="choosing_supervisor">انتخاب سرپرستی که با آن همکاری می کنید</string>
+    <string name="search">جستجو</string>
+    <string name="hint_real_estate">نام املاک خود را وارد نمایید</string>
+    <string name="hint_first_name">نام خود را وارد نمایید</string>
+    <string name="hint_last_name">نام خانوادگی خود را وارد کنید</string>
+    <string name="hint_phone_no">لطفا شماره تلفن همراه خود را وارد نمایید</string>
+    <string name="hint_national_code">کد ملی خود را وارد کنید</string>
+    <string name="hint_email">ایمیل خود را وارد کنید</string>
+    <string name="hint_password_signup">برای حساب کاربردی خود یک پسورد وارد کنید</string>
+    <string name="commit">ثبت</string>
+    <string name="error_on_empty_first_name">لطفا نام حود را وارد نمایید</string>
+    <string name="error_on_empty_last_name">نام خانوادگی خود را وارد نمایید</string>
+    <string name="error_on_empty_mobile_no">شماره تلفن همراه خود را وارد نمایید</string>
+    <string name="error_on_wrong_mobile_no">شماره تلفن وارد شده اشتباه است</string>
+    <string name="error_on_empty_national_code">کد ملی را وارد نمایید</string>
+    <string name="error_on_wrong_national_code">کد ملی را به درستی وارد نمایید</string>
+    <string name="error_on_empty_password">پسوردی برای خود انتخاب نمایید</string>
+    <string name="error_on_wrong_password">تعداد کاراکترهای پسورد باید بیش از 8 عدد باشد</string>
+    <string name="error_on_empty_real_estate">نام املاک خود را وارد نمایید</string>
+    <string name="error_on_wrong_real_estate">نام املاک خود را به درستی وارد نمایید</string>
 
 </resources>

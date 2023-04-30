@@ -47,7 +47,8 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     }
 
     fun back() {
-        findNavController().navigate(R.id.action_forgetPassP1EnterNcodePhoneFrag_to_loginForm)
+        //TODO
+        //findNavController().navigate(R.id.action_forgetPassP1EnterNcodePhoneFrag_to_loginForm)
     }
 
     private fun registerNcodePhoneAndRequestApi() {

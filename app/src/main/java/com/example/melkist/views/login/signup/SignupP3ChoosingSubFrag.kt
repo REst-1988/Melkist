@@ -8,20 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
-import com.example.melkist.databinding.FragSignupP4ChoosingSubBinding
+import com.example.melkist.databinding.FragSignupP3ChoosingSubBinding
 import com.example.melkist.models.Roles
 import com.example.melkist.viewmodels.SignupViewModel
 
-class SignupP4ChoosingSubFrag : Fragment() {
+class SignupP3ChoosingSubFrag : Fragment() {
 
-    lateinit var binding: FragSignupP4ChoosingSubBinding
+    lateinit var binding: FragSignupP3ChoosingSubBinding
     private val viewModel: SignupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragSignupP4ChoosingSubBinding.inflate(inflater)
+        binding = FragSignupP3ChoosingSubBinding.inflate(inflater)
         return binding.root
     }
 
@@ -30,14 +30,14 @@ class SignupP4ChoosingSubFrag : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@SignupP4ChoosingSubFrag
+            fragment = this@SignupP3ChoosingSubFrag
         }
         checkForOptions()
     }
     
     private fun checkForOptions(){
         val roles = viewModel.getRoles()
-        if (viewModel.getCondition() == viewModel.STATE_REAL_ESTATE)
+        if (viewModel.getCondition() == SignupViewModel.Condition.STATE_REAL_ESTATE)
             makeViewReadyForRealState(roles)
         else
             makeViewReadyForNormalUser(roles)
@@ -72,21 +72,13 @@ class SignupP4ChoosingSubFrag : Fragment() {
     }
 
     fun setSubCondition(state: Int){
+        viewModel.resetSignupFieldsByChoosingCategory()
         viewModel.setSubCondition(state)
-        // TODO
-/*        findNavController()
-            .navigate(R.id.action_page2ChoosingSubFragment_to_page3ChoosingCityManagerSupervisorFragment)*/
-    }
-
-    fun cancel(){
-        // TODO
-/*        findNavController()
-            .navigate(R.id.action_page2ChoosingSubFragment_to_loginForm)*/
+        back()
     }
 
     fun back(){
-        // TODO
-/*        findNavController()
-            .navigate(R.id.action_page2ChoosingSubFragment_to_page1ChoosingRealEstateOrUserFragment)*/
+        findNavController()
+            .navigate(R.id.action_signupP3ChoosingSubFrag_to_signupP1SignupFormFrag)
     }
 }

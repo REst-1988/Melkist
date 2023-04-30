@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
-import com.example.melkist.databinding.FragSignupP3ChoosingRealEstateOrUserBinding
+import com.example.melkist.databinding.FragSignupP2ChoosingRealEstateOrUserBinding
 import com.example.melkist.viewmodels.SignupViewModel
+import kotlinx.coroutines.NonCancellable.cancel
 
-class SignupP3ChoosingRealEstateOrUserFrag : Fragment() {
+class SignupP2ChoosingRealEstateOrUserFrag : Fragment() {
 
-    lateinit var binding: FragSignupP3ChoosingRealEstateOrUserBinding
+    lateinit var binding: FragSignupP2ChoosingRealEstateOrUserBinding
     private val viewModel: SignupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragSignupP3ChoosingRealEstateOrUserBinding.inflate(inflater)
+        binding = FragSignupP2ChoosingRealEstateOrUserBinding.inflate(inflater)
         return binding.root
     }
 
@@ -29,19 +30,17 @@ class SignupP3ChoosingRealEstateOrUserFrag : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@SignupP3ChoosingRealEstateOrUserFrag
+            fragment = this@SignupP2ChoosingRealEstateOrUserFrag
         }
     }
 
-    fun setState(state: Int){
+    fun setState(state: SignupViewModel.Condition){
+        viewModel.resetSignupFieldsByChoosingMainField()
         viewModel.setCondition(state)
-        // TODO
-/*        findNavController()
-            .navigate(R.id.action_page1ChoosingRealEstateOrUserFragment_to_page2ChoosingSubFragment)*/
+        onBack()
     }
 
-    fun cancel(){
-        // TODO
-        /*findNavController().navigate(R.id.action_page1ChoosingRealEstateOrUserFragment_to_loginForm)*/
+    fun onBack(){
+        findNavController().navigate(R.id.action_signupP2ChoosingRealEstateOrUserFrag_to_signupP1SignupFormFrag)
     }
 }

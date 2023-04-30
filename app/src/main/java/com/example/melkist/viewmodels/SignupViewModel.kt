@@ -17,28 +17,36 @@ import kotlinx.coroutines.launch
 
 class SignupViewModel : ViewModel() {
 
-    val STATE_REAL_ESTATE = 0
-    val STATE_USER = 1
+
+    enum class Condition {CHOOSE, STATE_REAL_ESTATE, STATE_USER}
+
+    val SUB_STATE_CHOOSE = 0
     val SUB_STATE_MANAGER = 2
     val SUB_STATE_SUPERVISER = 3
     val SUB_STATE_CONSOLTANT = 4
     val SUB_STATE_NORMAL_USER = 5
     val SUB_STATE_DEALER = 6
 
-    private var condition: Int = STATE_REAL_ESTATE
-    private var subCondition: Int = SUB_STATE_MANAGER
+    private var condition: Condition = Condition.CHOOSE
+    var subConditionRoleId: Int = SUB_STATE_CHOOSE
+    var provinceId: Int = 0
 
-    /*private */var realEstateName: String? = null
+    //TODO: set lateinits  to انتخاب کنید
+    lateinit var provinceTitle: String
+    var cityId: Int = 0
+    lateinit var cityTitle: String
+    var realEstateId: Int = 0
+    lateinit var realEstateTitle: String
+    var supervisorId = 0
+    lateinit var supervisorTitle: String
+    var parentId: Int? = null
+    /*private */var realEstateNameForManager: String? = null
     /*private*/ /*lateinit*/ var firstName: String = ""
     /*private*/ /*lateinit*/ var lastName: String = ""
     /*private*/ /*lateinit*/ var mobileNo: String = ""
     /*private*/ var nationalCode: Long = 0
     /*private*/ var email: String? = null
     /*private*/ /*lateinit*/ var password: String = ""
-    /*private*/ var roleId: Int = 0
-    /*private*/ var parentId: Int? = null
-    /*private*/ var isVerify: Boolean = false
-    /*private*/ /*lateinit*/ /*var user: User */
 
     private val _isTimeUp = MutableLiveData<Boolean>()
     val isTimeUp: LiveData<Boolean> = _isTimeUp
@@ -54,16 +62,15 @@ class SignupViewModel : ViewModel() {
     private val _verifyResponse = MutableLiveData<VerificationResponseModel>()
     val verifyResponse: LiveData<VerificationResponseModel> = _verifyResponse
 
-
     fun getRoles(): Roles = Roles()
-    fun getCondition(): Int = condition
-    fun setCondition(state: Int) {
+    fun getCondition(): Condition = condition
+    fun setCondition(state: Condition) {
         condition = state
     }
 
-    fun getSubCondition(): Int = subCondition
+    fun getSubCondition(): Int = subConditionRoleId
     fun setSubCondition(subCondition: Int) {
-        this.subCondition = subCondition
+        this.subConditionRoleId = subCondition
     }
 
     fun createUser(
@@ -75,7 +82,7 @@ class SignupViewModel : ViewModel() {
         email: String?,
         password: String
     ) {
-        this.realEstateName = realEstateName
+        this.realEstateNameForManager = realEstateName
         this.firstName = firstName
         this.lastName = lastName
         this.mobileNo = mobileNo
@@ -167,4 +174,30 @@ class SignupViewModel : ViewModel() {
             && vr.value!!.result != null
             && vr.value!!.result == false
 
+    fun resetSignupFieldsByChoosingMainField() {
+        subConditionRoleId = SUB_STATE_CHOOSE
+        parentId = null
+        provinceId = 0
+        provinceTitle = ""
+        cityId = 0
+        cityTitle = ""
+        realEstateId = 0
+        realEstateTitle = ""
+        supervisorId = 0
+        supervisorTitle = ""
+        realEstateNameForManager = null
+    }
+
+    fun resetSignupFieldsByChoosingCategory() {
+        parentId = null
+        provinceId = 0
+        provinceTitle = ""
+        cityId = 0
+        cityTitle = ""
+        realEstateId = 0
+        realEstateTitle = ""
+        supervisorId = 0
+        supervisorTitle = ""
+        realEstateNameForManager = null
+    }
 }

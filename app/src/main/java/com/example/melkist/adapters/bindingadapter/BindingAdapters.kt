@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import coil.load
 import com.example.melkist.R
 import com.example.melkist.utils.ApiStatus
@@ -39,5 +40,15 @@ fun bindProgressLoading(progressBar: ProgressBar?, status: ApiStatus) {
             ApiStatus.LOADING -> it.visibility = View.VISIBLE
             else -> it.visibility = View.GONE
         }
+    }
+}
+
+@BindingAdapter("setVisibility")
+fun bindVisibility(view: View?, isVisible: Boolean){
+    view?.let {
+        if (isVisible)
+            it.visibility = View.VISIBLE
+        else
+            it.visibility = View.GONE
     }
 }

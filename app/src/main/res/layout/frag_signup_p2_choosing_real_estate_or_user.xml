@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.login.signup.SignupP3ChoosingRealEstateOrUserFrag">
+    tools:context=".views.login.signup.SignupP2ChoosingRealEstateOrUserFrag">
 
     <data>
         <variable
@@ -10,7 +10,7 @@
             type="com.example.melkist.viewmodels.SignupViewModel"/>
         <variable
             name="fragment"
-            type="com.example.melkist.views.login.signup.SignupP3ChoosingRealEstateOrUserFrag"/>
+            type="com.example.melkist.views.login.signup.SignupP2ChoosingRealEstateOrUserFrag"/>
     </data>
 
     <LinearLayout
@@ -39,45 +39,36 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@drawable/background_tool_bar">
 
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="@{() -> fragment.onBack()}"/>
+
                     <TextView
                         android:id="@+id/txt_header"
                         android:layout_width="wrap_content"
                         android:layout_height="?attr/actionBarSize"
-                        android:layout_marginStart="@dimen/normal_margin"
                         android:fontFamily="@font/byekan"
                         android:gravity="center_vertical"
                         android:text="@string/signup"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="ثبت نام" />
+                        tools:text="@string/choose_realestate_user_title" />
 
-                    <ImageButton
-                        android:id="@+id/ibtn_close"
-                        android:layout_width="?attr/actionBarSize"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_baseline_close_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:onClick="@{() -> fragment.cancel()}"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_margin"
-            android:layout_marginTop="@dimen/large_margin"
-            android:layout_marginEnd="@dimen/large_margin"
-            android:fontFamily="@font/byekan"
-            android:text="@string/choosing_real_estate_user_header"
-            android:textSize="@dimen/txt_size_h2" />
 
         <LinearLayout
             android:id="@+id/ll_real_estate"
@@ -89,7 +80,7 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            android:onClick="@{() -> fragment.setState(viewmodel.STATE_REAL_ESTATE)}">
+            android:onClick="@{() -> fragment.setState(viewmodel.condition.STATE_REAL_ESTATE)}">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -135,7 +126,7 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            android:onClick="@{() -> fragment.setState(viewmodel.STATE_USER)}">
+            android:onClick="@{() -> fragment.setState(viewmodel.condition.STATE_USER)}">
 
             <ImageView
                 android:layout_width="match_parent"

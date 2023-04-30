@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.login.signup.SignupP4ChoosingSubFrag">
+    tools:context=".views.login.signup.SignupP3ChoosingSubFrag">
 
     <data>
         <variable
@@ -11,7 +11,7 @@
 
         <variable
             name="fragment"
-            type="com.example.melkist.views.login.signup.SignupP4ChoosingSubFrag" />
+            type="com.example.melkist.views.login.signup.SignupP3ChoosingSubFrag" />
     </data>
 
     <RelativeLayout
@@ -23,30 +23,33 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layoutDirection="rtl"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+            <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:contentInsetStart="0dp"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                >
+                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
                 <!--app:layout_scrollFlags="scroll|enterAlways"-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@drawable/background_tool_bar">
 
+
                     <ImageButton
                         android:id="@+id/ibtn_back"
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
                         android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{() -> fragment.back()}"
                         android:src="@drawable/ic_baseline_arrow_back_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="@{() -> fragment.back()}"/>
 
                     <TextView
                         android:id="@+id/txt_header"
@@ -54,24 +57,14 @@
                         android:layout_height="?attr/actionBarSize"
                         android:fontFamily="@font/byekan"
                         android:gravity="center_vertical"
-                        android:text="@string/signup"
+                        android:text="@string/choose_category_title"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="ثبت نام" />
+                        tools:text="@string/choose_category_title" />
 
-                    <ImageButton
-                        android:id="@+id/ibtn_close"
-                        android:layout_width="?attr/actionBarSize"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{() -> fragment.cancel()}"
-                        android:src="@drawable/ic_baseline_close_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -81,18 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/app_bar">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txt_sub_title"
-                android:layout_marginStart="@dimen/large_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                android:layout_marginEnd="@dimen/large_margin"
-                android:fontFamily="@font/byekan"
-                android:text="@string/choosing_sub_header"
-                android:textSize="@dimen/txt_size_h2"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,7 +87,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_sub_title">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
                     android:id="@+id/rl_1"
@@ -238,7 +219,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_sub_title"
+                app:layout_constraintTop_toTopOf="parent"
                 android:visibility="gone">
 
                 <RelativeLayout

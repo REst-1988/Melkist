@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".views.login.signup.SignupP5ChoosingCityManagerSupervisorFrag">
+    tools:context=".views.login.signup.SignupP4ChoosingCityManagerSupervisorFrag">
 
     <data>
         <variable
@@ -10,7 +10,7 @@
             type="com.example.melkist.viewmodels.SignupViewModel" />
         <variable
             name="fragment"
-            type="com.example.melkist.views.login.signup.SignupP5ChoosingCityManagerSupervisorFrag" />
+            type="com.example.melkist.views.login.signup.SignupP4ChoosingCityManagerSupervisorFrag" />
     </data>
 
     <RelativeLayout

@@ -10,21 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.melkist.R
-import com.example.melkist.databinding.FragSignupP2RecieveVerificationSmsBinding
+import com.example.melkist.databinding.FragSignupP5RecieveVerificationSmsBinding
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.SignupViewModel
 
 
-class SignupP2ReceiveVerificationSmsFrag : Fragment() {
+class SignupP5ReceiveVerificationSmsFrag : Fragment() {
 
-    private lateinit var binding: FragSignupP2RecieveVerificationSmsBinding
+    private lateinit var binding: FragSignupP5RecieveVerificationSmsBinding
     private val viewModel: SignupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragSignupP2RecieveVerificationSmsBinding.inflate(inflater)
+        binding = FragSignupP5RecieveVerificationSmsBinding.inflate(inflater)
         return binding.root
     }
 
@@ -33,7 +33,7 @@ class SignupP2ReceiveVerificationSmsFrag : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@SignupP2ReceiveVerificationSmsFrag
+            fragment = this@SignupP5ReceiveVerificationSmsFrag
         }
 
         timerHandling()

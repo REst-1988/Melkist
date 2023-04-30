@@ -27,10 +27,10 @@ class LoginForm : Fragment() {
         binding.cardLogin.startAnimation(animFade)
         binding.imgLogo.startAnimation(animScale)
         binding.btnSignup.setOnClickListener{
-            findNavController().navigate(R.id.action_loginForm_to_signupP1EnterPhoneForRegistrationFrag)
+            findNavController().navigate(R.id.action_loginForm_to_signupP1SignupFormFrag)
         }
         binding.txtForgetUserPass.setOnClickListener {
-            findNavController().navigate(R.id.action_loginForm_to_forgetPassP1EnterNcodePhoneFrag)
+            //findNavController().navigate(R.id.logto) //TODO
         }
         binding.btnLogin.setOnClickListener{
             // TODO: CMPL

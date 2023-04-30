@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
@@ -13,10 +12,6 @@ import com.example.melkist.databinding.FragmentLoginFormBinding
 
 class LoginForm : Fragment() {
     lateinit var binding: FragmentLoginFormBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +27,13 @@ class LoginForm : Fragment() {
         binding.cardLogin.startAnimation(animFade)
         binding.imgLogo.startAnimation(animScale)
         binding.btnSignup.setOnClickListener{
-            findNavController().navigate(R.id.action_loginForm_to_page1ChoosingRealEstateOrUserFragment)
+            findNavController().navigate(R.id.action_loginForm_to_signupP1EnterPhoneForRegistrationFrag)
+        }
+        binding.txtForgetUserPass.setOnClickListener {
+            findNavController().navigate(R.id.action_loginForm_to_forgetPassP1EnterNcodePhoneFrag)
+        }
+        binding.btnLogin.setOnClickListener{
+            // TODO: CMPL
         }
     }
 }

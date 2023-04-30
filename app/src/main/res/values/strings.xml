@@ -8,7 +8,7 @@
     <string name="signup">ثبت نام</string>
     <string name="login">ورود</string>
     <string name="hint_password">کلمه عبور</string>
-    <string name="forget_user_pass">فراموشی نام کاربری و یا کلمه عبور</string>
+    <string name="forget_user_pass">فراموشی نام کاربری یا کلمه عبور</string>
     <string name="choosing_real_estate_header">مشاور املاک</string>
     <string name="choosing_real_estate_header2">دارای قراداد همکاری با ملکیست</string>
     <string name="choosing_real_estate_body">درصورتی که مشاوراملاک می‌باشید و با ملکیست قرارداد ندارید می توانید با ما تماس گرفته تا در خصوص نحوه همکاری و برخورداری از امکانات نرم‌افزار گفتگو نماییم.</string>
@@ -40,5 +40,28 @@
     <string name="error_on_wrong_password">تعداد کاراکترهای پسورد باید بیش از 8 عدد باشد</string>
     <string name="error_on_empty_real_estate">نام املاک خود را وارد نمایید</string>
     <string name="error_on_wrong_real_estate">نام املاک خود را به درستی وارد نمایید</string>
-
+    <string name="write_ncode_mobile">لطفا کد ملی و شماره همراه خود را جهت ارسال کد تایید وارد نمایید</string>
+    <string name="ncode">کد ملی</string>
+    <string name="phone_no">شماره همراه</string>
+    <string name="send">ارسال</string>
+    <string name="write_verify_code">کد تایید پیامک شده را وارد نمایید</string>
+    <string name="verify_code">کد تایید</string>
+    <string name="verify">بررسی</string>
+    <string name="check_phone_no_title">تایید تلفن همراه</string>
+    <string name="write_mobile_to_verify">لطفا شماره همراه خود را جهت ارسال کد تایید وارد نمایید</string>
+    <string name="send_verification_again_in_some_second">امکان ارسال مجدد کد در %s ثانیه</string>
+    <string name="send_verification_again">ارسال مجدد کد</string>
+    <string name="error_on_empty_verification_code">کد تایید را وارد نمایید</string>
+    <string name="error_on_wrong_verification_code">کد تایید به صورت کامل وارد نشده است</string>
+    <string name="global_error">خطایی در سیستم رخ داده است!</string>
+    <string name="choose_new_password">پسورد جدید را وارد کنید</string>
+    <string name="hint_new_password">پسورد جدید</string>
+    <string name="confirm">تایید</string>
+    <string name="choose_realestate_user_title">انتخاب نوع کاربری</string>
+    <string name="choose">انتخاب کنید</string>
+    <string name="choose_category_title">انتخاب دسته</string>
+    <string name="choose_province_title">انتخاب استان</string>
+    <string name="choose_city_title">انتخاب شهر</string>
+    <string name="choose_real_estate_title">انتخاب مشاور املاک</string>
+    <string name="choose_supervisor_title">انتخاب سرپرست</string>
 </resources>

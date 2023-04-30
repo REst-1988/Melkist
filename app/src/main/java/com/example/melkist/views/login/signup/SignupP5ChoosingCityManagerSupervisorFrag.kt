@@ -9,12 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragmentPage3ChoosingCityManagerSupervisorBinding
-import com.example.melkist.viewmodels.LoginViewModel
+import com.example.melkist.viewmodels.SignupViewModel
 
-class Page3ChoosingCityManagerSupervisorFragment : Fragment() {
+class SignupP5ChoosingCityManagerSupervisorFrag : Fragment() {
 
     lateinit var binding: FragmentPage3ChoosingCityManagerSupervisorBinding
-    private val viewModel: LoginViewModel by activityViewModels()
+    private val viewModel: SignupViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,10 +28,18 @@ class Page3ChoosingCityManagerSupervisorFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@Page3ChoosingCityManagerSupervisorFragment
+            fragment = this@SignupP5ChoosingCityManagerSupervisorFrag
         }
-        binding.txtTst.text =
-            "condition = ${viewModel.getCondition()} subCondition = ${viewModel.getSubCondition()}"
+        requestShowProvinces()
+    }
+
+    private fun requestShowProvinces(){
+        val adapter = FollowAdapter()
+        binding.rvFollow.adapter = adapter
+        viewModel.getFollowers(username = viewModel.gitUsername.value)
+        viewModel.followers.observe(viewLifecycleOwner) {
+            adapter.submitList(viewModel.followers.value)
+        }
     }
 
     fun nextFrag(){

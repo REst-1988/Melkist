@@ -2,15 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".views.login.signup.Page3ChoosingCityManagerSupervisorFragment">
+    tools:context=".views.login.signup.SignupP5ChoosingCityManagerSupervisorFrag">
 
     <data>
         <variable
             name="viewmodel"
-            type="com.example.melkist.viewmodels.LoginViewModel" />
+            type="com.example.melkist.viewmodels.SignupViewModel" />
         <variable
             name="fragment"
-            type="com.example.melkist.views.login.signup.Page3ChoosingCityManagerSupervisorFragment" />
+            type="com.example.melkist.views.login.signup.SignupP5ChoosingCityManagerSupervisorFrag" />
     </data>
 
     <RelativeLayout
@@ -78,13 +78,6 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/txt_tst"
-            android:text="@string/choosing_city"
-            android:layout_below="@id/app_bar"/>
-
-        <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txt_sub_title"
             android:layout_marginStart="@dimen/large_margin"
@@ -119,7 +112,8 @@
             android:layout_marginTop="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/large_margin"
             android:drawableStart="@drawable/ic_baseline_arrow_back_24"
-            android:layout_below="@id/et_search"/>
+            android:layout_below="@id/et_search"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <ProgressBar
             android:layout_width="wrap_content"

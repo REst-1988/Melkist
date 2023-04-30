@@ -7,28 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.marginTop
-import androidx.core.view.setMargins
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
-import com.example.melkist.databinding.FragmentPage2ChoosingSubBinding
-import com.example.melkist.databinding.FragmentPage4SignupFormBinding
-import com.example.melkist.viewmodels.LoginViewModel
-import com.google.android.material.chip.ChipGroup.LayoutParams
+import com.example.melkist.databinding.FragSignupP1SignupFormBinding
+import com.example.melkist.viewmodels.SignupViewModel
 
 
-class Page4SignupFormFragment : Fragment() {
+class SignupP1SignupFormFrag : Fragment() {
 
 
-    lateinit var binding: FragmentPage4SignupFormBinding
-    private val viewModel: LoginViewModel by activityViewModels()
+    lateinit var binding: FragSignupP1SignupFormBinding
+    private val viewModel: SignupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPage4SignupFormBinding.inflate(inflater)
+        binding = FragSignupP1SignupFormBinding.inflate(inflater)
         return binding.root
     }
 
@@ -37,7 +32,7 @@ class Page4SignupFormFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@Page4SignupFormFragment
+            fragment = this@SignupP1SignupFormFrag
         }
         showRealStateFieldIfManager()
     }
@@ -57,15 +52,17 @@ class Page4SignupFormFragment : Fragment() {
     }
 
     fun cancel() {
-        findNavController()
-            .navigate(R.id.action_page4SignupFormFragment_to_loginForm)
+        TODO("CMPL")
+/*        findNavController()
+            .navigate(R.id.action_page4SignupFormFragment_to_loginForm)*/
     }
 
     fun back() {
-        findNavController()
+        TODO()
+/*        findNavController()
             .navigate(
                 R.id.action_page4SignupFormFragment_to_page3ChoosingCityManagerSupervisorFragment
-            )
+            )*/
     }
 
     fun onCommit() {
@@ -98,7 +95,6 @@ class Page4SignupFormFragment : Fragment() {
 
     private fun isManager(): Boolean {
         return viewModel.getSubCondition() == viewModel.SUB_STATE_MANAGER
-
     }
 
     private fun getRealEstateIfManager(): String? {
@@ -111,7 +107,7 @@ class Page4SignupFormFragment : Fragment() {
         val isRealEstate = if (getRealEstateIfManager() != null) isRealState() else true
         val isFirstName = isFirstName()
         val isLastName = isLastName()
-        val isPhoneNo = isPhoneNo()
+        val isPhoneNo = isPhoneNo() //TODO: NO NEED MOBILE IN THIS SECTION
         val isNationalCode = isNationalCode()
         val isPassword = isPassword()
         if (isRealEstate
@@ -162,7 +158,7 @@ class Page4SignupFormFragment : Fragment() {
         return true
     }
 
-    private fun isPhoneNo(): Boolean {
+    private fun isPhoneNo(): Boolean { //TODO: NO NEED MOBILE IN THIS SECTION
         // not empty field
         if (binding.etPhoneNo.editText == null || binding.etPhoneNo.editText!!.text.isEmpty()) {
             binding.etPhoneNo.error =

@@ -19,4 +19,6 @@
     <color name="main_dark_color2">#FF233B88</color>
     <color name="main_light_color2">#FFC10F41</color>
     <color name="deep_blue">#061EFC</color>
+    <color name="deep_red">#AC1005</color>
+    <color name="negative_empty_background_color_sub_item">#404040</color>
 </resources>

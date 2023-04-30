@@ -8,20 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
-import com.example.melkist.databinding.FragmentPage2ChoosingSubBinding
+import com.example.melkist.databinding.FragSignupP4ChoosingSubBinding
 import com.example.melkist.models.Roles
-import com.example.melkist.viewmodels.LoginViewModel
+import com.example.melkist.viewmodels.SignupViewModel
 
-class Page2ChoosingSubFragment : Fragment() {
+class SignupP4ChoosingSubFrag : Fragment() {
 
-    lateinit var binding: FragmentPage2ChoosingSubBinding
-    private val viewModel: LoginViewModel by activityViewModels()
+    lateinit var binding: FragSignupP4ChoosingSubBinding
+    private val viewModel: SignupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPage2ChoosingSubBinding.inflate(inflater)
+        binding = FragSignupP4ChoosingSubBinding.inflate(inflater)
         return binding.root
     }
 
@@ -30,7 +30,7 @@ class Page2ChoosingSubFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@Page2ChoosingSubFragment
+            fragment = this@SignupP4ChoosingSubFrag
         }
         checkForOptions()
     }
@@ -73,17 +73,20 @@ class Page2ChoosingSubFragment : Fragment() {
 
     fun setSubCondition(state: Int){
         viewModel.setSubCondition(state)
-        findNavController()
-            .navigate(R.id.action_page2ChoosingSubFragment_to_page3ChoosingCityManagerSupervisorFragment)
+        // TODO
+/*        findNavController()
+            .navigate(R.id.action_page2ChoosingSubFragment_to_page3ChoosingCityManagerSupervisorFragment)*/
     }
 
     fun cancel(){
-        findNavController()
-            .navigate(R.id.action_page2ChoosingSubFragment_to_loginForm)
+        // TODO
+/*        findNavController()
+            .navigate(R.id.action_page2ChoosingSubFragment_to_loginForm)*/
     }
 
     fun back(){
-        findNavController()
-            .navigate(R.id.action_page2ChoosingSubFragment_to_page1ChoosingRealEstateOrUserFragment)
+        // TODO
+/*        findNavController()
+            .navigate(R.id.action_page2ChoosingSubFragment_to_page1ChoosingRealEstateOrUserFragment)*/
     }
 }

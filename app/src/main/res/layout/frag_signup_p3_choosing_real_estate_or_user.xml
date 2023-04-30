@@ -2,15 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.login.signup.Page1ChoosingRealEstateOrUserFragment">
+    tools:context=".views.login.signup.SignupP3ChoosingRealEstateOrUserFrag">
 
     <data>
         <variable
             name="viewmodel"
-            type="com.example.melkist.viewmodels.LoginViewModel"/>
+            type="com.example.melkist.viewmodels.SignupViewModel"/>
         <variable
             name="fragment"
-            type="com.example.melkist.views.login.signup.Page1ChoosingRealEstateOrUserFragment"/>
+            type="com.example.melkist.views.login.signup.SignupP3ChoosingRealEstateOrUserFrag"/>
     </data>
 
     <LinearLayout

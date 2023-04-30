@@ -15,4 +15,5 @@ data class User(
     val createdAt: Long?,
     val updatedAt: Long?,
     val deletedAt: Long?
+    // TODO: USER CITY WILL ADDED
 )

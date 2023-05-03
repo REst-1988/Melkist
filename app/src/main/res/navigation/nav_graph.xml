@@ -11,59 +11,118 @@
         tools:layout="@layout/fragment_login_form" >
         <action
             android:id="@+id/action_loginForm_to_signupP1SignupFormFrag"
-            app:destination="@id/signupP1SignupFormFrag" />
-    </fragment>
-    <fragment
-        android:id="@+id/signupP1SignupFormFrag"
-        android:name="com.example.melkist.views.login.signup.SignupP1SignupFormFrag"
-        android:label="frag_signup_p1_signup_form"
-        tools:layout="@layout/frag_signup_p1_signup_form" >
+            app:destination="@id/navigation" />
         <action
-            android:id="@+id/action_signupP1SignupFormFrag_to_loginForm"
+            android:id="@+id/action_loginForm_to_forgetPassP1EnterNcodePhoneFrag"
+            app:destination="@id/forgetPassP1EnterNcodePhoneFrag" />
+    </fragment>
+    <navigation android:id="@+id/navigation"
+        app:startDestination="@id/signupP1SignupFormFrag">
+        <fragment
+            android:id="@+id/signupP1SignupFormFrag"
+            android:name="com.example.melkist.views.login.signup.SignupP1SignupFormFrag"
+            android:label="frag_signup_p1_signup_form"
+            tools:layout="@layout/frag_signup_p1_signup_form">
+            <action
+                android:id="@+id/action_signupP1SignupFormFrag_to_loginForm"
+                app:destination="@id/loginForm"
+                app:popUpTo="@id/loginForm"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_signupP1SignupFormFrag_to_signupP2ChoosingRealEstateOrUserFrag"
+                app:destination="@id/signupP2ChoosingRealEstateOrUserFrag" />
+            <action
+                android:id="@+id/action_signupP1SignupFormFrag_to_signupP3ChoosingSubFrag"
+                app:destination="@id/signupP3ChoosingSubFrag" />
+            <action
+                android:id="@+id/action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag"
+                app:destination="@id/signupP4ChoosingPcrsFrag" />
+            <action
+                android:id="@+id/action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag"
+                app:destination="@id/signupP5ReceiveVerificationSmsFrag" />
+        </fragment>
+        <fragment
+            android:id="@+id/signupP2ChoosingRealEstateOrUserFrag"
+            android:name="com.example.melkist.views.login.signup.SignupP2ChoosingRealEstateOrUserFrag"
+            android:label="frag_signup_p2_choosing_real_estate_or_user"
+            tools:layout="@layout/frag_signup_p2_choosing_real_estate_or_user">
+            <action
+                android:id="@+id/action_signupP2ChoosingRealEstateOrUserFrag_to_signupP1SignupFormFrag"
+                app:destination="@id/signupP1SignupFormFrag"
+                app:popUpTo="@id/signupP1SignupFormFrag"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/signupP3ChoosingSubFrag"
+            android:name="com.example.melkist.views.login.signup.SignupP3ChoosingSubFrag"
+            android:label="frag_signup_p3_choosing_sub"
+            tools:layout="@layout/frag_signup_p3_choosing_sub">
+            <action
+                android:id="@+id/action_signupP3ChoosingSubFrag_to_signupP1SignupFormFrag"
+                app:destination="@id/signupP1SignupFormFrag"
+                app:popUpTo="@id/signupP1SignupFormFrag"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/signupP4ChoosingPcrsFrag"
+            android:name="com.example.melkist.views.login.signup.SignupP4ChoosingPcrsFrag"
+            android:label="frag_signup_p4_choosing_pcrs"
+            tools:layout="@layout/frag_signup_p4_choosing_pcrs">
+            <action
+                android:id="@+id/action_signupP4ChoosingPcrsFrag_to_signupP1SignupFormFrag"
+                app:destination="@id/signupP1SignupFormFrag"
+                app:popUpTo="@id/signupP1SignupFormFrag"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/signupP5ReceiveVerificationSmsFrag"
+            android:name="com.example.melkist.views.login.signup.SignupP5ReceiveVerificationSmsFrag"
+            android:label="frag_signup_p5_recieve_verification_sms"
+            tools:layout="@layout/frag_signup_p5_recieve_verification_sms">
+            <action
+                android:id="@+id/action_signupP5ReceiveVerificationSmsFrag_to_signupP1SignupFormFrag"
+                app:destination="@id/signupP1SignupFormFrag"
+                app:popUpTo="@id/loginForm"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
+    <fragment
+        android:id="@+id/forgetPassP1EnterNcodePhoneFrag"
+        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP1EnterNcodePhoneFrag"
+        android:label="frag_forget_pass_p1_enter_ncode_phone"
+        tools:layout="@layout/frag_forget_pass_p1_enter_ncode_phone" >
+        <action
+            android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_loginForm"
             app:destination="@id/loginForm"
             app:popUpTo="@id/loginForm"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_signupP1SignupFormFrag_to_signupP2ChoosingRealEstateOrUserFrag"
-            app:destination="@id/signupP2ChoosingRealEstateOrUserFrag" />
-        <action
-            android:id="@+id/action_signupP1SignupFormFrag_to_signupP3ChoosingSubFrag"
-            app:destination="@id/signupP3ChoosingSubFrag" />
-        <action
-            android:id="@+id/action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag"
-            app:destination="@id/signupP4ChoosingCityManagerSupervisorFrag" />
+            android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag"
+            app:destination="@id/forgetPassP2ReceiveVerificationSmsFrag" />
     </fragment>
     <fragment
-        android:id="@+id/signupP2ChoosingRealEstateOrUserFrag"
-        android:name="com.example.melkist.views.login.signup.SignupP2ChoosingRealEstateOrUserFrag"
-        android:label="frag_signup_p2_choosing_real_estate_or_user"
-        tools:layout="@layout/frag_signup_p2_choosing_real_estate_or_user" >
+        android:id="@+id/forgetPassP2ReceiveVerificationSmsFrag"
+        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP2ReceiveVerificationSmsFrag"
+        android:label="frag_forget_pass_p2_receive_verification_sms"
+        tools:layout="@layout/frag_forget_pass_p2_receive_verification_sms" >
         <action
-            android:id="@+id/action_signupP2ChoosingRealEstateOrUserFrag_to_signupP1SignupFormFrag"
-            app:destination="@id/signupP1SignupFormFrag"
-            app:popUpTo="@id/signupP1SignupFormFrag"
+            android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP1EnterNcodePhoneFrag"
+            app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
+            app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag"
+            app:destination="@id/forgetPassP3ChangePassFrag" />
     </fragment>
     <fragment
-        android:id="@+id/signupP3ChoosingSubFrag"
-        android:name="com.example.melkist.views.login.signup.SignupP3ChoosingSubFrag"
-        android:label="frag_signup_p3_choosing_sub"
-        tools:layout="@layout/frag_signup_p3_choosing_sub" >
+        android:id="@+id/forgetPassP3ChangePassFrag"
+        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP3ChangePassFrag"
+        android:label="frag_forget_pass_p3_change_pass"
+        tools:layout="@layout/frag_forget_pass_p3_change_pass" >
         <action
-            android:id="@+id/action_signupP3ChoosingSubFrag_to_signupP1SignupFormFrag"
-            app:destination="@id/signupP1SignupFormFrag"
-            app:popUpTo="@id/signupP1SignupFormFrag"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/signupP4ChoosingCityManagerSupervisorFrag"
-        android:name="com.example.melkist.views.login.signup.SignupP4ChoosingCityManagerSupervisorFrag"
-        android:label="frag_signup_p4_choosing_city_manager_supervisor"
-        tools:layout="@layout/frag_signup_p4_choosing_city_manager_supervisor" >
-        <action
-            android:id="@+id/action_signupP4ChoosingCityManagerSupervisorFrag_to_signupP1SignupFormFrag"
-            app:destination="@id/signupP1SignupFormFrag"
-            app:popUpTo="@id/signupP1SignupFormFrag"
+            android:id="@+id/action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag"
+            app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
+            app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

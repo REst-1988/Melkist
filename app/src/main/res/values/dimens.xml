@@ -14,4 +14,5 @@
     <dimen name="sub_choosing_buttons_height">300dp</dimen>
     <dimen name="sub_choosing_buttons_width">90dp</dimen>
     <dimen name="normal_padding">16dp</dimen>
+    <dimen name="short_padding">8dp</dimen>
 </resources>

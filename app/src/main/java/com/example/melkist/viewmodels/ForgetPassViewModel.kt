@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.melkist.models.VerificationResponseModel
+import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +17,8 @@ class ForgetPassViewModel : ViewModel() {
 
     private var mobileNo: String = ""
     private var nationalCode: Long = 0
+
+    var password: String = ""
 
     fun getMobileNo() = mobileNo
     fun setMobileNo(mobile: String) { mobileNo = mobile }
@@ -31,11 +33,14 @@ class ForgetPassViewModel : ViewModel() {
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
-    private val _verificationCodeResponse = MutableLiveData<VerificationResponseModel>()
-    val verificationCodeResponse: LiveData<VerificationResponseModel> = _verificationCodeResponse
+    private val _verificationCodeResponse = MutableLiveData<PublicResponseModel>()
+    val verificationCodeResponse: LiveData<PublicResponseModel> = _verificationCodeResponse
 
-    private val _verifyResponse = MutableLiveData<VerificationResponseModel>()
-    val verifyResponse: LiveData<VerificationResponseModel> = _verifyResponse
+    private val _verifyResponse = MutableLiveData<PublicResponseModel>()
+    val verifyResponse: LiveData<PublicResponseModel> = _verifyResponse
+
+    private val _changePassResponse = MutableLiveData<PublicResponseModel>()
+    val changePassResponse: LiveData<PublicResponseModel> = _changePassResponse
 
     private fun setupTimer() {
         if (timeLeft.value == 0) {
@@ -72,7 +77,6 @@ class ForgetPassViewModel : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-
                 Log.e("TAG", "getNcodeMobileVerificationCode: test 2")
                 _verificationCodeResponse.value =
                     Api.retrofitService.getForgetPasswordVerificationCode(mobile, ncode)
@@ -93,7 +97,7 @@ class ForgetPassViewModel : ViewModel() {
             try {
                 Log.e("TAG", "sendMobileVerificationCode: test 2")
                 _verifyResponse.value =
-                    Api.retrofitService.getVerifyResponse(mobile, code)
+                    Api.retrofitService.verifyCode(mobile, code)
                 Log.e("TAG", "sendMobileVerificationCode: test 3")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
@@ -105,7 +109,25 @@ class ForgetPassViewModel : ViewModel() {
         }
     }
 
-    fun restVerificationResponse(vr: LiveData<VerificationResponseModel>) {
+    fun requestChangePasswordByMobile() {
+        viewModelScope.launch {
+            _status.value = ApiStatus.LOADING
+            try {
+                Log.e("TAG", "sendMobileVerificationCode: test 2")
+                _changePassResponse.value =
+                    Api.retrofitService.changePasswordByMobile(getMobileNo(), newPassword = password)
+                Log.e("TAG", "sendMobileVerificationCode: test 3")
+                _status.value = ApiStatus.DONE
+            } catch (e: Exception) {
+                Log.e("TAG", "sendMobileVerificationCode: test 4")
+                e.printStackTrace()
+                _status.value = ApiStatus.ERROR
+                //_verificationResponse.value = VerificationResponse(false, "ERROR")
+            }
+        }
+    }
+
+    fun restVerificationResponse(vr: LiveData<PublicResponseModel>) {
         if (vr.value != null) {
             vr.value!!.result = null
             vr.value!!.message = ""
@@ -114,11 +136,12 @@ class ForgetPassViewModel : ViewModel() {
         }
     }
 
-    fun isResponseOk(vr: LiveData<VerificationResponseModel>): Boolean = vr.value != null
+    fun isResponseOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
             && vr.value!!.result != null
             && vr.value!!.result == true
 
-    fun isResponseNotOk(vr: LiveData<VerificationResponseModel>): Boolean = vr.value != null
+    fun isResponseNotOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
             && vr.value!!.result != null
             && vr.value!!.result == false
+
 }

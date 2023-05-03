@@ -56,24 +56,13 @@
                         android:layout_height="?attr/actionBarSize"
                         android:fontFamily="@font/byekan"
                         android:gravity="center_vertical"
-                        android:text="@string/forget_user_pass"
+                        android:text="@string/check_phone_no_title"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="ثبت نام" />
-
-                    <ImageButton
-                        android:id="@+id/ibtn_close"
-                        android:layout_width="?attr/actionBarSize"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{() -> fragment.cancel()}"
-                        android:src="@drawable/ic_baseline_close_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        tools:text="@string/check_phone_no_title" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>

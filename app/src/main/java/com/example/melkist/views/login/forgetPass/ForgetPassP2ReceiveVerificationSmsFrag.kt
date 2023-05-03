@@ -3,11 +3,10 @@ package com.example.melkist.views.login.forgetPass
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
@@ -66,20 +65,19 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
                         viewModel.verifyResponse.value!!.errors[0]
                     )
             } else
-                Log.e(
-                    "TAG",
-                    "3listenToSendVerificationCode: " +
-                            "${viewModel.verificationCodeResponse.value!!.result}"
+                showToast(
+                    requireContext(),
+                    viewModel.verificationCodeResponse.value!!.result.toString()
                 )
         }
     }
 
     private fun startNextStep() {
-        // TODO
-/*            findNavController()
-                .navigate(
-                    R.id.action_fragmentPage2ReceiveVerificationSms_to_page1ChoosingRealEstateOrUserFragment
-                )*/
+        findNavController()
+            .navigate(
+                R.id.action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag
+            )
+        viewModel.restVerificationResponse(viewModel.verifyResponse)
     }
 
     override fun onStart() {
@@ -121,19 +119,19 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
         return true
     }
 
-    fun cancel() {
-        // TODO
-    /*        findNavController().navigate(R.id.action_fragmentPage2ReceiveVerificationSms_to_loginForm)*/
-
-    }
-
     fun back() {
-        // TODO findNavController().navigate(R.id.action_fragmentPage2ReceiveVerificationSms_to_page1EnterNcodePhoneFragment)
+        findNavController()
+            .navigate(
+                R.id.action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP1EnterNcodePhoneFrag
+            )
     }
 
     fun onSendVerifyCodeAgain() {
         viewModel.stopTimer()
-        viewModel.getNcodeMobileVerificationCode(viewModel.getNationalCode().toString(), viewModel.getMobileNo())
+        viewModel.getNcodeMobileVerificationCode(
+            viewModel.getNationalCode().toString(),
+            viewModel.getMobileNo()
+        )
         viewModel.restVerificationResponse(viewModel.verifyResponse)
         viewModel.resetTimer()
     }

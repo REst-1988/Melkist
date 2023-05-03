@@ -1,0 +1,76 @@
+package com.example.melkist.views.login.signup
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.melkist.R
+import com.example.melkist.adapters.ChoosingPcrsAdapter
+import com.example.melkist.databinding.FragSignupP4ChoosingPcrsBinding
+import com.example.melkist.viewmodels.SignupViewModel
+
+class SignupP4ChoosingPcrsFrag : Fragment() {
+
+    //TODO showing list has some problems
+    //TODO: list item width has problem
+
+    lateinit var binding: FragSignupP4ChoosingPcrsBinding
+    private val viewModel: SignupViewModel by activityViewModels()
+    lateinit var adapter: ChoosingPcrsAdapter
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        adapter = ChoosingPcrsAdapter(
+            viewModel,
+            this@SignupP4ChoosingPcrsFrag
+        )
+        binding = FragSignupP4ChoosingPcrsBinding.inflate(inflater)
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewmodel = viewModel
+            fragment = this@SignupP4ChoosingPcrsFrag
+            rvList.adapter = adapter
+        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.txtTitle.text = when (viewModel.PcrsCondition) {
+            SignupViewModel.Pcrs.PROVINCE -> resources.getString(R.string.choose_province_title)
+            SignupViewModel.Pcrs.CITY -> resources.getString(R.string.choose_city_title)
+            SignupViewModel.Pcrs.REAL_ESTATE -> resources.getString(R.string.choose_real_estate_title)
+            else -> resources.getString(R.string.choose_supervisor_title)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when (viewModel.PcrsCondition) {
+            SignupViewModel.Pcrs.PROVINCE -> viewModel.getProvinces()
+            SignupViewModel.Pcrs.CITY -> viewModel.getCities()
+            SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.getRealEstate()
+            else -> viewModel.getSuperVisor()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.emptyList()
+        adapter.submitList(viewModel.pcrsList.value)
+    }
+
+    fun back() {
+        when (viewModel.PcrsCondition) {
+            SignupViewModel.Pcrs.PROVINCE -> viewModel.resetSignupFieldsByProvince()
+            SignupViewModel.Pcrs.CITY -> viewModel.resetSignupFieldsByCity()
+            SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.resetSignupFieldsByRealEstate()
+            else -> viewModel.resetSignupFieldsBySupervisor()
+        }
+        findNavController().navigate(R.id.action_signupP4ChoosingPcrsFrag_to_signupP1SignupFormFrag)
+    }
+}

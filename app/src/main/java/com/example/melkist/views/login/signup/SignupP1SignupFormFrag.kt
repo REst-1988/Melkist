@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
+import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.SignupViewModel
 
 
@@ -20,8 +20,7 @@ class SignupP1SignupFormFrag : Fragment() {
     private val viewModel: SignupViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragSignupP1SignupFormBinding.inflate(inflater)
         return binding.root
@@ -34,46 +33,59 @@ class SignupP1SignupFormFrag : Fragment() {
             viewmodel = viewModel
             fragment = this@SignupP1SignupFormFrag
         }
+        listenToCheckVerificationResult()
     }
 
-    fun cancel() {
-        viewModel.resetSignupFieldsByChoosingMainField()
-        findNavController()
-            .navigate(R.id.action_signupP1SignupFormFrag_to_loginForm)
-    }
-
-    //TODO: CMPL
-    fun onCommit() {
-        Log.e(
-            "TAG", "onCommit:\n" +
-                    "roleId: ${viewModel.getSubCondition()} \n" +
-                    "real estate name: ${viewModel.realEstateNameForManager} \n" +
-                    "first name: ${viewModel.firstName}\n" +
-                    "last name: ${viewModel.lastName}\n" +
-                    "mobile: ${viewModel.mobileNo}\n" +
-                    "national code: ${viewModel.nationalCode}\n" +
-                    "email: ${viewModel.email}\n" +
-                    "pass: ${viewModel.password}"
-        )
-
-        Toast.makeText(requireContext(), "Check Log file", Toast.LENGTH_SHORT).show()
-
-        if (isAllFieldIsOkay()) {
-            viewModel.createUser(
-                getRealEstateIfManager(),
-                binding.etFirstName.editText!!.text.toString(),
-                binding.etLastName.editText!!.text.toString(),
-                binding.etPhoneNo.editText!!.toString(),
-                binding.etNationalCode.editText!!.text.toString().toLong(),
-                binding.etEmail.editText!!.text.toString(),
-                binding.etPassword.editText!!.text.toString()
+    private fun listenToCheckVerificationResult() {
+        viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
+            if (viewModel.isResponseOk(viewModel.verificationCodeResponse)) {
+                showToast(requireContext(), viewModel.verificationCodeResponse.value!!.message!!)
+                viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
+                findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag)
+            } else if (viewModel.isResponseNotOk(viewModel.verificationCodeResponse)) {
+                if (!viewModel.verificationCodeResponse.value!!.errors[0].isEmpty()) showToast(
+                    requireContext(), viewModel.verificationCodeResponse.value!!.errors[0]
+                )
+            } else Log.e(
+                "TAG",
+                "3listenToSendVerificationCode: " + "${viewModel.verificationCodeResponse.value!!.result}"
             )
         }
     }
 
+    fun cancel() {
+        viewModel.resetSignupFieldsByChoosingMainField()
+        findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_loginForm)
+    }
+
+    fun onCommit() {
+        if (isAllFieldIsOkay()) {
+            setAllFields()
+            viewModel.checkSignupData(
+                viewModel.firstName,
+                viewModel.lastName,
+                viewModel.realEstateNameForManager,
+                viewModel.cityId,
+                viewModel.mobileNo,
+                viewModel.nationalCode.toString(),
+                viewModel.email,
+                viewModel.getSubCondition()
+            )
+        }
+    }
+
+    private fun setAllFields() {
+        viewModel.firstName = binding.etFirstName.editText!!.text.toString()
+        viewModel.lastName = binding.etLastName.editText!!.text.toString()
+        viewModel.realEstateNameForManager = binding.etRealEstateName.editText?.text.toString()
+        viewModel.mobileNo = binding.etPhoneNo.editText!!.text.toString()
+        viewModel.nationalCode = binding.etNationalCode.editText!!.text.toString().toLong()
+        viewModel.email = binding.etEmail.editText?.text.toString()
+        viewModel.password = binding.etPassword.editText!!.text.toString()
+    }
+
     private fun getRealEstateIfManager(): String? {
-        if (isManager())
-            return binding.etRealEstateName.editText!!.text.toString()
+        if (isManager()) return binding.etRealEstateName.editText!!.text.toString()
         return null
     }
 
@@ -83,15 +95,9 @@ class SignupP1SignupFormFrag : Fragment() {
         val isLastName = isLastName()
         val isPhoneNo = isPhoneNo()
         val isNationalCode = isNationalCode()
+        val isEmail = isEmail()
         val isPassword = isPassword()
-        if (isRealEstate
-            && isFirstName
-            && isLastName
-            && isPhoneNo
-            && isNationalCode
-            && isPassword
-        )
-            return true
+        if (isRealEstate && isFirstName && isLastName && isPhoneNo && isNationalCode && isEmail && isPassword) return true
         return false
     }
 
@@ -132,7 +138,7 @@ class SignupP1SignupFormFrag : Fragment() {
         return true
     }
 
-    private fun isPhoneNo(): Boolean { //TODO: NO NEED MOBILE IN THIS SECTION
+    private fun isPhoneNo(): Boolean {
         // not empty field
         if (binding.etPhoneNo.editText == null || binding.etPhoneNo.editText!!.text.isEmpty()) {
             binding.etPhoneNo.error =
@@ -169,25 +175,45 @@ class SignupP1SignupFormFrag : Fragment() {
         return true
     }
 
+    private fun isEmail(): Boolean {
+        if (binding.etEmail.editText == null || binding.etEmail.editText!!.text.isEmpty()) {
+            binding.etEmail.error = null
+            return true
+        } else if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.editText!!.text)
+                .matches()
+        ) {
+            binding.etEmail.error = null
+            return true
+        } else {
+            binding.etEmail.error =
+                requireContext().resources.getString(R.string.error_on_wrong_email)
+            return false
+        }
+    }
+
     private fun isPassword(): Boolean {
-        if (binding.etPassword.editText == null || binding.etPassword.editText!!.text.isEmpty()) {
+        return if (binding.etPassword.editText == null || binding.etPassword.editText!!.text.isEmpty()) {
             binding.etPassword.error =
                 requireContext().resources.getString(R.string.error_on_empty_password)
-            return false
+            false
         } else if (binding.etPassword.editText!!.text.length < 8) {
             binding.etPassword.error =
                 requireContext().resources.getString(R.string.error_on_wrong_password)
-            return false
+            false
+        } else {
+            binding.etPassword.error = null
+            true
         }
-        binding.etPassword.error = null
-        return true
     }
 
-    fun showConditionText(): String{
-        return when (viewModel.getCondition()){
-            SignupViewModel.Condition.CHOOSE -> requireContext().resources.getText(R.string.choose).toString()
-            SignupViewModel.Condition.STATE_USER -> requireContext().resources.getText(R.string.choosing_user_header).toString()
-            else -> requireContext().resources.getText(R.string.choosing_real_estate_header).toString()
+    fun showConditionText(): String {
+        return when (viewModel.getCondition()) {
+            SignupViewModel.Condition.CHOOSE -> requireContext().resources.getText(R.string.choose)
+                .toString()
+            SignupViewModel.Condition.STATE_USER -> requireContext().resources.getText(R.string.choosing_user_header)
+                .toString()
+            else -> requireContext().resources.getText(R.string.choosing_real_estate_header)
+                .toString()
         }
     }
 
@@ -199,9 +225,10 @@ class SignupP1SignupFormFrag : Fragment() {
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP3ChoosingSubFrag)
     }
 
-    fun showCategoryText(): String{
-        return when (viewModel.getSubCondition()){
-            viewModel.SUB_STATE_CHOOSE -> requireContext().resources.getText(R.string.choose).toString()
+    fun showCategoryText(): String {
+        return when (viewModel.getSubCondition()) {
+            viewModel.SUB_STATE_CHOOSE -> requireContext().resources.getText(R.string.choose)
+                .toString()
             viewModel.SUB_STATE_MANAGER -> viewModel.getRoles().manager.title
             viewModel.SUB_STATE_SUPERVISER -> viewModel.getRoles().supervisor.title
             viewModel.SUB_STATE_CONSOLTANT -> viewModel.getRoles().consultant.title
@@ -214,52 +241,66 @@ class SignupP1SignupFormFrag : Fragment() {
         return (viewModel.getCondition() != SignupViewModel.Condition.CHOOSE)
     }
 
-    fun showCategoryByCondition(condition: SignupViewModel.Condition) {
-        if (condition == SignupViewModel.Condition.STATE_REAL_ESTATE)
-            TODO("I don't know why I write this")
-    }
-
     fun onChoosingProvince() {
-        //TODO restFields on return
+        viewModel.PcrsCondition = SignupViewModel.Pcrs.PROVINCE
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
     fun isShowProvince(): Boolean {
-        return (binding.llChooseCategory.visibility == View.VISIBLE
-            && viewModel.subConditionRoleId != 0
-        )
+        return isShowCategory()
+                && viewModel.subConditionRoleId != 0
     }
 
     fun onChoosingCity() {
-
-        //TODO restFields on return
+        viewModel.PcrsCondition = SignupViewModel.Pcrs.CITY
+        findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
     fun isShowCity(): Boolean {
-        return (binding.llChooseProvince.visibility == View.VISIBLE
-            && viewModel.provinceId != 0
-        )
+        return isShowProvince()
+                && viewModel.provinceId != 0
     }
 
     fun onChoosingRealEstate() {
-
-        //TODO restFields on return
+        viewModel.PcrsCondition = SignupViewModel.Pcrs.REAL_ESTATE
+        findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
     fun isShowRealEstate(): Boolean {
-        return  (binding.llChooseCity.visibility == View.VISIBLE
-            && viewModel.cityId != 0
-        )
+        return isShowCity()
+                && viewModel.cityId != 0
+                && viewModel.getSubCondition() != viewModel.SUB_STATE_MANAGER
+                && viewModel.getSubCondition() != viewModel.SUB_STATE_NORMAL_USER
+                && viewModel.getSubCondition() != viewModel.SUB_STATE_DEALER
     }
 
     fun onChoosingSupervisor() {
-        //TODO restFields on return  I think no need for this
+        viewModel.PcrsCondition = SignupViewModel.Pcrs.SUPERVISOR
+        findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
     fun isShowSupervisor(): Boolean {
-        return (binding.llChooseRealEstate.visibility == View.VISIBLE
-            && viewModel.realEstateId != 0
+        Log.e(
+            "TAG",
+            "isShowSupervisor: 1 ${
+                binding.llChooseRealEstate.visibility == View.VISIBLE
+            }",
         )
+        Log.e(
+            "TAG",
+            "isShowSupervisor: 2 ${
+                viewModel.realEstateId != null
+            }",
+        )
+        Log.e(
+            "TAG",
+            "isShowSupervisor: 3 ${
+                viewModel.getSubCondition() != viewModel.SUB_STATE_SUPERVISER
+            }",
+        )
+        return isShowCity()
+                && viewModel.realEstateId != null
+                && viewModel.getSubCondition() == viewModel.SUB_STATE_CONSOLTANT
     }
 
     fun isManager(): Boolean {
@@ -267,32 +308,30 @@ class SignupP1SignupFormFrag : Fragment() {
     }
 
     fun isShowOtherFields(): Boolean {
-        return (isManager()
-                && viewModel.cityId != 0)
-                || isSupervisor()
-                || isConsultant()
-                || isNormalUser()
-                || isDealer()
+        return isShowCity()
+                && (
+                (isManager() && viewModel.cityId != 0)
+                        || isSupervisor()
+                        || isConsultant()
+                        || isNormalUser()
+                        || isDealer()
+                )
     }
 
     private fun isSupervisor(): Boolean {
-        return (viewModel.getSubCondition() == viewModel.SUB_STATE_SUPERVISER
-                && viewModel.realEstateId != 0)
+        return (viewModel.getSubCondition() == viewModel.SUB_STATE_SUPERVISER && viewModel.realEstateId != 0 && viewModel.realEstateId != null)
     }
 
     private fun isConsultant(): Boolean {
-        return (viewModel.getSubCondition() == viewModel.SUB_STATE_CONSOLTANT
-                && viewModel.supervisorId != 0)
+        return (viewModel.getSubCondition() == viewModel.SUB_STATE_CONSOLTANT && viewModel.supervisorId != 0)
     }
 
     private fun isNormalUser(): Boolean {
-        return (viewModel.getSubCondition() == viewModel.SUB_STATE_NORMAL_USER
-                && viewModel.cityId != 0)
+        return (viewModel.getSubCondition() == viewModel.SUB_STATE_NORMAL_USER && viewModel.cityId != 0)
     }
 
     private fun isDealer(): Boolean {
-        return (viewModel.getSubCondition() == viewModel.SUB_STATE_DEALER
-                && viewModel.cityId != 0)
+        return (viewModel.getSubCondition() == viewModel.SUB_STATE_DEALER && viewModel.cityId != 0)
     }
 
 

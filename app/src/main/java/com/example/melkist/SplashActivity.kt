@@ -8,6 +8,8 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 
 //TODO: checking the version of application
+// TODO: check internet connection
+// TODO: check if user would sign in before
 
 class SplashActivity : AppCompatActivity() {
 

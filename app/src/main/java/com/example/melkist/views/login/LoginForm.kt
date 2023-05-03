@@ -30,7 +30,7 @@ class LoginForm : Fragment() {
             findNavController().navigate(R.id.action_loginForm_to_signupP1SignupFormFrag)
         }
         binding.txtForgetUserPass.setOnClickListener {
-            //findNavController().navigate(R.id.logto) //TODO
+            findNavController().navigate(R.id.action_loginForm_to_forgetPassP1EnterNcodePhoneFrag)
         }
         binding.btnLogin.setOnClickListener{
             // TODO: CMPL

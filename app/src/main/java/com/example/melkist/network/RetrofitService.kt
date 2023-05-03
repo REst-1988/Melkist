@@ -19,9 +19,9 @@ private val moshi = Moshi.Builder()
 
 
 private val okHttpClient = OkHttpClient().newBuilder() // TODO: CHECK IF CONNECTION TIME OUT IS OK
-    .connectTimeout(60, TimeUnit.SECONDS)
-    .readTimeout(60, TimeUnit.SECONDS)
-    .writeTimeout(60, TimeUnit.SECONDS)
+    .connectTimeout(120, TimeUnit.SECONDS)
+    .readTimeout(120, TimeUnit.SECONDS)
+    .writeTimeout(120, TimeUnit.SECONDS)
     .build()
 
 private val retrofit = Retrofit.Builder()

@@ -1,7 +1,6 @@
 package com.example.melkist.views.login.forgetPass
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +42,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
 
     fun onSend() {
         if (isAllFieldIsOkay())
-            registerNcodePhoneAndRequestApi()
+            requestVerificationCodeForNcodePhone()
     }
 
     fun back() {
@@ -51,7 +50,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
         //findNavController().navigate(R.id.action_forgetPassP1EnterNcodePhoneFrag_to_loginForm)
     }
 
-    private fun registerNcodePhoneAndRequestApi() {
+    private fun requestVerificationCodeForNcodePhone() {
         viewModel.setMobileNo(binding.etPhoneNo.editText!!.text.toString())
         viewModel.setNationalCode(binding.etNationalCode.editText!!.text.toString().toLong())
         viewModel.getNcodeMobileVerificationCode(
@@ -64,7 +63,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
         viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.verificationCodeResponse)) {
                 showToast(requireContext(), viewModel.verificationCodeResponse.value!!.message!!)
-                startNextFrag()
+                startNextFragAndResetResponse()
             } else if (viewModel.isResponseNotOk(viewModel.verificationCodeResponse))
                 if (viewModel.verificationCodeResponse.value!!.errors.isNotEmpty())
                     showToast(
@@ -72,19 +71,25 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
                         viewModel.verificationCodeResponse.value!!.errors[0]
                     )
                 else
-                    Log.e(
-                        "TAG",
-                        "3listenToSendVerificationCode: ${viewModel.verificationCodeResponse.value!!.result}"
+                    showToast(
+                        requireContext(),
+                        viewModel.verificationCodeResponse.value!!.result.toString()
                     )
         }
     }
 
-    private fun startNextFrag() {
-/*        findNavController() // TODO("Do navigation")
+    private fun startNextFragAndResetResponse() {
+        findNavController()
             .navigate(
-                R.id.action_page1EnterNcodePhoneFragment_to_fragmentPage2ReceiveVerificationSms
-            )*/
+                R.id.action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag
+            )
+        setViewModelFieldsIfVerificationCodeSent()
         viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
+    }
+
+    private fun setViewModelFieldsIfVerificationCodeSent(){
+        viewModel.setMobileNo(binding.etPhoneNo.editText!!.text.toString())
+        viewModel.setNationalCode(binding.etNationalCode.editText!!.text.toString().toLong())
     }
 
     private fun isAllFieldIsOkay(): Boolean {

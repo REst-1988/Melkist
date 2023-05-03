@@ -64,4 +64,5 @@
     <string name="choose_city_title">انتخاب شهر</string>
     <string name="choose_real_estate_title">انتخاب مشاور املاک</string>
     <string name="choose_supervisor_title">انتخاب سرپرست</string>
+    <string name="error_on_wrong_email">ایمیل خود را به درستی وارد نمایید</string>
 </resources>

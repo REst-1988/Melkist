@@ -1,21 +1,23 @@
 package com.example.melkist.views.login.forgetPass
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP3ChangePassBinding
-import com.example.melkist.viewmodels.SignupViewModel
+import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.showToast
+import com.example.melkist.viewmodels.ForgetPassViewModel
 
 
 class ForgetPassP3ChangePassFrag : Fragment() {
 
     private lateinit var binding: FragForgetPassP3ChangePassBinding
-    private val viewModel: SignupViewModel by activityViewModels()
-    private var isShowPass = false
+    private val viewModel: ForgetPassViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,13 +27,54 @@ class ForgetPassP3ChangePassFrag : Fragment() {
         return binding.root
     }
 
-    fun cancel() {
-        TODO("CMPL")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listenToChangePassResponse()
+    }
+
+    private fun listenToChangePassResponse() {
+        viewModel.changePassResponse.observe(viewLifecycleOwner) {
+            if (viewModel.isResponseOk(viewModel.changePassResponse)) {
+                showToast(requireContext(), viewModel.changePassResponse.value!!.message!!)
+                showDialogWithMessage(
+                    requireContext(),
+                    viewModel.changePassResponse.value!!.message!!
+                ) { d, _ ->
+                    d.dismiss()
+                    readyForStartNextSetion()
+                }
+            } else if (viewModel.isResponseNotOk(viewModel.changePassResponse))
+                if (viewModel.changePassResponse.value!!.errors.isNotEmpty())
+                    showDialogWithMessage(
+                        requireContext(),
+                        viewModel.changePassResponse.value!!.errors[0]
+                    ) { d, _ -> d.dismiss() }
+                else
+                    showToast(
+                        requireContext(),
+                        viewModel.changePassResponse.value!!.result.toString()
+                    )
+        }
+    }
+
+    private fun readyForStartNextSetion() {
+        findNavController()
+            .navigate(
+                R.id.action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag
+            )
+    }
+
+    fun back() {
+        findNavController().navigate(
+            R.id.action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag
+        )
     }
 
     fun onConfirm() {
-        if (isPassword())
-            TODO("CMPL")
+        if (isPassword()) {
+            viewModel.password = binding.etPassword.editText!!.text.toString()
+            viewModel.requestChangePasswordByMobile()
+        }
     }
 
     private fun isPassword(): Boolean {

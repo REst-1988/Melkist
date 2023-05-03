@@ -1,15 +1,17 @@
 package com.example.melkist.utils
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
-import android.os.CountDownTimer
 import android.text.InputType
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.LiveData
+import com.example.melkist.R
+import com.example.melkist.models.PublicResponseModel
 import com.google.android.material.textfield.TextInputEditText
 
 fun isOnline(context: Context): Boolean { //TODO: CHECK INTERNET with my note 3 for make it sure that it worked well
@@ -48,22 +50,22 @@ fun isOnline(context: Context): Boolean { //TODO: CHECK INTERNET with my note 3 
 
 fun showToast(context: Context, s: String) {
     Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
+    Log.e(context.applicationInfo.className.toString(), "result: $s")
 }
 
-fun showHidePass(et: TextInputEditText, isShowPass: Boolean) {
-    et.inputType =
-        if (isShowPass)
-            InputType.TYPE_CLASS_TEXT
-        else
-            InputType.TYPE_TEXT_VARIATION_PASSWORD
+fun showDialogWithMessage(context: Context, message: String, action: (DialogInterface, Int) -> Unit) {
+    val builder = AlertDialog.Builder(context)
+    builder
+        .setMessage(message)
+        .setPositiveButton(context.resources.getText(R.string.confirm), action)
+        .show()
 }
 
-/*
-fun concatenateErrors(verificationResponse: VerificationResponse?): String {
+fun concatenateErrors(publicResponseModel: PublicResponseModel?): String {
     var allErrors = ""
-    if (verificationResponse!= null)
-        for (error in verificationResponse!!.errors?: arrayOf()) {
+    if (publicResponseModel!= null)
+        for (error in publicResponseModel.errors) {
             allErrors += error
         }
     return allErrors
-}*/
+}

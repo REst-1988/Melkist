@@ -73,7 +73,7 @@ interface ApiService {
         @Query("nationalcode") nationalCode: String,
         @Query("email") email: String?,
         @Query("password") password: String,
-        @Query("parent_id") parentId: Int?,
+        @Query("parent_id") parentId: Int,
         @Query("role_id") roleId: Int,
         @Query("isverify") isVerify: Boolean = false, // for check if user create by app or by panel. in app always 0
         @Query("isNeedValidation") isNeedValidation: Boolean = false

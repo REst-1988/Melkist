@@ -44,9 +44,9 @@ class SignupP3ChoosingSubFrag : Fragment() {
     }
 
     private fun makeViewReadyForNormalUser(roles: Roles) {
-        if (binding.llRealEstate.visibility == View.VISIBLE) {
-            binding.llRealEstate.visibility = View.GONE
-            binding.llNormalUser.visibility = View.VISIBLE
+        if (binding.layoutRealEstate.visibility == View.VISIBLE) {
+            binding.layoutRealEstate.visibility = View.GONE
+            binding.layoutNormalUser.visibility = View.VISIBLE
         }
         if (binding.txtSubChoosing4.text.isEmpty()) {
             binding.imgSubChoosing4.setImageResource(roles.normalUser.avatar!!)
@@ -57,9 +57,9 @@ class SignupP3ChoosingSubFrag : Fragment() {
     }
 
     private fun makeViewReadyForRealState(roles: Roles) {
-        if (binding.llNormalUser.visibility == View.VISIBLE) {
-            binding.llNormalUser.visibility = View.GONE
-            binding.llRealEstate.visibility = View.VISIBLE
+        if (binding.layoutNormalUser.visibility == View.VISIBLE) {
+            binding.layoutNormalUser.visibility = View.GONE
+            binding.layoutRealEstate.visibility = View.VISIBLE
         }
         if (binding.txtSubChoosing1.text.isEmpty()) {
             binding.imgSubChoosing1.setImageResource(roles.consultant.avatar!!)

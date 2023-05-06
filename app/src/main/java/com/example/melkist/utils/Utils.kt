@@ -50,7 +50,7 @@ fun isOnline(context: Context): Boolean { //TODO: CHECK INTERNET with my note 3 
 
 fun showToast(context: Context, s: String) {
     Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
-    Log.e(context.applicationInfo.className.toString(), "result: $s")
+    Log.e("Tag", "result: $s")
 }
 
 fun showDialogWithMessage(context: Context, message: String, action: (DialogInterface, Int) -> Unit) {
@@ -61,11 +61,11 @@ fun showDialogWithMessage(context: Context, message: String, action: (DialogInte
         .show()
 }
 
-fun concatenateErrors(publicResponseModel: PublicResponseModel?): String {
+fun concatenateErrors(errors: List<String>?): String {
     var allErrors = ""
-    if (publicResponseModel!= null)
-        for (error in publicResponseModel.errors) {
-            allErrors += error
+    if (errors!= null)
+        for (error in errors) {
+            allErrors += (error + "\n")
         }
     return allErrors
 }

@@ -62,18 +62,18 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     private fun listenToSendVerificationCode() {
         viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.verificationCodeResponse)) {
-                showToast(requireContext(), viewModel.verificationCodeResponse.value!!.message!!)
+                showToast(requireContext(), "p1 listenToSendVerificationCode: " + viewModel.verificationCodeResponse.value!!.message!!)
                 startNextFragAndResetResponse()
             } else if (viewModel.isResponseNotOk(viewModel.verificationCodeResponse))
                 if (viewModel.verificationCodeResponse.value!!.errors.isNotEmpty())
                     showToast(
                         requireContext(),
-                        viewModel.verificationCodeResponse.value!!.errors[0]
+                        "p1 listenToSendVerificationCode: " + viewModel.verificationCodeResponse.value!!.errors[0]
                     )
                 else
                     showToast(
                         requireContext(),
-                        viewModel.verificationCodeResponse.value!!.result.toString()
+                        "p1 listenToSendVerificationCode: " + viewModel.verificationCodeResponse.value!!.result.toString()
                     )
         }
     }
@@ -83,8 +83,8 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
             .navigate(
                 R.id.action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag
             )
-        setViewModelFieldsIfVerificationCodeSent()
         viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
+        setViewModelFieldsIfVerificationCodeSent()
     }
 
     private fun setViewModelFieldsIfVerificationCodeSent(){

@@ -119,26 +119,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/large_margin"
+                android:fontFamily="@font/byekan"
                 android:padding="16dp"
                 android:text="@{@string/send_verification_again_in_some_second(viewmodel.timeLeft.toString)}"
                 android:textColor="@color/deep_red"
                 android:textSize="@dimen/normal_text_size"
-                app:layout_constraintTop_toBottomOf="@id/et_verification_code"
-                />
+                app:layout_constraintTop_toBottomOf="@id/et_verification_code" />
 
             <TextView
                 android:id="@+id/txt_send_again"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/large_margin"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/byekan"
+                android:onClick="@{() -> fragment.onSendVerifyCodeAgain()}"
                 android:padding="16dp"
                 android:text="@string/send_verification_again"
                 android:textColor="@color/deep_blue"
                 android:textSize="@dimen/normal_text_size"
-                app:layout_constraintTop_toBottomOf="@id/txt_timer"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> fragment.onSendVerifyCodeAgain()}"/>
+                app:layout_constraintTop_toBottomOf="@id/txt_timer" />
 
             <Button
                 android:id="@+id/bti_commit"
@@ -150,8 +151,8 @@
                 android:fontFamily="@font/byekan"
                 android:onClick="@{() -> fragment.onVerify()}"
                 android:text="@string/verify"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:bindLoading="@{viewmodel.status}"/>
+                app:bindLoading="@{viewmodel.status}"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <ProgressBar
                 android:id="@+id/progress"
@@ -159,8 +160,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/normal_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:bindProgressLoading="@{viewmodel.status}" />
+                app:bindProgressLoading="@{viewmodel.status}"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

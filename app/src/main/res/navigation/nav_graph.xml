@@ -14,7 +14,7 @@
             app:destination="@id/navigation" />
         <action
             android:id="@+id/action_loginForm_to_forgetPassP1EnterNcodePhoneFrag"
-            app:destination="@id/forgetPassP1EnterNcodePhoneFrag" />
+            app:destination="@id/navigation2" />
     </fragment>
     <navigation android:id="@+id/navigation"
         app:startDestination="@id/signupP1SignupFormFrag">
@@ -82,47 +82,50 @@
             <action
                 android:id="@+id/action_signupP5ReceiveVerificationSmsFrag_to_signupP1SignupFormFrag"
                 app:destination="@id/signupP1SignupFormFrag"
-                app:popUpTo="@id/loginForm"
+                app:popUpTo="@id/signupP1SignupFormFrag"
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>
-    <fragment
-        android:id="@+id/forgetPassP1EnterNcodePhoneFrag"
-        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP1EnterNcodePhoneFrag"
-        android:label="frag_forget_pass_p1_enter_ncode_phone"
-        tools:layout="@layout/frag_forget_pass_p1_enter_ncode_phone" >
-        <action
-            android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_loginForm"
-            app:destination="@id/loginForm"
-            app:popUpTo="@id/loginForm"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag"
-            app:destination="@id/forgetPassP2ReceiveVerificationSmsFrag" />
-    </fragment>
-    <fragment
-        android:id="@+id/forgetPassP2ReceiveVerificationSmsFrag"
-        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP2ReceiveVerificationSmsFrag"
-        android:label="frag_forget_pass_p2_receive_verification_sms"
-        tools:layout="@layout/frag_forget_pass_p2_receive_verification_sms" >
-        <action
-            android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP1EnterNcodePhoneFrag"
-            app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
-            app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag"
-            app:destination="@id/forgetPassP3ChangePassFrag" />
-    </fragment>
-    <fragment
-        android:id="@+id/forgetPassP3ChangePassFrag"
-        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP3ChangePassFrag"
-        android:label="frag_forget_pass_p3_change_pass"
-        tools:layout="@layout/frag_forget_pass_p3_change_pass" >
-        <action
-            android:id="@+id/action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag"
-            app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
-            app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
-            app:popUpToInclusive="true" />
-    </fragment>
+    <navigation android:id="@+id/navigation2"
+        app:startDestination="@id/forgetPassP1EnterNcodePhoneFrag">
+        <fragment
+            android:id="@+id/forgetPassP1EnterNcodePhoneFrag"
+            android:name="com.example.melkist.views.login.forgetPass.ForgetPassP1EnterNcodePhoneFrag"
+            android:label="frag_forget_pass_p1_enter_ncode_phone"
+            tools:layout="@layout/frag_forget_pass_p1_enter_ncode_phone">
+            <action
+                android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_loginForm"
+                app:destination="@id/loginForm"
+                app:popUpTo="@id/loginForm"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag"
+                app:destination="@id/forgetPassP2ReceiveVerificationSmsFrag" />
+        </fragment>
+        <fragment
+            android:id="@+id/forgetPassP2ReceiveVerificationSmsFrag"
+            android:name="com.example.melkist.views.login.forgetPass.ForgetPassP2ReceiveVerificationSmsFrag"
+            android:label="frag_forget_pass_p2_receive_verification_sms"
+            tools:layout="@layout/frag_forget_pass_p2_receive_verification_sms">
+            <action
+                android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP1EnterNcodePhoneFrag"
+                app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag"
+                app:destination="@id/forgetPassP3ChangePassFrag" />
+        </fragment>
+        <fragment
+            android:id="@+id/forgetPassP3ChangePassFrag"
+            android:name="com.example.melkist.views.login.forgetPass.ForgetPassP3ChangePassFrag"
+            android:label="frag_forget_pass_p3_change_pass"
+            tools:layout="@layout/frag_forget_pass_p3_change_pass">
+            <action
+                android:id="@+id/action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag"
+                app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
 </navigation>

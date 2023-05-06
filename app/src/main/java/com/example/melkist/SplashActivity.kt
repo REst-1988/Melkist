@@ -1,7 +1,6 @@
 package com.example.melkist
 
 import android.content.Intent
-import android.os.Build.VERSION_CODES.S
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
         mHandler = Handler(Looper.getMainLooper())
         mHandler!!.postDelayed(
             {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 this@SplashActivity.finish()
                 overridePendingTransition(0, 0)
             }, splashTimeOut)

@@ -49,9 +49,7 @@ class ForgetPassViewModel : ViewModel() {
             timer = object : CountDownTimer(totalTime, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     _timeLeft.value = (millisUntilFinished / 1000).toInt()
-                    Log.e("TAG", "onTick: ${timeLeft.value}")
                 }
-
                 override fun onFinish() {
                     _isTimeUp.value = true
                 }
@@ -60,7 +58,6 @@ class ForgetPassViewModel : ViewModel() {
         }
     }
 
-    // For Page2ReceiveVerificationSmsFragment
     fun resetTimer() {
         if (_isTimeUp.value != false)
             _isTimeUp.value = false
@@ -77,16 +74,12 @@ class ForgetPassViewModel : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "getNcodeMobileVerificationCode: test 2")
                 _verificationCodeResponse.value =
                     Api.retrofitService.getForgetPasswordVerificationCode(mobile, ncode)
-                Log.e("TAG", "getNcodeMobileVerificationCode: test 3")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
-                Log.e("TAG", "getNcodeMobileVerificationCode: test 4")
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
-                //_verificationCodeResponse.value = VerificationResponse(false, "ERROR","")
             }
         }
     }
@@ -95,16 +88,15 @@ class ForgetPassViewModel : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "sendMobileVerificationCode: test 2")
+                Log.e("TAG", "sendMobileVerificationCode: 1", )
                 _verifyResponse.value =
                     Api.retrofitService.verifyCode(mobile, code)
-                Log.e("TAG", "sendMobileVerificationCode: test 3")
+
+                Log.e("TAG", "sendMobileVerificationCode: 2", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
-                Log.e("TAG", "sendMobileVerificationCode: test 4")
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
-                //_verificationResponse.value = VerificationResponse(false, "ERROR")
             }
         }
     }
@@ -113,16 +105,12 @@ class ForgetPassViewModel : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "sendMobileVerificationCode: test 2")
                 _changePassResponse.value =
                     Api.retrofitService.changePasswordByMobile(getMobileNo(), newPassword = password)
-                Log.e("TAG", "sendMobileVerificationCode: test 3")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
-                Log.e("TAG", "sendMobileVerificationCode: test 4")
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
-                //_verificationResponse.value = VerificationResponse(false, "ERROR")
             }
         }
     }
@@ -143,5 +131,4 @@ class ForgetPassViewModel : ViewModel() {
     fun isResponseNotOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
             && vr.value!!.result != null
             && vr.value!!.result == false
-
 }

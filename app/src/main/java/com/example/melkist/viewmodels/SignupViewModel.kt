@@ -85,25 +85,6 @@ class SignupViewModel() : ViewModel() {
         this.subConditionRoleId = subCondition
     }
 
-    //TODO: CMPL
-    fun createUser(
-        realEstateName: String?,
-        firstName: String,
-        lastName: String,
-        mobileNo: String,
-        nationalCode: Long,
-        email: String?,
-        password: String
-    ) {
-        this.realEstateNameForManager = realEstateName
-        this.firstName = firstName
-        this.lastName = lastName
-        this.mobileNo = mobileNo
-        this.nationalCode = nationalCode
-        this.email = email
-        this.password = password
-    }
-
     private fun setupTimer() {
         if (timeLeft.value == 0) {
             // 60 second time for receive SMS
@@ -111,9 +92,7 @@ class SignupViewModel() : ViewModel() {
             timer = object : CountDownTimer(totalTime, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     _timeLeft.value = (millisUntilFinished / 1000).toInt()
-                    Log.e("TAG", "onTick: ${timeLeft.value}")
                 }
-
                 override fun onFinish() {
                     _isTimeUp.value = true
                 }
@@ -152,14 +131,10 @@ class SignupViewModel() : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "getProvinces: test1")
                 _pcrsList.value =
                     Api.retrofitService.getGetProvinces().data!!
-                Log.e("TAG", "getProvinces: test ${_pcrsList.value!!.size} ")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
-
-                Log.e("TAG", "getProvinces: test3")
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
             }
@@ -170,7 +145,6 @@ class SignupViewModel() : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "getCities: test")
                 _pcrsList.value =
                     Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
                 _status.value = ApiStatus.DONE
@@ -185,10 +159,8 @@ class SignupViewModel() : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "getRealEstate: test")
                 _pcrsList.value =
                     Api.retrofitService.getRealEstateByCityId(cityId).data!!
-                Log.e("TAG", "getRealEstate: test ${_pcrsList.value!!.size}")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -201,13 +173,8 @@ class SignupViewModel() : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-
-                Log.e("TAG", "getSuperVisor: test1")
-                parentId!!
-                Log.e("TAG", "getSuperVisor: test2")
                 _pcrsList.value =
                     Api.retrofitService.getSuperVisorByManagerId(parentId!!).data!!
-                Log.e("TAG", "getSuperVisor: test3")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -224,14 +191,11 @@ class SignupViewModel() : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "checkSignupData: test 1 ")
                 _verificationCodeResponse.value =
                     Api.retrofitService.checkSignupData(
                         name, lastName, title, cityId,
                         mobile, nationalCode, email, roleId
                     )
-
-                Log.e("TAG", "checkSignupData: test 2")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -254,10 +218,9 @@ class SignupViewModel() : ViewModel() {
                     Api.retrofitService.registerUserRealEstate(
                         realEstateNameForManager, cityId,
                         firstName!!, lastName!!, mobileNo, nationalCode.toString(),
-                        email, password, parentId, subConditionRoleId
+                        email, password, parentId?: 1, subConditionRoleId
                     )
 
-                Log.e("TAG", "registerUserRealstate: test 2")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -274,12 +237,10 @@ class SignupViewModel() : ViewModel() {
         }
     }
 
-    // For Page1EnterNcodePhoneFragment & Page2ReceiveVerificationSmsFragment
     fun isResponseOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
             && vr.value!!.result != null
             && vr.value!!.result == true
 
-    // For Page1EnterNcodePhoneFragment & Page2ReceiveVerificationSmsFragment
     fun isResponseNotOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
             && vr.value!!.result != null
             && vr.value!!.result == false

@@ -3,6 +3,7 @@ package com.example.melkist.views.login.forgetPass
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,18 +57,20 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
         viewModel.verifyResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.verifyResponse)) {
                 viewModel.stopTimer()
+                showToast(
+                    requireContext(),
+                    "p2 listenToVerifyPhoneResult 1: " + viewModel.verifyResponse.value!!.message!!)
                 startNextStep()
-                showToast(requireContext(), viewModel.verifyResponse.value!!.message!!)
             } else if (viewModel.isResponseNotOk(viewModel.verifyResponse)) {
                 if (!viewModel.verifyResponse.value!!.errors[0].isEmpty())
                     showToast(
                         requireContext(),
-                        viewModel.verifyResponse.value!!.errors[0]
+                        "p2 listenToVerifyPhoneResult 2: " + viewModel.verifyResponse.value!!.errors[0]
                     )
             } else
                 showToast(
                     requireContext(),
-                    viewModel.verificationCodeResponse.value!!.result.toString()
+                    "p2 listenToVerifyPhoneResult 3: " + viewModel.verifyResponse.value!!.result.toString()
                 )
         }
     }

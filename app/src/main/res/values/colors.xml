@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color> <!--default : FFBB86FC-->
+    <color name="purple_200">#525F8A</color> <!--default : FFBB86FC-->
     <color name="purple_500">#FF233B88</color> <!--default : FF6200EE-->
     <color name="purple_700">#FF3700B3</color> <!--default : FF3700B3-->
     <color name="teal_200">#FF03DAC5</color> <!--default : FF03DAC5-->
     <color name="teal_700">#FF018786</color> <!--default : FF018786-->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_boarder">#FF233B88</color>
+    <color name="color_boarder_choose">#555555</color>
 
     <color name="empty_background_color">#f5f5f5</color>
     <color name="negative_empty_background_color">#121212</color>
-
+    <color name="normal_text_color">#121212</color>
+    <color name="sub_item_text_color">#686868</color>
     <color name="hint_color">#FF808080</color>
 
     <color name="main_dark_color">#FF253A85</color>
@@ -21,4 +24,6 @@
     <color name="deep_blue">#061EFC</color>
     <color name="deep_red">#AC1005</color>
     <color name="negative_empty_background_color_sub_item">#404040</color>
+    <color name="light_border">#858585</color>
+    <color name="choose_background_color">#FFF0B8</color>
 </resources>

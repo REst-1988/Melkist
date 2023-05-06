@@ -50,7 +50,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/txt_header"
+                        android:id="@+id/txt_title"
                         android:layout_width="wrap_content"
                         android:layout_height="?attr/actionBarSize"
                         android:fontFamily="@font/byekan"
@@ -135,7 +135,7 @@
                         android:id="@+id/spacer_1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/main_dark_color2" />
+                        android:background="@color/color_boarder" />
                     <!--2 choosing category-->
                     <LinearLayout
                         android:id="@+id/ll_choose_category"
@@ -187,7 +187,7 @@
                         android:id="@+id/spacer_2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/main_dark_color2"
+                        android:background="@color/color_boarder"
                         app:setVisibility="@{fragment.isShowCategory()}" />
                     <!--3 choosing province-->
                     <LinearLayout
@@ -240,7 +240,7 @@
                         android:id="@+id/spacer_3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/main_dark_color2"
+                        android:background="@color/color_boarder"
                         app:setVisibility="@{fragment.isShowProvince()}" />
                     <!--4 choosing city-->
                     <LinearLayout
@@ -293,7 +293,7 @@
                         android:id="@+id/spacer_4"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/main_dark_color2"
+                        android:background="@color/color_boarder"
                         app:setVisibility="@{fragment.isShowCity()}" />
                     <!--5 choosing real estate-->
                     <LinearLayout
@@ -346,7 +346,7 @@
                         android:id="@+id/spacer_5"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/main_dark_color2"
+                        android:background="@color/color_boarder"
                         app:setVisibility="@{fragment.isShowRealEstate()}" />
                     <!--6 choosing supervisor-->
                     <LinearLayout
@@ -399,7 +399,7 @@
                         android:id="@+id/spacer_6"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/main_dark_color2"
+                        android:background="@color/color_boarder"
                         app:setVisibility="@{fragment.isShowSupervisor()}" />
                 </LinearLayout>
                 <!--layout getting detail-->

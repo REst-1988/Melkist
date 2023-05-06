@@ -10,10 +10,10 @@
     <string name="hint_password">کلمه عبور</string>
     <string name="forget_user_pass">فراموشی نام کاربری یا کلمه عبور</string>
     <string name="choosing_real_estate_header">مشاور املاک</string>
-    <string name="choosing_real_estate_header2">دارای قراداد همکاری با ملکیست</string>
+    <string name="choosing_real_estate_header2">(دارای قراداد همکاری با ملکیست)</string>
     <string name="choosing_real_estate_body">درصورتی که مشاوراملاک می‌باشید و با ملکیست قرارداد ندارید می توانید با ما تماس گرفته تا در خصوص نحوه همکاری و برخورداری از امکانات نرم‌افزار گفتگو نماییم.</string>
     <string name="choosing_user_header">کاربرد عادی</string>
-    <string name="choosing_user_header2">بدون قرارداد همکاری با ملکیست</string>
+    <string name="choosing_user_header2">(بدون قرارداد همکاری با ملکیست)</string>
     <string name="choosing_user_body">درصورتی که کاربر عادی هستید و با ملکیست قرارداد ندارید می‌توانید از طریق ثبت نام به سیستم وارد شوید. برخی از امکانات نرم‌افزار برای شما قابل استفاده نمی‌باشد.</string>
     <string name="choosing_real_estate_user_header">انتخاب نمایید.</string>
     <string name="choosing_sub_header">انتخاب نمایید.</string>
@@ -59,10 +59,22 @@
     <string name="confirm">تایید</string>
     <string name="choose_realestate_user_title">انتخاب نوع کاربری</string>
     <string name="choose">انتخاب کنید</string>
-    <string name="choose_category_title">انتخاب دسته</string>
+    <string name="choose_category_title">انتخاب دسته بندی</string>
     <string name="choose_province_title">انتخاب استان</string>
     <string name="choose_city_title">انتخاب شهر</string>
     <string name="choose_real_estate_title">انتخاب مشاور املاک</string>
     <string name="choose_supervisor_title">انتخاب سرپرست</string>
     <string name="error_on_wrong_email">ایمیل خود را به درستی وارد نمایید</string>
+    <string name="add">افزودن</string>
+    <string name="choose_type_title">انتخاب نوع آگهی</string>
+    <string name="choose_sub_category_title">انتخاب زیر دسته</string>
+    <string name="choose_location_title">انتخاب آدرس</string>
+    <string name="your_location">آدرس شما</string>
+    <string name="proceed">ادامه</string>
+    <string name="choosing_seeker_header">خواهان</string>
+    <string name="choosing_seeker_header2">(به دنبال مورد مناسب میگردم)</string>
+    <string name="choosing_seeker_body">شما می توانید با انتخاب این گزینه نیازمندی خودر را در قالب یک آگهی ثبت نموده تا در صورت پیدا شدن مورد مناسب، به شما اطلاع رسانی انجام گیرد</string>
+    <string name="choosing_owner_header">مالک</string>
+    <string name="choosing_owner_header2">(می خواهم آگهی ثبت نمایم)</string>
+    <string name="choosing_owner_body">شما می توانید با انتخاب این گزینه ملک مورد نظرتان را برای فروش در قالب یک آگهی ثبت نموده تا توسط سایرین دیده شده و در صورت نیاز، با شما تماس گرفته یا درخواست همکاری ارسال نمایند</string>
 </resources>

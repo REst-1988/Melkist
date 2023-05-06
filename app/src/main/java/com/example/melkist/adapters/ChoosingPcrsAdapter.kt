@@ -23,6 +23,12 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
 
     var mListRef: List<PcrsData>? = null
     var mFilteredList: List<PcrsData>? = null
+    private var isFilter = false
+
+    init {
+        isFilter = false
+    }
+
 
     companion object DiffUtilCallBack : DiffUtil.ItemCallback<PcrsData>() {
         override fun areItemsTheSame(oldItem: PcrsData, newItem: PcrsData): Boolean {
@@ -32,6 +38,12 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
         override fun areContentsTheSame(oldItem: PcrsData, newItem: PcrsData): Boolean {
             return oldItem.title == newItem.title
         }
+    }
+
+    override fun submitList(list: List<PcrsData>?) {
+        super.submitList(list)
+        if (!isFilter)
+            mListRef = list
     }
 
     class PcrsViewHolder(private var binding: ItemListSingleTextBinding) :
@@ -54,7 +66,6 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
     override fun onBindViewHolder(holder: PcrsViewHolder, position: Int) {
         val pcrs = getItem(position)
         holder.bind(pcrs)
-        Log.e("TAG", "onBindViewHolder: ${pcrs.title}" )
         holder.itemView.setOnClickListener{
             choosingItemAction(pcrs)
             (fragment as SignupP4ChoosingPcrsFrag).back()
@@ -88,18 +99,17 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
-                /*val charString = charSequence.toString()
-                if (charString.isEmpty()) {
+                val charString = charSequence.toString()
+                Log.e("TAG", "performFiltering: ${mListRef?.size}", )
+                if (charString.isEmpty() || charString == "") {
                     mFilteredList = mListRef
+                    isFilter = false
                 } else {
                     mListRef?.let {
                         val filteredList = arrayListOf<PcrsData>()
-                        for (baseDataItem in mListRef!!) {
-                            if (baseDataItem is PcrsData.DataItemWrapper) {
-                                if (charString.toLowerCase(Locale.ENGLISH) in baseDataItem.dataItem.Name.toLowerCase(
-                                        Locale.ENGLISH
-                                    )
-                                ) filteredList.add(baseDataItem)
+                        for (item in mListRef!!) {
+                            if (item.title!!.contains(charString)) {
+                                filteredList.add(item)
                             }
                         }
                         mFilteredList = filteredList
@@ -107,16 +117,16 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
                 }
                 val filterResults = FilterResults()
                 filterResults.values = mFilteredList
-                return filterResults*/
-                TODO("CMPL")
+                return filterResults
             }
 
             override fun publishResults(
                 charSequence: CharSequence,
                 filterResults: FilterResults
             ) {
-/*                mFilteredList = filterResults.values as ArrayList<BaseDataItem>
-                submitList(mFilteredList)*/
+                mFilteredList = filterResults.values as List<PcrsData>?
+                isFilter = true
+                submitList(mFilteredList)
             }
         }
     }

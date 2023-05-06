@@ -24,6 +24,11 @@ class ForgetPassP3ChangePassFrag : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragForgetPassP3ChangePassBinding.inflate(inflater)
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewmodel = viewModel
+            fragment = this@ForgetPassP3ChangePassFrag
+        }
         return binding.root
     }
 
@@ -38,7 +43,7 @@ class ForgetPassP3ChangePassFrag : Fragment() {
                 showToast(requireContext(), viewModel.changePassResponse.value!!.message!!)
                 showDialogWithMessage(
                     requireContext(),
-                    viewModel.changePassResponse.value!!.message!!
+                    "p3 listenToChangePassResponse: " + viewModel.changePassResponse.value!!.message!!
                 ) { d, _ ->
                     d.dismiss()
                     readyForStartNextSetion()
@@ -47,12 +52,12 @@ class ForgetPassP3ChangePassFrag : Fragment() {
                 if (viewModel.changePassResponse.value!!.errors.isNotEmpty())
                     showDialogWithMessage(
                         requireContext(),
-                        viewModel.changePassResponse.value!!.errors[0]
+                        "p3 listenToChangePassResponse: " + viewModel.changePassResponse.value!!.errors[0]
                     ) { d, _ -> d.dismiss() }
                 else
                     showToast(
                         requireContext(),
-                        viewModel.changePassResponse.value!!.result.toString()
+                        "p3 listenToChangePassResponse: " + viewModel.changePassResponse.value!!.result.toString()
                     )
         }
     }
@@ -90,6 +95,4 @@ class ForgetPassP3ChangePassFrag : Fragment() {
         binding.etPassword.error = null
         return true
     }
-
-
 }

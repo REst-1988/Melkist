@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/add_nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_nav_graph"
+    app:startDestination="@id/addP1MainFrag">
 
+    <fragment
+        android:id="@+id/addP1MainFrag"
+        android:name="com.example.melkist.views.add.AddP1MainFrag"
+        android:label="frag_add_p1_main"
+        tools:layout="@layout/frag_add_p1_main" >
+        <action
+            android:id="@+id/action_addP1MainFrag_to_addP2ChooseTypeFrag"
+            app:destination="@id/addP2ChooseTypeFrag" />
+        <action
+            android:id="@+id/action_addP1MainFrag_to_addP3ChooseCatSubcatFrag"
+            app:destination="@id/addP3ChooseCatSubcatFrag" />
+        <action
+            android:id="@+id/action_addP1MainFrag_to_addP4LocationFrag"
+            app:destination="@id/addP4LocationFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/addP2ChooseTypeFrag"
+        android:name="com.example.melkist.views.add.AddP2ChooseTypeFrag"
+        android:label="frag_add_p2_choose_type"
+        tools:layout="@layout/frag_add_p2_choose_type" >
+        <action
+            android:id="@+id/action_addP2ChooseTypeFrag_to_addP1MainFrag"
+            app:destination="@id/addP1MainFrag"
+            app:popUpTo="@id/addP1MainFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/addP3ChooseCatSubcatFrag"
+        android:name="com.example.melkist.views.add.AddP3ChooseCatSubcatFrag"
+        android:label="frag_add_p3_choose_cat_subcat"
+        tools:layout="@layout/frag_add_p3_choose_cat_subcat" >
+        <action
+            android:id="@+id/action_addP3ChooseCatSubcatFrag_to_addP1MainFrag"
+            app:destination="@id/addP1MainFrag"
+            app:popUpTo="@id/addP1MainFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/addP4LocationFrag"
+        android:name="com.example.melkist.views.add.AddP4LocationFrag"
+        android:label="frag_add_p4_location"
+        tools:layout="@layout/frag_add_p4_location" >
+        <action
+            android:id="@+id/action_addP4LocationFrag_to_addP1MainFrag"
+            app:destination="@id/addP1MainFrag"
+            app:popUpTo="@id/addP1MainFrag"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_addP4LocationFrag_to_addP5MapsFrag"
+            app:destination="@id/addP5MapsFrag" />
+        <action
+            android:id="@+id/action_addP4LocationFrag_to_addP6DetailsSeekerFrag"
+            app:destination="@id/addP6DetailsSeekerFrag" />
+        <action
+            android:id="@+id/action_addP4LocationFrag_to_addP7DetailsOwnerFrag"
+            app:destination="@id/addP7DetailsOwnerFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/addP5MapsFrag"
+        android:name="com.example.melkist.views.add.AddP5MapsFrag"
+        android:label="frag_add_p5_maps"
+        tools:layout="@layout/frag_add_p5_maps" >
+        <action
+            android:id="@+id/action_addP5MapsFrag_to_addP4LocationFrag"
+            app:destination="@id/addP4LocationFrag"
+            app:popUpTo="@id/addP4LocationFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/addP6DetailsSeekerFrag"
+        android:name="com.example.melkist.views.add.AddP6DetailsSeekerFrag"
+        android:label="frag_add_p6_details_seeker"
+        tools:layout="@layout/frag_add_p6_details_seeker" >
+        <action
+            android:id="@+id/action_addP6DetailsSeekerFrag_to_addP4LocationFrag"
+            app:destination="@id/addP4LocationFrag"
+            app:popUpTo="@id/addP4LocationFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/addP7DetailsOwnerFrag"
+        android:name="com.example.melkist.views.add.AddP7DetailsOwnerFrag"
+        android:label="frag_add_p7_details_owner"
+        tools:layout="@layout/frag_add_p7_details_owner" >
+        <action
+            android:id="@+id/action_addP7DetailsOwnerFrag_to_addP4LocationFrag"
+            app:destination="@id/addP4LocationFrag"
+            app:popUpTo="@id/addP4LocationFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

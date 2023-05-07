@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.add.AddP3ChooseCatSubcatFrag">
+    tools:context=".views.add.AddP5MapsFrag">
 
     <data>
 
@@ -12,7 +12,7 @@
 
         <variable
             name="fragment"
-            type="com.example.melkist.views.add.AddP3ChooseCatSubcatFrag" />
+            type="com.example.melkist.views.add.AddP5MapsFrag" />
     </data>
 
     <RelativeLayout
@@ -25,7 +25,6 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layoutDirection="rtl"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <androidx.appcompat.widget.Toolbar
@@ -56,35 +55,51 @@
                         android:layout_height="?attr/actionBarSize"
                         android:fontFamily="@font/byekan"
                         android:gravity="center_vertical"
-                        android:text="@{fragment.getPageTitle()}"
+                        android:text="@string/choose_location_on_map"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/choose_category_title" />
+                        tools:text="@string/choose_location_on_map" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list"
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/app_bar" />
+
+        <!-- TODO: found these two map so check which one to use-->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/img_location"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_baseline_location_on_48" />
+
+        <Button
+            android:id="@+id/btn_choose_location_on_map"
+            style="@style/Theme.Melkist.Buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/app_bar"
-            android:layout_marginStart="@dimen/large_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/normal_margin"
             android:layout_marginTop="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/large_margin"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:listData="@{viewmodel.itemOptionList}" />
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:bindProgressLoading="@{viewmodel.status}" />
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            android:fontFamily="@font/byekan"
+            android:onClick="@{() -> fragment.onChoose()}"
+            android:text="@string/confirm" />
 
     </RelativeLayout>
 </layout>

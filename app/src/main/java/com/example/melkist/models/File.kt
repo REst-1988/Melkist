@@ -1,6 +1,6 @@
 package com.example.melkist.models
 
-data class Files(
+data class File(
     val id: Int,
     val userId: Int,
     val cityId: Int,
@@ -14,4 +14,14 @@ data class Files(
     val extraInfos: String,
     val createdAt: Long,
     val updatedAt: Long
+)
+
+data class FileType(
+    val id: Int,
+    val title: String
+)
+
+data class FileTypes(
+    val seeker: FileType = FileType(id = 1, title = "خواهان"),
+    val owner: FileType = FileType(id = 1, title = "مالک")
 )

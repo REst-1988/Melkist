@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP1MainBinding
 import com.example.melkist.databinding.FragAddP2ChooseTypeBinding
@@ -33,7 +34,7 @@ class AddP2ChooseTypeFrag : Fragment() {
 
     /******************* binding commands **************************/
     fun back() {
-        //TODO: CMPL
+        findNavController().navigate(R.id.action_addP2ChooseTypeFrag_to_addP1MainFrag)
     }
 
     fun setItemType(type: AddItemViewModel.ItemType){

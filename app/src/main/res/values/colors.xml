@@ -25,5 +25,6 @@
     <color name="deep_red">#AC1005</color>
     <color name="negative_empty_background_color_sub_item">#404040</color>
     <color name="light_border">#858585</color>
-    <color name="choose_background_color">#FFF0B8</color>
+    <color name="choose_background_color">#BDBDBD</color>
+    <color name="color_icon">#233b88</color>
 </resources>

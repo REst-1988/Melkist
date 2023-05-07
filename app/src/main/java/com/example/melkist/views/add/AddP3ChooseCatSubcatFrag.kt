@@ -7,27 +7,47 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.melkist.R
+import com.example.melkist.adapters.ChoosingCatSubCatAdapter
+import com.example.melkist.adapters.ChoosingPcrsAdapter
 import com.example.melkist.databinding.FragAddP2ChooseTypeBinding
 import com.example.melkist.databinding.FragAddP3ChooseCatSubcatBinding
 import com.example.melkist.viewmodels.AddItemViewModel
+import com.example.melkist.viewmodels.SignupViewModel
 
 
 class AddP3ChooseCatSubcatFrag : Fragment() {
 
     private lateinit var binding: FragAddP3ChooseCatSubcatBinding
     private val viewModel: AddItemViewModel by activityViewModels()
+    lateinit var adapter: ChoosingCatSubCatAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        adapter = ChoosingCatSubCatAdapter()
         binding = FragAddP3ChooseCatSubcatBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
             fragment = this@AddP3ChooseCatSubcatFrag
+            rvList.adapter = adapter
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when (viewModel.getReqSource()) {
+            AddItemViewModel.ReqSource.CATEGORY -> viewModel.getFileCategories()
+            else -> viewModel.getFileCategoryType()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.emptyList()
+       // adapter.submitList(viewModel.pcrsList.value)
     }
 
     /******************* binding commands **************************/
@@ -36,7 +56,10 @@ class AddP3ChooseCatSubcatFrag : Fragment() {
     }
 
     fun getPageTitle(): String{
-        TODO("if for cat or for sub cat")
+        return if (viewModel.getReqSource() == AddItemViewModel.ReqSource.CATEGORY)
+            requireContext().resources.getString(R.string.choose_category_title)
+        else
+            requireContext().resources.getString(R.string.choose_sub_category_title)
     }
 
 }

@@ -601,7 +601,6 @@
                                 android:textSize="@dimen/short_text_size" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-                    <!--email TODO: CHECK IF TYPING CORRECT-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -662,7 +661,10 @@
                             android:layout_marginEnd="@dimen/normal_margin"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp"
-                            app:errorEnabled="true">
+                            app:errorEnabled="true"
+                            app:endIconDrawable="@drawable/ic_baseline_remove_red_eye_24"
+                            app:endIconCheckable="true"
+                            app:endIconMode="password_toggle">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.example.melkist.network.`interface`
 
+import com.example.melkist.models.CatSubCatResponse
 import com.example.melkist.models.PcrsModel
 import com.example.melkist.models.PublicResponseModel
 import retrofit2.http.POST
@@ -79,6 +80,16 @@ interface ApiService {
         @Query("isNeedValidation") isNeedValidation: Boolean = false
     ) : PublicResponseModel
 
+    @POST ("getFileCategories")
+    suspend fun getFileCategories(
+        @Query("fileType_id") typeId: Int
+    ): CatSubCatResponse
+
+    @POST ("getFileCategoryTypes")
+    suspend fun getFileCategoryTypes(
+        @Query("fileType_id") typeId: Int,
+        @Query("fileCategory_id") catId: Int,
+    ): CatSubCatResponse
 
 /*    @GET("users")
     @Headers(

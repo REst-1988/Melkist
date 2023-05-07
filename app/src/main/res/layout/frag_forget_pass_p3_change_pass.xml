@@ -100,7 +100,6 @@
                 app:endIconCheckable="true"
                 app:endIconMode="password_toggle"
                 app:layout_constraintTop_toBottomOf="@id/spacer">
-                <!--TODO: CHECK FOR CHANGE PASSWORD IN END ICON-->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password_child"
                     android:layout_width="match_parent"

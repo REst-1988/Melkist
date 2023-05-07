@@ -34,6 +34,7 @@ class SignupP2ChoosingRealEstateOrUserFrag : Fragment() {
         }
     }
 
+    /******************* binding commands **************************/
     fun setState(state: SignupViewModel.Condition){
         viewModel.resetSignupFieldsByChoosingMainField()
         viewModel.setCondition(state)

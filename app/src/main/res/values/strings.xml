@@ -77,4 +77,23 @@
     <string name="choosing_owner_header">مالک</string>
     <string name="choosing_owner_header2">(می خواهم آگهی ثبت نمایم)</string>
     <string name="choosing_owner_body">شما می توانید با انتخاب این گزینه ملک مورد نظرتان را برای فروش در قالب یک آگهی ثبت نموده تا توسط سایرین دیده شده و در صورت نیاز، با شما تماس گرفته یا درخواست همکاری ارسال نمایند</string>
+    <string name="location_frag_header">انتخاب شهر و محله</string>
+    <string name="location_frag_sub_header">شهر و محله را انتخاب نمایید و اگر در فهرست وجود ندارد نزدیکترین را انتخاب نمایید</string>
+    <string name="choose_region_title">انتخاب منطقه</string>
+    <string name="choose_location_on_map">افزودن محدوده بر روی نقشه</string>
+    <string name="other_location_frag_header">انتخاب سایر مناطق</string>
+    <string name="other_location_frag_sub_header">اگر در منطقه اول مورد نظر شما، موردی یافت نشد، در چه منطقه دیگری می خواهید جستجو انجام گیرد. با انتخاب نکرد گزینه های زیر فقط در منطقه اول جستجو انجام می شود</string>
+    <string name="choose_region_2_title">انتخاب محله (سایر1)</string>
+    <string name="choose_region_3_title">انتخاب محله (سایر2)</string>
+    <string name="add_detail_page_title">افزودن (اطلاعات تکمیلی)</string>
+    <string name="meterage">متراژ</string>
+    <string name="measurement">متراژ</string>
+    <string name="room_no">تعداد خواب</string>
+    <string name="price">قیمت</string>
+    <string name="descriptions">توضیحات تکمیلی</string>
+    <string name="from">از</string>
+    <string name="to">تا</string>
+    <string name="add_picture">افزودن عکس</string>
+    <string name="add_picture_sub_header">عکس هایی از فضای داخل و بیرون ملک اضافه کنید. آگهی های دارای عکس تا 30 برابر بیشتر توسط کاربران دیده می شود.</string>
+    <string name="enter">وارد نمایید</string>
 </resources>

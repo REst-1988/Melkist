@@ -8,4 +8,6 @@
     <color name="deep_blue">#7A86FD</color>
     <color name="color_boarder">#777777</color>
     <color name="color_boarder_choose">#7A91D5</color>
+    <color name="color_icon">#7a91d5</color>
+    <color name="choose_background_color">#3A3A3A</color>
 </resources>

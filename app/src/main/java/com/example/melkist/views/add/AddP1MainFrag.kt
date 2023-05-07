@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP1MainBinding
 import com.example.melkist.viewmodels.AddItemViewModel
 
@@ -37,26 +39,44 @@ class AddP1MainFrag : Fragment() {
     }
 
     fun onChoosingtype() {
-        // TODO: CMPL
+        findNavController().navigate(R.id.action_addP1MainFrag_to_addP2ChooseTypeFrag)
     }
 
     fun showTypeText(): String {
-        TODO("CMPL")
+        return when (viewModel.getItemType()) {
+            AddItemViewModel.ItemType.SEEKER ->
+                requireContext()
+                    .resources
+                    .getText(R.string.choosing_seeker_header)
+                    .toString()
+            AddItemViewModel.ItemType.OWNER ->
+                requireContext()
+                    .resources
+                    .getText(R.string.choosing_owner_header)
+                    .toString()
+            else ->
+                requireContext()
+                    .resources
+                    .getText(R.string.choose)
+                    .toString()
+        }
     }
 
     fun isShowCategory(): Boolean {
-        TODO("CMPL")
+        return viewModel.getItemType() != AddItemViewModel.ItemType.CHOOSE
     }
 
     fun onChoosingCategory() {
-        TODO()
+        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag)
     }
 
     fun showCategoryText(): String {
+        return ""
         TODO()
     }
 
     fun isShowSubCategory(): Boolean {
+        return true
         TODO("CMPL")
     }
 
@@ -65,6 +85,7 @@ class AddP1MainFrag : Fragment() {
     }
 
     fun showSubCategoryText(): String {
+        return ""
         TODO()
     }
 

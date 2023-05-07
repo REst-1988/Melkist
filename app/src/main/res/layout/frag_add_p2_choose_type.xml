@@ -5,6 +5,7 @@
     tools:context=".views.add.AddP2ChooseTypeFrag">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.melkist.viewmodels.AddItemViewModel" />

@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.adapters.ChoosingCatSubCatAdapter
-import com.example.melkist.adapters.ChoosingPcrsAdapter
-import com.example.melkist.databinding.FragAddP2ChooseTypeBinding
 import com.example.melkist.databinding.FragAddP3ChooseCatSubcatBinding
 import com.example.melkist.viewmodels.AddItemViewModel
-import com.example.melkist.viewmodels.SignupViewModel
 
 
 class AddP3ChooseCatSubcatFrag : Fragment() {
@@ -25,7 +23,7 @@ class AddP3ChooseCatSubcatFrag : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = ChoosingCatSubCatAdapter()
+        adapter = ChoosingCatSubCatAdapter(viewModel, this)
         binding = FragAddP3ChooseCatSubcatBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -47,12 +45,14 @@ class AddP3ChooseCatSubcatFrag : Fragment() {
     override fun onStop() {
         super.onStop()
         viewModel.emptyList()
-       // adapter.submitList(viewModel.pcrsList.value)
+        adapter.submitList(viewModel.itemOptionList.value)
     }
 
     /******************* binding commands **************************/
     fun back() {
-        //TODO: CMPL
+        findNavController().navigate(
+            R.id.action_addP3ChooseCatSubcatFrag_to_addP1MainFrag
+        )
     }
 
     fun getPageTitle(): String{
@@ -61,5 +61,4 @@ class AddP3ChooseCatSubcatFrag : Fragment() {
         else
             requireContext().resources.getString(R.string.choose_sub_category_title)
     }
-
 }

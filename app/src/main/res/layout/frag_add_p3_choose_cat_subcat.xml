@@ -77,7 +77,7 @@
             android:layout_marginTop="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/large_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:listData="@{viewmodel.itemOptionList}" />
+            app:listDataCatSubCat="@{viewmodel.itemOptionList}" />
 
         <ProgressBar
             android:id="@+id/progress"

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP5MapsBinding
 import com.example.melkist.viewmodels.AddItemViewModel
@@ -59,10 +60,15 @@ class AddP5MapsFrag : Fragment() {
 
     /************** binding commands **********************/
     fun back() {
-        TODO()
+        findNavController().navigate(
+            R.id.action_addP5MapsFrag_to_addP4LocationFrag
+        )
     }
 
     fun onChoose() {
-        TODO()
+        viewModel.lat = 29.6806754 // TODO: replace these two with what we get from map
+        viewModel.lng = 52.457552
+        back()
+        //TODO: finish this part
     }
 }

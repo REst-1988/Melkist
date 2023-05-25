@@ -12,10 +12,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP2ReceiveVerificationSmsBinding
+import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ForgetPassViewModel
 
-//TODO: finish this
 class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
 
     private lateinit var binding: FragForgetPassP2ReceiveVerificationSmsBinding
@@ -59,19 +60,22 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
                 viewModel.stopTimer()
                 showToast(
                     requireContext(),
-                    "p2 listenToVerifyPhoneResult 1: " + viewModel.verifyResponse.value!!.message!!)
+                    viewModel.verifyResponse.value!!.message!!)
                 startNextStep()
             } else if (viewModel.isResponseNotOk(viewModel.verifyResponse)) {
-                if (!viewModel.verifyResponse.value!!.errors[0].isEmpty())
-                    showToast(
+                if (viewModel.verifyResponse.value!!.errors[0].isNotEmpty())
+                    showDialogWithMessage(
                         requireContext(),
-                        "p2 listenToVerifyPhoneResult 2: " + viewModel.verifyResponse.value!!.errors[0]
-                    )
+                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
+                    ) { d, _ ->
+                        d.dismiss()
+                    }
             } else
-                showToast(
-                    requireContext(),
-                    "p2 listenToVerifyPhoneResult 3: " + viewModel.verifyResponse.value!!.result.toString()
-                )
+                Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
+            /*showToast(
+                requireContext(),
+                resources.getString(R.string.somthing_goes_wrong)
+            )*/
         }
     }
 

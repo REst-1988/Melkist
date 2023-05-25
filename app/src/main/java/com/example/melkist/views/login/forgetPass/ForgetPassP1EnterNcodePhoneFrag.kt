@@ -1,6 +1,7 @@
 package com.example.melkist.views.login.forgetPass
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP1EnterNcodePhoneBinding
+import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ForgetPassViewModel
 
@@ -46,8 +49,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     }
 
     fun back() {
-        //TODO
-        //findNavController().navigate(R.id.action_forgetPassP1EnterNcodePhoneFrag_to_loginForm)
+        findNavController().navigate(R.id.action_forgetPassP1EnterNcodePhoneFrag_to_loginForm)
     }
 
     private fun requestVerificationCodeForNcodePhone() {
@@ -62,19 +64,22 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     private fun listenToSendVerificationCode() {
         viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.verificationCodeResponse)) {
-                showToast(requireContext(), "p1 listenToSendVerificationCode: " + viewModel.verificationCodeResponse.value!!.message!!)
+                showToast(requireContext(), viewModel.verificationCodeResponse.value!!.message!!)
                 startNextFragAndResetResponse()
             } else if (viewModel.isResponseNotOk(viewModel.verificationCodeResponse))
                 if (viewModel.verificationCodeResponse.value!!.errors.isNotEmpty())
-                    showToast(
+                    showDialogWithMessage(
                         requireContext(),
-                        "p1 listenToSendVerificationCode: " + viewModel.verificationCodeResponse.value!!.errors[0]
-                    )
+                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
+                    ) { d, _ ->
+                        d.dismiss()
+                    }
                 else
-                    showToast(
+                    Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
+                    /*showToast(
                         requireContext(),
-                        "p1 listenToSendVerificationCode: " + viewModel.verificationCodeResponse.value!!.result.toString()
-                    )
+                        resources.getString(R.string.somthing_goes_wrong)
+                    )*/
         }
     }
 

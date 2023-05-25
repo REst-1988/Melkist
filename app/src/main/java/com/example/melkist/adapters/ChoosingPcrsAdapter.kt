@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.melkist.databinding.ItemListSingleTextBinding
 import com.example.melkist.models.PcrsData
+import com.example.melkist.viewmodels.AddItemViewModel
 import com.example.melkist.viewmodels.SignupViewModel
+import com.example.melkist.views.add.AddP5CrFrag
 import com.example.melkist.views.login.signup.SignupP4ChoosingPcrsFrag
-import java.util.*
-import kotlin.collections.ArrayList
 
-class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragment):
+/**
+ * this adapter used for to different view model so every action handled on its own view model
+ */
+class ChoosingPcrsAdapter(val viewModel: ViewModel, val fragment: Fragment) :
     ListAdapter<PcrsData, ChoosingPcrsAdapter.PcrsViewHolder>(DiffUtilCallBack),
     Filterable {
 
@@ -49,9 +53,10 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
     class PcrsViewHolder(private var binding: ItemListSingleTextBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: PcrsData) {
-            if(data.user != null) {
-                binding.txt.text = String.format("%s (%s %s)", data.title, data.user!!.name, data.user!!.family)
-            }else
+            if (data.user != null) {
+                binding.txt.text =
+                    String.format("%s (%s %s)", data.title, data.user!!.firstName, data.user!!.lastName)
+            } else
                 binding.txt.text = data.title
             binding.executePendingBindings()
         }
@@ -66,32 +71,15 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
     override fun onBindViewHolder(holder: PcrsViewHolder, position: Int) {
         val pcrs = getItem(position)
         holder.bind(pcrs)
-        holder.itemView.setOnClickListener{
-            choosingItemAction(pcrs)
-            (fragment as SignupP4ChoosingPcrsFrag).back()
-        }
-    }
-
-    private fun choosingItemAction(pcrs: PcrsData){
-        when (viewModel.PcrsCondition) {
-            SignupViewModel.Pcrs.PROVINCE -> {
-                viewModel.provinceId = pcrs.id!!
-                viewModel.provinceTitle = pcrs.title!!
-            }
-            SignupViewModel.Pcrs.CITY -> {
-                viewModel.cityId = pcrs.id!!
-                viewModel.cityTitle = pcrs.title!!
-            }
-            SignupViewModel.Pcrs.REAL_ESTATE -> {
-                viewModel.realEstateId = pcrs.id!!
-                viewModel.realEstateTitle = pcrs.title!!
-                Log.e("TAG", "choosingItemAction: ${pcrs.user?.id}" )
-                viewModel.parentId = pcrs.user?.id
-            }
-            else -> {
-                viewModel.supervisorId = pcrs.id!!
-                viewModel.supervisorTitle = pcrs.title!!
-                viewModel.parentId = pcrs.id
+        holder.itemView.setOnClickListener {
+            if (viewModel is AddItemViewModel) {
+                Log.e("TAG", "onBindViewHolder: aaa test ", )
+                viewModel.choosingItemActionPc(pcrs)
+                (fragment as AddP5CrFrag).back()
+            } else {
+                Log.e("TAG", "onBindViewHolder: aaa test 2" , )
+                (viewModel as SignupViewModel).choosingItemAction(pcrs)
+                (fragment as SignupP4ChoosingPcrsFrag).back()
             }
         }
     }
@@ -100,20 +88,13 @@ class ChoosingPcrsAdapter (val viewModel: SignupViewModel, val fragment: Fragmen
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
-                Log.e("TAG", "performFiltering: ${mListRef?.size}", )
-                if (charString.isEmpty() || charString == "") {
-                    mFilteredList = mListRef
-                    isFilter = false
-                } else {
-                    mListRef?.let {
-                        val filteredList = arrayListOf<PcrsData>()
-                        for (item in mListRef!!) {
-                            if (item.title!!.contains(charString)) {
-                                filteredList.add(item)
-                            }
+                mFilteredList = if (charString.isNotEmpty()  && charString != "") {
+                    mListRef!!
+                        .filter {
+                            it.title!!.contains(charString)
                         }
-                        mFilteredList = filteredList
-                    }
+                }else{
+                    mListRef
                 }
                 val filterResults = FilterResults()
                 filterResults.values = mFilteredList

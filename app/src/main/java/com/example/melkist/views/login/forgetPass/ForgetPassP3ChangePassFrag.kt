@@ -1,6 +1,7 @@
 package com.example.melkist.views.login.forgetPass
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP3ChangePassBinding
+import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ForgetPassViewModel
@@ -43,7 +45,7 @@ class ForgetPassP3ChangePassFrag : Fragment() {
                 showToast(requireContext(), viewModel.changePassResponse.value!!.message!!)
                 showDialogWithMessage(
                     requireContext(),
-                    "p3 listenToChangePassResponse: " + viewModel.changePassResponse.value!!.message!!
+                    viewModel.changePassResponse.value!!.message!!
                 ) { d, _ ->
                     d.dismiss()
                     readyForStartNextSetion()
@@ -52,20 +54,23 @@ class ForgetPassP3ChangePassFrag : Fragment() {
                 if (viewModel.changePassResponse.value!!.errors.isNotEmpty())
                     showDialogWithMessage(
                         requireContext(),
-                        "p3 listenToChangePassResponse: " + viewModel.changePassResponse.value!!.errors[0]
-                    ) { d, _ -> d.dismiss() }
+                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
+                    ) { d, _ ->
+                        d.dismiss()
+                    }
                 else
-                    showToast(
-                        requireContext(),
-                        "p3 listenToChangePassResponse: " + viewModel.changePassResponse.value!!.result.toString()
-                    )
+                    Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
+            /*showToast(
+                requireContext(),
+                resources.getString(R.string.somthing_goes_wrong)
+            )*/
         }
     }
 
     private fun readyForStartNextSetion() {
         findNavController()
             .navigate(
-                R.id.action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag
+                R.id.action_forgetPassP3ChangePassFrag_to_LoginForm
             )
     }
 

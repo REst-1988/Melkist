@@ -9,15 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.R
 import com.example.melkist.adapters.ChoosingPcrsAdapter
 import com.example.melkist.databinding.FragSignupP4ChoosingPcrsBinding
 import com.example.melkist.viewmodels.SignupViewModel
 
-class SignupP4ChoosingPcrsFrag : Fragment() {
-
-    //TODO showing list has some problems
-    //TODO: list item width has problem
+class SignupP4ChoosingPcrsFrag: Fragment() {
 
     lateinit var binding: FragSignupP4ChoosingPcrsBinding
     private val viewModel: SignupViewModel by activityViewModels()
@@ -42,7 +40,10 @@ class SignupP4ChoosingPcrsFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtTitle.text = when (viewModel.PcrsCondition) {
+        binding.rvList.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
+        binding.txtTitle.text = when (viewModel.pcrsCondition) {
             SignupViewModel.Pcrs.PROVINCE -> resources.getString(R.string.choose_province_title)
             SignupViewModel.Pcrs.CITY -> resources.getString(R.string.choose_city_title)
             SignupViewModel.Pcrs.REAL_ESTATE -> resources.getString(R.string.choose_real_estate_title)
@@ -65,7 +66,7 @@ class SignupP4ChoosingPcrsFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        when (viewModel.PcrsCondition) {
+        when (viewModel.pcrsCondition) {
             SignupViewModel.Pcrs.PROVINCE -> viewModel.getProvinces()
             SignupViewModel.Pcrs.CITY -> viewModel.getCities()
             SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.getRealEstate()
@@ -80,7 +81,7 @@ class SignupP4ChoosingPcrsFrag : Fragment() {
     }
 
     fun back() {
-        when (viewModel.PcrsCondition) {
+        when (viewModel.pcrsCondition) {
             SignupViewModel.Pcrs.PROVINCE -> viewModel.resetSignupFieldsByProvince()
             SignupViewModel.Pcrs.CITY -> viewModel.resetSignupFieldsByCity()
             SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.resetSignupFieldsByRealEstate()

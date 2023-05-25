@@ -67,29 +67,38 @@ class AddP1MainFrag : Fragment() {
     }
 
     fun onChoosingCategory() {
+        viewModel.setReqSource(AddItemViewModel.ReqSource.CATEGORY)
         findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag)
     }
 
     fun showCategoryText(): String {
-        return ""
-        TODO()
+        return if(viewModel.catId != 0 && viewModel.catTitle.isNotEmpty())
+            viewModel.catTitle
+        else resources.getString(R.string.choose)
     }
 
     fun isShowSubCategory(): Boolean {
-        return true
-        TODO("CMPL")
+        return viewModel.catId != 0 && viewModel.catTitle.isNotEmpty()
     }
 
     fun onChoosingSubCategory() {
-        TODO()
+        viewModel.setReqSource(AddItemViewModel.ReqSource.SUB_CATEGORY)
+        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag)
     }
 
     fun showSubCategoryText(): String {
-        return ""
-        TODO()
+        return if(viewModel.subCatId != 0 && viewModel.subCatTitle.isNotEmpty())
+            viewModel.subCatTitle
+        else resources.getString(R.string.choose)
+    }
+
+    fun isShowLocationBtn(): Boolean {
+        return viewModel.subCatId != 0 && viewModel.subCatTitle.isNotEmpty()
     }
 
     fun onProceed() {
-        TODO()
+        findNavController().navigate(
+            R.id.action_addP1MainFrag_to_addP4LocationFrag
+        )
     }
 }

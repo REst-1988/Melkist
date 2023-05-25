@@ -39,6 +39,7 @@ class AddP2ChooseTypeFrag : Fragment() {
 
     fun setItemType(type: AddItemViewModel.ItemType){
         viewModel.setItemType(type)
+        viewModel.resetAddItemFieldsByChoosingType()
         back()
     }
 

@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.melkist.models.PcrsData
-import com.example.melkist.models.Roles
 import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.models.Roles
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +17,8 @@ import kotlinx.coroutines.launch
 
 
 class SignupViewModel() : ViewModel() {
-
-
     enum class Condition { CHOOSE, STATE_REAL_ESTATE, STATE_USER }
     enum class Pcrs { PROVINCE, CITY, REAL_ESTATE, SUPERVISOR }
-
 
     fun getRoles(): Roles = Roles()
     val SUB_STATE_CHOOSE = 0
@@ -33,10 +30,10 @@ class SignupViewModel() : ViewModel() {
 
     private var condition: Condition = Condition.CHOOSE
     var subConditionRoleId: Int = SUB_STATE_CHOOSE
-    var provinceId: Int = 0
+    var provinceId: Int = 0 // 17
 
     var provinceTitle: String = ""
-    var cityId: Int = 0
+    var cityId: Int = 0 // 733
     var cityTitle: String = ""
     var supervisorId = 0
     var supervisorTitle: String = ""
@@ -53,7 +50,7 @@ class SignupViewModel() : ViewModel() {
     var realEstateId: Int? = null
     var realEstateTitle: String? = null
 
-    var PcrsCondition: Pcrs = Pcrs.PROVINCE
+    var pcrsCondition: Pcrs = Pcrs.PROVINCE
 
     private val _isTimeUp = MutableLiveData<Boolean>()
     val isTimeUp: LiveData<Boolean> = _isTimeUp
@@ -69,8 +66,8 @@ class SignupViewModel() : ViewModel() {
     private val _verifyResponse = MutableLiveData<PublicResponseModel>()
     val verifyResponse: LiveData<PublicResponseModel> = _verifyResponse
 
-    private val _registerRisponse = MutableLiveData<PublicResponseModel>()
-    val registerRisponse: LiveData<PublicResponseModel> = _registerRisponse
+    private val _registerResponse = MutableLiveData<PublicResponseModel>()
+    val registerResponse: LiveData<PublicResponseModel> = _registerResponse
 
     private val _pcrsList = MutableLiveData<List<PcrsData>>()
     val pcrsList: LiveData<List<PcrsData>> = _pcrsList
@@ -93,6 +90,7 @@ class SignupViewModel() : ViewModel() {
                 override fun onTick(millisUntilFinished: Long) {
                     _timeLeft.value = (millisUntilFinished / 1000).toInt()
                 }
+
                 override fun onFinish() {
                     _isTimeUp.value = true
                 }
@@ -209,22 +207,63 @@ class SignupViewModel() : ViewModel() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e("TAG", "registerUserRealstate: test " +
-                        String.format("%s  %s\n %s  %s\n %s  %s\n %s  %s\n %s  %s", realEstateNameForManager, cityId,
-                            firstName!!, lastName!!, mobileNo, nationalCode.toString(),
-                            email, password, parentId, subConditionRoleId)
+                Log.e(
+                    "TAG", "registerUserRealstate: test " +
+                            String.format(
+                                "%s  %s\n %s  %s\n %s  %s\n %s  %s\n %s  %s",
+                                realEstateNameForManager,
+                                cityId,
+                                firstName!!,
+                                lastName!!,
+                                mobileNo,
+                                nationalCode.toString(),
+                                email,
+                                password,
+                                parentId ?: 1,
+                                subConditionRoleId
+                            )
                 )
-                _registerRisponse.value =
+                _registerResponse.value =
                     Api.retrofitService.registerUserRealEstate(
-                        realEstateNameForManager, cityId,
-                        firstName!!, lastName!!, mobileNo, nationalCode.toString(),
-                        email, password, parentId?: 1, subConditionRoleId
+                        realEstateNameForManager,
+                        cityId,
+                        firstName!!,
+                        lastName!!,
+                        mobileNo,
+                        nationalCode.toString(),
+                        email,
+                        password,
+                        parentId ?: 1 /*every user is a child of head manager*/,
+                        subConditionRoleId
                     )
-
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
+            }
+        }
+    }
+
+    fun choosingItemAction(pcrs: PcrsData) {
+        when (pcrsCondition) {
+            SignupViewModel.Pcrs.PROVINCE -> {
+                provinceId = pcrs.id!!
+                provinceTitle = pcrs.title!!
+            }
+            SignupViewModel.Pcrs.CITY -> {
+                cityId = pcrs.id!!
+                cityTitle = pcrs.title!!
+            }
+            SignupViewModel.Pcrs.REAL_ESTATE -> {
+                realEstateId = pcrs.id!!
+                realEstateTitle = pcrs.title!!
+                Log.e("TAG", "choosingItemAction: ${pcrs.user?.id}")
+                parentId = pcrs.user?.id
+            }
+            else -> {
+                supervisorId = pcrs.id!!
+                supervisorTitle = pcrs.title!!
+                parentId = pcrs.id
             }
         }
     }
@@ -303,6 +342,4 @@ class SignupViewModel() : ViewModel() {
     fun emptyList() {
         _pcrsList.value = listOf()
     }
-
-
 }

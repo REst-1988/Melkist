@@ -23,5 +23,5 @@ data class FileType(
 
 data class FileTypes(
     val seeker: FileType = FileType(id = 1, title = "خواهان"),
-    val owner: FileType = FileType(id = 1, title = "مالک")
+    val owner: FileType = FileType(id = 2, title = "مالک")
 )

@@ -80,6 +80,7 @@
                 android:text="@string/choose_new_password"
                 android:textColor="@color/negative_empty_background_color"
                 android:textSize="@dimen/txt_size_h2"
+                android:fontFamily="@font/byekan"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Space

@@ -558,6 +558,7 @@
                                 android:hint="@string/hint_phone_no"
                                 android:imeOptions="actionNext"
                                 android:inputType="phone"
+                                android:maxLength="11"
                                 android:textColor="@color/main_dark_color2"
                                 android:textDirection="rtl"
                                 android:textSize="@dimen/short_text_size" />
@@ -596,6 +597,7 @@
                                 android:hint="@string/hint_national_code"
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
+                                android:maxLength="10"
                                 android:textColor="@color/main_dark_color2"
                                 android:textDirection="rtl"
                                 android:textSize="@dimen/short_text_size" />
@@ -679,7 +681,6 @@
                                 android:textSize="@dimen/short_text_size" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-                    <!--TODO: SHOW HIDE PASSWORD-->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">

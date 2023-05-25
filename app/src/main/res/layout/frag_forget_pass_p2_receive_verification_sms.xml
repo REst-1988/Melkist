@@ -77,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/large_margin"
+                android:fontFamily="@font/byekan"
                 android:text="@string/write_verify_code"
                 android:textColor="@color/negative_empty_background_color"
                 android:textSize="@dimen/txt_size_h2"

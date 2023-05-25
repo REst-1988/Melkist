@@ -8,7 +8,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.melkist.R
+import com.example.melkist.adapters.ChoosingCatSubCatAdapter
 import com.example.melkist.adapters.ChoosingPcrsAdapter
+import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.PcrsData
 import com.example.melkist.utils.ApiStatus
 
@@ -29,6 +31,15 @@ fun bindRecyclerView(
     data: List<PcrsData>?
 ) {
     val adapter = recyclerView.adapter as ChoosingPcrsAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listDataCatSubCat")
+fun bindRecyclerViewCatSubCat(
+    recyclerView: RecyclerView,
+    data: List<CatSubCatModel>?
+) {
+    val adapter = recyclerView.adapter as ChoosingCatSubCatAdapter
     adapter.submitList(data)
 }
 

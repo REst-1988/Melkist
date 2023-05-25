@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 
 private const val BASE_URL =
-    "https://panel.melkist.com/api/"
+    "https://melkist.ir/api/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -33,6 +33,7 @@ private val retrofit = Retrofit.Builder()
 
 object Api {
     val retrofitService: ApiService by lazy {
+
         retrofit.create(ApiService::class.java)
     }
 }

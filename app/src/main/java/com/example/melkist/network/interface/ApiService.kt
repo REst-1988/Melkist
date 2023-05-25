@@ -1,16 +1,18 @@
 package com.example.melkist.network.`interface`
 
-import com.example.melkist.models.CatSubCatResponse
-import com.example.melkist.models.PcrsModel
-import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.models.*
+import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-
-private const val GIT_INFINITE_TOKEN = "KvFlcTktwviZwDUolajY3x3KsToKfp4XgKLw"
-
-
 interface ApiService {
+    @POST("login")
+    suspend fun login (
+        @Query("mobile") mobile: String,
+        @Query("password") password: String,
+        @Query("needCaptcha") needCaptcha: Boolean = false // always false in app
+    ): LoginResponseModel
+
     @POST("sendVerificationCode")
     suspend fun getVerificationCode(
         @Query("mobile") query: String
@@ -76,20 +78,30 @@ interface ApiService {
         @Query("password") password: String,
         @Query("parent_id") parentId: Int,
         @Query("role_id") roleId: Int,
-        @Query("isverify") isVerify: Boolean = false, // for check if user create by app or by panel. in app always 0
+        @Query("isverify") isVerify: Boolean = false, // for check if user create by app or by panel. in app should always be false
         @Query("isNeedValidation") isNeedValidation: Boolean = false
     ) : PublicResponseModel
 
-    @POST ("getFileCategories")
+    @POST ("dashboard/admin/file/getFileCategories")
     suspend fun getFileCategories(
         @Query("fileType_id") typeId: Int
     ): CatSubCatResponse
 
-    @POST ("getFileCategoryTypes")
+    @POST ("dashboard/admin/file/getFileCategoryTypes")
     suspend fun getFileCategoryTypes(
         @Query("fileType_id") typeId: Int,
         @Query("fileCategory_id") catId: Int,
     ): CatSubCatResponse
+
+    @POST ("getRegionsByCity")
+    suspend fun getRegionsByCity(
+        @Query("city_id") cityId: Int
+    ): RegionResponseModel
+
+    @POST ("dashboard/admin/file/save")
+    suspend fun save(
+        @Body img: FileSave
+    ): PublicResponseModel
 
 /*    @GET("users")
     @Headers(

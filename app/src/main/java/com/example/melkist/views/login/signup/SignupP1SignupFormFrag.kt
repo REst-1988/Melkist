@@ -1,5 +1,6 @@
 package com.example.melkist.views.login.signup
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
+import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.SignupViewModel
 
@@ -19,10 +22,27 @@ class SignupP1SignupFormFrag : Fragment() {
     lateinit var binding: FragSignupP1SignupFormBinding
     private val viewModel: SignupViewModel by activityViewModels()
 
+
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        Log.e("TAG", "onAttach: run", )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("TAG", "onCreate: run", )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragSignupP1SignupFormBinding.inflate(inflater)
+        Log.e("TAG", "1: hasObservers() ${viewModel.verificationCodeResponse.hasObservers()}" +
+                " own ${viewModel.verificationCodeResponse}", )
+        if (viewModel.verificationCodeResponse.hasObservers())
+            viewModel.verificationCodeResponse.removeObservers(viewLifecycleOwner)
+        Log.e("TAG", "2: test", )
+        listenToCheckVerificationResult()
         return binding.root
     }
 
@@ -33,25 +53,30 @@ class SignupP1SignupFormFrag : Fragment() {
             viewmodel = viewModel
             fragment = this@SignupP1SignupFormFrag
         }
-        listenToCheckVerificationResult()
     }
 
     private fun listenToCheckVerificationResult() {
+        Log.e("TAG", "listenToCheckVerificationResult: value ${viewModel.verificationCodeResponse.value}" +
+                " own ${viewModel.verificationCodeResponse}", )
         viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.verificationCodeResponse)) {
                 showToast(requireContext(), viewModel.verificationCodeResponse.value!!.message!!)
                 viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
                 findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag)
             } else if (viewModel.isResponseNotOk(viewModel.verificationCodeResponse)) {
-                if (!viewModel.verificationCodeResponse.value!!.errors[0].isEmpty()) showToast(
-                    requireContext(), viewModel.verificationCodeResponse.value!!.errors[0]
-                )
-            } else Log.e(
-                "TAG",
-                "3listenToSendVerificationCode: " + "${viewModel.verificationCodeResponse.value!!.result}"
-            )
+                if (viewModel.verificationCodeResponse.value!!.errors[0].isNotEmpty())
+                    showDialogWithMessage(
+                        requireContext(),
+                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
+                    ) { d, _ ->
+                        d.dismiss()
+                    }
+            }else
+                Log.e("TAG", "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}", )
         }
     }
+
+
 
     fun cancel() {
         viewModel.resetSignupFieldsByChoosingMainField()
@@ -242,7 +267,7 @@ class SignupP1SignupFormFrag : Fragment() {
     }
 
     fun onChoosingProvince() {
-        viewModel.PcrsCondition = SignupViewModel.Pcrs.PROVINCE
+        viewModel.pcrsCondition = SignupViewModel.Pcrs.PROVINCE
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
@@ -252,7 +277,7 @@ class SignupP1SignupFormFrag : Fragment() {
     }
 
     fun onChoosingCity() {
-        viewModel.PcrsCondition = SignupViewModel.Pcrs.CITY
+        viewModel.pcrsCondition = SignupViewModel.Pcrs.CITY
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
@@ -262,7 +287,7 @@ class SignupP1SignupFormFrag : Fragment() {
     }
 
     fun onChoosingRealEstate() {
-        viewModel.PcrsCondition = SignupViewModel.Pcrs.REAL_ESTATE
+        viewModel.pcrsCondition = SignupViewModel.Pcrs.REAL_ESTATE
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
@@ -275,29 +300,11 @@ class SignupP1SignupFormFrag : Fragment() {
     }
 
     fun onChoosingSupervisor() {
-        viewModel.PcrsCondition = SignupViewModel.Pcrs.SUPERVISOR
+        viewModel.pcrsCondition = SignupViewModel.Pcrs.SUPERVISOR
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag)
     }
 
     fun isShowSupervisor(): Boolean {
-        Log.e(
-            "TAG",
-            "isShowSupervisor: 1 ${
-                binding.llChooseRealEstate.visibility == View.VISIBLE
-            }",
-        )
-        Log.e(
-            "TAG",
-            "isShowSupervisor: 2 ${
-                viewModel.realEstateId != null
-            }",
-        )
-        Log.e(
-            "TAG",
-            "isShowSupervisor: 3 ${
-                viewModel.getSubCondition() != viewModel.SUB_STATE_SUPERVISER
-            }",
-        )
         return isShowCity()
                 && viewModel.realEstateId != null
                 && viewModel.getSubCondition() == viewModel.SUB_STATE_CONSOLTANT
@@ -333,6 +340,4 @@ class SignupP1SignupFormFrag : Fragment() {
     private fun isDealer(): Boolean {
         return (viewModel.getSubCondition() == viewModel.SUB_STATE_DEALER && viewModel.cityId != 0)
     }
-
-
 }

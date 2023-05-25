@@ -13,7 +13,7 @@
     <color name="empty_background_color">#f5f5f5</color>
     <color name="negative_empty_background_color">#121212</color>
     <color name="normal_text_color">#121212</color>
-    <color name="sub_item_text_color">#686868</color>
+    <color name="sub_item_text_color">#838383</color>
     <color name="hint_color">#FF808080</color>
 
     <color name="main_dark_color">#FF253A85</color>
@@ -27,4 +27,6 @@
     <color name="light_border">#858585</color>
     <color name="choose_background_color">#BDBDBD</color>
     <color name="color_icon">#233b88</color>
+    <color name="tool_bar_color_2">#7991E1</color>
+    <color name="splash_color_light">#7991E1</color>
 </resources>

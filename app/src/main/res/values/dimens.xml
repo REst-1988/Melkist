@@ -3,8 +3,8 @@
     <dimen name="login_frag_margin">24dp</dimen>
     <dimen name="large_margin">24dp</dimen>
     <dimen name="normal_margin">16dp</dimen>
-    <dimen name="txt_size_h1">24sp</dimen>
-    <dimen name="txt_size_h2">20sp</dimen>
+    <dimen name="txt_size_h1">20sp</dimen>
+    <dimen name="txt_size_h2">18sp</dimen>
     <dimen name="normal_text_size">16sp</dimen>
     <dimen name="short_text_size">12sp</dimen>
     <dimen name="extra_large_margin">48dp</dimen>
@@ -16,4 +16,7 @@
     <dimen name="normal_padding">16dp</dimen>
     <dimen name="short_padding">8dp</dimen>
     <dimen name="large_padding">20dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

@@ -61,13 +61,11 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="ثبت نام" />
+                        tools:text="@string/signup" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
-
-        <!--TODO: FIX THIS LATER-->
 
         <EditText
             android:id="@+id/et_search"

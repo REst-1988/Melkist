@@ -1,21 +1,20 @@
 package com.example.melkist.models
 
-import com.squareup.moshi.Json
-
 data class User(
-    @Json val id: Int,
-    @Json val name: String, // firstName
-    @Json val family: String, // lastName
-    @Json val mobileId: Int?,
-    @Json val nationalCode: Long?,
-    @Json val email: String?,
-    @Json val password: String?,
-    @Json val profilePic: String?,
-    @Json val roleId: Int?,
-    @Json val parentId: Int?,
-    @Json val isVerify: Boolean?,
-    @Json val createdAt: Long?,
-    @Json val updatedAt: Long?,
-    @Json val deletedAt: Long?
-    // TODO: USER CITY WILL ADDED
+    val id: Int?,
+    val firstName: String?, // firstName
+    val lastName: String?, // lastName
+    val mobileId: Int?,
+    val mobileNo: String?,
+    val email: String?,
+    val password: String?,
+    val profilePic: String?,
+    val roleId: Int?,
+    val parentId: Int?,
+    val isVerify: Boolean?,
+    val cityId: Int?,
+    val cityTitle: String?,
+    val provinceId: Int?,
+    val provinceTitle: String?,
+    val token: String?
 )

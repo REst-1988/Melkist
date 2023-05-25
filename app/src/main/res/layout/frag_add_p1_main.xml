@@ -187,7 +187,8 @@
                         android:id="@+id/spacer_2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_boarder" />
+                        android:background="@color/color_boarder"
+                        app:setVisibility="@{fragment.isShowCategory()}"/>
                     <!--3 choosing sub category-->
                     <LinearLayout
                         android:id="@+id/layout_sub_category"
@@ -239,11 +240,10 @@
                         android:id="@+id/spacer_3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_boarder" />
-
+                        android:background="@color/color_boarder"
+                        app:setVisibility="@{fragment.isShowSubCategory()}" />
                 </LinearLayout>
 
-                <!--TODO: SHOW HIDE WHEN LISTS ARE READY-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -260,6 +260,7 @@
                         android:layout_marginBottom="@dimen/normal_margin"
                         android:fontFamily="@font/byekan"
                         android:onClick="@{() -> fragment.onProceed()}"
+                        app:setVisibility="@{fragment.isShowLocationBtn()}"
                         android:text="@string/choose_location_title" />
 
                 </RelativeLayout>

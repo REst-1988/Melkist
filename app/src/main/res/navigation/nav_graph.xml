@@ -11,10 +11,14 @@
         tools:layout="@layout/fragment_login_form" >
         <action
             android:id="@+id/action_loginForm_to_signupP1SignupFormFrag"
-            app:destination="@id/navigation" />
+            app:destination="@id/navigation"
+            app:enterAnim="@anim/fade_in_anim_fast"
+            app:exitAnim="@anim/fade_out_anim_fast"/>
         <action
             android:id="@+id/action_loginForm_to_forgetPassP1EnterNcodePhoneFrag"
-            app:destination="@id/navigation2" />
+            app:destination="@id/navigation2"
+            app:enterAnim="@anim/fade_in_anim_fast"
+            app:exitAnim="@anim/fade_out_anim_fast"/>
     </fragment>
     <navigation android:id="@+id/navigation"
         app:startDestination="@id/signupP1SignupFormFrag">
@@ -27,19 +31,29 @@
                 android:id="@+id/action_signupP1SignupFormFrag_to_loginForm"
                 app:destination="@id/loginForm"
                 app:popUpTo="@id/loginForm"
-                app:popUpToInclusive="true" />
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
             <action
                 android:id="@+id/action_signupP1SignupFormFrag_to_signupP2ChoosingRealEstateOrUserFrag"
-                app:destination="@id/signupP2ChoosingRealEstateOrUserFrag" />
+                app:destination="@id/signupP2ChoosingRealEstateOrUserFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
             <action
                 android:id="@+id/action_signupP1SignupFormFrag_to_signupP3ChoosingSubFrag"
-                app:destination="@id/signupP3ChoosingSubFrag" />
+                app:destination="@id/signupP3ChoosingSubFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
             <action
                 android:id="@+id/action_signupP1SignupFormFrag_to_signupP4ChoosingCityManagerSupervisorFrag"
-                app:destination="@id/signupP4ChoosingPcrsFrag" />
+                app:destination="@id/signupP4ChoosingPcrsFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
             <action
                 android:id="@+id/action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag"
-                app:destination="@id/signupP5ReceiveVerificationSmsFrag" />
+                app:destination="@id/signupP5ReceiveVerificationSmsFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
         </fragment>
         <fragment
             android:id="@+id/signupP2ChoosingRealEstateOrUserFrag"
@@ -49,6 +63,8 @@
             <action
                 android:id="@+id/action_signupP2ChoosingRealEstateOrUserFrag_to_signupP1SignupFormFrag"
                 app:destination="@id/signupP1SignupFormFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpTo="@id/signupP1SignupFormFrag"
                 app:popUpToInclusive="true" />
         </fragment>
@@ -61,6 +77,8 @@
                 android:id="@+id/action_signupP3ChoosingSubFrag_to_signupP1SignupFormFrag"
                 app:destination="@id/signupP1SignupFormFrag"
                 app:popUpTo="@id/signupP1SignupFormFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpToInclusive="true" />
         </fragment>
         <fragment
@@ -72,6 +90,8 @@
                 android:id="@+id/action_signupP4ChoosingPcrsFrag_to_signupP1SignupFormFrag"
                 app:destination="@id/signupP1SignupFormFrag"
                 app:popUpTo="@id/signupP1SignupFormFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpToInclusive="true" />
         </fragment>
         <fragment
@@ -82,7 +102,16 @@
             <action
                 android:id="@+id/action_signupP5ReceiveVerificationSmsFrag_to_signupP1SignupFormFrag"
                 app:destination="@id/signupP1SignupFormFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpTo="@id/signupP1SignupFormFrag"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_signupP5ReceiveVerificationSmsFrag_to_LoginForm"
+                app:destination="@id/loginForm"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
+                app:popUpTo="@id/loginForm"
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>
@@ -96,11 +125,15 @@
             <action
                 android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_loginForm"
                 app:destination="@id/loginForm"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpTo="@id/loginForm"
                 app:popUpToInclusive="true" />
             <action
                 android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag"
-                app:destination="@id/forgetPassP2ReceiveVerificationSmsFrag" />
+                app:destination="@id/forgetPassP2ReceiveVerificationSmsFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
         </fragment>
         <fragment
             android:id="@+id/forgetPassP2ReceiveVerificationSmsFrag"
@@ -110,11 +143,15 @@
             <action
                 android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP1EnterNcodePhoneFrag"
                 app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
                 app:popUpToInclusive="true" />
             <action
                 android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag"
-                app:destination="@id/forgetPassP3ChangePassFrag" />
+                app:destination="@id/forgetPassP3ChangePassFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast" />
         </fragment>
         <fragment
             android:id="@+id/forgetPassP3ChangePassFrag"
@@ -124,7 +161,17 @@
             <action
                 android:id="@+id/action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag"
                 app:destination="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
                 app:popUpTo="@id/forgetPassP1EnterNcodePhoneFrag"
+                app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_forgetPassP3ChangePassFrag_to_LoginForm"
+                app:destination="@id/loginForm"
+                app:enterAnim="@anim/fade_in_anim_fast"
+                app:exitAnim="@anim/fade_out_anim_fast"
+                app:popUpTo="@id/loginForm"
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>

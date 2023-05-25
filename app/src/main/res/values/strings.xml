@@ -4,11 +4,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="hint_username">نام کاربری</string>
+    <string name="hint_username">نام کاربری (شماره موبایل)</string>
     <string name="signup">ثبت نام</string>
     <string name="login">ورود</string>
     <string name="hint_password">کلمه عبور</string>
-    <string name="forget_user_pass">فراموشی نام کاربری یا کلمه عبور</string>
+    <string name="forget_user_pass">فراموشی کلمه عبور</string>
     <string name="choosing_real_estate_header">مشاور املاک</string>
     <string name="choosing_real_estate_header2">(دارای قراداد همکاری با ملکیست)</string>
     <string name="choosing_real_estate_body">درصورتی که مشاوراملاک می‌باشید و با ملکیست قرارداد ندارید می توانید با ما تماس گرفته تا در خصوص نحوه همکاری و برخورداری از امکانات نرم‌افزار گفتگو نماییم.</string>
@@ -36,7 +36,7 @@
     <string name="error_on_wrong_mobile_no">شماره تلفن وارد شده اشتباه است</string>
     <string name="error_on_empty_national_code">کد ملی را وارد نمایید</string>
     <string name="error_on_wrong_national_code">کد ملی را به درستی وارد نمایید</string>
-    <string name="error_on_empty_password">پسوردی برای خود انتخاب نمایید</string>
+    <string name="error_on_empty_password">پسورد را وارد نمایید</string>
     <string name="error_on_wrong_password">تعداد کاراکترهای پسورد باید بیش از 8 عدد باشد</string>
     <string name="error_on_empty_real_estate">نام املاک خود را وارد نمایید</string>
     <string name="error_on_wrong_real_estate">نام املاک خود را به درستی وارد نمایید</string>
@@ -79,7 +79,7 @@
     <string name="choosing_owner_body">شما می توانید با انتخاب این گزینه ملک مورد نظرتان را برای فروش در قالب یک آگهی ثبت نموده تا توسط سایرین دیده شده و در صورت نیاز، با شما تماس گرفته یا درخواست همکاری ارسال نمایند</string>
     <string name="location_frag_header">انتخاب شهر و محله</string>
     <string name="location_frag_sub_header">شهر و محله را انتخاب نمایید و اگر در فهرست وجود ندارد نزدیکترین را انتخاب نمایید</string>
-    <string name="choose_region_title">انتخاب منطقه</string>
+    <string name="choose_region_title">انتخاب محله</string>
     <string name="choose_location_on_map">افزودن محدوده بر روی نقشه</string>
     <string name="other_location_frag_header">انتخاب سایر مناطق</string>
     <string name="other_location_frag_sub_header">اگر در منطقه اول مورد نظر شما، موردی یافت نشد، در چه منطقه دیگری می خواهید جستجو انجام گیرد. با انتخاب نکرد گزینه های زیر فقط در منطقه اول جستجو انجام می شود</string>
@@ -94,6 +94,34 @@
     <string name="from">از</string>
     <string name="to">تا</string>
     <string name="add_picture">افزودن عکس</string>
-    <string name="add_picture_sub_header">عکس هایی از فضای داخل و بیرون ملک اضافه کنید. آگهی های دارای عکس تا 30 برابر بیشتر توسط کاربران دیده می شود.</string>
+    <string name="add_picture_sub_header">عکس هایی از فضای داخل و بیرون ملک اضافه کنید. آگهی های دارای عکس تا 30 برابر بیشتر توسط کاربران دیده می شود</string>
     <string name="enter">وارد نمایید</string>
+    <string name="choose_province_city_alert_message">لطفا ابتدا شهر مورد نظر خود را انتخاب نمایید.</string>
+    <string name="input">مقدار</string>
+    <string name="on_empty_dialog_edittext_feild">لطفا مقدار مورد نظر خود را وارد نمایید</string>
+    <string name="choose_from_camera">انتخاب از دوربین</string>
+    <string name="choose_from_galery">انتخاب از گالری</string>
+    <string name="need_permission">"برای ادامه به نیاز است به دریافت اجازه دسترسی به "</string>
+    <string name="confirm_permission">اجازه می دهم</string>
+    <string name="deny_permission">اجازه نمی دهم</string>
+    <string name="camera">دوربین</string>
+    <string name="galery">گالری تصاویر</string>
+    <string name="somthing_goes_wrong">خطایی رخ داده لطفا مجددا اقدام نمایید</string>
+    <string name="tooman">تومان</string>
+    <string name="thousand">هزار</string>
+    <string name="billion">میلیارد</string>
+    <string name="and">و</string>
+    <string name="million">میلیون</string>
+    <string name="thousend">هزار</string>
+    <string name="meter_squere">متر مربع</string>
+    <string name="number">عدد</string>
+    <string name="is_show_exact_address">آیا آدرس دقیق برای مخاطبان نمایش داده شود؟</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="wrong_username_password">نام کاربری یا کلمه عبور اشتباه است</string>
+    <string name="choose_profile_pic">برای پروفایل خود یک عکس مناسب انتخاب نمایید</string>
+    <string name="choose_profile_pic_title">عکس پروفایل</string>
+    <string name="select">انتخاب</string>
 </resources>

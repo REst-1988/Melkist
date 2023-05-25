@@ -15,11 +15,10 @@
             type="com.example.melkist.views.add.AddP7DetailsOwnerFrag" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layoutDirection="rtl"
-        android:orientation="vertical">
+        android:layoutDirection="rtl">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -79,14 +78,20 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/app_bar"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            >
+
         <LinearLayout
             android:id="@+id/layout_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/normal_margin"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/layout_btn"
-            app:layout_constraintTop_toBottomOf="@id/app_bar">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txt_picture_header"
@@ -114,77 +119,92 @@
                 android:textSize="@dimen/normal_text_size"
                 tools:text="@string/location_frag_sub_header" />
 
-            <GridLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:columnCount="3"
-                android:rowCount="2">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/img_add_img_avatar"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="0"
-                    android:layout_column="0"
-                    android:layout_margin="@dimen/short_margin"
-                    android:background="@drawable/background_choosing_post"
-                    android:padding="@dimen/large_padding"
-                    android:src="@drawable/ic_baseline_add_a_photo_24" />
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:columnCount="3"
+                    android:rowCount="2">
 
-                <ImageView
-                    android:id="@+id/img_1"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="0"
-                    android:layout_column="0"
-                    android:layout_margin="@dimen/short_margin" />
+                    <ImageView
+                        android:id="@+id/img_add_img_avatar"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:layout_margin="@dimen/short_margin"
+                        android:background="@drawable/background_choosing_post"
+                        android:padding="@dimen/large_padding"
+                        android:src="@drawable/ic_baseline_add_a_photo_24"
+                        android:onClick="@{() -> fragment.onPickImage()}"/>
 
-                <ImageView
-                    android:id="@+id/img_2"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="0"
-                    android:layout_column="1"
-                    android:layout_margin="@dimen/short_margin"
-                    android:background="@color/empty_background_color" />
+                    <ImageView
+                        android:id="@+id/img_1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:layout_margin="@dimen/short_margin"
+                        android:scaleType="centerCrop" />
 
-                <ImageView
-                    android:id="@+id/img_3"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="0"
-                    android:layout_column="2"
-                    android:layout_margin="@dimen/short_margin"
-                    android:background="@color/empty_background_color" />
+                    <ImageView
+                        android:id="@+id/img_2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="0"
+                        android:layout_column="1"
+                        android:layout_margin="@dimen/short_margin"
+                        android:background="@color/empty_background_color"
+                        android:scaleType="centerCrop"/>
 
-                <ImageView
-                    android:id="@+id/img_4"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="1"
-                    android:layout_column="0"
-                    android:layout_margin="@dimen/short_margin"
-                    android:background="@color/empty_background_color" />
+                    <ImageView
+                        android:id="@+id/img_3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="0"
+                        android:layout_column="2"
+                        android:layout_margin="@dimen/short_margin"
+                        android:background="@color/empty_background_color"
+                        android:scaleType="centerCrop" />
 
-                <ImageView
-                    android:id="@+id/img_5"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="1"
-                    android:layout_column="1"
-                    android:layout_margin="@dimen/short_margin"
-                    android:background="@color/empty_background_color" />
+                    <ImageView
+                        android:id="@+id/img_4"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="1"
+                        android:layout_column="0"
+                        android:layout_margin="@dimen/short_margin"
+                        android:background="@color/empty_background_color"
+                        android:scaleType="centerCrop" />
 
-                <ImageView
-                    android:id="@+id/img_6"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_row="1"
-                    android:layout_column="2"
-                    android:layout_margin="@dimen/short_margin"
-                    android:background="@color/empty_background_color" />
-            </GridLayout>
+                    <ImageView
+                        android:id="@+id/img_5"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="1"
+                        android:layout_column="1"
+                        android:layout_margin="@dimen/short_margin"
+                        android:background="@color/empty_background_color"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/img_6"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_row="1"
+                        android:layout_column="2"
+                        android:layout_margin="@dimen/short_margin"
+                        android:background="@color/empty_background_color"
+                        android:scaleType="centerCrop" />
+                </GridLayout>
+
+
+            </RelativeLayout>
             <!-- measurement -->
             <LinearLayout
                 android:id="@+id/layout_measure"
@@ -345,42 +365,44 @@
                     android:textSize="@dimen/short_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RelativeLayout
+                android:id="@+id/layout_btn"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <Button
+                    android:id="@+id/btn_commit"
+                    style="@style/Theme.Melkist.Buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/normal_margin"
+                    android:fontFamily="@font/byekan"
+                    android:onClick="@{() -> fragment.onCommit()}"
+                    android:text="@string/commit"
+                    android:textDirection="rtl"
+                    app:bindLoading="@{viewmodel.status}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/normal_margin"
+                    app:bindProgressLoading="@{viewmodel.status}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </RelativeLayout>
+
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout_btn"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <Button
-                android:id="@+id/btn_commit"
-                style="@style/Theme.Melkist.Buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginBottom="@dimen/normal_margin"
-                android:fontFamily="@font/byekan"
-                android:onClick="@{() -> fragment.onCommit()}"
-                android:text="@string/commit"
-                android:textDirection="rtl"
-                app:bindLoading="@{viewmodel.status}"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginBottom="@dimen/normal_margin"
-                app:bindProgressLoading="@{viewmodel.status}"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </RelativeLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 </layout>

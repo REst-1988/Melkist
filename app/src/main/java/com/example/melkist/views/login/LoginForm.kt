@@ -19,6 +19,7 @@ import com.example.melkist.databinding.FragmentLoginFormBinding
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.LoginViewModel
+import com.google.android.gms.common.config.GservicesValue.value
 import kotlinx.coroutines.launch
 
 class LoginForm : Fragment() {
@@ -45,6 +46,8 @@ class LoginForm : Fragment() {
         val animScale = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_in_anim)
         binding!!.cardLogin.startAnimation(animFade)
         binding!!.imgLogo.startAnimation(animScale)
+        binding!!.etUsernameLoginAct.editText!!.setText("09173381951")
+        binding!!.etPasswordLoginAct.editText!!.setText("111111")
         listenToLoginResponse()
     }
 
@@ -61,16 +64,18 @@ class LoginForm : Fragment() {
                 true -> {
                     lifecycleScope.launch {
                         userDataStore.saveUserToPreferencesStore(
-                            binding!!.etUsernameLoginAct.editText!!.text.toString(),
-                            binding!!.etPasswordLoginAct.editText!!.text.toString(),
                             response,
                             requireContext()
                         )
                     }
                     binding?.etUsernameLoginAct?.error = null
                     binding?.etPasswordLoginAct?.error = null
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    startActivity(intent)
+                    Log.e("TAG", "listenToLoginResponse: $response  ${response.data?.isFirstTime}", )
+                    if (response.data?.isFirstTime != false)
+                        findNavController().navigate(R.id.action_loginForm_to_profilePicFrag) // TODO: uncomment
+                        //startActivity(Intent(requireActivity(), MainActivity::class.java)) // TODO: delete
+                    else
+                        startActivity(Intent(requireActivity(), MainActivity::class.java))
                 }
                 false -> {
                     showToast(requireContext(), concatenateText(response.errors))

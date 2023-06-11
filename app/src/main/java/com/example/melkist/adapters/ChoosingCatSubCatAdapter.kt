@@ -1,7 +1,6 @@
 package com.example.melkist.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -16,11 +15,12 @@ import com.example.melkist.databinding.ItemListCatSubCatBinding
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.utils.isSystemDarkMode
 import com.example.melkist.viewmodels.AddItemViewModel
-import com.example.melkist.views.add.AddP3ChooseCatSubcatFrag
+import com.example.melkist.viewmodels.ChooseCatSubCatViewModel
+import com.example.melkist.viewmodels.MapViewModel
+import com.example.melkist.views.universal.ChooseCatSubcatFrag
 
-class ChoosingCatSubCatAdapter(val viewModel: AddItemViewModel, val fragment: Fragment):
+class ChoosingCatSubCatAdapter(val viewModel: ChooseCatSubCatViewModel, val fragment: Fragment):
     ListAdapter<CatSubCatModel, ChoosingCatSubCatAdapter.CatSubCatViewHolder>(DiffUtilCallBack){
-
     companion object DiffUtilCallBack : DiffUtil.ItemCallback<CatSubCatModel>() {
         override fun areItemsTheSame(oldItem: CatSubCatModel, newItem: CatSubCatModel): Boolean {
             return oldItem.id == newItem.id
@@ -61,22 +61,22 @@ class ChoosingCatSubCatAdapter(val viewModel: AddItemViewModel, val fragment: Fr
         holder.bind(catSubCat)
         holder.itemView.setOnClickListener{
             choosingItemAction(catSubCat)
-            if (viewModel.getReqSource() == AddItemViewModel.ReqSource.CATEGORY)
-                viewModel.resetAddItemFieldsByChoosingCategory()
-            (fragment as AddP3ChooseCatSubcatFrag).back()
+            if ((vm as AddItemViewModel).getReqSource() == AddItemViewModel.ReqSource.CATEGORY)
+                vm.resetAddItemFieldsByChoosingCategory()
+            (fragment as ChooseCatSubcatFrag).back()
         }
     }
 
 
     private fun choosingItemAction(catSubCat: CatSubCatModel){
-        when (viewModel.getReqSource()) {
+        when ((vm as AddItemViewModel).getReqSource()) {
             AddItemViewModel.ReqSource.CATEGORY -> {
-                viewModel.catId = catSubCat.id
-                viewModel.catTitle = catSubCat.title
+                vm.catId = catSubCat.id
+                vm.catTitle = catSubCat.title
             }
             AddItemViewModel.ReqSource.SUB_CATEGORY -> {
-                viewModel.subCatId = catSubCat.id
-                viewModel.subCatTitle = catSubCat.title
+                vm.subCatId = catSubCat.id
+                vm.subCatTitle = catSubCat.title
             }
         }
     }

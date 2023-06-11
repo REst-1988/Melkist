@@ -14,14 +14,13 @@ data class UserResponseModel(
     @Json(name = "name") val firstName: String?,
     @Json(name = "family") val lastName: String?,
     @Json(name = "mobile_id") val mobileId: Int?,
-    @Json(name = "mobile_no") val mobileNo: String?,
-    @Json(name = "password") val password: String?,
     @Json(name = "profilepic") val profilePic: String?,
     @Json(name = "role_id") val roleId: Int?,
     @Json(name = "parent_id") val parentId: Int?,
     @Json(name = "isverify") val isVerify: Boolean?,
+    @Json(name = "isfirsttime") val isFirstTime: Boolean?,
     @Json val city: City?,
-    @Json val email: String?
+    @Json val email: String?,
 )
 
 data class City(

@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.asLiveData
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.models.User
@@ -17,7 +16,7 @@ import com.example.melkist.models.User
 
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 3000 // 3 seconds
+    private val splashTimeOut: Long = 3000
     private var mHandler: Handler? = null
     private lateinit var userDataStore: UserDataStore
 
@@ -34,13 +33,13 @@ class SplashActivity : AppCompatActivity() {
 
     private fun proceedRunning() {
         userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
-            Log.e("TAG", "proceedRunning: $value  ,  ${value.id}", )
+            Log.e("TAG", "proceedRunning: $value  ,  ${value.id}  ${value.profilePic}", )
             checkSituation(value)
         }
     }
 
     private fun checkSituation(user: User?) {
-        if (user!!.id != null &&  user.id!! > 0) {
+        if (user?.id != null &&  user.id > 0 && !user.isFirstTime!! && user.profilePic != "") {
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             this@SplashActivity.finish()
         } else {

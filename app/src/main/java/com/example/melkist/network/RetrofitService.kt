@@ -2,9 +2,11 @@ package com.example.melkist.network
 
 
 import com.example.melkist.network.`interface`.ApiService
+import com.example.melkist.utils.isOnline
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -24,6 +26,7 @@ private val okHttpClient = OkHttpClient().newBuilder() // TODO: CHECK IF CONNECT
     .writeTimeout(120, TimeUnit.SECONDS)
     .build()
 
+
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
@@ -33,7 +36,6 @@ private val retrofit = Retrofit.Builder()
 
 object Api {
     val retrofitService: ApiService by lazy {
-
         retrofit.create(ApiService::class.java)
     }
 }

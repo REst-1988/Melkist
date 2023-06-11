@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.melkist.models.LoginResponseModel
 import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.models.User
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import kotlinx.coroutines.launch

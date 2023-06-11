@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.map.MapP1Frag">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.MapViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.map.MapP1Frag" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_boarder">
+
+            <fragment
+                android:id="@+id/map_fragment"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_header"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_margin="@dimen/normal_margin"
+                app:cardBackgroundColor="@color/empty_background_color"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/byekan"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onChangeItemType()}"
+                        android:paddingStart="@dimen/normal_padding"
+                        android:paddingEnd="@dimen/normal_padding"
+                        android:text="@{fragment.showStatusTitle()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        tools:text="@string/show_all_files_title" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <ImageButton
+                android:id="@+id/ibtn_search"
+                android:layout_width="@dimen/rounded_btns"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:background="@drawable/rounded_btns"
+                android:elevation="4dp"
+                android:src="@drawable/ic_baseline_search_24"
+                app:layout_constraintStart_toStartOf="@id/card_header"
+                app:layout_constraintTop_toBottomOf="@id/card_header" />
+
+            <!--TODO: check this for determination needed or not? -->
+            <!--TODO: search can handled in new frag -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_margin="@dimen/normal_margin"
+                android:visibility="gone"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_header">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="?attr/actionBarSize"
+                        android:drawableStart="@drawable/ic_baseline_search_24"
+                        android:fontFamily="@font/byekan"
+                        android:hint="@string/search"
+                        android:padding="@dimen/normal_padding"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <ImageButton
+                        android:id="@+id/ibtn_close_searchview_home"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_baseline_close_search_24" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageButton
+                android:id="@+id/ibtn_filter"
+                android:layout_width="@dimen/rounded_btns"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:background="@drawable/rounded_btns"
+                android:elevation="4dp"
+                android:onClick="@{() -> fragment.onFilterClicked()}"
+                android:src="@drawable/ic_baseline_filter_alt_24"
+                app:layout_constraintStart_toStartOf="@id/card_header"
+                app:layout_constraintTop_toBottomOf="@id/ibtn_search" />
+
+            <ImageButton
+                android:id="@+id/ibtn_draw"
+                android:layout_width="@dimen/rounded_btns"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginBottom="@dimen/normal_margin"
+                android:background="@drawable/rounded_btns"
+                android:elevation="4dp"
+                android:src="@drawable/ic_baseline_draw_24"
+                app:layout_constraintBottom_toTopOf="@id/ibtn_satellite"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageButton
+                android:id="@+id/ibtn_satellite"
+                android:layout_width="@dimen/rounded_btns"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:layout_marginBottom="64dp"
+                android:background="@drawable/rounded_btns"
+                android:elevation="4dp"
+                android:src="@drawable/ic_baseline_satellite_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="@{() -> fragment.onSatelliteClicked(fragment.getGoogleMap())}"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

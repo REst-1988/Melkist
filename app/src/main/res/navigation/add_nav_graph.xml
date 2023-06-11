@@ -28,9 +28,9 @@
     </fragment>
     <fragment
         android:id="@+id/addP2ChooseTypeFrag"
-        android:name="com.example.melkist.views.add.AddP2ChooseTypeFrag"
+        android:name="com.example.melkist.views.universal.ChooseSeekerOwnerTypeFrag"
         android:label="frag_add_p2_choose_type"
-        tools:layout="@layout/frag_add_p2_choose_type">
+        tools:layout="@layout/frag_choose_seeker_owner_type">
         <action
             android:id="@+id/action_addP2ChooseTypeFrag_to_addP1MainFrag"
             app:destination="@id/addP1MainFrag"
@@ -41,9 +41,9 @@
     </fragment>
     <fragment
         android:id="@+id/addP3ChooseCatSubcatFrag"
-        android:name="com.example.melkist.views.add.AddP3ChooseCatSubcatFrag"
+        android:name="com.example.melkist.views.universal.ChooseCatSubcatFrag"
         android:label="frag_add_p3_choose_cat_subcat"
-        tools:layout="@layout/frag_add_p3_choose_cat_subcat">
+        tools:layout="@layout/frag_choose_cat_subcat">
         <action
             android:id="@+id/action_addP3ChooseCatSubcatFrag_to_addP1MainFrag"
             app:destination="@id/addP1MainFrag"

@@ -124,4 +124,21 @@
     <string name="choose_profile_pic">برای پروفایل خود یک عکس مناسب انتخاب نمایید</string>
     <string name="choose_profile_pic_title">عکس پروفایل</string>
     <string name="select">انتخاب</string>
+    <string name="show_all_files_title">نمایش همه موارد</string>
+    <string name="show_owner_files">نمایش فایل های مالک</string>
+    <string name="show_seeker_files">نمایش فایل های خواهان</string>
+    <string name="show_all_files">نمایش فایل های خواهان و مالک</string>
+    <string name="filter">فیلتر</string>
+    <string name="advertiser_title">آگهی دهنده</string>
+    <string name="real_estate_title">مشاور املاک</string>
+    <string name="post_title">سمت</string>
+    <string name="region">منطقه</string>
+    <string name="region_other">سایر مناطق مد نظر</string>
+    <string name="age_title">سال ساخت</string>
+    <string name="price_per_meter">قیمت هر متر</string>
+    <string name="send_cooperation_request">ارسال درخواست همکاری</string>
+    <string name="price_toman">قیمت (تومان)</string>
+    <string name="size_squere_meter">متراژ (مترمربع)</string>
+    <string name="filter_file">فیلتر فایل ها</string>
+    <string name="all">همه</string>
 </resources>

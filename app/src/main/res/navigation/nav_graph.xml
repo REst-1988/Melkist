@@ -19,6 +19,9 @@
             app:destination="@id/navigation2"
             app:enterAnim="@anim/fade_in_anim_fast"
             app:exitAnim="@anim/fade_out_anim_fast"/>
+        <action
+            android:id="@+id/action_loginForm_to_profilePicFrag"
+            app:destination="@id/profilePicFrag" />
     </fragment>
     <navigation android:id="@+id/navigation"
         app:startDestination="@id/signupP1SignupFormFrag">
@@ -175,4 +178,9 @@
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/profilePicFrag"
+        android:name="com.example.melkist.views.profile.ProfilePicFrag"
+        android:label="frag_profile_pic"
+        tools:layout="@layout/frag_profile_pic" />
 </navigation>

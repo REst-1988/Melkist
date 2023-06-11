@@ -1,17 +1,26 @@
 package com.example.melkist.network.`interface`
 
 import com.example.melkist.models.*
+import com.squareup.moshi.Json
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
     @POST("login")
-    suspend fun login (
+    suspend fun login(
         @Query("mobile") mobile: String,
         @Query("password") password: String,
         @Query("needCaptcha") needCaptcha: Boolean = false // always false in app
     ): LoginResponseModel
+
+    @POST("dashboard/admin/profile/uploadProfilePic")
+    suspend fun uploadProfilePic(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int,
+        @Body profilePic: String
+    ): PublicResponseModel
 
     @POST("sendVerificationCode")
     suspend fun getVerificationCode(
@@ -64,7 +73,7 @@ interface ApiService {
         @Query("nationalcode") nationalCode: String,
         @Query("email") email: String?,
         @Query("role_id") roleId: Int,
-    ) : PublicResponseModel
+    ): PublicResponseModel
 
     @POST("registerUserRealstate")
     suspend fun registerUserRealEstate(
@@ -80,28 +89,42 @@ interface ApiService {
         @Query("role_id") roleId: Int,
         @Query("isverify") isVerify: Boolean = false, // for check if user create by app or by panel. in app should always be false
         @Query("isNeedValidation") isNeedValidation: Boolean = false
-    ) : PublicResponseModel
+    ): PublicResponseModel
 
-    @POST ("dashboard/admin/file/getFileCategories")
-    suspend fun getFileCategories(
+    @POST("dashboard/admin/file/getFileCategories")
+    suspend fun getFileCategories( // TODO: need token?
+        @Header("Authorization") token: String,
         @Query("fileType_id") typeId: Int
     ): CatSubCatResponse
 
-    @POST ("dashboard/admin/file/getFileCategoryTypes")
-    suspend fun getFileCategoryTypes(
+    @POST("dashboard/admin/file/getFileCategoryTypes")
+    suspend fun getFileCategoryTypes( // TODO: need token?
+        @Header("Authorization") token: String,
         @Query("fileType_id") typeId: Int,
         @Query("fileCategory_id") catId: Int,
     ): CatSubCatResponse
 
-    @POST ("getRegionsByCity")
+    @POST("getRegionsByCity")
     suspend fun getRegionsByCity(
         @Query("city_id") cityId: Int
     ): RegionResponseModel
 
-    @POST ("dashboard/admin/file/save")
-    suspend fun save(
+    @POST("dashboard/admin/file/save")
+    suspend fun saveFile( // TODO: need token?
         @Body img: FileSave
     ): PublicResponseModel
+
+    @POST("dashboard/admin/file/getAllFilesByCity")
+    suspend fun getAllFilesByCity(
+        @Header("Authorization") token: String,
+        @Query ("city_id") cityId: Int
+    ): LocationResponse
+
+    @POST("dashboard/admin/file/getFileInfoById")
+    suspend fun getFileInfoById(
+        @Header("Authorization") token: String,
+        @Query("file_id") fileId: Int,
+    ): FileAllDataResponse
 
 /*    @GET("users")
     @Headers(

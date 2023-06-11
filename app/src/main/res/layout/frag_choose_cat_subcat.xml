@@ -2,17 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.add.AddP3ChooseCatSubcatFrag">
+    tools:context=".views.universal.ChooseCatSubcatFrag">
 
     <data>
 
         <variable
             name="viewmodel"
-            type="com.example.melkist.viewmodels.AddItemViewModel" />
-
+            type="com.example.melkist.viewmodels.ChooseCatSubCatViewModel" />
         <variable
             name="fragment"
-            type="com.example.melkist.views.add.AddP3ChooseCatSubcatFrag" />
+            type="com.example.melkist.views.universal.ChooseCatSubcatFrag" />
     </data>
 
     <RelativeLayout
@@ -77,14 +76,16 @@
             android:layout_marginTop="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/large_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:listDataCatSubCat="@{viewmodel.itemOptionList}" />
+            app:listDataCatSubCat="@{viewmodel.itemOptionList}"
+             />
 
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            app:bindProgressLoading="@{viewmodel.status}" />
+            app:bindProgressLoading="@{viewmodel.status}"
+         />
 
     </RelativeLayout>
 </layout>

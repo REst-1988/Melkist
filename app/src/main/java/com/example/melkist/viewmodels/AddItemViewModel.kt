@@ -1,7 +1,6 @@
 package com.example.melkist.viewmodels
 
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.media.ThumbnailUtils
 import android.util.Base64
 import android.util.Log
@@ -23,8 +22,8 @@ class AddItemViewModel : ViewModel() {
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
-    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
-    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
+/*    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
+    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList*/
     private val _pcrsList = MutableLiveData<List<PcrsData>>()
     val pcrsList: LiveData<List<PcrsData>> = _pcrsList
     private val _regionList = MutableLiveData<List<RegionResponseData>>()
@@ -88,7 +87,7 @@ class AddItemViewModel : ViewModel() {
     lateinit var fileSave: FileSave
 
 
-    fun getTypeId(): Int {
+/*    fun getTypeId(): Int {
         val fileTypes = FileTypes()
         typeId = if (getItemType() == ItemType.SEEKER)
             fileTypes.seeker.id
@@ -97,7 +96,7 @@ class AddItemViewModel : ViewModel() {
         else
             -1
         return typeId
-    }
+    }*/
 
     fun getTypeTitle(): String {
         val fileTypes = FileTypes()
@@ -109,7 +108,7 @@ class AddItemViewModel : ViewModel() {
             ""
     }
 
-    fun getFileCategories() {
+/*    fun getFileCategories() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
@@ -121,7 +120,7 @@ class AddItemViewModel : ViewModel() {
                 _status.value = ApiStatus.ERROR
             }
         }
-    }
+    }*/
 
     fun choosingItemActionPc(pcrs: PcrsData){
         when (crCondition) {
@@ -157,7 +156,7 @@ class AddItemViewModel : ViewModel() {
         }
     }
 
-    fun getFileCategoryType() {
+/*    fun getFileCategoryType() {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
@@ -170,9 +169,9 @@ class AddItemViewModel : ViewModel() {
                 _status.value = ApiStatus.ERROR
             }
         }
-    }
+    }*/
 
-    private fun gatherData() {
+    private fun gatheringData() {
         val list = arrayListOf(image1, image2, image3, image4, image5, image6)
         for (img in list){
             var encodedImageMain: String? = null
@@ -202,12 +201,12 @@ class AddItemViewModel : ViewModel() {
     }
 
     fun saveFile () {
-        gatherData()
+        gatheringData()
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
                 _saveResponse.value =
-                    Api.retrofitService.save(fileSave)
+                    Api.retrofitService.saveFile(fileSave)
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -216,9 +215,9 @@ class AddItemViewModel : ViewModel() {
         }
     }
 
-    fun emptyList() {
+/*    fun emptyList() {
         _itemOptionList.value = listOf()
-    }
+    }*/
 
     fun emptyPcList(){
         _pcrsList.value = listOf()

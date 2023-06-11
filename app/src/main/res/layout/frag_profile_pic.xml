@@ -47,8 +47,7 @@
                         android:src="@drawable/ic_baseline_arrow_back_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:setVisibility="@{fragment.isShowBackBtn()}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txt_title"
@@ -68,27 +67,49 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-
-        <ImageView
-            android:id="@+id/img_user"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/img_user_card"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:onClick="@{() -> fragment.onProfilePicClick()}"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_circled_user"
+            android:layout_centerHorizontal="true"
+            android:elevation="12dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="60dp"
             app:layout_constraintBottom_toTopOf="@id/txt_plain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_user"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:onClick="@{() -> fragment.onProfilePicClick()}"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_circled_user"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_margin="2dp"
+            android:elevation="18dp"
             android:onClick="@{() -> fragment.onProfilePicClick()}"
             android:src="@drawable/ic_baseline_add_box_24"
-            android:layout_margin="2dp"
-            app:layout_constraintBottom_toBottomOf="@id/img_user"
-            app:layout_constraintStart_toStartOf="@id/img_user" />
+            app:layout_constraintBottom_toBottomOf="@id/img_user_card"
+            app:layout_constraintStart_toStartOf="@id/img_user_card" />
 
         <TextView
             android:id="@+id/txt_plain"
@@ -96,13 +117,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/byekan"
             android:gravity="center"
+            android:padding="@dimen/normal_text_size"
             android:text="@string/choose_profile_pic"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_user" />
+            app:layout_constraintTop_toBottomOf="@id/img_user_card" />
 
         <Button
             android:id="@+id/btn_commit"

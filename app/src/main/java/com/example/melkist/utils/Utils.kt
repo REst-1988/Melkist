@@ -11,7 +11,13 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import com.example.melkist.R
+import com.example.melkist.models.User
 import java.text.DecimalFormat
+
+object User {
+    lateinit var user: User
+    var token: String? = null
+}
 
 fun isOnline(context: Context): Boolean { //TODO: CHECK INTERNET with my note 3 for make it sure that it worked well
     val connectivityManager =

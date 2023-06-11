@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        app:cardCornerRadius="@dimen/cardview_default_radius">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_img_profile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/short_margin"
+                app:cardCornerRadius="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/avatar_user" />
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/img_main"
+                android:layout_width="120dp"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/map_big" />
+
+            <TextView
+                android:id="@+id/txt_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/byekan"
+                android:padding="@dimen/short_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="معالی آباد" />
+
+            <TextView
+                android:id="@+id/txt_room_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:padding="@dimen/short_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/txt_region"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="2 خواب" />
+
+            <TextView
+                android:id="@+id/txt_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/byekan"
+                android:padding="@dimen/short_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toBottomOf="@id/txt_room_no"
+                tools:text="100 متر" />
+
+            <TextView
+                android:id="@+id/txt_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:padding="@dimen/short_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                app:layout_constraintTop_toBottomOf="@id/txt_size"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                tools:text="8,000,000,000 تومان" />
+
+            <TextView
+                android:id="@+id/spacer"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:background="@color/negative_empty_background_color_sub_item"
+                app:layout_constraintEnd_toStartOf="@id/img_main"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toBottomOf="@id/txt_price"
+                app:layout_constraintBottom_toTopOf="@id/txt_real_estate"/>
+
+            <TextView
+                android:id="@+id/txt_real_estate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_img_profile"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/byekan"
+                android:padding="@dimen/short_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toBottomOf="@id/spacer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="املاک جهانی" />
+
+            <TextView
+                android:id="@+id/txt_agent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_img_profile"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/byekan"
+                android:padding="@dimen/short_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/txt_real_estate"
+                app:layout_constraintTop_toBottomOf="@id/spacer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="رضا استعجاب" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

@@ -10,8 +10,11 @@ import coil.load
 import com.example.melkist.R
 import com.example.melkist.adapters.ChoosingCatSubCatAdapter
 import com.example.melkist.adapters.ChoosingPcrsAdapter
+import com.example.melkist.adapters.FavListAdapter
 import com.example.melkist.models.CatSubCatModel
+import com.example.melkist.models.Fav
 import com.example.melkist.models.PcrsData
+import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.utils.ApiStatus
 
 @BindingAdapter("imgUrl")
@@ -28,9 +31,18 @@ fun bindImage(imageView: ImageView, url: String?) {
 @BindingAdapter("listData")
 fun bindRecyclerView(
     recyclerView: RecyclerView,
-    data: List<PcrsData>?
+    data: List<PcrsData>?// TODO: fav response
 ) {
-    val adapter = recyclerView.adapter as ChoosingPcrsAdapter
+    val adapter = recyclerView.adapter as ChoosingPcrsAdapter // TODO: fav adapter
+    adapter.submitList(data) // TODO: fav data
+}
+
+@BindingAdapter("favListData")
+fun bindRecyclerView(
+    recyclerView: RecyclerView,
+    data: List<Fav>?
+) {
+    val adapter = recyclerView.adapter as FavListAdapter
     adapter.submitList(data)
 }
 

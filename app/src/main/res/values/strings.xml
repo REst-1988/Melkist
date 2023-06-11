@@ -89,6 +89,7 @@
     <string name="meterage">متراژ</string>
     <string name="measurement">متراژ</string>
     <string name="room_no">تعداد خواب</string>
+    <string name="room">خواب</string>
     <string name="price">قیمت</string>
     <string name="descriptions">توضیحات تکمیلی</string>
     <string name="from">از</string>
@@ -117,9 +118,6 @@
     <string name="number">عدد</string>
     <string name="is_show_exact_address">آیا آدرس دقیق برای مخاطبان نمایش داده شود؟</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="wrong_username_password">نام کاربری یا کلمه عبور اشتباه است</string>
     <string name="choose_profile_pic">برای پروفایل خود یک عکس مناسب انتخاب نمایید</string>
     <string name="choose_profile_pic_title">عکس پروفایل</string>
@@ -139,6 +137,7 @@
     <string name="send_cooperation_request">ارسال درخواست همکاری</string>
     <string name="price_toman">قیمت (تومان)</string>
     <string name="size_squere_meter">متراژ (مترمربع)</string>
+    <string name="squere_meter">مترمربع</string>
     <string name="filter_file">فیلتر فایل ها</string>
     <string name="all">همه</string>
 </resources>

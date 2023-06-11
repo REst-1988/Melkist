@@ -13,7 +13,7 @@ data class FileData(
     @Json val id: Int,
     @Json val locations: List<Location>,
     @Json val description: String?,
-    @Json  (name = "isshowexactaddress") val isShowExactAddress: Boolean, // TODO: must be boolean
+    @Json  (name = "isshowexactaddress") val isShowExactAddress: Boolean,
     @Json (name = "meterage") val size: Period,
     @Json (name = "sleepsnumber") val roomNo: Period,
     @Json val price: Period,

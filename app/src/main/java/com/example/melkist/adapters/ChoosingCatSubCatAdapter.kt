@@ -61,22 +61,26 @@ class ChoosingCatSubCatAdapter(val viewModel: ChooseCatSubCatViewModel, val frag
         holder.bind(catSubCat)
         holder.itemView.setOnClickListener{
             choosingItemAction(catSubCat)
-            if ((vm as AddItemViewModel).getReqSource() == AddItemViewModel.ReqSource.CATEGORY)
-                vm.resetAddItemFieldsByChoosingCategory()
+            //TODO: according to changes view model should be chooseCatSubCatViewModel
+            // also chooseCatSubCatViewModel must be change
+            if ((viewModel as AddItemViewModel).getReqSource() == AddItemViewModel.ReqSource.CATEGORY)
+                viewModel.resetAddItemFieldsByChoosingCategory()
             (fragment as ChooseCatSubcatFrag).back()
         }
     }
 
 
     private fun choosingItemAction(catSubCat: CatSubCatModel){
-        when ((vm as AddItemViewModel).getReqSource()) {
+        //TODO: according to changes view model should be chooseCatSubCatViewModel
+        // also chooseCatSubCatViewModel must be change
+        when ((viewModel as AddItemViewModel).getReqSource()) {
             AddItemViewModel.ReqSource.CATEGORY -> {
-                vm.catId = catSubCat.id
-                vm.catTitle = catSubCat.title
+                viewModel.catId = catSubCat.id
+                viewModel.catTitle = catSubCat.title
             }
             AddItemViewModel.ReqSource.SUB_CATEGORY -> {
-                vm.subCatId = catSubCat.id
-                vm.subCatTitle = catSubCat.title
+                viewModel.subCatId = catSubCat.id
+                viewModel.subCatTitle = catSubCat.title
             }
         }
     }

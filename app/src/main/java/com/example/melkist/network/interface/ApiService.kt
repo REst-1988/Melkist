@@ -126,6 +126,12 @@ interface ApiService {
         @Query("file_id") fileId: Int,
     ): FileAllDataResponse
 
+    @POST("dashboard/admin/file/getFavoritesFile")
+    suspend fun getFavoriteFiles(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int
+    ): FavFileResponse
+
 /*    @GET("users")
     @Headers(
         "Accept: application/vnd.github+json",

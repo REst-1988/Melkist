@@ -1,10 +1,8 @@
 package com.example.melkist
 
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,7 +10,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivityMainBinding
 import com.example.melkist.models.User
-import com.example.melkist.viewmodels.MapViewModel
 import com.example.melkist.views.map.MapP1Frag
 
 class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
@@ -37,7 +34,7 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_map, R.id.navigation_profle, R.id.navigation_fav
             )
         )
         // setupActionBarWithNavController(navController, appBarConfiguration)

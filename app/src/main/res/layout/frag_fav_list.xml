@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.fav.NotificationsFragment">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.FavViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.fav.FavListFrag" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+        <RelativeLayout
+            android:id="@+id/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/empty_background_color"
+            android:layoutDirection="ltr">
+
+            <ImageButton
+                android:id="@+id/ibtn_search"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> fragment.onSearchClick()}"
+                android:src="@drawable/ic_baseline_search_24" />
+
+            <ImageButton
+                android:id="@+id/ibtn_filter"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@id/ibtn_search"
+                android:background="?selectableItemBackgroundBorderless"
+                android:onClick="@{() -> fragment.onFilterClick()}"
+                android:src="@drawable/ic_baseline_filter_alt_24" />
+
+            <LinearLayout
+                android:id="@+id/ll_search"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ibtn_close_searchview"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:onClick="@{() -> fragment.onCloseSearchClick()}"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_remove_circle_outline_white" />
+
+                <SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/background_searchview"
+                    android:closeIcon="@drawable/ic_baseline_close_search_24"
+                    android:iconifiedByDefault="false"
+                    android:layoutDirection="ltr"
+                    android:queryHint="@string/search" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_fav_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_header"
+            android:clipToPadding="true"
+            android:padding="@dimen/normal_padding"
+            app:bindLoading="@{viewmodel.status}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:favListData="@{viewmodel.favList.component2()}" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:bindProgressLoading="@{viewmodel.status}" />
+
+    </RelativeLayout>
+</layout>

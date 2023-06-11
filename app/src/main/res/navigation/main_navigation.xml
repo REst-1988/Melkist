@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_map">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_map"
         android:name="com.example.melkist.views.map.MapP1Frag"
-        android:label="@string/title_home"
-        tools:layout="@layout/frag_map_p1" >
+        android:label="map"
+        tools:layout="@layout/frag_map_p1">
         <action
             android:id="@+id/action_navigation_home_to_mapP2FilterFilesFrag"
             app:destination="@id/mapP2FilterFilesFrag" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_profle"
         android:name="com.example.melkist.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Fav"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.melkist.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_fav"
+        android:name="com.example.melkist.views.fav.NotificationsFragment"
+        android:label="Profile"
+        tools:layout="@layout/frag_fav_list" />
     <fragment
         android:id="@+id/mapP2FilterFilesFrag"
         android:name="com.example.melkist.views.map.MapP2FilterFilesFrag"

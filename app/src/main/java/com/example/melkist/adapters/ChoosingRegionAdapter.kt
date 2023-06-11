@@ -69,8 +69,7 @@ class ChoosingRegionAdapter(val viewModel: ViewModel, val fragment: Fragment):
             (fragment as AddP5CrFrag).back()
         }
     }
-
-
+    
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {

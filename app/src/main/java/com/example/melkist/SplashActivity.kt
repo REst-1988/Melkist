@@ -16,7 +16,7 @@ import com.example.melkist.models.User
 
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 3000
+    private val splashTimeOut: Long = 100 // TODO: change this to 3000
     private var mHandler: Handler? = null
     private lateinit var userDataStore: UserDataStore
 
@@ -30,14 +30,12 @@ class SplashActivity : AppCompatActivity() {
                 proceedRunning()
             }, splashTimeOut)
     }
-
     private fun proceedRunning() {
         userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
             Log.e("TAG", "proceedRunning: $value  ,  ${value.id}  ${value.profilePic}", )
             checkSituation(value)
         }
     }
-
     private fun checkSituation(user: User?) {
         if (user?.id != null &&  user.id > 0 && !user.isFirstTime!! && user.profilePic != "") {
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
@@ -48,7 +46,6 @@ class SplashActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         // Remove any pending messages from the handler to avoid memory leaks

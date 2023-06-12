@@ -20,7 +20,7 @@ import com.example.melkist.models.LocationResponse
 import com.example.melkist.utils.PlaceRenderer
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MapViewModel
-import com.example.melkist.views.map.dialog.BottomSheetMapDialog
+import com.example.melkist.views.universal.dialog.BottomSheetFileDetailDialog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -84,7 +84,7 @@ class MapP1Frag : Fragment() {
             clusterManager.onCameraIdle()
         }
         clusterManager.setOnClusterItemClickListener { file ->
-            val bottomSheetDialog = BottomSheetMapDialog()
+            val bottomSheetDialog = BottomSheetFileDetailDialog()
             bottomSheetDialog.show(childFragmentManager, bottomSheetDialog.tag)
             UserDataStore(requireContext()).preferenceFlow.asLiveData().observe(viewLifecycleOwner){ user ->
                 viewModel.getFileInfoById(user.token!!, file.id!!)
@@ -197,7 +197,7 @@ class MapP1Frag : Fragment() {
     }
 
     fun onFilterClicked() {
-        findNavController().navigate(R.id.action_navigation_home_to_mapP2FilterFilesFrag)
+        findNavController().navigate(R.id.action_navigation_map_to_filterFilesFrag)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 

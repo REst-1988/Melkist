@@ -92,13 +92,13 @@ interface ApiService {
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/getFileCategories")
-    suspend fun getFileCategories( // TODO: need token?
+    suspend fun getFileCategories(
         @Header("Authorization") token: String,
         @Query("fileType_id") typeId: Int
     ): CatSubCatResponse
 
     @POST("dashboard/admin/file/getFileCategoryTypes")
-    suspend fun getFileCategoryTypes( // TODO: need token?
+    suspend fun getFileCategoryTypes(
         @Header("Authorization") token: String,
         @Query("fileType_id") typeId: Int,
         @Query("fileCategory_id") catId: Int,
@@ -126,7 +126,7 @@ interface ApiService {
         @Query("file_id") fileId: Int,
     ): FileAllDataResponse
 
-    @POST("dashboard/admin/file/getFavoritesFile")
+    @POST("dashboard/admin/file/getFavoriteFiles")
     suspend fun getFavoriteFiles(
         @Header("Authorization") token: String,
         @Query("user_id") userId: Int

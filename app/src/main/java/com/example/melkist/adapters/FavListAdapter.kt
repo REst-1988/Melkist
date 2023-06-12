@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.StringRes
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.melkist.R
 import com.example.melkist.databinding.ItemListFavBinding
 import com.example.melkist.models.Fav
@@ -59,6 +61,20 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
             binding.txtPrice.text = getPropertyPeriodsText(data.price, R.string.tooman)
             binding.txtRealEstate.text = String.format("%s %s", context.resources.getString(R.string.real_estate_title), data.user.realEstate)
             binding.txtAgent.text = String.format("%s %s", data.user.firstName, data.user.lastName)
+            data.user.profilePic?.let {
+                val imgUri = it.toUri().buildUpon().scheme("https").build()
+                binding.imgProfile.load(imgUri) {
+                    placeholder(R.drawable.loading_animation)
+                    error(R.drawable.ic_broken_image)
+                }
+            }
+            data.image?.let {
+                val imgUri = it.toUri().buildUpon().scheme("https").build()
+                binding.imgMain.load(imgUri) {
+                    placeholder(R.drawable.loading_animation)
+                    error(R.drawable.ic_broken_image)
+                }
+            }
             binding.executePendingBindings()
         }
 

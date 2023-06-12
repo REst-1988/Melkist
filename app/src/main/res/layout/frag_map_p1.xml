@@ -152,7 +152,7 @@
                 android:layout_height="@dimen/rounded_btns"
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="@dimen/normal_margin"
                 android:background="@drawable/rounded_btns"
                 android:elevation="4dp"
                 android:src="@drawable/ic_baseline_satellite_24"

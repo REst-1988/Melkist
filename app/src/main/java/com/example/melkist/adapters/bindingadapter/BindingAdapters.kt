@@ -1,5 +1,6 @@
 package com.example.melkist.adapters.bindingadapter
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -38,7 +39,7 @@ fun bindRecyclerView(
 }
 
 @BindingAdapter("favListData")
-fun bindRecyclerView(
+fun bindFavRecyclerView(
     recyclerView: RecyclerView,
     data: List<Fav>?
 ) {
@@ -51,6 +52,7 @@ fun bindRecyclerViewCatSubCat(
     recyclerView: RecyclerView,
     data: List<CatSubCatModel>?
 ) {
+    Log.e("TAG", "bindRecyclerViewCatSubCat: TEST ${data?.size} ", )
     val adapter = recyclerView.adapter as ChoosingCatSubCatAdapter
     adapter.submitList(data)
 }

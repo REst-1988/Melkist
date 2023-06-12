@@ -22,43 +22,21 @@ class MapViewModel : ViewModel() {
         this.reqSource = reqSource
     }
 
-    private var itemType: ItemType = ItemType.SHOW_ALL
-    fun getItemType() = itemType
-    fun setItemType(type: ItemType) {
-        itemType = type
-    }
-
-    fun getTypeId(requestCode: ItemType): Int {
-        val fileTypes = FileTypes()
-        return when (requestCode) {
-            ItemType.SHOW_SEEKER -> fileTypes.seeker.id
-            ItemType.SHOW_OWNER -> fileTypes.owner.id
-            else -> -1
-        }
-    }
-
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
 
-    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
-    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
-    private val _pcrsList = MutableLiveData<List<PcrsData>>()
-    val pcrsList: LiveData<List<PcrsData>> = _pcrsList
-    private val _regionList = MutableLiveData<List<RegionResponseData>>()
-    val regionList: LiveData<List<RegionResponseData>> = _regionList
-
-    private val _filesResponse = MutableLiveData <FileResponse>()
-    val filesResponse: LiveData<FileResponse> = _filesResponse
     private val _locationResponse = MutableLiveData <LocationResponse>()
     val locationResponse: LiveData<LocationResponse> = _locationResponse
 
     private val _fileAllData = MutableLiveData<FileAllDataResponse>()
     val fileAllData: LiveData<FileAllDataResponse> = _fileAllData
 
-    var catId: Int = 0
-    var catTitle: String = ""
-    var subCatId: Int = 0
-    var subCatTitle: String = ""
+    private var itemType: ItemType = ItemType.SHOW_ALL
+    fun getItemType() = itemType
+    fun setItemType(type: ItemType) {
+        itemType = type
+    }
+
 
     fun getFiles(token: String, cityId: Int) {
         viewModelScope.launch {
@@ -89,10 +67,4 @@ class MapViewModel : ViewModel() {
         }
     }
 
-    fun resetCatSubCat() {
-        catId = 0
-        catTitle = ""
-        subCatId = 0
-        subCatTitle = ""
-    }
 }

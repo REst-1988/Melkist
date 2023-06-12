@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.universal.dialog.BottomSheetUniversalList">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/toggle"
+        android:layout_width="40dp"
+        android:layout_height="7dp"
+        app:cardCornerRadius="100dp"
+        android:layout_marginTop="@dimen/short_margin"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/negative_empty_background_color_sub_item"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bottom_sheet_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/short_margin"
+        android:layout_below="@id/toggle"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</RelativeLayout>

@@ -54,7 +54,7 @@
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="24dp"
             android:background="@color/empty_background_color"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="@dimen/melkist_card_corner"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 

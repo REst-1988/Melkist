@@ -85,8 +85,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/layout_header"
-            android:clipToPadding="true"
-            android:padding="@dimen/normal_padding"
+            android:clipToPadding="false"
+            android:padding="@dimen/short_padding"
             app:bindLoading="@{viewmodel.status}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:favListData="@{viewmodel.favList.component2()}" />

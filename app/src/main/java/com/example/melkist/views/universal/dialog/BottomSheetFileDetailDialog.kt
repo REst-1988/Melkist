@@ -1,18 +1,13 @@
-package com.example.melkist.views.map.dialog
+package com.example.melkist.views.universal.dialog
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.melkist.R
-import com.example.melkist.databinding.LayoutBottomSheetMapBinding
-import com.example.melkist.databinding.LayoutImageViewPagerBinding
+import com.example.melkist.databinding.LayoutBottomSheetFileDetailBinding
 import com.example.melkist.models.FileAllDataResponse
 import com.example.melkist.models.Location
 import com.example.melkist.models.Period
@@ -20,19 +15,17 @@ import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.MapViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomSheetMapDialog: BottomSheetDialogFragment() {
+class BottomSheetFileDetailDialog: BottomSheetDialogFragment() {
 
-    private lateinit var binding: LayoutBottomSheetMapBinding
+    private lateinit var binding: LayoutBottomSheetFileDetailBinding
     private val viewModel: MapViewModel by activityViewModels ()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-         binding = LayoutBottomSheetMapBinding.inflate(
+         binding = LayoutBottomSheetFileDetailBinding.inflate(
             inflater
         )
         Log.e("TAG", "onCreateView: $binding", )

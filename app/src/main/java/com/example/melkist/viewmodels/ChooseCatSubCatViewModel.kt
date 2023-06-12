@@ -9,6 +9,8 @@ import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.FileTypes
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.EMPTY_CATEGORY_ID
+import com.example.melkist.utils.ItemType
 import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.SEEKER_ITEM_TYPE
 import com.example.melkist.utils.User.token
@@ -18,8 +20,21 @@ class ChooseCatSubCatViewModel : ViewModel() {
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
+    var itemType: Int = 0
+    var catId: Int = EMPTY_CATEGORY_ID
+    var catTitle: String = ""
+    var subCatId: Int = EMPTY_CATEGORY_ID
+    var subCatTitle: String = ""
     private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
     val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
+
+    fun getCatArray(): Array<String> {
+        return arrayOf(catId.toString(), catTitle)
+    }
+
+    fun getSubCatArray(): Array<String> {
+        return arrayOf(subCatId.toString(), subCatTitle)
+    }
 
     fun getFileCategories(token: String, typeId: Int) {
         viewModelScope.launch {

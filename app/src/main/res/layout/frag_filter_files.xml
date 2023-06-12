@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.map.MapP2FilterFilesFrag">
+    tools:context=".views.universal.MapP2FilterFilesFrag">
 
     <data>
         <variable
             name="fragment"
-            type="com.example.melkist.views.map.MapP2FilterFilesFrag" />
+            type="com.example.melkist.views.universal.FilterFilesFrag" />
     </data>
 
     <!--layout getting general information-->

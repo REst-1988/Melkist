@@ -28,6 +28,7 @@ class UserDataStore(context: Context) {
     private val userProvinceIdPk = intPreferencesKey("province_id")
     private val userProvinceTitlePk = stringPreferencesKey("province_title")
     private val userEmailPk = stringPreferencesKey("email")
+    private val userRealEstatePk = stringPreferencesKey("real_estate")
     private val tokenPk = stringPreferencesKey("token")
 
 
@@ -93,6 +94,7 @@ class UserDataStore(context: Context) {
             cityTitle = preferences[userCityTitlePk],
             provinceId = preferences[userProvinceIdPk],
             provinceTitle = preferences[userProvinceTitlePk],
+            realEstate = preferences[userRealEstatePk],
             token = preferences[tokenPk]
         )
     }

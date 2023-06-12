@@ -11,8 +11,8 @@
         android:label="map"
         tools:layout="@layout/frag_map_p1">
         <action
-            android:id="@+id/action_navigation_home_to_mapP2FilterFilesFrag"
-            app:destination="@id/mapP2FilterFilesFrag" />
+            android:id="@+id/action_navigation_map_to_filterFilesFrag"
+            app:destination="@id/FilterFilesFrag" />
     </fragment>
 
     <fragment
@@ -23,21 +23,9 @@
 
     <fragment
         android:id="@+id/navigation_fav"
-        android:name="com.example.melkist.views.fav.NotificationsFragment"
+        android:name="com.example.melkist.views.fav.FavListFrag"
         android:label="Profile"
         tools:layout="@layout/frag_fav_list" />
-    <fragment
-        android:id="@+id/mapP2FilterFilesFrag"
-        android:name="com.example.melkist.views.map.MapP2FilterFilesFrag"
-        android:label="frag_map_p2_filter_files"
-        tools:layout="@layout/frag_map_p2_filter_files" >
-        <action
-            android:id="@+id/action_mapP2FilterFilesFrag_to_addP2ChooseTypeFrag2"
-            app:destination="@id/addP2ChooseTypeFrag2" />
-        <action
-            android:id="@+id/action_mapP2FilterFilesFrag_to_chooseCatSubcatFrag"
-            app:destination="@id/chooseCatSubcatFrag"/>
-    </fragment>
     <fragment
         android:id="@+id/addP2ChooseTypeFrag2"
         android:name="com.example.melkist.views.universal.ChooseSeekerOwnerTypeFrag"
@@ -48,4 +36,16 @@
         android:name="com.example.melkist.views.universal.ChooseCatSubcatFrag"
         android:label="frag_choose_cat_subcat"
         tools:layout="@layout/frag_choose_cat_subcat" />
+    <fragment
+        android:id="@+id/FilterFilesFrag"
+        android:name="com.example.melkist.views.universal.FilterFilesFrag"
+        android:label="frag_filter_files"
+        tools:layout="@layout/frag_filter_files" >
+        <action
+            android:id="@+id/action_filterFilesFrag_to_chooseTypeFrag"
+            app:destination="@id/addP2ChooseTypeFrag2" />
+        <action
+            android:id="@+id/action_mapP2FilterFilesFrag_to_chooseCatSubcatFrag"
+            app:destination="@id/chooseCatSubcatFrag" />
+    </fragment>
 </navigation>

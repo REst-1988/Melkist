@@ -11,10 +11,10 @@
     <string name="forget_user_pass">فراموشی کلمه عبور</string>
     <string name="choosing_real_estate_header">مشاور املاک</string>
     <string name="choosing_real_estate_header2">(دارای قراداد همکاری با ملکیست)</string>
-    <string name="choosing_real_estate_body">درصورتی که مشاوراملاک می‌باشید و با ملکیست قرارداد ندارید می توانید با ما تماس گرفته تا در خصوص نحوه همکاری و برخورداری از امکانات نرم‌افزار گفتگو نماییم.</string>
+    <string name="choosing_real_estate_body">این گزینه مخصوص مدیران، سرپرستان و مشاوران املاکی است که با مجموعه ملکیست قرارداد دارند</string>
     <string name="choosing_user_header">کاربرد عادی</string>
     <string name="choosing_user_header2">(بدون قرارداد همکاری با ملکیست)</string>
-    <string name="choosing_user_body">درصورتی که کاربر عادی هستید و با ملکیست قرارداد ندارید می‌توانید از طریق ثبت نام به سیستم وارد شوید. برخی از امکانات نرم‌افزار برای شما قابل استفاده نمی‌باشد.</string>
+    <string name="choosing_user_body">درصورتی که کاربر عادی هستید و با ملکیست قرارداد ندارید می‌توانید از طریق ثبت نام به سیستم وارد شوید. برخی از امکانات نرم‌افزار برای شما قابل استفاده نمی‌باشد</string>
     <string name="choosing_real_estate_user_header">انتخاب نمایید.</string>
     <string name="choosing_sub_header">انتخاب نمایید.</string>
     <string name="choosing_province">انتخاب استانی که در آن مشغول به کار هستید</string>
@@ -140,4 +140,22 @@
     <string name="squere_meter">مترمربع</string>
     <string name="filter_file">فیلتر فایل ها</string>
     <string name="all">همه</string>
+    <string name="choose_type_first">ابتدا نوع آگهی را انتخاب نمایید!</string>
+    <string name="choose_type_cat_first">لطفا ابتدا نوع آگهی و دسته بندی را انتخاب نمایید!</string>
+
+    <!-- TODO: Remove or change this -->
+    <array name="age_list">
+        <item>انتخاب به صورت دستی</item>
+        <item>1402</item>
+        <item>1401</item>
+        <item>1400</item>
+        <item>1399</item>
+        <item>1398</item>
+        <item>1397</item>
+        <item>1396</item>
+        <item>1395</item>
+        <item>1394</item>
+        <item>1393</item>
+        <item>1392</item>
+    </array>
 </resources>

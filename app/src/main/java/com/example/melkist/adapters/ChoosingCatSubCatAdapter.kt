@@ -1,6 +1,7 @@
 package com.example.melkist.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -41,6 +42,7 @@ class ChoosingCatSubCatAdapter(val viewModel: ChooseCatSubCatViewModel, val frag
         }
 
         private fun loadImg(data: CatSubCatModel) {
+            Log.e("TAG", "loadImg: ${data.dayIconUrl}  night ${data.nightIconUrl}", )
             val imgUrl = if (isSystemDarkMode(context)) data.nightIconUrl else data.dayIconUrl
             val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
             binding.img.load(imgUri) {

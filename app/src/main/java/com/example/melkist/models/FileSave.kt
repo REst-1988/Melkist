@@ -1,26 +1,42 @@
 package com.example.melkist.models
 
-import android.util.Log
+import android.content.Context
+import android.graphics.Color
+import com.example.melkist.R
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.squareup.moshi.Json
-import org.json.JSONArray
-import org.json.JSONObject
+
 
 data class LocationResponse(
     @Json var result: Boolean?,
     @Json var data: List<LocationData>,
+    @Json val errors: List<String>?
 )
 
 data class LocationData(
     @Json var id: Int?,
-    @Json val locations: List<Loc>?
+    @Json val locations: List<Loc>?,
+    @Json (name = "filetype") val fileTypeId: Int
 ): ClusterItem {
-    override fun getPosition(): LatLng = LatLng(locations!![0].lat!!, locations!![0].lng!!)
+    override fun getPosition(): LatLng = LatLng(locations!![0].lat!!, locations[0].lng!!)
 
     override fun getTitle(): String = id.toString()
 
     override fun getSnippet(): String = id.toString()
+
+    fun getLocColor (context: Context): BitmapDescriptor{
+        val hsvBlue = FloatArray(3)
+        Color.colorToHSV(context.resources.getColor(R.color.main_dark_color2), hsvBlue)
+        val hsvRed = FloatArray(3)
+        Color.colorToHSV(context.resources.getColor(R.color.main_light_color2), hsvRed)
+        return if (fileTypeId == FileTypes().owner.id)
+            BitmapDescriptorFactory.defaultMarker(hsvBlue[0])
+        else
+            BitmapDescriptorFactory.defaultMarker(hsvRed[0])
+    }
 }
 
 data class FileResponse(

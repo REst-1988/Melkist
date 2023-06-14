@@ -8,6 +8,7 @@ import com.example.melkist.models.FileResponse
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.PcrsData
 import com.example.melkist.models.RegionResponseData
+import com.example.melkist.utils.REGION_1
 
 class FilterFileViewModel: ViewModel() {
 
@@ -21,18 +22,18 @@ class FilterFileViewModel: ViewModel() {
 
     private val _filesResponse = MutableLiveData <FileResponse>()
     val filesResponse: LiveData<FileResponse> = _filesResponse
-
-
-    var catId: Int = 0
-    var catTitle: String = ""
-    var subCatId: Int = 0
-    var subCatTitle: String = ""
-
     private var itemType: MapViewModel.ItemType = MapViewModel.ItemType.SHOW_ALL
     fun getItemType() = itemType
     fun setItemType(type: MapViewModel.ItemType) {
         itemType = type
     }
+
+    var catId: Int = 0
+    var catTitle: String = ""
+    var subCatId: Int = 0
+    var subCatTitle: String = ""
+    var regionId: Int = 0
+    var regionTitle: String = ""
 
     fun getTypeId(requestCode: MapViewModel.ItemType): Int {
         val fileTypes = FileTypes()
@@ -42,7 +43,6 @@ class FilterFileViewModel: ViewModel() {
             else -> -1
         }
     }
-
     fun resetCatSubCat() {
         catId = 0
         catTitle = ""
@@ -54,4 +54,9 @@ class FilterFileViewModel: ViewModel() {
         subCatId = 0
         subCatTitle = ""
     }
+
+    fun getReqSourceNumber(): Int {
+        return REGION_1
+    }
+
 }

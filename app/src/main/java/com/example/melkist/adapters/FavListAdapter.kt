@@ -2,7 +2,6 @@ package com.example.melkist.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -17,14 +16,9 @@ import coil.load
 import com.example.melkist.R
 import com.example.melkist.databinding.ItemListFavBinding
 import com.example.melkist.models.Fav
-import com.example.melkist.models.FileAllDataResponse
-import com.example.melkist.models.Location
 import com.example.melkist.models.Period
-import com.example.melkist.models.RegionResponseData
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showToast
-import com.example.melkist.viewmodels.AddItemViewModel
-import com.example.melkist.views.add.AddP5CrFrag
 
 class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
     ListAdapter<Fav, FavListAdapter.FavListViewHolder>(DiffUtilCallBack), Filterable {

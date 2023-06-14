@@ -126,9 +126,9 @@
     </fragment>
     <fragment
         android:id="@+id/addP5CrFrag"
-        android:name="com.example.melkist.views.add.AddP5CrFrag"
+        android:name="com.example.melkist.views.universal.ChooseCrFrag"
         android:label="frag_add_p5_cr"
-        tools:layout="@layout/frag_add_p5_cr">
+        tools:layout="@layout/frag_choose_cr">
         <action
             android:id="@+id/action_addP5CrFrag_to_addP4LocationFrag"
             app:destination="@id/addP4LocationFrag"

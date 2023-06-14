@@ -47,5 +47,13 @@
         <action
             android:id="@+id/action_mapP2FilterFilesFrag_to_chooseCatSubcatFrag"
             app:destination="@id/chooseCatSubcatFrag" />
+        <action
+            android:id="@+id/action_FilterFilesFrag_to_ChooseCrFrag2"
+            app:destination="@id/ChooseCrFrag2" />
     </fragment>
+    <fragment
+        android:id="@+id/ChooseCrFrag2"
+        android:name="com.example.melkist.views.universal.ChooseCrFrag"
+        android:label="choose_region"
+        tools:layout="@layout/frag_choose_cr" />
 </navigation>

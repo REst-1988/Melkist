@@ -13,7 +13,7 @@ import com.example.melkist.databinding.ItemListMultiTextBinding
 import com.example.melkist.models.RegionResponseData
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.viewmodels.AddItemViewModel
-import com.example.melkist.views.add.AddP5CrFrag
+import com.example.melkist.views.universal.ChooseCrFrag
 
 class ChoosingRegionAdapter(val viewModel: ViewModel, val fragment: Fragment):
     ListAdapter<RegionResponseData, ChoosingRegionAdapter.RegionViewHolder>(DiffUtilCallBack),
@@ -65,8 +65,7 @@ class ChoosingRegionAdapter(val viewModel: ViewModel, val fragment: Fragment):
         val rc = getItem(position)
         holder.bind(rc)
         holder.itemView.setOnClickListener{
-            (viewModel as AddItemViewModel).choosingItemActionRegion(rc)
-            (fragment as AddP5CrFrag).back()
+            (fragment as ChooseCrFrag).onChooseItem(rc)
         }
     }
     

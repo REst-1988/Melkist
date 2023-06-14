@@ -5,22 +5,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.FragMapP1Binding
+import com.example.melkist.models.FileTypes
 import com.example.melkist.models.LocationData
 import com.example.melkist.models.LocationResponse
+import com.example.melkist.utils.DATA
 import com.example.melkist.utils.PlaceRenderer
+import com.example.melkist.utils.TYPE_OPTIONS_TAG
+import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MapViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetFileDetailDialog
+import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -37,13 +45,13 @@ class MapP1Frag : Fragment() {
     private lateinit var mapFragment: SupportMapFragment
     private val viewModel: MapViewModel by activityViewModels()
     private lateinit var userDataStore: UserDataStore
+    private lateinit var clusterManager: ClusterManager<LocationData>
+    private var files: List<LocationData> = listOf()
     private lateinit var googleMap: GoogleMap
-    fun getGoogleMap () = googleMap
+    fun getGoogleMap() = googleMap
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragMapP1Binding.inflate(inflater, container, false)
         _binding?.apply {
@@ -62,21 +70,22 @@ class MapP1Frag : Fragment() {
             ) as SupportMapFragment
 
             listenToFileList()
-            binding.ibtnFilter.setOnClickListener{
+            binding.ibtnFilter.setOnClickListener {
                 onResume()
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     private fun addClusteredMarkers(googleMap: GoogleMap, files: List<LocationData>) {
-        val clusterManager = ClusterManager<LocationData>(requireContext(), googleMap)
-        clusterManager.renderer = PlaceRenderer(
-            requireContext(),
-            googleMap,
-            clusterManager
-        )
+        if (!::clusterManager.isInitialized) {
+            clusterManager = ClusterManager<LocationData>(requireContext(), googleMap)
+            clusterManager.renderer = PlaceRenderer(
+                requireContext(), googleMap, clusterManager
+            )
+        }
+        clusterManager.clearItems()
         //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
         clusterManager.addItems(files)
         clusterManager.cluster()
@@ -86,21 +95,17 @@ class MapP1Frag : Fragment() {
         clusterManager.setOnClusterItemClickListener { file ->
             val bottomSheetDialog = BottomSheetFileDetailDialog()
             bottomSheetDialog.show(childFragmentManager, bottomSheetDialog.tag)
-            UserDataStore(requireContext()).preferenceFlow.asLiveData().observe(viewLifecycleOwner){ user ->
-                viewModel.getFileInfoById(user.token!!, file.id!!)
-            }
-            false
+            viewModel.getFileInfoById((activity as MainActivity).user.token!!, file.id!!)
+            true
         }
     }
 
     override fun onResume() {
         super.onResume()
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
-        if (!this::userDataStore.isInitialized)
-            userDataStore = UserDataStore(requireContext())
-        UserDataStore(requireContext()).preferenceFlow.asLiveData().observe(viewLifecycleOwner){
-            viewModel.getFiles(it.token!!, it.cityId!!)
-        }
+        if (!this::userDataStore.isInitialized) userDataStore = UserDataStore(requireContext())
+        val user = (activity as MainActivity).user
+        viewModel.getFiles(user.token!!, user.cityId!!)
     }
 
     override fun onDestroyView() {
@@ -111,28 +116,22 @@ class MapP1Frag : Fragment() {
     private fun listenToFileList() {
         viewModel.locationResponse.observe(viewLifecycleOwner) { response ->
             when (response.result) {
-                true -> {
-                    onTrueResult(response)
-                }
-                false -> {
-                    onFalseResult()
-                }
-                else -> {
-                    showToast(requireContext(), resources.getString(R.string.somthing_goes_wrong))
-/*                    Log.e(
-                        "TAG",
-                        "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}",
-                     )*/
-                }
+                true -> onTrueResult(response)
+                false -> onFalseResult(response)
+                else -> showToast(
+                    requireContext(), resources.getString(R.string.somthing_goes_wrong)
+                )
             }
         }
     }
 
-    private fun onFalseResult() {
-        // TODO
+    private fun onFalseResult(response: LocationResponse) {
+        showDialogWithMessage(requireContext(), concatenateText(response.errors)) { d, _ ->
+            d.dismiss()
+        }
     }
 
-    private fun onTrueResult(response: LocationResponse){
+    private fun onTrueResult(response: LocationResponse) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 readyMap(response)
@@ -155,18 +154,41 @@ class MapP1Frag : Fragment() {
             bounds.include(it.position)
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
-        addClusteredMarkers(googleMap, response.data)
+        files = response.data
+        addClusteredMarkers(googleMap, filterFileByChosenType(files))
+    }
+
+    private fun filterFileByChosenType(files: List<LocationData>): List<LocationData> {
+        return when (viewModel.getItemType()) {
+            MapViewModel.ItemType.SHOW_ALL -> files
+            MapViewModel.ItemType.SHOW_SEEKER -> files.filter { it.fileTypeId == FileTypes().seeker.id }
+            MapViewModel.ItemType.SHOW_OWNER -> files.filter { it.fileTypeId == FileTypes().owner.id }
+        }
+    }
+
+    private fun setTitleColor() {
+        when (viewModel.getItemType()) {
+            MapViewModel.ItemType.SHOW_OWNER -> binding.cardHeader.setCardBackgroundColor(
+                ContextCompat.getColor(requireContext(), R.color.main_dark_color2)
+            )
+
+            MapViewModel.ItemType.SHOW_SEEKER -> binding.cardHeader.setCardBackgroundColor(
+                ContextCompat.getColor(requireContext(), R.color.main_light_color2)
+            )
+
+            else -> binding.cardHeader.setCardBackgroundColor(
+                ContextCompat.getColor(requireContext(), R.color.empty_background_color)
+            )
+        }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Interaction) {
-            interaction =
-                context as Interaction
+            interaction = context as Interaction
         } else {
             throw RuntimeException(
-                context.toString()
-                        + " must implement OnFragmentInteractionListener"
+                context.toString() + " must implement OnFragmentInteractionListener"
             )
         }
     }
@@ -186,14 +208,29 @@ class MapP1Frag : Fragment() {
     }
 
     fun onChangeItemType() {
-        // TODO
+        val bottomFrag = BottomSheetUniversalList(
+            resources.getStringArray(R.array.type_options).toList()
+        )
+        bottomFrag.show(childFragmentManager, TYPE_OPTIONS_TAG)
+        bottomFrag.setFragmentResultListener(TYPE_OPTIONS_TAG) { _, bundle ->
+            when (bundle.getInt(DATA)) {
+                0 -> viewModel.setItemType(MapViewModel.ItemType.SHOW_ALL)
+                1 -> viewModel.setItemType(MapViewModel.ItemType.SHOW_SEEKER)
+                2 -> viewModel.setItemType(MapViewModel.ItemType.SHOW_OWNER)
+            }
+            binding.txtTypeOptionTitle.text = showStatusTitle()
+            setTitleColor()
+            if (::googleMap.isInitialized) addClusteredMarkers(
+                googleMap,
+                filterFileByChosenType(files)
+            )
+        }
     }
 
     fun onSatelliteClicked(googleMap: GoogleMap) {
-        if (googleMap.mapType == GoogleMap.MAP_TYPE_NORMAL)
-            googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
-        else
-            googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        if (googleMap.mapType == GoogleMap.MAP_TYPE_NORMAL) googleMap.mapType =
+            GoogleMap.MAP_TYPE_SATELLITE
+        else googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
     }
 
     fun onFilterClicked() {

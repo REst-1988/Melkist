@@ -2,16 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".views.add.AddP5CrFrag">
+    tools:context=".views.universal.ChooseCrFrag">
     <data>
 
         <variable
             name="viewmodel"
-            type="com.example.melkist.viewmodels.AddItemViewModel" />
+            type="com.example.melkist.viewmodels.ChooseCrViewModel" />
 
         <variable
             name="fragment"
-            type="com.example.melkist.views.add.AddP5CrFrag" />
+            type="com.example.melkist.views.universal.ChooseCrFrag" />
     </data>
 
     <RelativeLayout

@@ -26,7 +26,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragSignupP5RecieveVerificationSmsBinding.inflate(inflater)
         return binding.root
     }
@@ -76,7 +76,10 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
                         d.dismiss()
                     }
             } else
-                Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
+                Log.e(
+                    "TAG",
+                    "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ",
+                )
             /*showToast(
                 requireContext(),
                 resources.getString(R.string.somthing_goes_wrong)
@@ -106,79 +109,79 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         }
     }
 
-        private fun startNextStep() {
-            viewModel.restVerificationResponse(viewModel.verifyResponse)
-            findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
-        }
-
-        override fun onStart() {
-            super.onStart()
-            viewModel.resetTimer()
-        }
-
-        override fun onDestroy() {
-            super.onDestroy()
-            viewModel.stopTimer()
-        }
-
-        private fun timerHandling() {
-            viewModel.isTimeUp.observe(viewLifecycleOwner) {
-                if (viewModel.isTimeUp.value == false) {
-                    binding.txtTimer.visibility = View.VISIBLE
-                    binding.txtSendAgain.visibility = View.GONE
-                } else {
-                    binding.txtTimer.visibility = View.GONE
-                    binding.txtSendAgain.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        private fun isVerifyCodeField(): Boolean {
-            // not empty field
-            if (binding.etVerificationCode.editText == null || binding.etVerificationCode.editText!!.text.isEmpty()) {
-                binding.etVerificationCode.error =
-                    requireContext().resources.getString(R.string.error_on_empty_verification_code)
-                return false
-            }
-            // not wrong field
-            else if (binding.etVerificationCode.editText!!.text.length != 5) {
-                binding.etVerificationCode.error =
-                    requireContext().resources.getString(R.string.error_on_wrong_verification_code)
-                return false
-            }
-            binding.etVerificationCode.error = null
-            return true
-        }
-
-        fun back() {
-            findNavController()
-                .navigate(
-                    R.id.action_signupP5ReceiveVerificationSmsFrag_to_signupP1SignupFormFrag
-                )
-        }
-
-        fun onSendVerifyCodeAgain() {
-            viewModel.stopTimer()
-            viewModel.checkSignupData(
-                viewModel.firstName,
-                viewModel.lastName,
-                viewModel.realEstateNameForManager,
-                viewModel.cityId,
-                viewModel.mobileNo,
-                viewModel.nationalCode.toString(),
-                viewModel.email,
-                viewModel.getSubCondition()
-            )
-            viewModel.restVerificationResponse(viewModel.verifyResponse)
-            viewModel.resetTimer()
-        }
-
-        fun onVerify() {
-            if (isVerifyCodeField())
-                viewModel.sendMobileVerificationCode(
-                    viewModel.mobileNo,
-                    binding.etVerificationCode.editText!!.text.toString()
-                )
-        }
-
+    private fun startNextStep() {
+        viewModel.restVerificationResponse(viewModel.verifyResponse)
+        findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.resetTimer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.stopTimer()
+    }
+
+    private fun timerHandling() {
+        viewModel.isTimeUp.observe(viewLifecycleOwner) {
+            if (viewModel.isTimeUp.value == false) {
+                binding.txtTimer.visibility = View.VISIBLE
+                binding.txtSendAgain.visibility = View.GONE
+            } else {
+                binding.txtTimer.visibility = View.GONE
+                binding.txtSendAgain.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun isVerifyCodeField(): Boolean {
+        // not empty field
+        if (binding.etVerificationCode.editText == null || binding.etVerificationCode.editText!!.text.isEmpty()) {
+            binding.etVerificationCode.error =
+                requireContext().resources.getString(R.string.error_on_empty_verification_code)
+            return false
+        }
+        // not wrong field
+        else if (binding.etVerificationCode.editText!!.text.length != 5) {
+            binding.etVerificationCode.error =
+                requireContext().resources.getString(R.string.error_on_wrong_verification_code)
+            return false
+        }
+        binding.etVerificationCode.error = null
+        return true
+    }
+
+    fun back() {
+        findNavController()
+            .navigate(
+                R.id.action_signupP5ReceiveVerificationSmsFrag_to_signupP1SignupFormFrag
+            )
+    }
+
+    fun onSendVerifyCodeAgain() {
+        viewModel.stopTimer()
+        viewModel.checkSignupData(
+            viewModel.firstName,
+            viewModel.lastName,
+            viewModel.realEstateNameForManager,
+            viewModel.cityId,
+            viewModel.mobileNo,
+            viewModel.nationalCode.toString(),
+            viewModel.email,
+            viewModel.getSubCondition()
+        )
+        viewModel.restVerificationResponse(viewModel.verifyResponse)
+        viewModel.resetTimer()
+    }
+
+    fun onVerify() {
+        if (isVerifyCodeField())
+            viewModel.sendMobileVerificationCode(
+                viewModel.mobileNo,
+                binding.etVerificationCode.editText!!.text.toString()
+            )
+    }
+
+}

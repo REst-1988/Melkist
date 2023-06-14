@@ -15,7 +15,7 @@ import com.example.melkist.databinding.ItemListSingleTextBinding
 import com.example.melkist.models.PcrsData
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.example.melkist.viewmodels.SignupViewModel
-import com.example.melkist.views.add.AddP5CrFrag
+import com.example.melkist.views.universal.ChooseCrFrag
 import com.example.melkist.views.login.signup.SignupP4ChoosingPcrsFrag
 
 /**
@@ -75,7 +75,7 @@ class ChoosingPcrsAdapter(val viewModel: ViewModel, val fragment: Fragment) :
             if (viewModel is AddItemViewModel) {
                 Log.e("TAG", "onBindViewHolder: aaa test ", )
                 viewModel.choosingItemActionPc(pcrs)
-                (fragment as AddP5CrFrag).back()
+                (fragment as ChooseCrFrag).back()
             } else {
                 Log.e("TAG", "onBindViewHolder: aaa test 2" , )
                 (viewModel as SignupViewModel).choosingItemAction(pcrs)

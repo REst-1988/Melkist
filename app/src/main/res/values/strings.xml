@@ -143,19 +143,68 @@
     <string name="choose_type_first">ابتدا نوع آگهی را انتخاب نمایید!</string>
     <string name="choose_type_cat_first">لطفا ابتدا نوع آگهی و دسته بندی را انتخاب نمایید!</string>
 
-    <!-- TODO: Remove or change this -->
-    <array name="age_list">
-        <item>انتخاب به صورت دستی</item>
-        <item>1402</item>
-        <item>1401</item>
-        <item>1400</item>
-        <item>1399</item>
-        <item>1398</item>
-        <item>1397</item>
-        <item>1396</item>
-        <item>1395</item>
-        <item>1394</item>
-        <item>1393</item>
-        <item>1392</item>
-    </array>
+    <string-array name="age_list">
+        <item>نو ساز</item>
+        <item>1 سال</item>
+        <item>2 سال</item>
+        <item>5 سال</item>
+        <item>10 سال</item>
+        <item>15 سال</item>
+        <item>20 سال</item>
+        <item>25 سال</item>
+        <item>30 سال</item>
+    </string-array>
+
+    <string-array name="size_list">
+        <item>- وارد کردن مقدار دلخواه -</item>
+        <item>60 متر</item>
+        <item>90 متر</item>
+        <item>120 متر</item>
+        <item>175 متر</item>
+        <item>220 متر</item>
+        <item>275 متر</item>
+        <item>350 متر</item>
+        <item>500 متر</item>
+        <item>600 متر</item>
+        <item>850 متر</item>
+        <item>1200 متر</item>
+    </string-array>
+
+    <string-array name="room_no_list">
+        <item>بدون خواب</item>
+        <item>1 خواب</item>
+        <item>2 خواب</item>
+        <item>3 خواب</item>
+        <item>4 خواب</item>
+    </string-array>
+
+    <string-array name="price_list">
+        <item>- وارد کردن مقدار دلخواه -</item>
+        <item>300 میلیون</item>
+        <item>500 میلیون</item>
+        <item>750 میلیون</item>
+        <item>1 میلیارد</item>
+        <item>1 میلیارد و 200 میلیون</item>
+        <item>1 میلیارد و 500 میلیون</item>
+        <item>1 میلیارد و 800 میلیون</item>
+        <item>2 میلیارد</item>
+        <item>1 میلیارد و 500 میلیون</item>
+        <item>3 میلیارد</item>
+        <item>4 میلیارد</item>
+        <item>5 میلیارد</item>
+        <item>6 میلیارد</item>
+        <item>8 میلیارد</item>
+        <item>12 میلیارد</item>
+        <item>15 میلیارد</item>
+        <item>20 میلیارد</item>
+        <item>30 میلیارد</item>
+        <item>50 میلیارد</item>
+        <item>100 میلیارد</item>
+    </string-array>
+
+    <string-array name="type_options">
+        <item>نمایش همه فایل ها</item>
+        <item>نمایش فایل های خواهان</item>
+        <item>نمایش فایل های مالک</item>
+    </string-array>
 </resources>

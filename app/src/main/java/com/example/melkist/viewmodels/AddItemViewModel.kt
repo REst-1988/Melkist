@@ -26,8 +26,7 @@ class AddItemViewModel : ViewModel() {
     val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList*/
     private val _pcrsList = MutableLiveData<List<PcrsData>>()
     val pcrsList: LiveData<List<PcrsData>> = _pcrsList
-    private val _regionList = MutableLiveData<List<RegionResponseData>>()
-    val regionList: LiveData<List<RegionResponseData>> = _regionList
+
     private val _saveResponse = MutableLiveData<PublicResponseModel>()
     val saveResponse: LiveData<PublicResponseModel> = _saveResponse
 
@@ -218,56 +217,9 @@ class AddItemViewModel : ViewModel() {
 /*    fun emptyList() {
         _itemOptionList.value = listOf()
     }*/
-
-    fun emptyPcList(){
+/*    fun emptyPcList(){
         _pcrsList.value = listOf()
-    }
-
-    fun emptyRegionList(){
-        _regionList.value = listOf()
-    }
-
-    fun getProvinces() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _pcrsList.value =
-                    Api.retrofitService.getGetProvinces().data!!
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
-            }
-        }
-    }
-
-    fun getCity() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _pcrsList.value =
-                    Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
-            }
-        }
-    }
-
-    fun getRegion() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _regionList.value =
-                    Api.retrofitService.getRegionsByCity(cityId).data!!
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
-            }
-        }
-    }
+    }*/ //TODO: Check this if don't need delete
 
     fun resetAddItemFieldsByChoosingType() {
         catId = 0

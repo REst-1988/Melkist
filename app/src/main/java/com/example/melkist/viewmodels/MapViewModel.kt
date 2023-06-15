@@ -28,15 +28,12 @@ class MapViewModel : ViewModel() {
     private val _locationResponse = MutableLiveData <LocationResponse>()
     val locationResponse: LiveData<LocationResponse> = _locationResponse
 
-    private val _fileAllData = MutableLiveData<FileAllDataResponse>()
-    val fileAllData: LiveData<FileAllDataResponse> = _fileAllData
 
     private var itemType: ItemType = ItemType.SHOW_ALL
     fun getItemType() = itemType
     fun setItemType(type: ItemType) {
         itemType = type
     }
-
 
     fun getFiles(token: String, cityId: Int) {
         viewModelScope.launch {
@@ -51,20 +48,4 @@ class MapViewModel : ViewModel() {
             }
         }
     }
-
-    fun getFileInfoById(token: String, fileId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _fileAllData.value =
-                    Api.retrofitService.getFileInfoById(token, fileId)
-                Log.e("TAG", "getFileInfoById: ${fileAllData.value!!.data}", )
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
-            }
-        }
-    }
-
 }

@@ -2,12 +2,13 @@ package com.example.melkist.models
 
 import android.graphics.Region
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class FileAllDataResponse(
     @Json val result: Boolean?,
     @Json val data: FileData?,
     @Json val errors: List<String>?
-)
+): Serializable
 
 data class FileData(
     @Json val id: Int,

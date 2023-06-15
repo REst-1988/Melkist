@@ -93,9 +93,8 @@ class MapP1Frag : Fragment() {
             clusterManager.onCameraIdle()
         }
         clusterManager.setOnClusterItemClickListener { file ->
-            val bottomSheetDialog = BottomSheetFileDetailDialog()
+            val bottomSheetDialog = BottomSheetFileDetailDialog(file.id!!)
             bottomSheetDialog.show(childFragmentManager, bottomSheetDialog.tag)
-            viewModel.getFileInfoById((activity as MainActivity).user.token!!, file.id!!)
             true
         }
     }
@@ -160,9 +159,12 @@ class MapP1Frag : Fragment() {
 
     private fun filterFileByChosenType(files: List<LocationData>): List<LocationData> {
         return when (viewModel.getItemType()) {
-            MapViewModel.ItemType.SHOW_ALL -> files
-            MapViewModel.ItemType.SHOW_SEEKER -> files.filter { it.fileTypeId == FileTypes().seeker.id }
-            MapViewModel.ItemType.SHOW_OWNER -> files.filter { it.fileTypeId == FileTypes().owner.id }
+            MapViewModel.ItemType.SHOW_ALL ->
+                files
+            MapViewModel.ItemType.SHOW_SEEKER ->
+                files.filter { it.fileTypeId == FileTypes().seeker.id }
+            MapViewModel.ItemType.SHOW_OWNER ->
+                files.filter { it.fileTypeId == FileTypes().owner.id }
         }
     }
 

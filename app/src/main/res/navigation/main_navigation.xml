@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_map_to_filterFilesFrag"
             app:destination="@id/FilterFilesFrag" />
+        <action
+            android:id="@+id/action_navigation_map_to_fileDetailFrag"
+            app:destination="@id/fileDetailFrag" />
     </fragment>
 
     <fragment
@@ -56,4 +59,9 @@
         android:name="com.example.melkist.views.universal.ChooseCrFrag"
         android:label="choose_region"
         tools:layout="@layout/frag_choose_cr" />
+    <fragment
+        android:id="@+id/fileDetailFrag"
+        android:name="com.example.melkist.views.universal.FileDetailFrag"
+        android:label="frag_file_detail"
+        tools:layout="@layout/frag_file_detail" />
 </navigation>

@@ -22,6 +22,7 @@
 
     <color name="main_dark_color2">#FF233B88</color>
     <color name="main_light_color2">#FFC10F41</color>
+    <color name="main_green_color2">#4CAF50</color>
     <color name="deep_blue">#061EFC</color>
     <color name="deep_red">#AC1005</color>
     <color name="negative_empty_background_color_sub_item">#404040</color>
@@ -30,4 +31,5 @@
     <color name="color_icon">#233b88</color>
     <color name="tool_bar_color_2">#7991E1</color>
     <color name="splash_color_light">#7991E1</color>
+    <color name="yellow">#FFEB3B</color>
 </resources>

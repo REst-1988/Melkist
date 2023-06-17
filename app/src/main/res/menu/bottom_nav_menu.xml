@@ -3,18 +3,29 @@
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="" />
-
-    <item
-        android:id="@+id/navigation_profle"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title=""/>
+        android:icon="@drawable/icons8_google_maps_old_80"
+        android:title="@string/map" />
 
     <!--android:title="@string/title_dashboard"-->
     <item
         android:id="@+id/navigation_fav"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title=""/>
+        android:icon="@drawable/icons8_save_close_80"
+        android:title="@string/favorite"
+        />
+
+    <item
+        android:id="@+id/navigation_add"
+        android:icon="@drawable/ic_baseline_add_location_alt_48"
+        android:title="" />
+    <!--app:destination="@id/addActivity"-->
+    <item
+        android:id="@+id/navigation_calculator"
+        android:icon="@drawable/icons8_calculator_64"
+        android:title="@string/calculator"/>
+
+    <item
+        android:id="@+id/navigation_profle"
+        android:icon="@drawable/icons8_profiles_80"
+        android:title="@string/profile"/>
 
 </menu>

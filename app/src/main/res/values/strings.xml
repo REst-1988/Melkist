@@ -142,6 +142,10 @@
     <string name="all">همه</string>
     <string name="choose_type_first">ابتدا نوع آگهی را انتخاب نمایید!</string>
     <string name="choose_type_cat_first">لطفا ابتدا نوع آگهی و دسته بندی را انتخاب نمایید!</string>
+    <string name="profile">پروفایل</string>
+    <string name="calculator">ماشین حساب</string>
+    <string name="favorite">علاقه مندی</string>
+    <string name="map">نقشه</string>
 
     <string-array name="age_list">
         <item>نو ساز</item>

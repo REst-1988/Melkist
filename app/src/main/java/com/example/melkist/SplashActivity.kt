@@ -16,7 +16,7 @@ import com.example.melkist.models.User
 
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 100 // TODO: change this to 3000
+    private val splashTimeOut: Long = 500 // TODO: change this to 3000
     private var mHandler: Handler? = null
     private lateinit var userDataStore: UserDataStore
 

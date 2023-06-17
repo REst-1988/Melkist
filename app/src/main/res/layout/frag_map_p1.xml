@@ -75,12 +75,12 @@
                 android:layout_height="@dimen/rounded_btns"
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
-                android:background="@drawable/rounded_btns"
+                android:background="@drawable/background_rounded_btns"
                 android:elevation="4dp"
                 android:onClick="@{() -> fragment.onFilterClicked()}"
                 android:src="@drawable/ic_baseline_filter_alt_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/ibtn_draw"/>
+                app:layout_constraintBottom_toTopOf="@id/ibtn_draw"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageButton
                 android:id="@+id/ibtn_draw"
@@ -88,8 +88,9 @@
                 android:layout_height="@dimen/rounded_btns"
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
-                android:background="@drawable/rounded_btns"
+                android:background="@drawable/background_rounded_btns"
                 android:elevation="4dp"
+                android:onClick="@{() -> fragment.onPolygonClick()}"
                 android:src="@drawable/ic_baseline_draw_24"
                 app:layout_constraintBottom_toTopOf="@id/ibtn_satellite"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -101,12 +102,12 @@
                 android:layout_marginStart="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/normal_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
-                android:background="@drawable/rounded_btns"
+                android:background="@drawable/background_rounded_btns"
                 android:elevation="4dp"
+                android:onClick="@{() -> fragment.onSatelliteClicked(fragment.getGoogleMap())}"
                 android:src="@drawable/ic_baseline_satellite_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:onClick="@{() -> fragment.onSatelliteClicked(fragment.getGoogleMap())}"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -31,7 +31,7 @@ data class LocationData(
         val hsvBlue = FloatArray(3)
         Color.colorToHSV(context.resources.getColor(R.color.main_dark_color2), hsvBlue)
         val hsvRed = FloatArray(3)
-        Color.colorToHSV(context.resources.getColor(R.color.main_light_color2), hsvRed)
+        Color.colorToHSV(context.resources.getColor(R.color.main_green_color2), hsvRed)
         return if (fileTypeId == FileTypes().owner.id)
             BitmapDescriptorFactory.defaultMarker(hsvBlue[0])
         else

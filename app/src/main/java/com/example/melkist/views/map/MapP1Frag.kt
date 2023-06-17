@@ -1,7 +1,9 @@
 package com.example.melkist.views.map
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,13 +34,20 @@ import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polygon
+import com.google.android.gms.maps.model.PolygonOptions
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.awaitMapLoad
 import kotlinx.coroutines.launch
 
+
 class MapP1Frag : Fragment() {
+    private var isPolygonClicked: Boolean = false
     private var _binding: FragMapP1Binding? = null
     private val binding get() = _binding!!
     private var interaction: Interaction? = null
@@ -49,6 +58,10 @@ class MapP1Frag : Fragment() {
     private var files: List<LocationData> = listOf()
     private lateinit var googleMap: GoogleMap
     fun getGoogleMap() = googleMap
+    private lateinit var polygon: Polygon
+    private lateinit var polygonOptions: PolygonOptions
+    private val latLngList = arrayListOf<LatLng>()
+    private val markerList = arrayListOf<Marker>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -87,6 +100,14 @@ class MapP1Frag : Fragment() {
         }
         clusterManager.clearItems()
         //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
+        files.forEach {
+            Log.e(
+                "TAG",
+                "addClusteredMarkers: ${
+                    String.format("%s %s", it.locations!![0].lat, it.locations[0].lng)
+                }}",
+            )
+        }
         clusterManager.addItems(files)
         clusterManager.cluster()
         googleMap.setOnCameraIdleListener {
@@ -161,8 +182,10 @@ class MapP1Frag : Fragment() {
         return when (viewModel.getItemType()) {
             MapViewModel.ItemType.SHOW_ALL ->
                 files
+
             MapViewModel.ItemType.SHOW_SEEKER ->
                 files.filter { it.fileTypeId == FileTypes().seeker.id }
+
             MapViewModel.ItemType.SHOW_OWNER ->
                 files.filter { it.fileTypeId == FileTypes().owner.id }
         }
@@ -175,7 +198,7 @@ class MapP1Frag : Fragment() {
             )
 
             MapViewModel.ItemType.SHOW_SEEKER -> binding.cardHeader.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.main_light_color2)
+                ContextCompat.getColor(requireContext(), R.color.main_green_color2)
             )
 
             else -> binding.cardHeader.setCardBackgroundColor(
@@ -226,6 +249,41 @@ class MapP1Frag : Fragment() {
                 googleMap,
                 filterFileByChosenType(files)
             )
+        }
+    }
+
+    fun onPolygonClick() {
+        isPolygonClicked = !isPolygonClicked
+        if (isPolygonClicked) {
+            binding.ibtnDraw.setBackgroundResource(R.drawable.background_rounded_btns_sharp)
+            if (::googleMap.isInitialized)
+                googleMap.setOnMapClickListener { latLng ->
+                    val markerOptions = MarkerOptions().position(latLng)
+                    val marker = googleMap.addMarker(markerOptions)
+                    markerList.add(marker!!)
+                    latLngList.add(latLng)
+                    if (::polygon.isInitialized)
+                        polygon.remove()
+                    polygonOptions =
+                        PolygonOptions()
+                            .strokeColor(Color.rgb(35, 59, 136))
+                            .strokeWidth(3f)
+                            .fillColor(Color.argb(60, 193, 15, 65))
+                            .addAll(latLngList)
+                            .clickable(true)
+                    polygon = googleMap.addPolygon(polygonOptions)
+                }
+        } else {
+            binding.ibtnDraw.setBackgroundResource(R.drawable.background_rounded_btns)
+            if (::polygon.isInitialized) {
+                polygon.remove()
+                markerList.forEach { it.remove() }
+                latLngList.clear()
+                markerList.clear()
+                googleMap.setOnMapClickListener {
+
+                }
+            }
         }
     }
 

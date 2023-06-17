@@ -21,13 +21,13 @@
     <fragment
         android:id="@+id/navigation_profle"
         android:name="com.example.melkist.ui.dashboard.DashboardFragment"
-        android:label="Fav"
+        android:label="Profile"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_fav"
         android:name="com.example.melkist.views.fav.FavListFrag"
-        android:label="Profile"
+        android:label="Fav"
         tools:layout="@layout/frag_fav_list" />
     <fragment
         android:id="@+id/addP2ChooseTypeFrag2"

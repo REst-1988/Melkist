@@ -59,6 +59,7 @@
     <string name="confirm">تایید</string>
     <string name="choose_realestate_user_title">انتخاب نوع کاربری</string>
     <string name="choose">انتخاب کنید</string>
+    <string name="choose_raw">انتخاب</string>
     <string name="choose_category_title">انتخاب دسته بندی</string>
     <string name="choose_province_title">انتخاب استان</string>
     <string name="choose_city_title">انتخاب شهر</string>
@@ -146,8 +147,11 @@
     <string name="calculator">ماشین حساب</string>
     <string name="favorite">علاقه مندی</string>
     <string name="map">نقشه</string>
+    <string name="create_more_marker_to_proceed">تعداد نقاط انتخاب شده بر روی نقشه باید بیش از سه عدد باشد. لطفا با ضربه زدن بر روی نقشه محدوده مد نظر خود را انتخاب نمایید</string>
 
     <string-array name="age_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_age_list"-->
         <item>نو ساز</item>
         <item>1 سال</item>
         <item>2 سال</item>
@@ -159,7 +163,23 @@
         <item>30 سال</item>
     </string-array>
 
+    <string-array name="int_age_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "age_list"-->
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+    </string-array>
+
     <string-array name="size_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_size_list"-->
         <item>- وارد کردن مقدار دلخواه -</item>
         <item>60 متر</item>
         <item>90 متر</item>
@@ -174,7 +194,26 @@
         <item>1200 متر</item>
     </string-array>
 
+    <string-array name="int_size_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "size_list"-->
+        <item></item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>175</item>
+        <item>220</item>
+        <item>275</item>
+        <item>350</item>
+        <item>500</item>
+        <item>600</item>
+        <item>850</item>
+        <item>1200</item>
+    </string-array>
+
     <string-array name="room_no_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_room_no_list"-->
         <item>بدون خواب</item>
         <item>1 خواب</item>
         <item>2 خواب</item>
@@ -182,7 +221,19 @@
         <item>4 خواب</item>
     </string-array>
 
+    <string-array name="int_room_no_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "room_no_list"-->
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
     <string-array name="price_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_price_list"-->
         <item>- وارد کردن مقدار دلخواه -</item>
         <item>300 میلیون</item>
         <item>500 میلیون</item>
@@ -192,7 +243,7 @@
         <item>1 میلیارد و 500 میلیون</item>
         <item>1 میلیارد و 800 میلیون</item>
         <item>2 میلیارد</item>
-        <item>1 میلیارد و 500 میلیون</item>
+        <item>2 میلیارد و 500 میلیون</item>
         <item>3 میلیارد</item>
         <item>4 میلیارد</item>
         <item>5 میلیارد</item>
@@ -204,6 +255,33 @@
         <item>30 میلیارد</item>
         <item>50 میلیارد</item>
         <item>100 میلیارد</item>
+    </string-array>
+
+    <string-array name="int_price_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "price_list"-->
+        <item></item>
+        <item>300000000</item>
+        <item>500000000</item>
+        <item>750000000</item>
+        <item>1000000000</item>
+        <item>1200000000</item>
+        <item>1500000000</item>
+        <item>1800000000</item>
+        <item>2000000000</item>
+        <item>2500000000</item>
+        <item>3000000000</item>
+        <item>4000000000</item>
+        <item>5000000000</item>
+        <item>6000000000</item>
+        <item>8000000000</item>
+        <item>12000000000</item>
+        <item>15000000000</item>
+        <item>20000000000</item>
+        <item>3000000000</item>
+        <item>50000000000</item>
+        <item>100000000000</item>
+        <item></item>
     </string-array>
 
     <string-array name="type_options">

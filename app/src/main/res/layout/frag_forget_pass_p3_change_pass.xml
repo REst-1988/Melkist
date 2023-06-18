@@ -110,9 +110,9 @@
                     android:hint="@string/hint_new_password"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
-                    android:textColor="@color/main_dark_color2"
-                    android:textDirection="ltr"
-                    android:textSize="@dimen/short_text_size" />
+                    android:textColor="@color/edit_text_text_color"
+                    android:textDirection="rtl"
+                    android:textSize="@dimen/normal_text_size"  />
 
             </com.google.android.material.textfield.TextInputLayout>
 

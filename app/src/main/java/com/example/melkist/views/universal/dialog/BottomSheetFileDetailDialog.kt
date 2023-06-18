@@ -80,7 +80,7 @@ class BottomSheetFileDetailDialog(
             binding.txtRegion.text = response.data.locations[0].region.title
             binding.txtPrice.text = String.format(
                 "%s %s",
-                formatNumber(response.data.price.from.toDouble()),
+                formatNumber(response.data.price.from!!.toDouble()),
                 resources.getString(R.string.tooman)
             )
         }

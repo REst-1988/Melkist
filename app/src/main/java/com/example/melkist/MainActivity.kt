@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
         )
         // setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        navView.selectedItemId = R.id.navigation_add
     }
 
     override fun changBottomNavViewVisibility(visibility: Int) {

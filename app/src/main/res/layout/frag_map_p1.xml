@@ -109,6 +109,26 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/ibtn_select_draw"
+                android:layout_width="100dp"
+                android:layout_height="@dimen/rounded_btns"
+                android:layout_margin="@dimen/normal_margin"
+                android:background="@drawable/background_cylinder_btns"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:fontFamily="@font/byekan"
+                android:gravity="center"
+                android:onClick="@{() -> fragment.onChooseClick()}"
+                android:src="@drawable/ic_baseline_filter_alt_24"
+                android:text="@string/choose_raw"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/normal_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

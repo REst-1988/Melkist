@@ -15,6 +15,7 @@
     <color name="negative_empty_background_color">#121212</color>
     <color name="normal_text_color">#121212</color>
     <color name="sub_item_text_color">#838383</color>
+    <color name="edit_text_text_color">#FF233B88</color>
     <color name="hint_color">#FF808080</color>
 
     <color name="main_dark_color">#FF253A85</color>

@@ -67,6 +67,6 @@ data class Loc(
 )
 
 data class Period(
-    @Json val from: Long,
-    @Json val to: Long
+    @Json val from: Long?,
+    @Json val to: Long?
 )

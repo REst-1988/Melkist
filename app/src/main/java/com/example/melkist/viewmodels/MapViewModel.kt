@@ -48,4 +48,18 @@ class MapViewModel : ViewModel() {
             }
         }
     }
+
+    fun getFilterFiles(token: String, filterFileData: FilterFileData){
+        viewModelScope.launch {
+            _status.value = ApiStatus.LOADING
+            try {
+                _locationResponse.value =
+                    Api.retrofitService.filterFiles(token = token, filterFileData)
+                _status.value = ApiStatus.DONE
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _status.value = ApiStatus.ERROR
+            }
+        }
+    }
 }

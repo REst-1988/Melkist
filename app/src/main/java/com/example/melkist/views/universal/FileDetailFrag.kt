@@ -64,8 +64,8 @@ class FileDetailFrag : Fragment() {
     }
 
     private fun calculatePricePerMeter(price: Period, size: Period): String {
-        return if (price.to == price.from) (price.from / size.from).toString()
-        else (price.from / size.from).toString() + " " + resources.getString(R.string.to) + " " + price.to / size.to
+        return if (price.to == price.from) (price.from!! / size.from!!).toString()
+        else (price.from!! / size.from!!).toString() + " " + resources.getString(R.string.to) + " " + price.to!! / size.to!!
     }
 
     /************** binding methods ************************/

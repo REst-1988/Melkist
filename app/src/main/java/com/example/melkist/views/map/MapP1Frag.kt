@@ -20,9 +20,11 @@ import com.example.melkist.R
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.FragMapP1Binding
 import com.example.melkist.models.FileTypes
+import com.example.melkist.models.FilterFileData
 import com.example.melkist.models.LocationData
 import com.example.melkist.models.LocationResponse
 import com.example.melkist.utils.DATA
+import com.example.melkist.utils.FILTER_RESULT_KEY
 import com.example.melkist.utils.PlaceRenderer
 import com.example.melkist.utils.TYPE_OPTIONS_TAG
 import com.example.melkist.utils.concatenateText
@@ -43,6 +45,7 @@ import com.google.android.gms.maps.model.PolygonOptions
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.awaitMapLoad
+import com.google.maps.android.ktx.utils.contains
 import kotlinx.coroutines.launch
 
 
@@ -62,6 +65,18 @@ class MapP1Frag : Fragment() {
     private lateinit var polygonOptions: PolygonOptions
     private val latLngList = arrayListOf<LatLng>()
     private val markerList = arrayListOf<Marker>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(FILTER_RESULT_KEY){ _, bundle ->
+//            viewModel.getFilterFiles(
+//                (activity as MainActivity).user.token!!,
+//                bundle.getSerializable(DATA)!! as FilterFileData
+//            )
+            val filterDate = bundle.getSerializable(DATA)!! as FilterFileData
+            Log.e("TAG", "onCreate: ${filterDate.size.from}", )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -99,25 +114,25 @@ class MapP1Frag : Fragment() {
             )
         }
         clusterManager.clearItems()
-        //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
-        files.forEach {
-            Log.e(
-                "TAG",
-                "addClusteredMarkers: ${
-                    String.format("%s %s", it.locations!![0].lat, it.locations[0].lng)
-                }}",
-            )
-        }
         clusterManager.addItems(files)
         clusterManager.cluster()
         googleMap.setOnCameraIdleListener {
             clusterManager.onCameraIdle()
         }
-        clusterManager.setOnClusterItemClickListener { file ->
-            val bottomSheetDialog = BottomSheetFileDetailDialog(file.id!!)
-            bottomSheetDialog.show(childFragmentManager, bottomSheetDialog.tag)
-            true
-        }
+        turnOnClusterClickOnAndOff(true)
+    }
+
+    private fun turnOnClusterClickOnAndOff (isOn: Boolean) {
+        if (isOn)
+            clusterManager.setOnClusterItemClickListener { file ->
+                val bottomSheetDialog = BottomSheetFileDetailDialog(file.id!!)
+                bottomSheetDialog.show(childFragmentManager, bottomSheetDialog.tag)
+                true
+            }
+        else
+            clusterManager.setOnClusterItemClickListener {
+                true
+            }
     }
 
     override fun onResume() {
@@ -161,19 +176,12 @@ class MapP1Frag : Fragment() {
 
     private suspend fun readyMap(response: LocationResponse) {
         googleMap = mapFragment.awaitMap()
-        // Wait for map to finish loading
         googleMap.awaitMapLoad()
-        // Ensure all places are visible in the map
         val bounds = LatLngBounds.builder()
-        //val locList = mutableListOf<Loc>()
         response.data.forEach {
-            //it.locations!!.forEach { loc ->
-            //    bounds.include(LatLng(loc.lat!!, loc.lng!!))
-            //    locList.add(loc)
-            //}// if we wanted to show all regions I should use it
             bounds.include(it.position)
         }
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
         files = response.data
         addClusteredMarkers(googleMap, filterFileByChosenType(files))
     }
@@ -207,6 +215,7 @@ class MapP1Frag : Fragment() {
         }
     }
 
+    // This is for hide and unhiding bottom nav bar
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Interaction) {
@@ -217,10 +226,67 @@ class MapP1Frag : Fragment() {
             )
         }
     }
-
+    // This is for hide and unhiding bottom nav bar
     override fun onDetach() {
         super.onDetach()
         interaction = null
+    }
+
+    private fun onPolygonBtnChecked(){
+        if (::googleMap.isInitialized)
+            googleMap.setOnMapClickListener { latLng ->
+                val markerOptions = MarkerOptions().position(latLng)
+                val marker = googleMap.addMarker(markerOptions)
+                markerList.add(marker!!)
+                latLngList.add(latLng)
+                if (::polygon.isInitialized)
+                    polygon.remove()
+                polygonOptions =
+                    PolygonOptions()
+                        .strokeColor(Color.rgb(35, 59, 136))
+                        .strokeWidth(3f)
+                        .fillColor(Color.argb(60, 193, 15, 65))
+                        .addAll(latLngList)
+                        .clickable(true)
+                polygon = googleMap.addPolygon(polygonOptions)
+            }
+    }
+    private fun onPolygonBtnUnChecked() {
+        if (::polygon.isInitialized) {
+            polygon.remove()
+            markerList.forEach { it.remove() }
+            latLngList.clear()
+            markerList.clear()
+            googleMap.setOnMapClickListener {
+
+            }
+        }
+    }
+
+    private fun readyViewsOnPolygonClicked() {
+        if (isPolygonClicked) {
+            turnOnClusterClickOnAndOff(false)
+            binding.ibtnDraw.setBackgroundResource(R.drawable.background_rounded_btns_sharp)
+            binding.ibtnSelectDraw.visibility = View.VISIBLE
+        } else {
+            turnOnClusterClickOnAndOff(true)
+            binding.ibtnDraw.setBackgroundResource(R.drawable.background_rounded_btns)
+            binding.ibtnSelectDraw.visibility = View.GONE
+            addClusteredMarkers(googleMap, files)
+        }
+    }
+
+    private fun isShowMarkerDialog(): Boolean {
+        if (markerList.size < 3) {
+            showDialogWithMessage(
+                requireContext(),
+                resources.getString(R.string.create_more_marker_to_proceed)
+            ) { d, _ ->
+                d.dismiss()
+            }
+            return true
+        }
+        return false
     }
 
     /************************ binding methods *********************************/
@@ -254,37 +320,25 @@ class MapP1Frag : Fragment() {
 
     fun onPolygonClick() {
         isPolygonClicked = !isPolygonClicked
-        if (isPolygonClicked) {
-            binding.ibtnDraw.setBackgroundResource(R.drawable.background_rounded_btns_sharp)
-            if (::googleMap.isInitialized)
-                googleMap.setOnMapClickListener { latLng ->
-                    val markerOptions = MarkerOptions().position(latLng)
-                    val marker = googleMap.addMarker(markerOptions)
-                    markerList.add(marker!!)
-                    latLngList.add(latLng)
-                    if (::polygon.isInitialized)
-                        polygon.remove()
-                    polygonOptions =
-                        PolygonOptions()
-                            .strokeColor(Color.rgb(35, 59, 136))
-                            .strokeWidth(3f)
-                            .fillColor(Color.argb(60, 193, 15, 65))
-                            .addAll(latLngList)
-                            .clickable(true)
-                    polygon = googleMap.addPolygon(polygonOptions)
-                }
-        } else {
-            binding.ibtnDraw.setBackgroundResource(R.drawable.background_rounded_btns)
-            if (::polygon.isInitialized) {
-                polygon.remove()
-                markerList.forEach { it.remove() }
-                latLngList.clear()
-                markerList.clear()
-                googleMap.setOnMapClickListener {
+        readyViewsOnPolygonClicked()
+        if (isPolygonClicked)
+            onPolygonBtnChecked()
+        else
+            onPolygonBtnUnChecked()
+    }
 
-                }
+    fun onChooseClick() {
+        if (isShowMarkerDialog()) return
+        val polygonList = arrayListOf<LocationData>()
+        clusterManager.clearItems()
+        files.forEach {
+            it.locations?.apply {
+                if (polygon.contains(LatLng(it.locations[0].lat!!, it.locations[0].lng!!)))
+                    polygonList.add(it)
             }
         }
+        addClusteredMarkers(googleMap, polygonList)
+        turnOnClusterClickOnAndOff(true)
     }
 
     fun onSatelliteClicked(googleMap: GoogleMap) {

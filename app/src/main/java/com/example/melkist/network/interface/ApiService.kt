@@ -132,6 +132,12 @@ interface ApiService {
         @Query("user_id") userId: Int
     ): FavFileResponse
 
+    @POST("dashboard/admin/file/filterFiles")
+    suspend fun filterFiles(
+        @Header("Authorization") token: String,
+        @Body filerFileData: FilterFileData
+    ): LocationResponse
+
 /*    @GET("users")
     @Headers(
         "Accept: application/vnd.github+json",

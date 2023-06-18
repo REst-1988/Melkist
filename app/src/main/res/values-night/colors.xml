@@ -6,6 +6,7 @@
     <color name="negative_empty_background_color_sub_item">#B5B5B5</color>
     <color name="normal_text_color">#f5f5f5</color>
     <color name="sub_item_text_color">#888888</color>
+    <color name="edit_text_text_color">#DEE6FF</color>
     <color name="deep_blue">#7A86FD</color>
     <color name="color_boarder">#777777</color>
     <color name="color_boarder_choose">#7A91D5</color>

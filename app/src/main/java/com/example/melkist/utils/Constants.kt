@@ -15,6 +15,7 @@ const val CAT_ID_KEY = "csck"
 const val CAT_RESULT_KEY = "cat_result"
 const val SUB_CAT_RESULT_KEY = "sub_cat_result"
 const val CR_KEY = "cr"
+const val FILTER_RESULT_KEY = "filter_result"
 
 const val SEEKER_ITEM_TYPE = 0
 const val OWNER_ITEM_TYPE = 1

@@ -1,10 +1,10 @@
 package com.example.melkist.views.universal
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,12 +13,15 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragFilterFilesBinding
+import com.example.melkist.models.FilterFileData
+import com.example.melkist.models.Period
 import com.example.melkist.utils.AGE_FROM_TAG
 import com.example.melkist.utils.AGE_TO_TAG
 import com.example.melkist.utils.CAT_ID_KEY
 import com.example.melkist.utils.CAT_RESULT_KEY
 import com.example.melkist.utils.CR_KEY
 import com.example.melkist.utils.DATA
+import com.example.melkist.utils.FILTER_RESULT_KEY
 import com.example.melkist.utils.ITEM_TYPE_KEY
 import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.PRICE_FROM_TAG
@@ -30,12 +33,14 @@ import com.example.melkist.utils.SEEKER_ITEM_TYPE
 import com.example.melkist.utils.SIZE_FROM_TAG
 import com.example.melkist.utils.SIZE_TO_TAG
 import com.example.melkist.utils.SUB_CAT_RESULT_KEY
-import com.example.melkist.utils.User
+import com.example.melkist.utils.formatNumber
+import com.example.melkist.utils.getPersianYear
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.FilterFileViewModel
 import com.example.melkist.viewmodels.MapViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
-
+import com.google.android.material.textfield.TextInputLayout
+import java.math.BigDecimal
 
 private const val TAG = "FilterFilesFrag"
 
@@ -46,7 +51,7 @@ class FilterFilesFrag : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
     }
 
     override fun onCreateView(
@@ -67,6 +72,7 @@ class FilterFilesFrag : Fragment() {
                 OWNER_ITEM_TYPE -> viewModel.setItemType(MapViewModel.ItemType.SHOW_OWNER)
                 SEEKER_ITEM_TYPE -> viewModel.setItemType(MapViewModel.ItemType.SHOW_SEEKER)
             }
+            binding!!.txtChooseType.text = showTypeText()
             viewModel.resetCatSubCat()
         }
         setFragmentResultListener(CAT_RESULT_KEY) { _, bundle ->
@@ -97,14 +103,59 @@ class FilterFilesFrag : Fragment() {
         binding = null
     }
 
+    private fun checkFieldsForNullability(view: TextInputLayout): Long? {
+        if (view.editText!!.text.toString().isNotEmpty() && view.editText!!.text.toString() != "") {
+            if (view.editText!!.text.toString()
+                    .contains(",")
+            ) return BigDecimal(view.editText!!.text.toString().replace(",", "")).toLong()
+            return view.editText!!.text.toString().toLong()
+        }
+        return null
+    }
+
+    private fun gatheringData(): FilterFileData? {
+        binding?.apply {
+            val rooms = Period(
+                from = checkFieldsForNullability(etRoomNoFrom),
+                to = checkFieldsForNullability(etRoomNoTo)
+            )
+            val price = Period(
+                from = checkFieldsForNullability(etPriceFrom),
+                to = checkFieldsForNullability(etPriceTo)
+            )
+            val age = Period(
+                from = checkFieldsForNullability(etAgeFrom), to = checkFieldsForNullability(etAgeTo)
+            )
+            val size = Period(
+                from = checkFieldsForNullability(etSizeFrom),
+                to = checkFieldsForNullability(etSizeTo)
+            )
+
+            return FilterFileData(
+                rooms,
+                price,
+                age,
+                size,
+                viewModel.getTypeId(viewModel.getItemType()),
+                viewModel.catId,
+                viewModel.subCatId,
+                viewModel.regionId
+            )
+        }
+        return null
+    }
+
     /********************* binding methods **************************/
     fun back() {
         findNavController().popBackStack()
     }
-    fun onProceed() {
-        TODO()
+
+    fun onFilterClick() {
+        setFragmentResult(FILTER_RESULT_KEY, bundleOf(DATA to gatheringData()))
+        back()
     }
-    fun onChoosingtype() {
+
+    fun onChoosingType() {
         findNavController().navigate(R.id.action_filterFilesFrag_to_chooseTypeFrag)
     }
 
@@ -164,14 +215,16 @@ class FilterFilesFrag : Fragment() {
     }
 
     fun showRegionText(): String {
-        return if (viewModel.regionTitle != "")
-            viewModel.regionTitle
-        else
-            resources.getString(R.string.all)
+        return if (viewModel.regionTitle != "") viewModel.regionTitle
+        else resources.getString(R.string.all)
     }
 
     fun onChoosingRegionClick() {
-        val bundle = bundleOf(CR_KEY to arrayListOf(REGION_1, 733)) // Note that in the future this might change
+        val bundle = bundleOf(
+            CR_KEY to arrayListOf(
+                REGION_1, 733
+            )
+        ) // Note that in the future this might change
         findNavController().navigate(R.id.action_FilterFilesFrag_to_ChooseCrFrag2, bundle)
     }
 
@@ -180,9 +233,11 @@ class FilterFilesFrag : Fragment() {
             BottomSheetUniversalList(resources.getStringArray(R.array.age_list).toList())
         bottomFrag.show(childFragmentManager, AGE_FROM_TAG)
         bottomFrag.setFragmentResultListener(AGE_FROM_TAG) { _, positionBundle ->
-            binding!!.etAgeFromChild.setText(resources.getStringArray(
-                R.array.age_list)[positionBundle.getInt(DATA)]
-            )
+            val year = getPersianYear() - resources.getStringArray(
+                R.array.int_age_list
+            )[positionBundle.getInt(DATA)].toInt()
+            Log.e(TAG, "onAgeFromClick: $year", )
+            binding!!.etAgeFromChild.setText(year.toString())
         }
     }
 
@@ -191,9 +246,11 @@ class FilterFilesFrag : Fragment() {
             BottomSheetUniversalList(resources.getStringArray(R.array.age_list).toList())
         bottomFrag.show(childFragmentManager, AGE_TO_TAG)
         bottomFrag.setFragmentResultListener(AGE_TO_TAG) { _, positionBundle ->
-            binding!!.etAgeToChild.setText(
-                resources.getStringArray(R.array.age_list)[positionBundle.getInt(DATA)]
-            )
+            val year = getPersianYear() - resources.getStringArray(
+                R.array.int_age_list
+            )[positionBundle.getInt(DATA)].toInt()
+            Log.e(TAG, "onAgeToClick: $year", )
+            binding!!.etAgeToChild.setText(year.toString())
         }
     }
 
@@ -207,7 +264,7 @@ class FilterFilesFrag : Fragment() {
                 binding!!.curtainSizeFrom.visibility = View.GONE
                 binding!!.etSizeFromChild.requestFocus()
             } else {
-                binding!!.etSizeFromChild.setText(resources.getStringArray(R.array.size_list)[position])
+                binding!!.etSizeFromChild.setText(resources.getStringArray(R.array.int_size_list)[position])
             }
         }
     }
@@ -222,7 +279,7 @@ class FilterFilesFrag : Fragment() {
                 binding!!.curtainSizeTo.visibility = View.GONE
                 binding!!.etSizeToChild.requestFocus()
             } else {
-                binding!!.etSizeToChild.setText(resources.getStringArray(R.array.size_list)[position])
+                binding!!.etSizeToChild.setText(resources.getStringArray(R.array.int_size_list)[position])
             }
         }
     }
@@ -233,7 +290,7 @@ class FilterFilesFrag : Fragment() {
         bottomFrag.show(childFragmentManager, ROOM_FROM_TAG)
         bottomFrag.setFragmentResultListener(ROOM_FROM_TAG) { _, positionBundle ->
             binding!!.etRoomNoFromChild.setText(
-                resources.getStringArray(R.array.room_no_list)[positionBundle.getInt(DATA)]
+                resources.getStringArray(R.array.int_room_no_list)[positionBundle.getInt(DATA)]
             )
         }
     }
@@ -244,7 +301,7 @@ class FilterFilesFrag : Fragment() {
         bottomFrag.show(childFragmentManager, ROOM_TO_TAG)
         bottomFrag.setFragmentResultListener(ROOM_TO_TAG) { _, positionBundle ->
             binding!!.etRoomNoToChild.setText(
-                resources.getStringArray(R.array.room_no_list)[positionBundle.getInt(DATA)]
+                resources.getStringArray(R.array.int_room_no_list)[positionBundle.getInt(DATA)]
             )
         }
     }
@@ -255,7 +312,11 @@ class FilterFilesFrag : Fragment() {
         bottomFrag.show(childFragmentManager, PRICE_FROM_TAG)
         bottomFrag.setFragmentResultListener(PRICE_FROM_TAG) { _, positionBundle ->
             binding!!.etPriceFromChild.setText(
-                resources.getStringArray(R.array.price_list)[positionBundle.getInt(DATA)]
+                formatNumber(
+                    resources.getStringArray(R.array.int_price_list)[positionBundle.getInt(
+                        DATA
+                    )].toDouble()
+                )
             )
         }
     }
@@ -266,7 +327,11 @@ class FilterFilesFrag : Fragment() {
         bottomFrag.show(childFragmentManager, PRICE_TO_TAG)
         bottomFrag.setFragmentResultListener(PRICE_TO_TAG) { _, positionBundle ->
             binding!!.etPriceToChild.setText(
-                resources.getStringArray(R.array.price_list)[positionBundle.getInt(DATA)]
+                formatNumber(
+                    resources.getStringArray(R.array.int_price_list)[positionBundle.getInt(
+                        DATA
+                    )].toDouble()
+                )
             )
         }
     }

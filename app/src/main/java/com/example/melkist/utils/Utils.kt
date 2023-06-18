@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.melkist.R
 import com.example.melkist.models.User
+import saman.zamani.persiandate.PersianDate
 import java.text.DecimalFormat
 
 object User {
@@ -84,6 +85,8 @@ fun formatNumber(numberDouble: Double): String {
     val decimalFormat = DecimalFormat("#,###")
     return decimalFormat.format(numberDouble)
 }
+
+fun getPersianYear(): Int = PersianDate().shYear
 
 // this function also adding separator to numbers but it is old one used in Shanno project
 fun addSeparator(numberLong: Long): String {

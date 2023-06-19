@@ -2,7 +2,7 @@
     <string name="app_name">Melkist</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Calculator</string>
 
     <string name="hint_username">نام کاربری (شماره موبایل)</string>
     <string name="signup">ثبت نام</string>
@@ -148,6 +148,14 @@
     <string name="favorite">علاقه مندی</string>
     <string name="map">نقشه</string>
     <string name="create_more_marker_to_proceed">تعداد نقاط انتخاب شده بر روی نقشه باید بیش از سه عدد باشد. لطفا با ضربه زدن بر روی نقشه محدوده مد نظر خود را انتخاب نمایید</string>
+    <string name="my_name">رضا استعجاب</string>
+    <string name="ai_title">سیستم هوش مصنوعی</string>
+    <string name="manage_team_title">مدیریت تیم زیر مجموعه</string>
+    <string name="exit_title">خروج</string>
+    <string name="options_title">تنظیمات</string>
+    <string name="statistics">آمار</string>
+    <string name="alerts">هشدارها</string>
+    <string name="my_files_title">فایل های من</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->

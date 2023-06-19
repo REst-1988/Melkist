@@ -20,9 +20,9 @@
 
     <fragment
         android:id="@+id/navigation_profle"
-        android:name="com.example.melkist.ui.dashboard.DashboardFragment"
+        android:name="com.example.melkist.views.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/frag_profile_p1" />
 
     <fragment
         android:id="@+id/navigation_fav"
@@ -64,4 +64,9 @@
         android:name="com.example.melkist.views.universal.FileDetailFrag"
         android:label="frag_file_detail"
         tools:layout="@layout/frag_file_detail" />
+    <fragment
+        android:id="@+id/navigation_calculator"
+        android:name="com.example.melkist.views.calculator.CalculatorP1Frag"
+        android:label="frag_calculator_p1"
+        tools:layout="@layout/frag_calculator_p1" />
 </navigation>

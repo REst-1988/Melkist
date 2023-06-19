@@ -44,13 +44,13 @@
             android:layout_height="80dp"
             android:layout_toEndOf="@id/txt"/>
 
-        <ImageView
+<!--        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />-->
 
         <TextView
             android:layout_width="match_parent"

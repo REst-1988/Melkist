@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.profile.ProfileFragment">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.ProfileViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.profile.ProfileFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/img_user_card"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/normal_margin"
+            android:elevation="12dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_user"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_circled_user"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/byekan"
+            android:gravity="center"
+            android:padding="@dimen/normal_text_size"
+            android:text="@{fragment.userNameText()}"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_user_card"
+            tools:text="@string/my_name" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_edit_24"
+            app:layout_constraintBottom_toBottomOf="@id/txt_name"
+            app:layout_constraintStart_toEndOf="@id/txt_name"
+            app:layout_constraintTop_toTopOf="@id/txt_name" />
+
+        <TextView
+            android:id="@+id/spacer_1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/color_boarder"
+            app:layout_constraintTop_toBottomOf="@id/txt_name" />
+
+        <LinearLayout
+            android:id="@+id/layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/short_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/short_margin"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/spacer_1">
+
+            <LinearLayout
+                android:id="@+id/layout_alerts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onAlertsClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_notifications_active_24" />
+
+                <TextView
+                    android:id="@+id/txt_alert_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/byekan"
+                    android:gravity="start|center"
+                    android:padding="@dimen/normal_padding"
+                    android:text="@string/alerts"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_files"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onMyFilesClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_insert_drive_file_24" />
+
+                <TextView
+                    android:id="@+id/txt_my_files_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/byekan"
+                    android:gravity="start|center"
+                    android:padding="@dimen/normal_padding"
+                    android:text="@string/my_files_title"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_manage_team"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onManageTeamClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_groups_24" />
+
+                <TextView
+                    android:id="@+id/txt_manage_team_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/byekan"
+                    android:gravity="start|center"
+                    android:padding="@dimen/normal_padding"
+                    android:text="@string/manage_team_title"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onAiClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_ai_24" />
+
+                <TextView
+                    android:id="@+id/txt_choose_category_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/byekan"
+                    android:gravity="start|center"
+                    android:padding="@dimen/normal_padding"
+                    android:text="@string/ai_title"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onStatisticsClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_bar_chart_24" />
+
+                <TextView
+                    android:id="@+id/txt_statistics_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/byekan"
+                    android:gravity="start|center"
+                    android:padding="@dimen/normal_padding"
+                    android:text="@string/statistics"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/spacer_2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/short_margin"
+            android:background="@color/color_boarder"
+            app:layout_constraintTop_toBottomOf="@id/layout_top" />
+
+        <LinearLayout
+            android:id="@+id/layout_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/short_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> fragment.onOptionsClick()}"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/spacer_2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_settings_24" />
+
+            <TextView
+                android:id="@+id/txt_options_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:gravity="start|center"
+                android:padding="@dimen/normal_padding"
+                android:text="@string/options_title"
+                android:textColor="@color/negative_empty_background_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> fragment.onExitClick()}"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/layout_options">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_exit_to_app_24" />
+
+            <TextView
+                android:id="@+id/txt_exit_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/byekan"
+                android:gravity="start|center"
+                android:padding="@dimen/normal_padding"
+                android:text="@string/exit_title"
+                android:textColor="@color/negative_empty_background_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

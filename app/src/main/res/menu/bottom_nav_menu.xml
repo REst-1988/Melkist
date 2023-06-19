@@ -15,7 +15,6 @@
 
     <item
         android:id="@+id/navigation_add"
-        android:icon="@drawable/ic_baseline_add_location_alt_48"
         android:title="" />
     <!--app:destination="@id/addActivity"-->
     <item

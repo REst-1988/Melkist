@@ -1,5 +1,6 @@
 package com.example.melkist
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +41,14 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
         // setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navView.selectedItemId = R.id.navigation_add
+        binding.ibtnAdd.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    AddActivity::class.java
+                )
+            )
+        }
     }
 
     override fun changBottomNavViewVisibility(visibility: Int) {

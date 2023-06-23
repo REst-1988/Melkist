@@ -29,10 +29,6 @@ class AddItemViewModel : ViewModel() {
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
-/*    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
-    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList*/
-    private val _pcrsList = MutableLiveData<List<PcrsData>>()
-    val pcrsList: LiveData<List<PcrsData>> = _pcrsList
 
     private val _saveResponse = MutableLiveData<PublicResponseModel>()
     val saveResponse: LiveData<PublicResponseModel> = _saveResponse
@@ -85,7 +81,11 @@ class AddItemViewModel : ViewModel() {
     var priceTo: Long? = null
     var descriptions: String? = null
 
-    var mapSnapShot: Bitmap? = null
+    private var _mapSnapShot = MutableLiveData<Bitmap>()
+    val mapSnapShot: LiveData<Bitmap> = _mapSnapShot
+    fun setMapSnapShot (bitmap: Bitmap){
+        _mapSnapShot.value = bitmap
+    }
 
     var image1: Bitmap? = null
     var image2: Bitmap? = null
@@ -94,9 +94,7 @@ class AddItemViewModel : ViewModel() {
     var image5: Bitmap? = null
     var image6: Bitmap? = null
     private val listOfImages: MutableList<String?> = mutableListOf()
-
     lateinit var fileSave: FileSave
-
 
     fun getTypeId(): Int {
         val fileTypes = FileTypes()
@@ -122,6 +120,23 @@ class AddItemViewModel : ViewModel() {
             }
             listOfImages.add(encodedImageMain)
         }
+        Log.e(
+            "TAG",
+            "gatheringData: " +
+                    "            typeId = $typeId,\n" +
+                    "            catId = $catId,\n" +
+                    "            subCatId = $subCatId,\n" +
+                    "            userId = $userId,\n" +
+                    "            cityId = $cityId,\n" +
+                    "            locations = listOf(Loc($regionId, $lat, $lng),Loc($region2Id, null, null),Loc($region3Id, null, null)),\n" +
+                    "            isShowExactAddress = $isShowExactAddress,\n" +
+                    "            size = Period(${sizeFrom?.toLong()}, (${(sizeTo?:sizeFrom)?.toLong()}),\n" +
+                    "            rooms = Period(${roomFrom?.toLong()}, ${roomTo?.toLong()}),\n" +
+                    "            age = Period(${ageFrom?.toLong()}, ${ageTo?.toLong()}),\n" +
+                    "            price = Period($priceFrom, ${priceTo?:priceFrom}),\n" +
+                    "            description = $descriptions,\n" +
+                    "            images = listOfImages",
+        )
         fileSave = FileSave(
             typeId = typeId,
             catId = catId,

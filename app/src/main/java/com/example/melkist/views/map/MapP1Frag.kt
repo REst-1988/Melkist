@@ -56,7 +56,6 @@ class MapP1Frag : Fragment() {
     private var interaction: Interaction? = null
     private lateinit var mapFragment: SupportMapFragment
     private val viewModel: MapViewModel by activityViewModels()
-    private lateinit var userDataStore: UserDataStore
     private lateinit var clusterManager: ClusterManager<LocationData>
     private var files: List<LocationData> = listOf()
     private lateinit var googleMap: GoogleMap
@@ -151,7 +150,6 @@ class MapP1Frag : Fragment() {
     override fun onResume() {
         super.onResume()
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
-        if (!this::userDataStore.isInitialized) userDataStore = UserDataStore(requireContext())
         val user = (activity as MainActivity).user
         viewModel.getFiles(user.token!!, user.cityId!!)
     }
@@ -196,7 +194,7 @@ class MapP1Frag : Fragment() {
         }*/
         bounds.include(LatLng(29.760836, 52.424100))
         bounds.include(LatLng(29.504610, 52.633141))
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 40))
         files = response.data
         addClusteredMarkers(googleMap, filterFileByChosenType(files))
     }

@@ -156,6 +156,7 @@
     <string name="statistics">آمار</string>
     <string name="alerts">هشدارها</string>
     <string name="my_files_title">فایل های من</string>
+    <string name="complete_all_fields">لطفا تمامی اطلاعات را تکمیل فرمایید</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->

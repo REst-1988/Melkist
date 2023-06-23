@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import com.example.melkist.utils.SIZE_FROM_TAG
 import com.example.melkist.utils.SIZE_TO_TAG
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPersianYear
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
 import com.google.android.material.textfield.TextInputEditText
@@ -48,6 +50,16 @@ class AddP6DetailsSeekerFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.saveResponse.observe(viewLifecycleOwner) {
+            Log.e("TAG", "onViewCreated: ${it.result}")
+            Log.e("TAG", "onViewCreated: ${it.message}")
+            showDialogWithMessage(
+                requireContext(), it.message ?: ""
+            ) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                cancel()
+            }
+        }
     }
 
     private fun checkFieldsForNullabilitySeparatorAccepted(view: TextInputLayout): Long? {
@@ -70,10 +82,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
             viewModel.priceTo = checkFieldsForNullabilitySeparatorAccepted(etPriceTo)
             viewModel.sizeFrom = checkFieldsForNullabilitySeparatorAccepted(etSizeFrom)?.toInt()
             viewModel.sizeTo = checkFieldsForNullabilitySeparatorAccepted(etSizeTo)?.toInt()
-            viewmodel.descriptions =
-                if (etDescriptions.editText!!.text.toString()
-                        .isNotEmpty() && etDescriptions.editText!!.text.toString() != ""
-                ) etDescriptions.editText!!.text.toString() else null
+            viewmodel?.descriptions = etDescriptions.editText?.text?.toString()
         }
     }
 
@@ -104,7 +113,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
     }
 
     fun onCommit() {
-        gatheringData() // TODO: impl
+        gatheringData()
         viewModel.saveFile((activity as AddActivity).user.id!!)
     }
 

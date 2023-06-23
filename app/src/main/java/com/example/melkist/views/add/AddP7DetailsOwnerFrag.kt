@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -40,15 +39,21 @@ class AddP7DetailsOwnerFrag : Fragment() {
     private lateinit var binding: FragAddP7DetailsOwnerBinding
     private val viewModel: AddItemViewModel by activityViewModels()
 
-
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) startCrop(uri) else Log.e("TAG", "getContent URI is NULL: ")
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("TAG", "onCreate: test 1", )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+
+        Log.e("TAG", "onCreate: test 2", )
         binding = FragAddP7DetailsOwnerBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -60,11 +65,18 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        Log.e("TAG", "onCreate: test 3", )
         viewModel.saveResponse.observe(viewLifecycleOwner) {
             Log.e("TAG", "onViewCreated: ${it.result}")
             Log.e("TAG", "onViewCreated: ${it.message}")
-            showDialogWithMessage(requireContext(), it.message?:"") {dialogInterface, _ -> dialogInterface.dismiss() }
-            // TODO: finish this part  must go bach to main act
+            showDialogWithMessage(
+                requireContext(), it.message ?: ""
+            ) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                cancel()
+            }
         }
         viewModel.resetImages()
     }
@@ -86,7 +98,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
         alertDialog.setView(binding.root)
         alertDialog.setCancelable(true)
         alertDialog.show()
-        binding.txtTitle.text = "$title ($unit)"
+        binding.txtTitle.text = String.format("%s (%s)", title, unit)
         binding.etInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -98,7 +110,9 @@ class AddP7DetailsOwnerFrag : Fragment() {
                     val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
                     binding.etInput.setText(format)
                     binding.etInput.setSelection(format.length)
-                    binding.txtInLetters.text = "${numInLetter(requireContext(), value)} $unit"
+                    binding.txtInLetters.text = String.format(
+                        "%s %s", numInLetter(requireContext(), value), unit
+                    )
                 }
                 binding.etInput.addTextChangedListener(this)
             }
@@ -131,12 +145,12 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun cancel() {
-        //TODO
+        requireActivity().finish()
     }
 
     fun onCommit() {
-        if (binding.etDescriptions.editText!!.text.isNotEmpty() || binding.etDescriptions.editText!!.text.toString() != "")
-            viewModel.descriptions = binding.etDescriptions.editText!!.text.toString()
+        if (binding.etDescriptions.editText!!.text.isNotEmpty() || binding.etDescriptions.editText!!.text.toString() != "") viewModel.descriptions =
+            binding.etDescriptions.editText!!.text.toString()
         viewModel.saveFile((activity as AddActivity).user.id!!)
     }
 
@@ -149,7 +163,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
         showInputDialog(
             resources.getString(R.string.measurement), resources.getString(R.string.meter_squere)
         ) {
-            if (it != null && it.isNotEmpty()) {
+            if (!it.isNullOrEmpty()) {
                 viewModel.sizeFrom = it.toInt()
                 binding.txtChooseMeasurement.text = it
             }
@@ -157,7 +171,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun showMeasureText(): String {
-        return if (viewModel.sizeFrom == 0) {
+        return if (viewModel.sizeFrom == null) {
             resources.getString(R.string.choose)
         } else {
             viewModel.sizeFrom.toString()
@@ -168,24 +182,24 @@ class AddP7DetailsOwnerFrag : Fragment() {
         showInputDialog(
             resources.getString(R.string.room_no), resources.getString(R.string.number)
         ) {
-            if (it != null && it.isNotEmpty()) {
-                viewModel.rooms = it.toInt()
+            if (!it.isNullOrEmpty()) {
+                viewModel.roomFrom = it.toInt()
                 binding.txtChooseRoomCo.text = it
             }
         }
     }
 
     fun showRoomCoText(): String {
-        return if (viewModel.rooms == 0) {
+        return if (viewModel.roomFrom == null) {
             resources.getString(R.string.choose)
         } else {
-            viewModel.rooms.toString()
+            viewModel.roomFrom.toString()
         }
     }
 
     fun onChoosingPrice() {
         showInputDialog(resources.getString(R.string.price), resources.getString(R.string.tooman)) {
-            if (it != null && it.isNotEmpty()) {
+            if (!it.isNullOrEmpty()) {
                 viewModel.priceFrom = it.toLong()
                 binding.txtChoosePrice.text = formatNumber(it.toDouble())
             }
@@ -193,10 +207,10 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun showPriceText(): String {
-        return if (viewModel.priceFrom == 0L) {
+        return if (viewModel.priceFrom == null) {
             resources.getString(R.string.choose)
         } else {
-            formatNumber(viewModel.priceFrom.toDouble())
+            formatNumber(viewModel.priceFrom!!.toDouble())
         }
     }
 
@@ -219,50 +233,50 @@ class AddP7DetailsOwnerFrag : Fragment() {
                                 error(R.drawable.ic_broken_image)
                             }
                             viewModel.image2 = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                imgUri
+                                requireContext().contentResolver, imgUri
                             )
                         }
+
                         1 -> {
                             binding.img3.load(imgUri) {
                                 placeholder(R.drawable.loading_animation)
                                 error(R.drawable.ic_broken_image)
                             }
                             viewModel.image3 = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                imgUri
+                                requireContext().contentResolver, imgUri
                             )
                         }
+
                         2 -> {
                             binding.img4.load(imgUri) {
                                 placeholder(R.drawable.loading_animation)
                                 error(R.drawable.ic_broken_image)
                             }
                             viewModel.image4 = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                imgUri
+                                requireContext().contentResolver, imgUri
                             )
                         }
+
                         3 -> {
                             binding.img5.load(imgUri) {
                                 placeholder(R.drawable.loading_animation)
                                 error(R.drawable.ic_broken_image)
                             }
                             viewModel.image5 = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                imgUri
+                                requireContext().contentResolver, imgUri
                             )
                         }
+
                         4 -> {
                             binding.img6.load(imgUri) {
                                 placeholder(R.drawable.loading_animation)
                                 error(R.drawable.ic_broken_image)
                             }
                             viewModel.image6 = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                imgUri
+                                requireContext().contentResolver, imgUri
                             )
                         }
+
                         5 -> {
                             binding.img1.load(imgUri) {
                                 placeholder(R.drawable.loading_animation)
@@ -270,8 +284,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
                             }
                             binding.imgAddImgAvatar.visibility = View.GONE
                             viewModel.image1 = MediaStore.Images.Media.getBitmap(
-                                requireContext().contentResolver,
-                                imgUri
+                                requireContext().contentResolver, imgUri
                             )
                         }
                     }
@@ -281,6 +294,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
                 }
 
             }
+
             else -> {
                 Log.e("TAG", "onActivityResult: else")
             }

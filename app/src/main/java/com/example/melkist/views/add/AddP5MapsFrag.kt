@@ -29,7 +29,6 @@ class AddP5MapsFrag : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
         val shiraz = position
         this.googleMap = googleMap
-        googleMap.addMarker(MarkerOptions().position(shiraz))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shiraz, 12.0f))
         googleMap.setOnCameraIdleListener {
                 position = googleMap.cameraPosition.target
@@ -68,8 +67,11 @@ class AddP5MapsFrag : Fragment() {
     fun onChoose() {
         viewModel.lat = position.latitude
         viewModel.lng = position.longitude
-        googleMap.snapshot {
-            viewModel.mapSnapShot = it
+        googleMap.addMarker(MarkerOptions().position(position))
+        googleMap.snapshot {imageBitmap ->
+            imageBitmap?.apply {
+                viewModel.setMapSnapShot(this)
+            }
         }
         back()
     }

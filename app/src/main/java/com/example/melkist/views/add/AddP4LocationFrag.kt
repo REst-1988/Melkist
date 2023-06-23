@@ -36,6 +36,9 @@ class AddP4LocationFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.mapSnapShot.observe(viewLifecycleOwner) {
+            binding.imgMapSnapshot.setImageBitmap(it)
+        }
         setFragmentResultListener(CR_KEY) { _, bundle ->
             bundle.getStringArray(DATA)?.apply {
                 when (viewModel.getLocReqSource()) {
@@ -71,12 +74,13 @@ class AddP4LocationFrag : Fragment() {
         }
     }
 
+    private fun isReadyForNextFrag(): Boolean {
+        return viewModel.provinceId != 0 && viewModel.cityId != 0 && viewModel.regionId != 0
+    }
+
     /************** binding commands **********************/
     fun back() {
-        findNavController().navigate(
-            R.id.action_addP4LocationFrag_to_addP1MainFrag
-        )
-        // no extra data should pass on navigating between fragments
+        findNavController().popBackStack()
         viewModel.resetAddLocationFieldsByCity()
     }
 
@@ -200,16 +204,23 @@ class AddP4LocationFrag : Fragment() {
     }
 
     fun onProceed() {
-        Log.e("TAG", "onProceed: check ${viewModel.isShowExactAddress}")
-        when (viewModel.getItemType()) {
-            AddItemViewModel.ItemType.SEEKER ->
-                findNavController().navigate(R.id.action_addP4LocationFrag_to_addP6DetailsSeekerFrag)
+        if (isReadyForNextFrag()) {
+            when (viewModel.getItemType()) {
+                AddItemViewModel.ItemType.SEEKER ->
+                    findNavController().navigate(R.id.action_addP4LocationFrag_to_addP6DetailsSeekerFrag)
 
-            AddItemViewModel.ItemType.OWNER ->
-                findNavController().navigate(R.id.action_addP4LocationFrag_to_addP7DetailsOwnerFrag)
+                AddItemViewModel.ItemType.OWNER ->
+                    findNavController().navigate(R.id.action_addP4LocationFrag_to_addP7DetailsOwnerFrag)
 
-            else -> {}
-        }
+                else -> {}
+            }
+        } else
+            showDialogWithMessage(
+                requireContext(),
+                resources.getString(R.string.complete_all_fields)
+            ) { d, _ ->
+                d.dismiss()
+            }
     }
 
     fun isShowProceedBtn(): Boolean {
@@ -222,11 +233,6 @@ class AddP4LocationFrag : Fragment() {
     }
 
     fun isShowMapImage(): Boolean {
-        if (viewModel.lat != null && viewModel.lng != null) {
-            binding.imgMapSnapshot.setImageBitmap(viewModel.mapSnapShot)
-            return true
-        }
-        return false
+        return viewModel.lat != null && viewModel.lng != null
     }
-
 }

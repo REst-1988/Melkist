@@ -11,8 +11,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.melkist.models.*
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.CITY
+import com.example.melkist.utils.PROVINCE
+import com.example.melkist.utils.REGION_1
+import com.example.melkist.utils.REGION_2
+import com.example.melkist.utils.REGION_3
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.math.BigDecimal
 
 class AddItemViewModel : ViewModel() {
 
@@ -68,12 +75,17 @@ class AddItemViewModel : ViewModel() {
     var lat: Double? = null
     var lng: Double? = null
     var isShowExactAddress: Boolean = false
-    var sizeFrom: Int = 0
+    var ageFrom: Int? = null
+    var ageTo: Int? = null
+    var sizeFrom: Int? = null
     var sizeTo: Int? = null
-    var rooms: Int = 0
-    var priceFrom: Long = 0
+    var roomFrom: Int? = null
+    var roomTo: Int? = null
+    var priceFrom: Long? = null
     var priceTo: Long? = null
     var descriptions: String? = null
+
+    var mapSnapShot: Bitmap? = null
 
     var image1: Bitmap? = null
     var image2: Bitmap? = null
@@ -86,7 +98,7 @@ class AddItemViewModel : ViewModel() {
     lateinit var fileSave: FileSave
 
 
-/*    fun getTypeId(): Int {
+    fun getTypeId(): Int {
         val fileTypes = FileTypes()
         typeId = if (getItemType() == ItemType.SEEKER)
             fileTypes.seeker.id
@@ -95,87 +107,14 @@ class AddItemViewModel : ViewModel() {
         else
             -1
         return typeId
-    }*/
-
-    fun getTypeTitle(): String {
-        val fileTypes = FileTypes()
-        return if (getItemType() == ItemType.SEEKER)
-            fileTypes.seeker.title
-        else if (getItemType() == ItemType.OWNER)
-            fileTypes.owner.title
-        else
-            ""
     }
 
-/*    fun getFileCategories() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _itemOptionList.value =
-                    Api.retrofitService.getFileCategories(getTypeId()).data!!
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
-            }
-        }
-    }*/
-
-    fun choosingItemActionPc(pcrs: PcrsData){
-        when (crCondition) {
-            Cr.PROVINCE -> {
-                provinceId = pcrs.id!!
-                provinceTitle = pcrs.title!!
-                resetAddLocationFieldsByProvince()
-            }
-            Cr.CITY -> {
-                cityId = pcrs.id!!
-                cityTitle = pcrs.title!!
-                resetAddLocationFieldsByCity()
-            }
-            else -> {}
-        }
-    }
-
-    fun choosingItemActionRegion(RegionRes: RegionResponseData){
-        when (crCondition) {
-            Cr.REGION_1 -> {
-                regionId = RegionRes.id!!
-                regionTitle = RegionRes.title
-            }
-            Cr.REGION_2 -> {
-                region2Id = RegionRes.id!!
-                region2Title = RegionRes.title
-            }
-            Cr.REGION_3 -> {
-                region3Id = RegionRes.id!!
-                region3Title = RegionRes.title
-            }
-            else -> {}
-        }
-    }
-
-/*    fun getFileCategoryType() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                Log.e("TAG", "getFileCategoryType: ${getTypeId()} , $catId", )
-                _itemOptionList.value =
-                    Api.retrofitService.getFileCategoryTypes(getTypeId(), catId = catId).data!!
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
-            }
-        }
-    }*/
-
-    private fun gatheringData() {
+    private fun gatheringData(userId: Int) {
         val list = arrayListOf(image1, image2, image3, image4, image5, image6)
-        for (img in list){
+        list.forEach { img ->
             var encodedImageMain: String? = null
-            if (img != null) {
-                val main = ThumbnailUtils.extractThumbnail(img, 500, 337)
+            img?.apply {
+                val main = ThumbnailUtils.extractThumbnail(this, 500, 337)
                 val byteArrayOutputStreamMain = ByteArrayOutputStream()
                 main.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamMain)
                 encodedImageMain =
@@ -184,23 +123,24 @@ class AddItemViewModel : ViewModel() {
             listOfImages.add(encodedImageMain)
         }
         fileSave = FileSave(
-            typeId,
-            catId,
-            subCatId,
-            userId = 1,// TODO: this must read from user data
-            cityId,
-            listOf(Loc(regionId, lat, lng),Loc(region2Id, null, null),Loc(region3Id, null, null)),
-            isShowExactAddress,
-            Period(sizeFrom.toLong(), (sizeTo?:sizeFrom).toLong()),
-            Period(rooms.toLong(), rooms.toLong()), // If later on need period it should be changed
-            Period(priceFrom, priceTo?:priceFrom),
-            descriptions,
-            listOfImages
+            typeId = typeId,
+            catId = catId,
+            subCatId = subCatId,
+            userId = userId,
+            cityId = cityId,
+            locations = listOf(Loc(regionId, lat, lng),Loc(region2Id, null, null),Loc(region3Id, null, null)),
+            isShowExactAddress = isShowExactAddress,
+            size = Period(sizeFrom?.toLong(), (sizeTo?:sizeFrom)?.toLong()),
+            rooms = Period(roomFrom?.toLong(), roomTo?.toLong()),
+            age = Period(ageFrom?.toLong(), ageTo?.toLong()),
+            price = Period(priceFrom, priceTo?:priceFrom),
+            description = descriptions,
+            images = listOfImages
         )
     }
 
-    fun saveFile () {
-        gatheringData()
+    fun saveFile (userId: Int) {
+        gatheringData(userId)
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
@@ -213,13 +153,6 @@ class AddItemViewModel : ViewModel() {
             }
         }
     }
-
-/*    fun emptyList() {
-        _itemOptionList.value = listOf()
-    }*/
-/*    fun emptyPcList(){
-        _pcrsList.value = listOf()
-    }*/ //TODO: Check this if don't need delete
 
     fun resetAddItemFieldsByChoosingType() {
         catId = 0
@@ -241,10 +174,10 @@ class AddItemViewModel : ViewModel() {
         lat = null
         lng = null
         isShowExactAddress = false
-        region2Id = 0
-        region2Title = ""
-        region3Id = 0
-        region3Title = ""
+        region2Id = null
+        region2Title = null
+        region3Id = null
+        region3Title = null
     }
 
     fun resetAddLocationFieldsByCity() {
@@ -253,15 +186,13 @@ class AddItemViewModel : ViewModel() {
         lat = null
         lng = null
         isShowExactAddress = false
-        region2Id = 0
-        region2Title = ""
-        region3Id = 0
-        region3Title = ""
+        region2Id = null
+        region2Title = null
+        region3Id = null
+        region3Title = null
     }
 
     fun resetAddLocationFieldsByRegion1() {
-        regionId = 0
-        regionTitle = ""
         lat = null
         lng = null
         isShowExactAddress = false
@@ -278,5 +209,15 @@ class AddItemViewModel : ViewModel() {
         image4 = null
         image5 = null
         image6 = null
+    }
+
+    fun getLocReqSourceKey(): Int {
+        return when(getLocReqSource()){
+            Cr.PROVINCE -> PROVINCE
+            Cr.CITY -> CITY
+            Cr.REGION_1 -> REGION_1
+            Cr.REGION_2 -> REGION_2
+            Cr.REGION_3 -> REGION_3
+        }
     }
 }

@@ -28,12 +28,12 @@ class FilterFileViewModel: ViewModel() {
         itemType = type
     }
 
-    var catId: Int = 0
-    var catTitle: String = ""
-    var subCatId: Int = 0
-    var subCatTitle: String = ""
-    var regionId: Int = 0
-    var regionTitle: String = ""
+    var catId: Int? = null
+    var catTitle: String? = null
+    var subCatId: Int? = null
+    var subCatTitle: String? = null
+    var regionId: Int? = null
+    var regionTitle: String? = null
 
     fun getTypeId(requestCode: MapViewModel.ItemType): Int {
         val fileTypes = FileTypes()
@@ -44,15 +44,15 @@ class FilterFileViewModel: ViewModel() {
         }
     }
     fun resetCatSubCat() {
-        catId = 0
-        catTitle = ""
-        subCatId = 0
-        subCatTitle = ""
+        catId = null
+        catTitle = null
+        subCatId = null
+        subCatTitle = null
     }
 
     fun resetSubCat() {
-        subCatId = 0
-        subCatTitle = ""
+        subCatId = null
+        subCatTitle = null
     }
 
     fun getReqSourceNumber(): Int {

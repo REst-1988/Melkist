@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragFileDetailBinding
-import com.example.melkist.models.FileAllDataResponse
+import com.example.melkist.models.FileDataResponse
 import com.example.melkist.models.Location
 import com.example.melkist.models.Period
 import com.example.melkist.utils.DATA
@@ -20,12 +20,12 @@ class FileDetailFrag : Fragment() {
 
     private lateinit var binding: FragFileDetailBinding
     private val viewModel: FileDetailViewModel by viewModels ()
-    private var data: FileAllDataResponse? = null
+    private var data: FileDataResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.apply {
-            data = this.getSerializable(DATA) as FileAllDataResponse
+            data = this.getSerializable(DATA) as FileDataResponse
         }
 
         data?.apply {

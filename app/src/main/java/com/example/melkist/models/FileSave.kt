@@ -8,8 +8,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.squareup.moshi.Json
-
-
 data class LocationResponse(
     @Json var result: Boolean?,
     @Json var data: List<LocationData>,
@@ -46,15 +44,16 @@ data class FileResponse(
 )
 
 data class FileSave(
-    @Json(name = "fileType_id") val fileTypeId: Int,
-    @Json(name = "fileCategory_id") val fileCategoryId: Int,
-    @Json(name = "fileCategoryType_id") val fileCategoryTypeId: Int,
+    @Json(name = "fileType_id") val typeId: Int,
+    @Json(name = "fileCategory_id") val catId: Int,
+    @Json(name = "fileCategoryType_id") val subCatId: Int,
     @Json(name = "user_id") val userId: Int,
     @Json(name = "city_id") val cityId: Int,
     @Json(name = "locations") val locations: List<Loc>, // list because user can choose multi places
     @Json val isShowExactAddress: Boolean,
-    @Json val meterage: Period,
-    @Json(name = "sleepsNumber") val rooms: Period,
+    @Json (name = "meterage") val size: Period,
+    @Json (name = "sleepsNumber") val rooms: Period,
+    @Json val age: Period,
     @Json val price: Period,
     @Json val description: String?,
     @Json val images: List<String?>?

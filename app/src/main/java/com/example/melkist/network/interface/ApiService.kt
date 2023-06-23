@@ -1,7 +1,6 @@
 package com.example.melkist.network.`interface`
 
 import com.example.melkist.models.*
-import com.squareup.moshi.Json
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -124,7 +123,7 @@ interface ApiService {
     suspend fun getFileInfoById(
         @Header("Authorization") token: String,
         @Query("file_id") fileId: Int,
-    ): FileAllDataResponse
+    ): FileDataResponse
 
     @POST("dashboard/admin/file/getFavoriteFiles")
     suspend fun getFavoriteFiles(

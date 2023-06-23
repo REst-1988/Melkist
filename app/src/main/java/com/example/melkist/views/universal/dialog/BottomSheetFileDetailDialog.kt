@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.LayoutBottomSheetFileDetailBinding
-import com.example.melkist.models.FileAllDataResponse
+import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.concatenateText
@@ -64,7 +64,7 @@ class BottomSheetFileDetailDialog(
         }
     }
 
-    private fun onOkGettingFileAllDataResponse(response: FileAllDataResponse) {
+    private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
         //TODO: set The view pager here
         response.data?.apply {
             binding.txtRoomNo.text = String.format(

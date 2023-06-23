@@ -29,13 +29,15 @@ class ChooseCatSubcatFrag : Fragment() {
     private lateinit var binding: FragChooseCatSubcatBinding
     private val viewModel: ChooseCatSubCatViewModel by viewModels()
     lateinit var adapter: ChoosingCatSubCatAdapter
-    private var arrayBundle: ArrayList<Int>? = arrayListOf()
+    private var arrayBundle: ArrayList<String>? = arrayListOf()
+    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arrayBundle = arguments?.getIntegerArrayList(CAT_ID_KEY)
-        viewModel.itemType = arrayBundle!![0]
-        viewModel.catId = arrayBundle!![1]
+        arrayBundle = arguments?.getStringArrayList(CAT_ID_KEY)
+        token = arrayBundle!![0]
+        viewModel.itemType = arrayBundle!![1].toInt()
+        viewModel.catId = arrayBundle!![2].toInt()
     }
 
     override fun onCreateView(
@@ -55,18 +57,15 @@ class ChooseCatSubcatFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("TAG", "onResume0: ${(activity as MainActivity).user.token!!}")
         arrayBundle?.apply {
-            Log.e("TAG", "onResume1: ${arrayBundle!![0]} and ${viewModel.itemType}")
-            Log.e("TAG", "onResume2: ${arrayBundle!![1]} and ${viewModel.catId}")
             if (viewModel.catId == EMPTY_CATEGORY_ID)
                 viewModel.getFileCategories(
-                    (activity as MainActivity).user.token!!,
+                    token,
                     viewModel.itemType
                 )
             else
                 viewModel.getFileCategoryType(
-                    (activity as MainActivity).user.token!!,
+                    token,
                     viewModel.itemType,
                     viewModel.catId
                 )
@@ -92,7 +91,7 @@ class ChooseCatSubcatFrag : Fragment() {
     }
 
     fun getPageTitle(): String {
-        return if (arrayBundle!![1] == -1)
+        return if (viewModel.catId == -1)
             requireContext().resources.getString(R.string.choose_category_title)
         else
             requireContext().resources.getString(R.string.choose_sub_category_title)

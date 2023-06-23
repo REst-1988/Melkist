@@ -69,12 +69,25 @@ class MapP1Frag : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(FILTER_RESULT_KEY){ _, bundle ->
-//            viewModel.getFilterFiles(
-//                (activity as MainActivity).user.token!!,
-//                bundle.getSerializable(DATA)!! as FilterFileData
-//            )
-            val filterDate = bundle.getSerializable(DATA)!! as FilterFileData
-            Log.e("TAG", "onCreate: ${filterDate.size.from}", )
+            val filterfileData = bundle.getSerializable(DATA)!! as FilterFileData
+            Log.e("TAG", "onCreate: rooms.from = ${filterfileData.rooms.from}")
+            Log.e("TAG", "onCreate: rooms.to = ${filterfileData.rooms.to}")
+            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.from}")
+            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.to}")
+            Log.e("TAG", "onCreate: catId = ${filterfileData.catId}")
+            Log.e("TAG", "onCreate: price.from = ${filterfileData.price.from}")
+            Log.e("TAG", "onCreate: price.to = ${filterfileData.price.to}")
+            Log.e("TAG", "onCreate: regionId = ${filterfileData.regionId}")
+            Log.e("TAG", "onCreate: size.from = ${filterfileData.size.from}")
+            Log.e("TAG", "onCreate: size.to = ${filterfileData.size.to}")
+            Log.e("TAG", "onCreate: subCatId= ${filterfileData.subCatId}")
+            Log.e("TAG", "onCreate: typeId = ${filterfileData.typeId}")
+            viewModel.resetLocations()
+            viewModel.getFilterFiles(
+                (activity as MainActivity).user.token!!,
+                filterfileData
+            )
+
         }
     }
 
@@ -109,10 +122,10 @@ class MapP1Frag : Fragment() {
     private fun addClusteredMarkers(googleMap: GoogleMap, files: List<LocationData>) {
         if (!::clusterManager.isInitialized) {
             clusterManager = ClusterManager<LocationData>(requireContext(), googleMap)
-            clusterManager.renderer = PlaceRenderer(
-                requireContext(), googleMap, clusterManager
-            )
         }
+        clusterManager.renderer = PlaceRenderer(
+            requireContext(), googleMap, clusterManager
+        )
         clusterManager.clearItems()
         clusterManager.addItems(files)
         clusterManager.cluster()
@@ -178,9 +191,11 @@ class MapP1Frag : Fragment() {
         googleMap = mapFragment.awaitMap()
         googleMap.awaitMapLoad()
         val bounds = LatLngBounds.builder()
-        response.data.forEach {
-            bounds.include(it.position)
-        }
+        /*        response.data.forEach {
+                    bounds.include(it.position)
+        }*/
+        bounds.include(LatLng(29.760836, 52.424100))
+        bounds.include(LatLng(29.504610, 52.633141))
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 20))
         files = response.data
         addClusteredMarkers(googleMap, filterFileByChosenType(files))

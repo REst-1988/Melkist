@@ -21,18 +21,13 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val userDataStore = UserDataStore(this)
-        userDataStore.preferenceFlow.asLiveData().observe(this){
-            user = it
-        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         navView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_map, R.id.navigation_profle, R.id.navigation_fav
@@ -51,7 +46,18 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!::user.isInitialized) {
+            val userDataStore = UserDataStore(this)
+            userDataStore.preferenceFlow.asLiveData().observe(this) {
+                user = it
+            }
+        }
+    }
+
     override fun changBottomNavViewVisibility(visibility: Int) {
         navView.visibility = visibility
+        binding.ibtnAdd.visibility = visibility
     }
 }

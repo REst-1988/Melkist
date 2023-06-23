@@ -67,26 +67,12 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- TODO: found these two map so check which one to use-->
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/app_bar" />
-
-        <!-- TODO: found these two map so check which one to use-->
-<!--        <com.google.android.gms.maps.MapView
-            android:id="@+id/map2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />-->
-        <!-- TODO: this is only for preview remove it after finishing map part-->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/map_big"
-            android:scaleType="centerCrop"
-            android:layout_below="@id/app_bar"/>
 
         <ImageView
             android:id="@+id/img_location"

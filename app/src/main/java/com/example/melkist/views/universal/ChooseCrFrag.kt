@@ -17,6 +17,7 @@ import com.example.melkist.R
 import com.example.melkist.adapters.ChoosingPcrsAdapter
 import com.example.melkist.adapters.ChoosingRegionAdapter
 import com.example.melkist.databinding.FragChooseCrBinding
+import com.example.melkist.models.PcrsData
 import com.example.melkist.models.RegionResponseData
 import com.example.melkist.utils.CITY
 import com.example.melkist.utils.CR_KEY
@@ -24,7 +25,6 @@ import com.example.melkist.utils.DATA
 import com.example.melkist.utils.PROVINCE
 import com.example.melkist.utils.REGION_1
 import com.example.melkist.utils.REGION_2
-import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.ChooseCrViewModel
 
 class ChooseCrFrag : Fragment() {
@@ -105,6 +105,7 @@ class ChooseCrFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.e("TAG", "onResume: $reqSource ", )
         when (reqSource) {
             PROVINCE -> {
                 viewModel.getProvinces()
@@ -129,6 +130,11 @@ class ChooseCrFrag : Fragment() {
             viewModel.emptyRegionList()
             regionAdapter.submitList(viewModel.regionList.value)
         }
+    }
+
+    fun onChooseProvinceCityItems (pcrs: PcrsData){
+        setFragmentResult(CR_KEY, bundleOf(DATA to arrayOf(pcrs.id.toString(), pcrs.title)))
+        back()
     }
 
     fun onChooseItem(cr: RegionResponseData) {

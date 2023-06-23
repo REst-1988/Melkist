@@ -5,13 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP4LocationBinding
+import com.example.melkist.utils.CR_KEY
+import com.example.melkist.utils.DATA
 import com.example.melkist.utils.showDialogWithMessage
-import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.AddItemViewModel
 
 class AddP4LocationFrag : Fragment() {
@@ -31,15 +34,54 @@ class AddP4LocationFrag : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setFragmentResultListener(CR_KEY) { _, bundle ->
+            bundle.getStringArray(DATA)?.apply {
+                when (viewModel.getLocReqSource()) {
+                    AddItemViewModel.Cr.PROVINCE -> {
+                        viewModel.provinceId = this[0].toInt()
+                        viewModel.provinceTitle = this[1]
+                        viewModel.resetAddLocationFieldsByProvince()
+                    }
+
+                    AddItemViewModel.Cr.CITY -> {
+                        viewModel.cityId = this[0].toInt()
+                        viewModel.cityTitle = this[1]
+                        viewModel.resetAddLocationFieldsByCity()
+                    }
+
+                    AddItemViewModel.Cr.REGION_1 -> {
+                        viewModel.regionId = this[0].toInt()
+                        viewModel.regionTitle = this[1]
+                        viewModel.resetAddLocationFieldsByRegion1()
+                    }
+
+                    AddItemViewModel.Cr.REGION_2 -> {
+                        viewModel.region2Id = this[0].toInt()
+                        viewModel.region2Title = this[1]
+                    }
+
+                    AddItemViewModel.Cr.REGION_3 -> {
+                        viewModel.region3Id = this[0].toInt()
+                        viewModel.region3Title = this[1]
+                    }
+                }
+            }
+        }
+    }
+
     /************** binding commands **********************/
     fun back() {
         findNavController().navigate(
             R.id.action_addP4LocationFrag_to_addP1MainFrag
         )
+        // no extra data should pass on navigating between fragments
+        viewModel.resetAddLocationFieldsByCity()
     }
 
     fun cancel() {
-        // TODO
+        requireActivity().finish()
     }
 
     fun mapVisibility(): Boolean {
@@ -54,23 +96,42 @@ class AddP4LocationFrag : Fragment() {
 
     fun onChoosingProvince() {
         viewModel.setLocReqSource(AddItemViewModel.Cr.PROVINCE)
+        val bundle = bundleOf(
+            CR_KEY to arrayListOf(
+                viewModel.getLocReqSourceKey(), 0
+            )
+        )
         findNavController().navigate(
-            R.id.action_addP4LocationFrag_to_addP5CrFrag
+            R.id.action_addP4LocationFrag_to_addP5CrFrag,
+            bundle
         )
     }
 
     fun onChoosingCity() {
         viewModel.setLocReqSource(AddItemViewModel.Cr.CITY)
+        val bundle = bundleOf(
+            CR_KEY to arrayListOf(
+                viewModel.getLocReqSourceKey(),
+                viewModel.provinceId // Note that in the future city id might change (could be variable)
+            )
+        )
         findNavController().navigate(
-            R.id.action_addP4LocationFrag_to_addP5CrFrag
+            R.id.action_addP4LocationFrag_to_addP5CrFrag,
+            bundle
         )
     }
 
     fun onChoosingRegion1() {
         if (viewModel.isReadyForChooseRegion()) {
             viewModel.setLocReqSource(AddItemViewModel.Cr.REGION_1)
+            val bundle = bundleOf(
+                CR_KEY to arrayListOf(
+                    viewModel.getLocReqSourceKey(), viewModel.cityId
+                )
+            )
             findNavController().navigate(
-                R.id.action_addP4LocationFrag_to_addP5CrFrag
+                R.id.action_addP4LocationFrag_to_addP5CrFrag,
+                bundle
             )
         } else {
             showDialogWithMessage(
@@ -90,7 +151,7 @@ class AddP4LocationFrag : Fragment() {
         return viewModel.getItemType() == AddItemViewModel.ItemType.OWNER
     }
 
-    fun onCheckedChanged(check: Boolean){
+    fun onCheckedChanged(check: Boolean) {
         viewModel.isShowExactAddress = check
     }
 
@@ -101,8 +162,14 @@ class AddP4LocationFrag : Fragment() {
     fun onChoosingRegion2() {
         if (viewModel.isReadyForChooseRegion()) {
             viewModel.setLocReqSource(AddItemViewModel.Cr.REGION_2)
+            val bundle = bundleOf(
+                CR_KEY to arrayListOf(
+                    viewModel.getLocReqSourceKey(), viewModel.cityId
+                )
+            )
             findNavController().navigate(
-                R.id.action_addP4LocationFrag_to_addP5CrFrag
+                R.id.action_addP4LocationFrag_to_addP5CrFrag,
+                bundle
             )
         } else {
             showDialogWithMessage(
@@ -115,8 +182,14 @@ class AddP4LocationFrag : Fragment() {
     fun onChoosingRegion3() {
         if (viewModel.isReadyForChooseRegion()) {
             viewModel.setLocReqSource(AddItemViewModel.Cr.REGION_3)
+            val bundle = bundleOf(
+                CR_KEY to arrayListOf(
+                    viewModel.getLocReqSourceKey(), viewModel.cityId
+                )
+            )
             findNavController().navigate(
-                R.id.action_addP4LocationFrag_to_addP5CrFrag
+                R.id.action_addP4LocationFrag_to_addP5CrFrag,
+                bundle
             )
         } else {
             showDialogWithMessage(
@@ -127,21 +200,33 @@ class AddP4LocationFrag : Fragment() {
     }
 
     fun onProceed() {
-        Log.e("TAG", "onProceed: check ${viewModel.isShowExactAddress}", )
+        Log.e("TAG", "onProceed: check ${viewModel.isShowExactAddress}")
         when (viewModel.getItemType()) {
             AddItemViewModel.ItemType.SEEKER ->
                 findNavController().navigate(R.id.action_addP4LocationFrag_to_addP6DetailsSeekerFrag)
+
             AddItemViewModel.ItemType.OWNER ->
                 findNavController().navigate(R.id.action_addP4LocationFrag_to_addP7DetailsOwnerFrag)
+
             else -> {}
         }
     }
 
     fun isShowProceedBtn(): Boolean {
-        return viewModel.provinceId != 0 && viewModel.cityId != 0 && viewModel.lat != null && viewModel.lng != null
+        val isPcr = viewModel.provinceId != 0 && viewModel.cityId != 0
+        val isOtherLogics = if (viewModel.getItemType() == AddItemViewModel.ItemType.SEEKER)
+            viewModel.regionId != 0
+        else
+            viewModel.lat != null && viewModel.lng != null
+        return isPcr && isOtherLogics
     }
 
-    // TODO: this is only for preview and should be replaced by what we get from map after finishing map part or delete
-    fun isShowMapImage(): Boolean = viewModel.lat != null && viewModel.lng != null
+    fun isShowMapImage(): Boolean {
+        if (viewModel.lat != null && viewModel.lng != null) {
+            binding.imgMapSnapshot.setImageBitmap(viewModel.mapSnapShot)
+            return true
+        }
+        return false
+    }
 
 }

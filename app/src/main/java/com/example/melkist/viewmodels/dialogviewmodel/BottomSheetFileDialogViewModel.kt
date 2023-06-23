@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.melkist.models.FileAllDataResponse
+import com.example.melkist.models.FileDataResponse
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import kotlinx.coroutines.launch
@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 class BottomSheetFileDialogViewModel : ViewModel() {
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
-    private val _fileAllData = MutableLiveData<FileAllDataResponse>()
-    val fileAllData: LiveData<FileAllDataResponse> = _fileAllData
+    private val _fileAllData = MutableLiveData<FileDataResponse>()
+    val fileAllData: LiveData<FileDataResponse> = _fileAllData
 
     fun getFileInfoById(token: String, fileId: Int) {
         viewModelScope.launch {

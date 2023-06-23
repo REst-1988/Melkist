@@ -4,12 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.AddActivity
+import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP1MainBinding
+import com.example.melkist.utils.CAT_ID_KEY
+import com.example.melkist.utils.CAT_RESULT_KEY
+import com.example.melkist.utils.DATA
+import com.example.melkist.utils.EMPTY_CATEGORY_ID
+import com.example.melkist.utils.ITEM_TYPE_KEY
+import com.example.melkist.utils.OWNER_ITEM_TYPE
+import com.example.melkist.utils.SEEKER_ITEM_TYPE
+import com.example.melkist.utils.SUB_CAT_RESULT_KEY
 import com.example.melkist.viewmodels.AddItemViewModel
+import com.example.melkist.viewmodels.MapViewModel
 
 
 class AddP1MainFrag : Fragment() {
@@ -30,15 +43,38 @@ class AddP1MainFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFragmentResultListener(ITEM_TYPE_KEY) { _, bundle ->
+            when (bundle.getInt(DATA)) {
+                OWNER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.OWNER)
+                SEEKER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.SEEKER)
+            }
+            binding!!.txtChooseType.text = showTypeText()
+            viewModel.resetAddItemFieldsByChoosingType()
+        }
+        setFragmentResultListener(CAT_RESULT_KEY) { _, bundle ->
+            bundle.getStringArray(DATA)?.apply {
+                viewModel.catId = this[0].toInt()
+                viewModel.catTitle = this[1]
+                if (this[0].toInt() != 0) {
+                    viewModel.resetAddItemFieldsByChoosingCategory()
+                }
+            }
+        }
+        setFragmentResultListener(SUB_CAT_RESULT_KEY) { _, bundle ->
+            bundle.getStringArray(DATA)?.apply {
+                viewModel.subCatId = this[0].toInt()
+                viewModel.subCatTitle = this[1]
+            }
+        }
 
     }
 
     /******************* binding commands **************************/
     fun cancel() {
-        //TODO: CMPL
+        requireActivity().finish()
     }
 
-    fun onChoosingtype() {
+    fun onChoosingType() {
         findNavController().navigate(R.id.action_addP1MainFrag_to_addP2ChooseTypeFrag)
     }
 
@@ -68,7 +104,13 @@ class AddP1MainFrag : Fragment() {
 
     fun onChoosingCategory() {
         viewModel.setReqSource(AddItemViewModel.ReqSource.CATEGORY)
-        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag)
+        val array = arrayListOf(
+            (activity as AddActivity).user.token,
+            viewModel.getTypeId().toString(),
+            EMPTY_CATEGORY_ID.toString()
+        )
+        val bundle = bundleOf(CAT_ID_KEY to array)
+        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag, bundle)
     }
 
     fun showCategoryText(): String {
@@ -83,7 +125,13 @@ class AddP1MainFrag : Fragment() {
 
     fun onChoosingSubCategory() {
         viewModel.setReqSource(AddItemViewModel.ReqSource.SUB_CATEGORY)
-        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag)
+        val array = arrayListOf(
+            (activity as AddActivity).user.token,
+            viewModel.getTypeId().toString(),
+            viewModel.catId.toString()
+        )
+        val bundle = bundleOf(CAT_ID_KEY to array)
+        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag, bundle)
     }
 
     fun showSubCategoryText(): String {

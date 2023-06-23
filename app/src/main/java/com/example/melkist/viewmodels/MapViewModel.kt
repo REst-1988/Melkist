@@ -48,18 +48,23 @@ class MapViewModel : ViewModel() {
             }
         }
     }
-
     fun getFilterFiles(token: String, filterFileData: FilterFileData){
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
                 _locationResponse.value =
                     Api.retrofitService.filterFiles(token = token, filterFileData)
+                Log.e("TAG", "getFilterFiles: ${_locationResponse.value!!.data[0].id}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
+                Log.e("TAG", "getFilterFiles:  exeption", )
                 _status.value = ApiStatus.ERROR
             }
         }
+    }
+
+    fun resetLocations() {
+        locationResponse.value!!.data = listOf()
     }
 }

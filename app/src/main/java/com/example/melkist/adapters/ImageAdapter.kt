@@ -9,10 +9,10 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.melkist.R
-import com.example.melkist.models.FileAllDataResponse
+import com.example.melkist.models.FileDataResponse
 
 class ImageAdapter(
-    private val file: FileAllDataResponse
+    private val file: FileDataResponse
 ): RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {

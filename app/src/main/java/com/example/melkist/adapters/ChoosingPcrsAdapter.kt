@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.melkist.databinding.ItemListSingleTextBinding
 import com.example.melkist.models.PcrsData
-import com.example.melkist.viewmodels.AddItemViewModel
+import com.example.melkist.viewmodels.ChooseCrViewModel
 import com.example.melkist.viewmodels.SignupViewModel
 import com.example.melkist.views.universal.ChooseCrFrag
 import com.example.melkist.views.login.signup.SignupP4ChoosingPcrsFrag
@@ -72,10 +72,9 @@ class ChoosingPcrsAdapter(val viewModel: ViewModel, val fragment: Fragment) :
         val pcrs = getItem(position)
         holder.bind(pcrs)
         holder.itemView.setOnClickListener {
-            if (viewModel is AddItemViewModel) {
+            if (viewModel is ChooseCrViewModel) {
                 Log.e("TAG", "onBindViewHolder: aaa test ", )
-                viewModel.choosingItemActionPc(pcrs)
-                (fragment as ChooseCrFrag).back()
+                (fragment as ChooseCrFrag).onChooseProvinceCityItems(pcrs)
             } else {
                 Log.e("TAG", "onBindViewHolder: aaa test 2" , )
                 (viewModel as SignupViewModel).choosingItemAction(pcrs)

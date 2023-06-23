@@ -507,7 +507,7 @@
                             android:fontFamily="@font/byekan"
                             android:hint="@string/from"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textColor="@color/edit_text_text_color"
                             android:textDirection="rtl"
                             android:textSize="@dimen/normal_text_size" />
@@ -547,7 +547,7 @@
                             android:fontFamily="@font/byekan"
                             android:hint="@string/to"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textColor="@color/edit_text_text_color"
                             android:textDirection="rtl"
                             android:textSize="@dimen/normal_text_size" />
@@ -605,7 +605,7 @@
                             android:fontFamily="@font/byekan"
                             android:hint="@string/from"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textColor="@color/edit_text_text_color"
                             android:textDirection="rtl"
                             android:textSize="@dimen/normal_text_size" />
@@ -645,7 +645,7 @@
                             android:fontFamily="@font/byekan"
                             android:hint="@string/to"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textColor="@color/edit_text_text_color"
                             android:textDirection="rtl"
                             android:textSize="@dimen/normal_text_size" />

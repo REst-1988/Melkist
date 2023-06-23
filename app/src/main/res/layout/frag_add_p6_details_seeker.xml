@@ -81,170 +81,417 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/app_bar"
+            android:layout_above="@id/btn_commit"
             android:fillViewport="true"
             android:fitsSystemWindows="true">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/normal_margin"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <TextView
-                        android:id="@+id/txt_choose_measurement_title"
+                        android:id="@+id/txt_age_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
-                        android:text="@string/measurement"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
+                        android:padding="@dimen/short_padding"
+                        android:text="@string/age_title"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_age_from"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toStartOf="@id/et_age_to"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_age_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_age_from_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/from"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="@dimen/short_margin"
-                        android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
-                        android:text="@string/from"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
+                        android:id="@+id/curtain_age_from"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onAgeFromClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_age_from"
+                        app:layout_constraintEnd_toEndOf="@id/et_age_from"
+                        app:layout_constraintStart_toStartOf="@id/et_age_from"
+                        app:layout_constraintTop_toTopOf="@id/et_age_from" />
 
-                    <NumberPicker
-                        android:id="@+id/npicker_measure_from"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_age_to"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/et_age_from"
+                        app:layout_constraintTop_toBottomOf="@id/txt_age_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_age_to_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/to"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="@dimen/short_margin"
-                        android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
-                        android:text="@string/to"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
-
-                    <NumberPicker
-                        android:id="@+id/npicker_measure_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/spacer_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_boarder" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        android:id="@+id/curtain_age_to"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onAgeToClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_age_to"
+                        app:layout_constraintEnd_toEndOf="@id/et_age_to"
+                        app:layout_constraintStart_toStartOf="@id/et_age_to"
+                        app:layout_constraintTop_toTopOf="@id/et_age_to" />
 
                     <TextView
-                        android:id="@+id/txt_choose_room_no_title"
+                        android:id="@+id/spacer_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_boarder"
+                        app:layout_constraintTop_toBottomOf="@id/et_age_to" />
+
+                    <TextView
+                        android:id="@+id/txt_size_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
+                        android:padding="@dimen/short_padding"
+                        android:text="@string/size_squere_meter"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spacer_4" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_size_from"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toStartOf="@id/et_size_to"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_size_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_size_from_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/from"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/curtain_size_from"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onSizeFromClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_size_from"
+                        app:layout_constraintEnd_toEndOf="@id/et_size_from"
+                        app:layout_constraintStart_toStartOf="@id/et_size_from"
+                        app:layout_constraintTop_toTopOf="@id/et_size_from" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_size_to"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/et_size_from"
+                        app:layout_constraintTop_toBottomOf="@id/txt_size_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_size_to_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/to"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/curtain_size_to"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onSizeToClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_size_to"
+                        app:layout_constraintEnd_toEndOf="@id/et_size_to"
+                        app:layout_constraintStart_toStartOf="@id/et_size_to"
+                        app:layout_constraintTop_toTopOf="@id/et_size_to" />
+
+                    <TextView
+                        android:id="@+id/spacer_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_boarder"
+                        app:layout_constraintTop_toBottomOf="@id/et_size_to" />
+
+                    <TextView
+                        android:id="@+id/txt_room_no_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/byekan"
+                        android:padding="@dimen/short_padding"
                         android:text="@string/room_no"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spacer_5" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_room_no_from"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toStartOf="@id/et_room_no_to"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_room_no_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_room_no_from_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/from"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/curtain_room_no_from"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onRoomNoFromClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_room_no_from"
+                        app:layout_constraintEnd_toEndOf="@id/et_room_no_from"
+                        app:layout_constraintStart_toStartOf="@id/et_room_no_from"
+                        app:layout_constraintTop_toTopOf="@id/et_room_no_from" />
 
-                    <NumberPicker
-                        android:id="@+id/npicker_room_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_room_no_to"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/et_room_no_from"
+                        app:layout_constraintTop_toBottomOf="@id/txt_room_no_title">
 
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/spacer_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_boarder" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_room_no_to_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/to"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:id="@+id/txt_choose_price_title"
+                        android:id="@+id/curtain_room_no_to"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onRoomNoToClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_room_no_to"
+                        app:layout_constraintEnd_toEndOf="@id/et_room_no_to"
+                        app:layout_constraintStart_toStartOf="@id/et_room_no_to"
+                        app:layout_constraintTop_toTopOf="@id/et_room_no_to" />
+
+                    <TextView
+                        android:id="@+id/spacer_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_boarder"
+                        app:layout_constraintTop_toBottomOf="@id/et_room_no_to" />
+
+                    <TextView
+                        android:id="@+id/txt_price_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
-                        android:text="@string/price"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
+                        android:padding="@dimen/short_padding"
+                        android:text="@string/price_toman"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spacer_6" />
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_price_from"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toStartOf="@id/et_price_to"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_price_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_price_from_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/from"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="@dimen/short_margin"
-                        android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
-                        android:text="@string/from"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
+                        android:id="@+id/curtain_price_from"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onPriceFromClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_price_from"
+                        app:layout_constraintEnd_toEndOf="@id/et_price_from"
+                        app:layout_constraintStart_toStartOf="@id/et_price_from"
+                        app:layout_constraintTop_toTopOf="@id/et_price_from" />
 
-                    <NumberPicker
-                        android:id="@+id/npicker_price_from"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_price_to"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/et_price_from"
+                        app:layout_constraintTop_toBottomOf="@id/txt_price_title">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_price_to_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/byekan"
+                            android:hint="@string/to"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="@dimen/short_margin"
-                        android:fontFamily="@font/byekan"
-                        android:gravity="start|center"
-                        android:padding="@dimen/normal_padding"
-                        android:text="@string/to"
-                        android:textColor="@color/normal_text_color"
-                        android:textSize="@dimen/normal_text_size" />
-
-                    <NumberPicker
-                        android:id="@+id/npicker_price_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/spacer_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_boarder" />
+                        android:id="@+id/curtain_price_to"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onPriceToClick()}"
+                        app:layout_constraintBottom_toBottomOf="@id/et_price_to"
+                        app:layout_constraintEnd_toEndOf="@id/et_price_to"
+                        app:layout_constraintStart_toStartOf="@id/et_price_to"
+                        app:layout_constraintTop_toTopOf="@id/et_price_to" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/et_descriptions"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/layout_fields"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_below="@id/layout_fields"
                     android:layout_margin="@dimen/normal_margin"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
@@ -252,7 +499,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@drawable/background_edit_text"
                         android:fontFamily="@font/byekan"
                         android:hint="@string/descriptions"
@@ -264,40 +511,33 @@
                         android:textSize="@dimen/normal_text_size"  />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-
-                    <Button
-                        android:id="@+id/btn_commit"
-                        style="@style/Theme.Melkist.Buttons"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_margin="@dimen/normal_margin"
-                        android:fontFamily="@font/byekan"
-                        android:onClick="@{() -> fragment.onCommit()}"
-                        android:text="@string/commit"
-                        android:textDirection="rtl"
-                        app:bindLoading="@{viewmodel.status}"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <ProgressBar
-                        android:id="@+id/progress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="@dimen/normal_margin"
-                        android:layout_marginTop="@dimen/normal_margin"
-                        android:layout_marginEnd="@dimen/normal_margin"
-                        android:layout_marginBottom="@dimen/normal_margin"
-                        app:bindProgressLoading="@{viewmodel.status}"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </RelativeLayout>
-
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_commit"
+            style="@style/Theme.Melkist.Buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/normal_margin"
+            android:fontFamily="@font/byekan"
+            android:onClick="@{() -> fragment.onCommit()}"
+            android:text="@string/commit"
+            android:textDirection="rtl"
+            app:bindLoading="@{viewmodel.status}"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            app:bindProgressLoading="@{viewmodel.status}"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </RelativeLayout>
 </layout>

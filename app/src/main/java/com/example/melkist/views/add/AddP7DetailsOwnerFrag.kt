@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.melkist.AddActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
 import com.example.melkist.databinding.FragAddP7DetailsOwnerBinding
@@ -136,7 +137,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
     fun onCommit() {
         if (binding.etDescriptions.editText!!.text.isNotEmpty() || binding.etDescriptions.editText!!.text.toString() != "")
             viewModel.descriptions = binding.etDescriptions.editText!!.text.toString()
-        viewModel.saveFile()
+        viewModel.saveFile((activity as AddActivity).user.id!!)
     }
 
     fun onPickImage() {

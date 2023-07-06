@@ -25,10 +25,9 @@ class ProfilePicViewModel : ViewModel() {
     var isFirstTime: Boolean? = null
     var userId: Int? = null
     var token: String? = null
-
     var imgUser: Bitmap? = null
 
-    fun getEncodedImage(imgUser: Bitmap) : String?{
+    private fun getEncodedImage(imgUser: Bitmap) : String?{
         val main = ThumbnailUtils.extractThumbnail(imgUser, 300, 300)
         val byteArrayOutputStreamMain = ByteArrayOutputStream()
         main.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamMain)

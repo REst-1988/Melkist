@@ -8,7 +8,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.melkist.models.*
+import com.example.melkist.models.FileSave
+import com.example.melkist.models.FileTypes
+import com.example.melkist.models.Loc
+import com.example.melkist.models.Period
+import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.CITY
@@ -16,16 +20,14 @@ import com.example.melkist.utils.PROVINCE
 import com.example.melkist.utils.REGION_1
 import com.example.melkist.utils.REGION_2
 import com.example.melkist.utils.REGION_3
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import java.math.BigDecimal
 
 class AddItemViewModel : ViewModel() {
 
     enum class ItemType { CHOOSE, SEEKER, OWNER }
     enum class ReqSource { CATEGORY, SUB_CATEGORY }
-    enum class Cr {PROVINCE, CITY, REGION_1, REGION_2, REGION_3}
+    enum class Cr { PROVINCE, CITY, REGION_1, REGION_2, REGION_3 }
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
@@ -58,12 +60,12 @@ class AddItemViewModel : ViewModel() {
     var subCatId: Int = 0
     var subCatTitle: String = ""
 
-    var provinceId: Int = 17  //TODO: later it should read from cash a default value of user place
-    var provinceTitle: String = "فارس" //TODO: later it should read from cash a default value of user place
-    var cityId: Int = 733 //TODO: later it should read from cash a default value of user place
-    var cityTitle: String = "شیراز" //TODO: later it should read from cash a default value of user place
+    var provinceId: Int = 0
+    var provinceTitle: String = ""
+    var cityId: Int = 0
+    var cityTitle: String = ""
     var regionId: Int = 0
-    var regionTitle: String = ""// معالی‌آباد
+    var regionTitle: String = ""
     var region2Id: Int? = null
     var region2Title: String? = null
     var region3Id: Int? = null
@@ -83,7 +85,7 @@ class AddItemViewModel : ViewModel() {
 
     private var _mapSnapShot = MutableLiveData<Bitmap>()
     val mapSnapShot: LiveData<Bitmap> = _mapSnapShot
-    fun setMapSnapShot (bitmap: Bitmap){
+    fun setMapSnapShot(bitmap: Bitmap) {
         _mapSnapShot.value = bitmap
     }
 
@@ -108,18 +110,39 @@ class AddItemViewModel : ViewModel() {
     }
 
     private fun gatheringData(userId: Int) {
-        val list = arrayListOf(image1, image2, image3, image4, image5, image6)
-        list.forEach { img ->
-            var encodedImageMain: String? = null
-            img?.apply {
-                val main = ThumbnailUtils.extractThumbnail(this, 500, 337)
-                val byteArrayOutputStreamMain = ByteArrayOutputStream()
-                main.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamMain)
-                encodedImageMain =
-                    Base64.encodeToString(byteArrayOutputStreamMain.toByteArray(), Base64.DEFAULT)
-            }
-            listOfImages.add(encodedImageMain)
-        }
+        readyImagesForSend()
+        logSendData(userId) // TODO: no need for this this is just for checking
+
+        fileSave = FileSave(
+            typeId = typeId,
+            catId = catId,
+            subCatId = subCatId,
+            userId = userId,
+            cityId = cityId,
+            locations = listOf(
+                Loc(regionId, lat, lng),
+                Loc(region2Id, null, null),
+                Loc(region3Id, null, null)
+            ),
+            isShowExactAddress = isShowExactAddress,
+            size = Period(
+                sizeFrom?.toLong(), getValueFrom(sizeFrom?.toLong(), sizeTo?.toLong())
+            ),
+            rooms = Period(
+                roomFrom?.toLong(), getValueFrom(roomFrom?.toLong(), roomTo?.toLong())
+            ),
+            age = Period(
+                ageFrom?.toLong(), getValueFrom(ageFrom?.toLong(), ageTo?.toLong())
+            ),
+            price = Period(
+                priceFrom, getValueFrom(priceFrom, priceTo)
+            ),
+            description = descriptions,
+            images = listOfImages
+        )
+    }
+
+    private fun logSendData(userId: Int) {// TODO: delete this after testing
         Log.e(
             "TAG",
             "gatheringData: " +
@@ -130,31 +153,40 @@ class AddItemViewModel : ViewModel() {
                     "            cityId = $cityId,\n" +
                     "            locations = listOf(Loc($regionId, $lat, $lng),Loc($region2Id, null, null),Loc($region3Id, null, null)),\n" +
                     "            isShowExactAddress = $isShowExactAddress,\n" +
-                    "            size = Period(${sizeFrom?.toLong()}, (${(sizeTo?:sizeFrom)?.toLong()}),\n" +
+                    "            size = Period(${sizeFrom?.toLong()}, (${(sizeTo ?: sizeFrom)?.toLong()}),\n" +
                     "            rooms = Period(${roomFrom?.toLong()}, ${roomTo?.toLong()}),\n" +
                     "            age = Period(${ageFrom?.toLong()}, ${ageTo?.toLong()}),\n" +
-                    "            price = Period($priceFrom, ${priceTo?:priceFrom}),\n" +
+                    "            price = Period($priceFrom, ${priceTo}),\n" +
                     "            description = $descriptions,\n" +
                     "            images = listOfImages",
         )
-        fileSave = FileSave(
-            typeId = typeId,
-            catId = catId,
-            subCatId = subCatId,
-            userId = userId,
-            cityId = cityId,
-            locations = listOf(Loc(regionId, lat, lng),Loc(region2Id, null, null),Loc(region3Id, null, null)),
-            isShowExactAddress = isShowExactAddress,
-            size = Period(sizeFrom?.toLong(), (sizeTo?:sizeFrom)?.toLong()),
-            rooms = Period(roomFrom?.toLong(), roomTo?.toLong()),
-            age = Period(ageFrom?.toLong(), ageTo?.toLong()),
-            price = Period(priceFrom, priceTo?:priceFrom),
-            description = descriptions,
-            images = listOfImages
-        )
     }
 
-    fun saveFile (userId: Int) {
+    private fun readyImagesForSend() {
+        val list = arrayListOf(image1, image2, image3, image4, image5, image6)
+        list.forEach { img ->
+            var encodedImageMain: String? = null
+            img?.apply {
+                val main = ThumbnailUtils.extractThumbnail(this, 594, 400)
+                val byteArrayOutputStreamMain = ByteArrayOutputStream()
+                main.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamMain)
+                encodedImageMain =
+                    Base64.encodeToString(byteArrayOutputStreamMain.toByteArray(), Base64.DEFAULT)
+            }
+            listOfImages.add(encodedImageMain)
+        }
+    }
+
+    private fun isOwner() = typeId == FileTypes().owner.id
+
+    private fun getValueFrom(valueFrom: Long?, valueTo: Long?): Long? {
+        return if (isOwner())
+            valueFrom
+        else
+            valueTo
+    }
+
+    fun saveFile(userId: Int) {
         gatheringData(userId)
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
@@ -213,7 +245,7 @@ class AddItemViewModel : ViewModel() {
         isShowExactAddress = false
     }
 
-    fun isReadyForChooseRegion(): Boolean{
+    fun isReadyForChooseRegion(): Boolean {
         return cityId != 0
     }
 
@@ -227,7 +259,7 @@ class AddItemViewModel : ViewModel() {
     }
 
     fun getLocReqSourceKey(): Int {
-        return when(getLocReqSource()){
+        return when (getLocReqSource()) {
             Cr.PROVINCE -> PROVINCE
             Cr.CITY -> CITY
             Cr.REGION_1 -> REGION_1

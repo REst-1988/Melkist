@@ -1,39 +1,44 @@
 package com.example.melkist.views.universal.dialog
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.core.net.toUri
+import androidx.fragment.app.activityViewModels
+import coil.load
 import com.example.melkist.MainActivity
 import com.example.melkist.R
+import com.example.melkist.adapters.ImagePagerAdapter
 import com.example.melkist.databinding.LayoutBottomSheetFileDetailBinding
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.ApiStatus
-import com.example.melkist.utils.DATA
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.showDialogWithMessage
-import com.example.melkist.viewmodels.dialogviewmodel.BottomSheetFileDialogViewModel
+import com.example.melkist.utils.showToast
+import com.example.melkist.viewmodels.MainViewModel
+import com.example.melkist.views.map.MapP1Frag
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetFileDetailDialog(
+    private val fragment: MapP1Frag,
     private val fileId: Int
 ) : BottomSheetDialogFragment() {
     private lateinit var binding: LayoutBottomSheetFileDetailBinding
-    private val viewModel: BottomSheetFileDialogViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val user = (activity as MainActivity).user
-        viewModel.getFileInfoById(user.token!!, fileId)
+        (activity as MainActivity).user?.apply {
+            viewModel.getFileInfoById(token!!, fileId)
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = LayoutBottomSheetFileDetailBinding.inflate(
             inflater
         )
@@ -42,7 +47,22 @@ class BottomSheetFileDetailDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initListeners()
         initObservers()
+    }
+
+    private fun initListeners() {
+        binding.ibtnBookmark.setOnClickListener {
+            (activity as MainActivity).user?.apply {
+                viewModel.saveFavFile(token!!, id!!, fileId)
+            }
+        }
+        binding.ibtnShare.setOnClickListener {
+            showToast(requireContext(), resources.getString(R.string.next_phase))
+        }
+        binding.ibtnMore.setOnClickListener {
+            fragment.onMoreDetailFileClick()
+        }
     }
 
     private fun initObservers() {
@@ -62,33 +82,54 @@ class BottomSheetFileDetailDialog(
                 else -> Log.e("TAG", "initObservers: ${resources.getString(R.string.global_error)}")
             }
         }
-    }
+        viewModel.saveFavResponse.observe(viewLifecycleOwner) { response ->
+            when (response.result) {
+                true -> {
+                    showToast(
+                        requireContext(), resources.getString(R.string.save_accepted)
+                    )
+                    this@BottomSheetFileDetailDialog.dismiss()
+                }
 
-    private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
-        //TODO: set The view pager here
-        response.data?.apply {
-            binding.txtRoomNo.text = String.format(
-                "%s %s",
-                response.data.roomNo.from.toString(),
-                resources.getString(R.string.room)
-            )
-            binding.txtSize.text = String.format(
-                "%s %s",
-                response.data.size.from.toString(),
-                resources.getString(R.string.size_squere_meter)
-            )
-            binding.txtRegion.text = response.data.locations[0].region.title
-            binding.txtPrice.text = String.format(
-                "%s %s",
-                formatNumber(response.data.price.from!!.toDouble()),
-                resources.getString(R.string.tooman)
-            )
+                false -> showToast(
+                    requireContext(), resources.getString(R.string.global_error)
+                )
+
+                else -> showToast(
+                    requireContext(), resources.getString(R.string.global_error)
+                )
+            }
         }
     }
 
-    fun onClick() {
-        //TODO: connect this when user click on anywhere on dialog
-        val bundle = bundleOf(DATA to viewModel.fileAllData.value)
-        findNavController().navigate(R.id.action_navigation_map_to_fileDetailFrag, bundle)
+    private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
+        binding.viewPager.adapter = ImagePagerAdapter(fragment, response)
+        binding.indicator.setViewPager(binding.viewPager)
+
+        response.data?.apply {
+            this.user.profilePic?.apply {
+                val imgUri: Uri? = this.toUri().buildUpon().scheme("https").build()
+                binding.imgUser.load(imgUri) {
+                    placeholder(R.drawable.loading_animation)
+                    error(R.drawable.ic_baseline_person_outline_24)
+                }
+            }
+            binding.txtRoomNo.text = String.format(
+                "%s %s", roomNo.from ?: "", resources.getString(R.string.room)
+            )
+            binding.txtSize.text = String.format(
+                "%s %s",
+                size.from ?: "",
+                resources.getString(R.string.squere_meter)
+            )
+            binding.txtRegion.text = locations[0].region.title
+            price.from?.apply {
+                binding.txtPrice.text = String.format(
+                    "%s %s",
+                    formatNumber(toDouble()),
+                    resources.getString(R.string.tooman)
+                )
+            }
+        }
     }
 }

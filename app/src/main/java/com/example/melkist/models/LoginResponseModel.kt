@@ -22,14 +22,3 @@ data class UserResponseModel(
     @Json val city: City?,
     @Json val email: String?,
 )
-
-data class City(
-    @Json (name = "id") val cityId: Int?,
-    @Json (name = "title") val cityTitle: String?,
-    @Json val province: Province?
-)
-
-data class Province(
-    @Json (name = "id") val provinceId: Int?,
-    @Json (name = "title") val provinceTitle: String?
-)

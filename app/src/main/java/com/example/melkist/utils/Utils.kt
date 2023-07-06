@@ -1,5 +1,6 @@
 package com.example.melkist.utils
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -8,11 +9,20 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.InspectableProperty
+import androidx.navigation.findNavController
+import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.models.User
+import com.google.android.material.textfield.TextInputEditText
 import saman.zamani.persiandate.PersianDate
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
 object User {
@@ -58,6 +68,20 @@ fun showToast(context: Context, s: String) {
     Log.e("Tag", "result: $s")
 }
 
+fun internetProblemDialog(
+    activity: Activity,
+    action: (DialogInterface, Int) -> Unit
+) {
+    val builder = AlertDialog.Builder(activity)
+    builder.setMessage(activity.resources.getString(R.string.internet_connection_problem))
+        .setCancelable(false)
+        .setPositiveButton(activity.resources.getText(R.string.retry), action)
+        .setNegativeButton(activity.resources.getString(R.string.quit)) { d, _ ->
+            d.dismiss()
+        }
+        .show()
+}
+
 fun showDialogWithMessage(
     context: Context, message: String, action: (DialogInterface, Int) -> Unit
 ) {
@@ -84,6 +108,29 @@ fun isSystemDarkMode(context: Context): Boolean {
 fun formatNumber(numberDouble: Double): String {
     val decimalFormat = DecimalFormat("#,###")
     return decimalFormat.format(numberDouble)
+}
+@InspectableProperty
+fun TextInputEditText.addLiveSeparatorListener()  {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun afterTextChanged(p0: Editable?) {
+            this@addLiveSeparatorListener.removeTextChangedListener(this)
+            val text: String = p0.toString()
+            if (!TextUtils.isEmpty(text)) {
+                val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
+                this@addLiveSeparatorListener.setText(format)
+                this@addLiveSeparatorListener.setSelection(format.length)
+            }
+            this@addLiveSeparatorListener.addTextChangedListener(this)
+        }
+    })
+}
+@InspectableProperty
+fun TextInputEditText.getRemovedSeparatorValue (): Long {
+    if (!this.text.isNullOrBlank())
+        return this.text.toString().replace(",", "").toLong()
+    return 0L
 }
 
 fun getPersianYear(): Int = PersianDate().shYear

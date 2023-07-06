@@ -1,25 +1,59 @@
 package com.example.melkist.views.fav
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.FavListAdapter
 import com.example.melkist.databinding.FragFavListBinding
-import com.example.melkist.viewmodels.FavViewModel
+import com.example.melkist.interfaces.Interaction
+import com.example.melkist.models.FilterFileData
+import com.example.melkist.utils.DATA
+import com.example.melkist.utils.FILTER_RESULT_KEY
+import com.example.melkist.viewmodels.MainViewModel
 
 class FavListFrag : Fragment() {
 
-    private val viewModel: FavViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var adapter: FavListAdapter
     private var _binding: FragFavListBinding? = null
+    private var interaction: Interaction? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(FILTER_RESULT_KEY){ _, bundle ->
+            val filterfileData = bundle.getSerializable(DATA)!! as FilterFileData
+            Log.e("TAG", "onCreate: rooms.from = ${filterfileData.rooms.from}")
+            Log.e("TAG", "onCreate: rooms.to = ${filterfileData.rooms.to}")
+            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.from}")
+            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.to}")
+            Log.e("TAG", "onCreate: catId = ${filterfileData.catId}")
+            Log.e("TAG", "onCreate: price.from = ${filterfileData.price.from}")
+            Log.e("TAG", "onCreate: price.to = ${filterfileData.price.to}")
+            Log.e("TAG", "onCreate: regionId = ${filterfileData.regionId}")
+            Log.e("TAG", "onCreate: size.from = ${filterfileData.size.from}")
+            Log.e("TAG", "onCreate: size.to = ${filterfileData.size.to}")
+            Log.e("TAG", "onCreate: subCatId= ${filterfileData.subCatId}")
+            Log.e("TAG", "onCreate: typeId = ${filterfileData.typeId}")
+/*            viewModel.resetLocations()// TODO: check this out uncomment
+            viewModel.getFavFilterFiles(
+                (activity as MainActivity).user.token!!,
+                filterfileData
+            )*/
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +73,38 @@ class FavListFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getFavoritesFile(
-            (activity as MainActivity).user.token!!,
-            (activity as MainActivity).user.id!!
-        )
+        (activity as MainActivity).user?.apply {
+            viewModel.getFavoritesFile(
+                token!!,
+                id!!
+            )
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        interaction?.changBottomNavViewVisibility(View.VISIBLE)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is Interaction) {
+            interaction = context as Interaction
+        } else {
+            throw RuntimeException(
+                context.toString() + " must implement OnFragmentInteractionListener"
+            )
+        }
+    }
+    // This is for hide and unhiding bottom nav bar
+    override fun onDetach() {
+        super.onDetach()
+        interaction = null
     }
 
     /******************** binding stuff ***********************/
@@ -58,15 +115,18 @@ class FavListFrag : Fragment() {
         )
         binding.ibtnSearch.startAnimation(animation1)
         binding.ibtnFilter.startAnimation(animation1)
-        binding.llSearch.startAnimation(animation2)
+        binding.searchView.startAnimation(animation2)
+        binding.ibtnCloseSearchview.startAnimation(animation2)
         animation1.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
-                binding.llSearch.visibility = View.VISIBLE
+                binding.searchView.visibility = View.VISIBLE
+                binding.ibtnCloseSearchview.visibility = View.VISIBLE
             }
 
             override fun onAnimationEnd(animation: Animation) {
                 binding.ibtnSearch.visibility = View.GONE
                 binding.ibtnFilter.visibility = View.GONE
+                binding.searchView.requestFocus()
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
@@ -78,9 +138,14 @@ class FavListFrag : Fragment() {
         val animation2 = AnimationUtils.loadAnimation(
             context, R.anim.search_field_end_anim
         )
-        binding.ibtnSearch.startAnimation(animation1)
-        binding.ibtnFilter.startAnimation(animation1)
-        binding.llSearch.startAnimation(animation2)
+        binding.apply {
+            ibtnSearch.startAnimation(animation1)
+            ibtnFilter.startAnimation(animation1)
+            searchView.startAnimation(animation2)
+            ibtnCloseSearchview.startAnimation(animation2)
+            searchView.setText("")
+            searchView.clearFocus()
+        }
         animation1.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
                 binding.ibtnSearch.visibility = View.VISIBLE
@@ -88,7 +153,8 @@ class FavListFrag : Fragment() {
             }
 
             override fun onAnimationEnd(animation: Animation) {
-                binding.llSearch.visibility = View.GONE
+                binding.searchView.visibility = View.GONE
+                binding.ibtnCloseSearchview.visibility = View.GONE
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
@@ -96,7 +162,7 @@ class FavListFrag : Fragment() {
     }
 
     fun onFilterClick() {
-        //TODO
+        findNavController().navigate(R.id.action_navigation_fav_to_FilterFilesFrag)
+        interaction?.changBottomNavViewVisibility(View.GONE)
     }
-
 }

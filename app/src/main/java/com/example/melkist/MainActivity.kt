@@ -1,7 +1,10 @@
 package com.example.melkist
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
@@ -10,18 +13,21 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivityMainBinding
+import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.User
+import com.example.melkist.views.fav.FavListFrag
 import com.example.melkist.views.map.MapP1Frag
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
-class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
+class MainActivity : AppCompatActivity(), Interaction{
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navView: BottomNavigationView
-    lateinit var user: User
+    var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,6 +39,7 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
                 R.id.navigation_map, R.id.navigation_profle, R.id.navigation_fav
             )
         )
+        navView.itemIconTintList = null
         // setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navView.selectedItemId = R.id.navigation_add
@@ -48,7 +55,7 @@ class MainActivity : AppCompatActivity(), MapP1Frag.Interaction {
 
     override fun onResume() {
         super.onResume()
-        if (!::user.isInitialized) {
+        if (user == null) {
             val userDataStore = UserDataStore(this)
             userDataStore.preferenceFlow.asLiveData().observe(this) {
                 user = it

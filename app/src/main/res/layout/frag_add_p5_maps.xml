@@ -53,11 +53,11 @@
                         android:id="@+id/txt_title"
                         android:layout_width="wrap_content"
                         android:layout_height="?attr/actionBarSize"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:gravity="center_vertical"
                         android:text="@string/choose_location_on_map"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/txt_size_h1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
@@ -91,7 +91,7 @@
             android:layout_marginTop="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/normal_margin"
             android:layout_marginBottom="@dimen/normal_margin"
-            android:fontFamily="@font/byekan"
+            android:fontFamily="@font/iransans"
             android:onClick="@{() -> fragment.onChoose()}"
             android:text="@string/confirm" />
 

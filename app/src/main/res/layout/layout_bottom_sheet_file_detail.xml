@@ -21,6 +21,17 @@
             android:background="@color/negative_empty_background_color"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:ci_gravity="center"
+            app:ci_height="5dp"
+            app:ci_margin="5dp"
+            app:ci_orientation="horizontal"
+            app:ci_width="5dp"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <ProgressBar
             android:id="@+id/progress"
@@ -85,7 +96,24 @@
             android:src="@drawable/ic_baseline_share_24"
             app:layout_constraintStart_toEndOf="@id/ibtn_bookmark"
             app:layout_constraintTop_toTopOf="parent" />
-        ////////////////////////////////////////////////////////////////////
+
+        <TextView
+            android:id="@+id/ibtn_more"
+            android:layout_width="56dp"
+            android:layout_height="@dimen/rounded_btns_fade"
+            android:layout_margin="@dimen/short_margin"
+            android:alpha="0.5"
+            android:background="@drawable/background_cylinder_btns"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:focusable="true"
+            android:fontFamily="@font/iransans"
+            android:gravity="center"
+            android:text="@string/more"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/short_text_size"
+            app:layout_constraintStart_toEndOf="@id/ibtn_share"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fade_bottom_background"
@@ -98,8 +126,8 @@
                 android:id="@+id/txt_room_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/byekan"
-                android:padding="@dimen/short_padding"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -111,8 +139,8 @@
                 android:id="@+id/txt_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/byekan"
-                android:padding="@dimen/short_padding"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -125,24 +153,25 @@
                 android:id="@+id/txt_region"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/byekan"
-                android:padding="@dimen/short_padding"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/txt_size"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_price"
                 tools:text="معالی آباد" />
 
             <TextView
                 android:id="@+id/txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/byekan"
-                android:padding="@dimen/short_padding"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="5،000،000،000 تومان" />

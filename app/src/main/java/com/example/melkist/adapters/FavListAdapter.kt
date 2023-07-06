@@ -1,6 +1,7 @@
 package com.example.melkist.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -51,10 +52,11 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
         fun bind(data: Fav) {
             binding.txtRegion.text = data.locations[0].region.title
             binding.txtRoomNo.text = getPropertyPeriodsText(data.roomNo, R.string.room)
-            binding.txtSize.text = getPropertyPeriodsText(data.size, R.string.size_squere_meter)
+            binding.txtSize.text = getPropertyPeriodsText(data.size, R.string.squere_meter)
             binding.txtPrice.text = getPropertyPeriodsText(data.price, R.string.tooman)
             binding.txtRealEstate.text = String.format("%s %s", context.resources.getString(R.string.real_estate_title), data.user.realEstate)
             binding.txtAgent.text = String.format("%s %s", data.user.firstName, data.user.lastName)
+            Log.e("TAG", "bind: ${data.user.profilePic}", )
             data.user.profilePic?.let {
                 val imgUri = it.toUri().buildUpon().scheme("https").build()
                 binding.imgProfile.load(imgUri) {
@@ -73,7 +75,7 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
         }
 
         private fun getPropertyPeriodsText(period: Period, @StringRes unit: Int): String {
-            val conjunctions = if (period.to == period.from) ""
+            val conjunctions = if (period.to == period.from) " ${context.resources.getString(unit)}"
             else context.resources.getString(
                 R.string.to
             ) + " " + period.to + " " + context.resources.getString(

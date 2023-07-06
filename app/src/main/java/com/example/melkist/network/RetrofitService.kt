@@ -1,6 +1,7 @@
 package com.example.melkist.network
 
 
+import android.util.Log
 import com.example.melkist.network.`interface`.ApiService
 import com.example.melkist.utils.isOnline
 import com.squareup.moshi.Moshi

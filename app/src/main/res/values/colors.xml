@@ -34,4 +34,5 @@
     <color name="splash_color_light">#7991E1</color>
     <color name="yellow">#FFEB3B</color>
     <color name="add_btn_main_act_color">#FF233B88</color>
+    <color name="badge_color">#FF8400</color>
 </resources>

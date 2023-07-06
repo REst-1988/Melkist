@@ -24,6 +24,7 @@ import com.example.melkist.utils.ROOM_FROM_TAG
 import com.example.melkist.utils.ROOM_TO_TAG
 import com.example.melkist.utils.SIZE_FROM_TAG
 import com.example.melkist.utils.SIZE_TO_TAG
+import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPersianYear
 import com.example.melkist.utils.showDialogWithMessage
@@ -53,11 +54,26 @@ class AddP6DetailsSeekerFrag : Fragment() {
         viewModel.saveResponse.observe(viewLifecycleOwner) {
             Log.e("TAG", "onViewCreated: ${it.result}")
             Log.e("TAG", "onViewCreated: ${it.message}")
-            showDialogWithMessage(
-                requireContext(), it.message ?: ""
-            ) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-                cancel()
+            Log.e("TAG", "onViewCreated: ${concatenateText(it.errors)}")
+            when (it.result) {
+                true -> showDialogWithMessage(
+                    requireContext(), it.message ?: ""
+                ) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                    cancel()
+                }
+
+                false -> showDialogWithMessage(
+                    requireContext(), concatenateText(it.errors)
+                ) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+
+                else -> showDialogWithMessage(
+                    requireContext(), resources.getString(R.string.global_error)
+                ) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
             }
         }
     }

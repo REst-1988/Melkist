@@ -4,14 +4,14 @@ import com.squareup.moshi.Json
 
 data class User(
     @Json val id: Int?,
-    @Json val firstName: String?, // firstName
-    @Json val lastName: String?, // lastName
-    @Json val mobileId: Int?,
-    @Json val email: String?,
+    @Json (name = "name") val firstName: String?,
+    @Json (name = "family") val lastName: String?,
+    @Json (name = "mobile_id") val mobileId: Int?,
+    @Json (name = "email") val email: String?,
     @Json (name = "profilepic") val profilePic: String?,
-    @Json val roleId: Int?,
-    @Json val parentId: Int?,
-    @Json val isFirstTime: Boolean?,
+    @Json (name = "role_id") val roleId: Int?,
+    @Json (name = "parent_id") val parentId: Int?,
+    @Json (name = "isfirsttime") val isFirstTime: Boolean?,
     @Json val cityId: Int?,
     @Json val cityTitle: String?,
     @Json val provinceId: Int?,

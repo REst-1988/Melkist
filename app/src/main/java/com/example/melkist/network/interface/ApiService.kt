@@ -7,10 +7,19 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
+
+    @POST("checkAppVersion")
+    suspend fun versionControl(
+        @Query("user_id") userId: Int?,
+        @Query("firebase_token") firebaseToken: String?,
+        @Query("app_version") appVersion: String
+    ): AppVersionResponse
+
     @POST("login")
     suspend fun login(
         @Query("mobile") mobile: String,
         @Query("password") password: String,
+        @Query("firebase_token") firebaseToken: String?,
         @Query("needCaptcha") needCaptcha: Boolean = false // always false in app
     ): LoginResponseModel
 
@@ -125,6 +134,13 @@ interface ApiService {
         @Query("file_id") fileId: Int,
     ): FileDataResponse
 
+    @POST("dashboard/admin/file/saveFavoriteFile")
+    suspend fun saveFavoriteFile(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int,
+        @Query("file_id") fileId: Int
+    ): PublicResponseModel
+
     @POST("dashboard/admin/file/getFavoriteFiles")
     suspend fun getFavoriteFiles(
         @Header("Authorization") token: String,
@@ -136,6 +152,25 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body filerFileData: FilterFileData
     ): LocationResponse
+
+    @POST("dashboard/admin/file/inboxRequest")
+    suspend fun inbox(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int
+    ): InboxOutboxModel
+
+    @POST("dashboard/admin/file/outboxRequest")
+    suspend fun outbox(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int
+    ): InboxOutboxModel
+
+    @POST("dashboard/admin/file/sendCooperationRequest")
+    suspend fun sendCooperationRequest( // TODO: Finish this part
+        @Header("Authorization") token: String,
+        @Query("applicant_id") userId: Int,
+        @Query("file_id") fileId: Int
+    ): PublicResponseModel// TODO: check this out
 
 /*    @GET("users")
     @Headers(

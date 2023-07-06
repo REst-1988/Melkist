@@ -1,25 +1,28 @@
 package com.example.melkist.views.login
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.melkist.AddActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.FragmentLoginFormBinding
+import com.example.melkist.models.LoginResponseModel
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.LoginViewModel
-import com.google.android.gms.common.config.GservicesValue.value
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 class LoginForm : Fragment() {
@@ -27,8 +30,7 @@ class LoginForm : Fragment() {
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var userDataStore: UserDataStore
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginFormBinding.inflate(inflater, container, false)
         binding?.apply {
@@ -41,14 +43,36 @@ class LoginForm : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userDataStore = UserDataStore(requireContext())
+        userDataStore = UserDataStore(requireContext()) // check cash for saved user
+        showProperAnimation()
+        listenToLoginResponse()
+
+        binding!!.etUsernameLoginAct.editText!!.setText("09173381951") // TODO: Remove this line
+        binding!!.etPasswordLoginAct.editText!!.setText("12345678")// TODO: Remove this line
+    }
+
+    private fun checkFirebaseToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            val token = task.result // Get new FCM registration token
+            Log.d(ContentValues.TAG, token)
+
+            viewModel.login(
+                binding?.etUsernameLoginAct?.editText?.text.toString(),
+                binding?.etPasswordLoginAct?.editText?.text.toString(),
+                token
+            )
+        })
+    }
+
+    private fun showProperAnimation() {
         val animFade = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_anim)
         val animScale = AnimationUtils.loadAnimation(requireContext(), R.anim.zoom_in_anim)
         binding!!.cardLogin.startAnimation(animFade)
         binding!!.imgLogo.startAnimation(animScale)
-        binding!!.etUsernameLoginAct.editText!!.setText("09173381951")
-        binding!!.etPasswordLoginAct.editText!!.setText("111111")
-        listenToLoginResponse()
     }
 
     override fun onDestroy() {
@@ -56,45 +80,44 @@ class LoginForm : Fragment() {
         binding = null
     }
 
-    private fun listenToLoginResponse(){
-        Log.e("TAG", "listenToLoginResponse: loginResponse ${viewModel.loginResponse}" +
-                " , loginResponse.value ${viewModel.loginResponse.value}", )
-        viewModel.loginResponse.observe(viewLifecycleOwner){ response ->
+    private fun listenToLoginResponse() {
+        viewModel.loginResponse.observe(viewLifecycleOwner) { response ->
             when (response.result) {
-                true -> {
-                    lifecycleScope.launch {
-                        userDataStore.saveUserToPreferencesStore(
-                            response,
-                            requireContext()
-                        )
-                    }
-                    binding?.etUsernameLoginAct?.error = null
-                    binding?.etPasswordLoginAct?.error = null
-                    Log.e("TAG", "listenToLoginResponse: $response  ${response.data?.isFirstTime}", )
-                    if (response.data?.isFirstTime != false)
-                        findNavController().navigate(R.id.action_loginForm_to_profilePicFrag) // TODO: uncomment
-                        //startActivity(Intent(requireActivity(), MainActivity::class.java)) // TODO: delete
-                    else
-                        startActivity(Intent(requireActivity(), MainActivity::class.java))
-                }
-                false -> {
-                    showToast(requireContext(), concatenateText(response.errors))
-                    binding?.etUsernameLoginAct?.error = resources.getString(R.string.wrong_username_password)
-                    binding?.etPasswordLoginAct?.error = resources.getString(R.string.wrong_username_password)
-                }
-                else -> {
-                    //showToast(requireContext(), resources.getString(R.string.somthing_goes_wrong)) //
-                    Log.e("TAG", "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}", )
-                }
+                true -> onTrueResult(response)
+                false -> onFalseResult(response)
+                else -> Log.e(
+                    "TAG",
+                    "listenToCheckVerificationResult: " + "${resources.getString(R.string.somthing_goes_wrong)}",
+                )
             }
         }
+    }
+
+    private fun onTrueResult(response: LoginResponseModel) {
+        lifecycleScope.launch {
+            Log.e("TAG", "listenToLoginResponse: $response  ${response.data?.isFirstTime}")
+            userDataStore.saveUserToPreferencesStore(
+                response, requireContext()
+            )
+        }
+        binding?.etUsernameLoginAct?.error = null
+        binding?.etPasswordLoginAct?.error = null
+        if (response.data?.isFirstTime != false)
+            findNavController().navigate(R.id.action_loginForm_to_profilePicFrag)
+        else
+            startActivity(Intent(requireActivity(), MainActivity::class.java))
+    }
+
+    private fun onFalseResult(response: LoginResponseModel) {
+        showToast(requireContext(), concatenateText(response.errors))
+        binding?.etUsernameLoginAct?.error = resources.getString(R.string.wrong_username_password)
+        binding?.etPasswordLoginAct?.error = resources.getString(R.string.wrong_username_password)
     }
 
     private fun isAllFieldIsOkay(): Boolean {
         val isPhoneNo = isPhoneNo()
         val isPassword = isPassword()
-        if (isPhoneNo && isPassword)
-            return true
+        if (isPhoneNo && isPassword) return true
         return false
     }
 
@@ -130,22 +153,17 @@ class LoginForm : Fragment() {
     }
 
 
-
     /*********** Binding methods ********************/
     fun onClickLogin() {
-        if (isAllFieldIsOkay()){
-            viewModel.login(
-                binding?.etUsernameLoginAct?.editText?.text.toString(),
-                binding?.etPasswordLoginAct?.editText?.text.toString()
-            )
-        }
+        if (isAllFieldIsOkay())
+            checkFirebaseToken()
     }
 
-    fun onClickSignup(){
+    fun onClickSignup() {
         findNavController().navigate(R.id.action_loginForm_to_signupP1SignupFormFrag)
     }
 
-    fun onClickForgetPass(){
+    fun onClickForgetPass() {
         findNavController().navigate(R.id.action_loginForm_to_forgetPassP1EnterNcodePhoneFrag)
     }
 }

@@ -17,9 +17,10 @@ data class FileData(
     @Json (name = "meterage") val size: Period,
     @Json (name = "sleepsnumber") val roomNo: Period,
     @Json val price: Period,
-    @Json (name = "extrainfos") val extraInfo: List<String?>?,
+    @Json val age: Period,
     @Json (name = "created_at") val created_at: String,
     @Json (name = "updated_at") val updatedAt: String,
+    @Json val images: List<String>?,
     @Json val user: User,
     @Json val city: City
 )

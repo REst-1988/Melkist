@@ -40,19 +40,19 @@ import com.example.melkist.utils.SUB_CAT_RESULT_KEY
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPersianYear
 import com.example.melkist.utils.showDialogWithMessage
-import com.example.melkist.viewmodels.FilterFileViewModel
-import com.example.melkist.viewmodels.MapViewModel
+import com.example.melkist.viewmodels.MainViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.math.BigDecimal
+import com.example.melkist.viewmodels.MainViewModel.ItemType
 
 private const val TAG = "FilterFilesFrag"
 
 class FilterFilesFrag : Fragment() {
 
     private var binding: FragFilterFilesBinding? = null
-    private val viewModel: FilterFileViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -69,8 +69,8 @@ class FilterFilesFrag : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener(ITEM_TYPE_KEY) { _, bundle ->
             when (bundle.getInt(DATA)) {
-                OWNER_ITEM_TYPE -> viewModel.setItemType(MapViewModel.ItemType.SHOW_OWNER)
-                SEEKER_ITEM_TYPE -> viewModel.setItemType(MapViewModel.ItemType.SHOW_SEEKER)
+                OWNER_ITEM_TYPE -> viewModel.setItemType(MainViewModel.ItemType.SHOW_OWNER)
+                SEEKER_ITEM_TYPE -> viewModel.setItemType(MainViewModel.ItemType.SHOW_SEEKER)
             }
             binding!!.txtChooseType.text = showTypeText()
             viewModel.resetCatSubCat()
@@ -137,7 +137,7 @@ class FilterFilesFrag : Fragment() {
                 price,
                 age,
                 size,
-                if (viewModel.getItemType() == MapViewModel.ItemType.SHOW_ALL)
+                if (viewModel.getItemType() == MainViewModel.ItemType.SHOW_ALL)
                     null
                 else
                     viewModel.getTypeId(viewModel.getItemType()),
@@ -182,10 +182,10 @@ class FilterFilesFrag : Fragment() {
 
     fun showTypeText(): String {
         return when (viewModel.getItemType()) {
-            MapViewModel.ItemType.SHOW_SEEKER -> requireContext().resources.getText(R.string.choosing_seeker_header)
+            ItemType.SHOW_SEEKER -> requireContext().resources.getText(R.string.choosing_seeker_header)
                 .toString()
 
-            MapViewModel.ItemType.SHOW_OWNER -> requireContext().resources.getText(R.string.choosing_owner_header)
+            ItemType.SHOW_OWNER -> requireContext().resources.getText(R.string.choosing_owner_header)
                 .toString()
 
             else -> requireContext().resources.getText(R.string.all).toString()
@@ -193,9 +193,9 @@ class FilterFilesFrag : Fragment() {
     }
 
     fun onChoosingCategory() {
-        if (viewModel.getItemType() != MapViewModel.ItemType.SHOW_ALL) {
+        if (viewModel.getItemType() != ItemType.SHOW_ALL) {
             val array = arrayListOf(
-                (activity as MainActivity).user.token,
+                (activity as MainActivity).user!!.token,
                 viewModel.getTypeId(viewModel.getItemType()).toString(),
                 EMPTY_CATEGORY_ID.toString()
             )

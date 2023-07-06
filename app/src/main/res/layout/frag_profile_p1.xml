@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.profile.ProfileFragment">
+    tools:context=".views.profile.ProfileP1Frag">
 
     <data>
 
         <variable
             name="viewmodel"
-            type="com.example.melkist.viewmodels.ProfileViewModel" />
+            type="com.example.melkist.viewmodels.MainViewModel" />
 
         <variable
             name="fragment"
-            type="com.example.melkist.views.profile.ProfileFragment" />
+            type="com.example.melkist.views.profile.ProfileP1Frag" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,14 +21,25 @@
         android:layoutDirection="rtl">
 
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/grunge_paint_background_small"
+            app:layout_constraintBottom_toTopOf="@id/spacer_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/img_user_card"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/normal_margin"
+            android:clickable="true"
             android:elevation="12dp"
+            android:focusable="true"
             android:innerRadius="0dp"
+            android:onClick="@{() -> fragment.onEditUserClick()}"
             android:shape="ring"
             android:thicknessRatio="1.9"
             app:cardCornerRadius="60dp"
@@ -45,22 +56,32 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_circled_user"
+                    app:imgUrl="@{fragment.getUserImage()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ic_circled_user" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/txt_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/byekan"
+            android:layout_marginTop="@dimen/short_margin"
+            android:alpha="0.7"
+            android:background="@color/empty_background_color"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/iransans"
             android:gravity="center"
-            android:padding="@dimen/normal_text_size"
+            android:onClick="@{() -> fragment.onEditUserClick()}"
+            android:paddingStart="@dimen/extra_large_padding"
+            android:paddingTop="@dimen/short_padding"
+            android:paddingEnd="@dimen/extra_large_padding"
+            android:paddingBottom="@dimen/short_padding"
             android:text="@{fragment.userNameText()}"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/normal_text_size"
@@ -72,10 +93,14 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/short_margin"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> fragment.onEditUserClick()}"
             android:src="@drawable/baseline_edit_24"
             app:layout_constraintBottom_toBottomOf="@id/txt_name"
-            app:layout_constraintStart_toEndOf="@id/txt_name"
+            app:layout_constraintEnd_toEndOf="@id/txt_name"
             app:layout_constraintTop_toTopOf="@id/txt_name" />
 
         <TextView
@@ -115,9 +140,9 @@
                     android:id="@+id/txt_alert_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/byekan"
+                    android:fontFamily="@font/iransans"
                     android:gravity="start|center"
-                    android:padding="@dimen/normal_padding"
+                    android:padding="@dimen/text_view_padding"
                     android:text="@string/alerts"
                     android:textColor="@color/negative_empty_background_color"
                     android:textSize="@dimen/normal_text_size" />
@@ -126,6 +151,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="@dimen/icons"
+                    android:layout_height="@dimen/icons"
+                    android:layout_marginEnd="@dimen/short_margin"
+                    android:background="@drawable/background_badge"
+                    android:textColor="@color/normal_text_color"
+                    android:gravity="center"
+                    android:text="3" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -153,9 +187,9 @@
                     android:id="@+id/txt_my_files_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/byekan"
+                    android:fontFamily="@font/iransans"
                     android:gravity="start|center"
-                    android:padding="@dimen/normal_padding"
+                    android:padding="@dimen/text_view_padding"
                     android:text="@string/my_files_title"
                     android:textColor="@color/negative_empty_background_color"
                     android:textSize="@dimen/normal_text_size" />
@@ -191,9 +225,9 @@
                     android:id="@+id/txt_manage_team_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/byekan"
+                    android:fontFamily="@font/iransans"
                     android:gravity="start|center"
-                    android:padding="@dimen/normal_padding"
+                    android:padding="@dimen/text_view_padding"
                     android:text="@string/manage_team_title"
                     android:textColor="@color/negative_empty_background_color"
                     android:textSize="@dimen/normal_text_size" />
@@ -229,9 +263,9 @@
                     android:id="@+id/txt_choose_category_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/byekan"
+                    android:fontFamily="@font/iransans"
                     android:gravity="start|center"
-                    android:padding="@dimen/normal_padding"
+                    android:padding="@dimen/text_view_padding"
                     android:text="@string/ai_title"
                     android:textColor="@color/negative_empty_background_color"
                     android:textSize="@dimen/normal_text_size" />
@@ -267,9 +301,9 @@
                     android:id="@+id/txt_statistics_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/byekan"
+                    android:fontFamily="@font/iransans"
                     android:gravity="start|center"
-                    android:padding="@dimen/normal_padding"
+                    android:padding="@dimen/text_view_padding"
                     android:text="@string/statistics"
                     android:textColor="@color/negative_empty_background_color"
                     android:textSize="@dimen/normal_text_size" />
@@ -319,10 +353,52 @@
                 android:id="@+id/txt_options_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/byekan"
+                android:fontFamily="@font/iransans"
                 android:gravity="start|center"
-                android:padding="@dimen/normal_padding"
+                android:padding="@dimen/text_view_padding"
                 android:text="@string/options_title"
+                android:textColor="@color/negative_empty_background_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_contact_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/short_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> fragment.onContactUsClick()}"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/layout_options">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/baseline_call_24" />
+
+            <TextView
+                android:id="@+id/txt_contact_us_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransans"
+                android:gravity="start|center"
+                android:padding="@dimen/text_view_padding"
+                android:text="@string/contact_us_title"
                 android:textColor="@color/negative_empty_background_color"
                 android:textSize="@dimen/normal_text_size" />
 
@@ -349,7 +425,7 @@
             android:focusable="true"
             android:onClick="@{() -> fragment.onExitClick()}"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layout_options">
+            app:layout_constraintTop_toBottomOf="@id/layout_contact_us">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -360,9 +436,9 @@
                 android:id="@+id/txt_exit_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/byekan"
+                android:fontFamily="@font/iransans"
                 android:gravity="start|center"
-                android:padding="@dimen/normal_padding"
+                android:padding="@dimen/text_view_padding"
                 android:text="@string/exit_title"
                 android:textColor="@color/negative_empty_background_color"
                 android:textSize="@dimen/normal_text_size" />

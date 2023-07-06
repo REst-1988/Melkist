@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "200601312874",
+    "project_id": "melkist-f8b47",
+    "storage_bucket": "melkist-f8b47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200601312874:android:1026f64e7ab5a78fdcb413",
+        "android_client_info": {
+          "package_name": "com.example.melkist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200601312874-ihl3adi8rn4t7rpave64s67uooutqmo5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2UVbMuKGFkj95owiDRkZoh55PKFOASn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200601312874-ihl3adi8rn4t7rpave64s67uooutqmo5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

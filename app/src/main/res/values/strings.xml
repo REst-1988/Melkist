@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Melkist</string>
+    <string name="site_url">https://melkist.ir</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Calculator</string>
@@ -74,10 +75,14 @@
     <string name="proceed">ادامه</string>
     <string name="choosing_seeker_header">خواهان</string>
     <string name="choosing_seeker_header2">(به دنبال مورد مناسب میگردم)</string>
+    <string name="choosing_seeker_header2_filer">(فیلتر فایل های خواهان)</string>
     <string name="choosing_seeker_body">شما می توانید با انتخاب این گزینه نیازمندی خودر را در قالب یک آگهی ثبت نموده تا در صورت پیدا شدن مورد مناسب، به شما اطلاع رسانی انجام گیرد</string>
+    <string name="choosing_seeker_body_filter">فیلتر فایل های که خواهان مورد مناسب می باشند</string>
     <string name="choosing_owner_header">مالک</string>
     <string name="choosing_owner_header2">(می خواهم آگهی ثبت نمایم)</string>
+    <string name="choosing_owner_header2_filter">(فیلتر فایل های مالک)</string>
     <string name="choosing_owner_body">شما می توانید با انتخاب این گزینه ملک مورد نظرتان را برای فروش در قالب یک آگهی ثبت نموده تا توسط سایرین دیده شده و در صورت نیاز، با شما تماس گرفته یا درخواست همکاری ارسال نمایند</string>
+    <string name="choosing_owner_body_filter">فیلتر فایل های مالکین که به دنبال مشتری مناسب برای ملک خود می گردند</string>
     <string name="location_frag_header">انتخاب شهر و محله</string>
     <string name="location_frag_sub_header">شهر و محله را انتخاب نمایید و اگر در فهرست وجود ندارد نزدیکترین را انتخاب نمایید</string>
     <string name="choose_region_title">انتخاب محله</string>
@@ -157,6 +162,34 @@
     <string name="alerts">هشدارها</string>
     <string name="my_files_title">فایل های من</string>
     <string name="complete_all_fields">لطفا تمامی اطلاعات را تکمیل فرمایید</string>
+    <string name="year">سال</string>
+    <string name="input_right_number">مقدار صحیحی وارد نمایید</string>
+    <string name="version">نسخه: %s</string>
+    <string name="internet_connection_problem">خطا در برقراری ارتیاط با سرور. لطفا از اتصال اینترنت اطمینان حاصل فرمایید!</string>
+    <string name="quit">انصراف</string>
+    <string name="retry">تلاش مجدد</string>
+    <string name="contact_us_title">تماس با ما</string>
+    <string name="in_box">دریافتی</string>
+    <string name="out_box">ارسالی</string>
+    <string name="next_phase">در حال بروزرسانی</string>
+    <string name="save_accepted">با موفقیت ذخیره شد\n</string>
+    <string name="more">بیشتر</string>
+    <string name="file_details">جزئیات فایل</string>
+
+    <string name="cooperation_request_inbox">درخواست همکاری دریافت شده</string>
+    <string name="applicant_inbox">از %s %s مشاورین املاک %s</string>
+    <string name="cooperation_request_outbox">درخواست همکاری ارسال شده</string>
+    <string name="applicant_outbox">به %s %s مشاورین املاک %s</string>
+    <string name="region_outbox_outbox">جهت ملک %s</string>
+    <string name="error_getting_data">خطا در دریافت اطلاعات!</string>
+    <string name="freelancer">آزادکار</string>
+    <string name="fars">فارس</string>
+    <string name="shiraz">شیراز</string>
+    <string name="mortgage_rent_calculator">ماشین حساب رهن و اجاره</string>
+    <string name="commission_calculator">ماشین حساب کمیسیون</string>
+    <string name="expert_calculator">ماشین حساب کارشناسی</string>
+    <string name="add_mortgage_value">مقدار رهن را وارد نمایید</string>
+    <string name="add_rent_value">مقدار اجاره را وارد نمایید</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->

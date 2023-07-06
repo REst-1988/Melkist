@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.AddActivity
-import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP1MainBinding
 import com.example.melkist.utils.CAT_ID_KEY
@@ -22,7 +21,6 @@ import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.SEEKER_ITEM_TYPE
 import com.example.melkist.utils.SUB_CAT_RESULT_KEY
 import com.example.melkist.viewmodels.AddItemViewModel
-import com.example.melkist.viewmodels.MapViewModel
 
 
 class AddP1MainFrag : Fragment() {

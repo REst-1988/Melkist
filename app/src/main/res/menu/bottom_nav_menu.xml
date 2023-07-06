@@ -3,13 +3,13 @@
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/icons8_google_maps_old_80"
+        android:icon="@drawable/icon_menu_map"
         android:title="@string/map" />
 
     <!--android:title="@string/title_dashboard"-->
     <item
         android:id="@+id/navigation_fav"
-        android:icon="@drawable/icons8_save_close_80"
+        android:icon="@drawable/icon_menu_fav"
         android:title="@string/favorite"
         />
 
@@ -19,12 +19,12 @@
     <!--app:destination="@id/addActivity"-->
     <item
         android:id="@+id/navigation_calculator"
-        android:icon="@drawable/icons8_calculator_64"
+        android:icon="@drawable/icon_menu_calculator"
         android:title="@string/calculator"/>
 
     <item
         android:id="@+id/navigation_profle"
-        android:icon="@drawable/icons8_profiles_80"
+        android:icon="@drawable/icon_menu_profile"
         android:title="@string/profile"/>
 
 </menu>

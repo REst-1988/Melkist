@@ -10,7 +10,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/byekan"
+            android:fontFamily="@font/iransans"
             android:id="@+id/txt_title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -18,16 +18,16 @@
             android:textColor="@color/normal_text_color"
             android:layout_marginStart="@dimen/extra_large_margin"
             android:layout_marginEnd="@dimen/extra_large_margin"
-            android:padding="@dimen/short_padding"/>
+            android:padding="@dimen/short_text_view_padding"/>
         <EditText
             android:id="@+id/et_input"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="@dimen/extra_large_margin"
             android:background="@drawable/background_choosing_post"
-            android:fontFamily="@font/byekan"
+            android:fontFamily="@font/iransans"
             android:hint="@string/input"
-            android:padding="@dimen/normal_padding"
+            android:padding="@dimen/edit_text_padding"
             android:textDirection="rtl"
             android:textSize="@dimen/normal_text_size"
             android:inputType="number"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/byekan"
+            android:fontFamily="@font/iransans"
             android:id="@+id/txt_in_letters"
             app:layout_constraintTop_toBottomOf="@id/et_input"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:textColor="@color/sub_item_text_color"
             android:layout_marginStart="@dimen/extra_large_margin"
             android:layout_marginEnd="@dimen/extra_large_margin"
-            android:padding="@dimen/short_padding"/>
+            android:padding="@dimen/short_text_view_padding"/>
 
         <RelativeLayout
             android:id="@+id/layout_btn"
@@ -69,7 +69,7 @@
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/normal_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
-                android:fontFamily="@font/byekan"
+                android:fontFamily="@font/iransans"
                 android:text="@string/confirm"
                 android:textDirection="rtl"
                 app:layout_constraintBottom_toBottomOf="parent" />

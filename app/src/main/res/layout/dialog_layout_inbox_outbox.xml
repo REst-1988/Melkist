@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl">
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/negative_empty_background_color"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:ci_gravity="center"
+        app:ci_height="5dp"
+        app:ci_margin="5dp"
+        app:ci_orientation="horizontal"
+        app:ci_width="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_pager" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/view_pager">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_file_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/normal_margin">
+
+                <TextView
+                    android:id="@+id/txt_Advertiser_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/advertiser_title"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_Advertiser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toEndOf="@id/txt_Advertiser_title"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="رضا استعجاب" />
+
+                <TextView
+                    android:id="@+id/txt_real_estate_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/real_estate_title"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_Advertiser_title" />
+
+                <TextView
+                    android:id="@+id/txt_real_estate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toEndOf="@id/txt_real_estate_header"
+                    app:layout_constraintTop_toBottomOf="@id/txt_Advertiser"
+                    tools:text="دنا" />
+
+                            <TextView
+                                android:id="@+id/txt_post_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/iransans"
+                                android:padding="@dimen/short_text_view_padding"
+                                android:text="@string/post_title"
+                                android:textColor="@color/sub_item_text_color"
+                                android:textSize="@dimen/normal_text_size"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/txt_real_estate_header" />
+
+                            <TextView
+                                android:id="@+id/txt_post"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/iransans"
+                                android:padding="@dimen/short_text_view_padding"
+                                android:textColor="@color/normal_text_color"
+                                android:textSize="@dimen/normal_text_size"
+                                app:layout_constraintStart_toEndOf="@id/txt_post_header"
+                                app:layout_constraintTop_toBottomOf="@id/txt_real_estate"
+                                tools:text="مشاور" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/img_user_card"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:elevation="12dp"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    android:thicknessRatio="1.9"
+                    app:cardCornerRadius="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/img_user"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_circled_user"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/layout_file_owner"
+                android:background="@color/color_boarder" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_file_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/separator"
+                android:layout_margin="@dimen/normal_margin">
+
+                <!--            منطقه
+                            سایر مناطق
+                            سال ساخت
+                            متراژ
+                            تعداد خواب
+                            قیمت
+                            قیمت هر متر-->
+
+                <TextView
+                    android:id="@+id/txt_region_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/region"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="معالی آباد" />
+
+                <!--TODO: should check for if show or not-->
+                <TextView
+                    android:id="@+id/txt_region_other_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/region_other"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_region_title" />
+
+                <TextView
+                    android:id="@+id/txt_region_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_region"
+                    tools:text="فرهنگ شهر، کوی وحدت" />
+
+                <TextView
+                    android:id="@+id/txt_age_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/age_title"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_region_other_title" />
+
+                <TextView
+                    android:id="@+id/txt_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_region_other"
+                    tools:text="1402" />
+
+                <TextView
+                    android:id="@+id/txt_size_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/meterage"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_age_title" />
+
+                <TextView
+                    android:id="@+id/txt_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_age"
+                    tools:text="127 متر مربع" />
+
+                <TextView
+                    android:id="@+id/txt_room_no_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/room_no"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_size_title" />
+
+                <TextView
+                    android:id="@+id/txt_room_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_size"
+                    tools:text="2" />
+
+
+                <TextView
+                    android:id="@+id/txt_price_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/price"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_room_no_title" />
+
+                <TextView
+                    android:id="@+id/txt_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_room_no"
+                    tools:text="5،000،000،000 تومان" />
+
+                <TextView
+                    android:id="@+id/txt_price_per_meter_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@string/price_per_meter"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_price_title" />
+
+                <TextView
+                    android:id="@+id/txt_price_per_meter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_price"
+                    tools:text="39،370،000 تومان" />
+
+                <TextView
+                    android:id="@+id/separator_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/color_boarder"
+                    app:layout_constraintTop_toBottomOf="@id/txt_price_per_meter" />
+
+                <TextView
+                    android:id="@+id/txt_descriptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:lineSpacingExtra="8dp"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:layout_constraintTop_toBottomOf="@id/separator_2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

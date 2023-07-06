@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -25,7 +26,9 @@ import com.example.melkist.AddActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
 import com.example.melkist.databinding.FragAddP7DetailsOwnerBinding
+import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
+import com.example.melkist.utils.getPersianYear
 import com.example.melkist.utils.numInLetter
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
@@ -46,14 +49,14 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: test 1", )
+        Log.e("TAG", "onCreate: test 1")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        Log.e("TAG", "onCreate: test 2", )
+        Log.e("TAG", "onCreate: test 2")
         binding = FragAddP7DetailsOwnerBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -65,18 +68,32 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        Log.e("TAG", "onCreate: test 3", )
+        Log.e("TAG", "onCreate: test 3")
         viewModel.saveResponse.observe(viewLifecycleOwner) {
             Log.e("TAG", "onViewCreated: ${it.result}")
             Log.e("TAG", "onViewCreated: ${it.message}")
-            showDialogWithMessage(
-                requireContext(), it.message ?: ""
-            ) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-                cancel()
+            Log.e("TAG", "onViewCreated: ${concatenateText(it.errors)}")
+            when (it.result) {
+                true -> showDialogWithMessage(
+                    requireContext(), it.message ?: ""
+                ) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                    cancel()
+                }
+
+                false -> showDialogWithMessage(
+                    requireContext(), concatenateText(it.errors)
+                ) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+
+                else -> showDialogWithMessage(
+                    requireContext(), resources.getString(R.string.global_error)
+                ) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
             }
+
         }
         viewModel.resetImages()
     }
@@ -90,7 +107,41 @@ class AddP7DetailsOwnerFrag : Fragment() {
             .setMultiTouchEnabled(true).setAspectRatio(16, 9).start(requireContext(), this)
     }
 
-    private fun showInputDialog(title: String, unit: String, observer: Observer<in String?>) {
+    private fun showAgeDialog(title: String, observer: Observer<in String?>) {
+        val result = MutableLiveData("")
+        val binding =
+            DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(requireContext()))
+        val alertDialog = AlertDialog.Builder(context).create()
+        alertDialog.setView(binding.root)
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+        binding.txtTitle.text = title
+        binding.etInput.filters = arrayOf(InputFilter.LengthFilter(4))
+        binding.txtInLetters.visibility = View.GONE
+        binding.btnConfirm.setOnClickListener {
+            if (binding.etInput.text.isNotEmpty()) {
+                if (isConditionsOk(binding.etInput.text.toString())) {
+                    result.value = binding.etInput.text.toString()
+                    alertDialog.cancel()
+                } else {
+                    showToast(
+                        requireContext(), resources.getString(R.string.input_right_number)
+                    )
+                }
+            } else {
+                showToast(
+                    requireContext(), resources.getString(R.string.on_empty_dialog_edittext_feild)
+                )
+            }
+        }
+        result.observe(viewLifecycleOwner, observer)
+    }
+
+    private fun isConditionsOk(input: String): Boolean {
+        return input.toInt() <= getPersianYear() && input.toInt() >= 1150
+    }
+
+    private fun showInputDialog(title: String, unit: String?, observer: Observer<in String?>) {
         val result = MutableLiveData("")
         val binding =
             DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(requireContext()))
@@ -139,6 +190,13 @@ class AddP7DetailsOwnerFrag : Fragment() {
             }.show()
     }
 
+    private fun isDataReady(): Boolean {
+        return viewModel.ageFrom != null
+                && viewModel.sizeFrom != null
+                && viewModel.roomFrom != null
+                && viewModel.priceFrom != null
+    }
+
     /************** binding commands **********************/
     fun back() {
         findNavController().navigate(R.id.action_addP7DetailsOwnerFrag_to_addP4LocationFrag)
@@ -149,14 +207,43 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun onCommit() {
-        if (binding.etDescriptions.editText!!.text.isNotEmpty() || binding.etDescriptions.editText!!.text.toString() != "") viewModel.descriptions =
+        if (binding.etDescriptions.editText!!.text.isNotEmpty()
+            || binding.etDescriptions.editText!!.text.toString() != ""
+        ) viewModel.descriptions =
             binding.etDescriptions.editText!!.text.toString()
-        viewModel.saveFile((activity as AddActivity).user.id!!)
+        if (isDataReady())
+            viewModel.saveFile((activity as AddActivity).user.id!!)
+        else
+            showDialogWithMessage(
+                requireContext(),
+                resources.getString(R.string.complete_all_fields)
+            ) { d, _ ->
+                d.dismiss()
+            }
     }
 
     fun onPickImage() {
         //showActionDialogForChoosingCameraOrStorage() // TODO: pic image from camera
         pickFromGallery()
+    }
+
+    fun onChoosingAge() {
+        showAgeDialog(
+            resources.getString(R.string.age_title)
+        ) {
+            if (!it.isNullOrEmpty()) {
+                viewModel.ageFrom = it.toInt()
+                binding.txtChooseAge.text = it
+            }
+        }
+    }
+
+    fun showAgeText(): String {
+        return if (viewModel.ageFrom == null) {
+            resources.getString(R.string.choose)
+        } else {
+            viewModel.sizeFrom.toString()
+        }
     }
 
     fun onChoosingMeasure() {
@@ -172,7 +259,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     fun showMeasureText(): String {
         return if (viewModel.sizeFrom == null) {
-            resources.getString(R.string.choose)
+            resources.getString(R.string.enter)
         } else {
             viewModel.sizeFrom.toString()
         }
@@ -191,7 +278,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     fun showRoomCoText(): String {
         return if (viewModel.roomFrom == null) {
-            resources.getString(R.string.choose)
+            resources.getString(R.string.enter)
         } else {
             viewModel.roomFrom.toString()
         }
@@ -208,7 +295,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     fun showPriceText(): String {
         return if (viewModel.priceFrom == null) {
-            resources.getString(R.string.choose)
+            resources.getString(R.string.enter)
         } else {
             formatNumber(viewModel.priceFrom!!.toDouble())
         }

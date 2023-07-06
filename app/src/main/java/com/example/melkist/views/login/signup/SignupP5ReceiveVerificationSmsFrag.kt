@@ -42,7 +42,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         timerHandling()
         watchEtVerificationCodeField()
         listenToVerifyPhoneResult()
-        listentToRegisterResult()
+        listenToRegisterResult()
     }
 
     private fun watchEtVerificationCodeField() {
@@ -61,14 +61,10 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         viewModel.verifyResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.verifyResponse)) {
                 viewModel.stopTimer()
-                viewModel.registerUserRealstate()
-                showToast(
-                    requireContext(),
-                    viewModel.verifyResponse.value!!.message!!
-                )
                 viewModel.restVerificationResponse(viewModel.verifyResponse)
+                viewModel.registerUserRealEstate()
             } else if (viewModel.isResponseNotOk(viewModel.verifyResponse)) {
-                if (!viewModel.verifyResponse.value!!.errors[0].isEmpty())
+                if (viewModel.verifyResponse.value!!.errors[0].isNotEmpty())
                     showDialogWithMessage(
                         requireContext(),
                         concatenateText(viewModel.verificationCodeResponse.value!!.errors)
@@ -87,14 +83,15 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         }
     }
 
-    private fun listentToRegisterResult() {
+    private fun listenToRegisterResult() {
         viewModel.registerResponse.observe(viewLifecycleOwner) {
             if (viewModel.isResponseOk(viewModel.registerResponse)) {
                 viewModel.stopTimer()
+                viewModel.resetAllData()
                 showToast(requireContext(), viewModel.registerResponse.value!!.message!!)
                 startNextStep()
             } else if (viewModel.isResponseNotOk(viewModel.registerResponse)) {
-                if (!viewModel.registerResponse.value!!.errors[0].isEmpty())
+                if (viewModel.registerResponse.value!!.errors[0].isNotEmpty())
                     showDialogWithMessage(
                         requireContext(),
                         concatenateText(viewModel.verificationCodeResponse.value!!.errors)
@@ -110,8 +107,8 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     }
 
     private fun startNextStep() {
-        viewModel.restVerificationResponse(viewModel.verifyResponse)
         findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
+        viewModel.restVerificationResponse(viewModel.verifyResponse)
     }
 
     override fun onStart() {

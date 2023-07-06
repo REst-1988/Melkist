@@ -117,6 +117,7 @@ class SignupViewModel() : ViewModel() {
             try {
                 _verifyResponse.value =
                     Api.retrofitService.verifyCode(mobile, code)
+                Log.e("TAG", "callServerAppVersion: ${verifyResponse.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -131,6 +132,7 @@ class SignupViewModel() : ViewModel() {
             try {
                 _pcrsList.value =
                     Api.retrofitService.getGetProvinces().data!!
+                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -145,6 +147,7 @@ class SignupViewModel() : ViewModel() {
             try {
                 _pcrsList.value =
                     Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
+                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -159,6 +162,7 @@ class SignupViewModel() : ViewModel() {
             try {
                 _pcrsList.value =
                     Api.retrofitService.getRealEstateByCityId(cityId).data!!
+                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -173,6 +177,7 @@ class SignupViewModel() : ViewModel() {
             try {
                 _pcrsList.value =
                     Api.retrofitService.getSuperVisorByManagerId(parentId!!).data!!
+                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -194,6 +199,7 @@ class SignupViewModel() : ViewModel() {
                         name, lastName, title, cityId,
                         mobile, nationalCode, email, roleId
                     )
+                Log.e("TAG", "callServerAppVersion: ${_verificationCodeResponse.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -203,26 +209,26 @@ class SignupViewModel() : ViewModel() {
     }
 
 
-    fun registerUserRealstate() {
+    fun registerUserRealEstate() {
+        Log.e(
+            "TAG", "registerUserRealstate: test " +
+                    String.format(
+                        "%s  %s\n %s  %s\n %s  %s\n %s  %s\n %s  %s",
+                        realEstateNameForManager,
+                        cityId,
+                        firstName!!,
+                        lastName!!,
+                        mobileNo,
+                        nationalCode.toString(),
+                        email,
+                        password,
+                        parentId ?: 1,
+                        subConditionRoleId
+                    )
+        )
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
-                Log.e(
-                    "TAG", "registerUserRealstate: test " +
-                            String.format(
-                                "%s  %s\n %s  %s\n %s  %s\n %s  %s\n %s  %s",
-                                realEstateNameForManager,
-                                cityId,
-                                firstName!!,
-                                lastName!!,
-                                mobileNo,
-                                nationalCode.toString(),
-                                email,
-                                password,
-                                parentId ?: 1,
-                                subConditionRoleId
-                            )
-                )
                 _registerResponse.value =
                     Api.retrofitService.registerUserRealEstate(
                         realEstateNameForManager,
@@ -233,9 +239,10 @@ class SignupViewModel() : ViewModel() {
                         nationalCode.toString(),
                         email,
                         password,
-                        parentId ?: 1 /*every user is a child of head manager*/,
+                        parentId ?: 0 /*every user is a child of head manager*/,
                         subConditionRoleId
                     )
+                Log.e("TAG", "callServerAppVersion: ${_registerResponse.value.toString()}", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -341,5 +348,32 @@ class SignupViewModel() : ViewModel() {
 
     fun emptyList() {
         _pcrsList.value = listOf()
+    }
+
+    fun resetAllData() {
+        condition = Condition.CHOOSE
+        subConditionRoleId = SUB_STATE_CHOOSE
+        provinceId = 0
+        provinceTitle = ""
+        cityId = 0 // 733
+        cityTitle = ""
+        supervisorId = 0
+        supervisorTitle = ""
+        parentId = null
+        realEstateNameForManager = null
+        firstName = null
+        lastName = null
+        mobileNo = ""
+        nationalCode = 0
+        email = null
+        password = ""
+        realEstateId = null
+        realEstateTitle = null
+        pcrsCondition = Pcrs.PROVINCE
+        _isTimeUp.value = false
+        _timeLeft.value = 0
+        _verificationCodeResponse.value = PublicResponseModel(null, "", listOf())
+        _verifyResponse.value = PublicResponseModel(null, "", listOf())
+        _registerResponse.value = PublicResponseModel(null, "", listOf())
     }
 }

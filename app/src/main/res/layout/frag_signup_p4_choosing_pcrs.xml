@@ -53,11 +53,11 @@
                         android:id="@+id/txt_title"
                         android:layout_width="wrap_content"
                         android:layout_height="?attr/actionBarSize"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:gravity="center_vertical"
                         android:text="@string/signup"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/txt_size_h1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
@@ -76,7 +76,7 @@
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginEnd="@dimen/large_margin"
             android:drawableStart="@drawable/ic_baseline_search_24"
-            android:fontFamily="@font/byekan"
+            android:fontFamily="@font/iransans"
             android:hint="@string/search"
             android:textSize="@dimen/txt_size_h2" />
 

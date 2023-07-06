@@ -57,6 +57,16 @@ fun bindRecyclerViewCatSubCat(
     adapter.submitList(data)
 }
 
+@BindingAdapter("bindingCrashData")
+fun bindingCrashData (view: View?, status: ApiStatus){
+    view?.let {
+        when (status) {
+            ApiStatus.ERROR -> it.visibility = View.VISIBLE
+            else -> it.visibility = View.GONE
+        }
+    }
+}
+
 @BindingAdapter("bindLoading")
 fun bindLoading(view: View?, status: ApiStatus) {
     view?.let {

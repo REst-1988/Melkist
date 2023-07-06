@@ -54,11 +54,11 @@
                         android:id="@+id/txt_title"
                         android:layout_width="wrap_content"
                         android:layout_height="?attr/actionBarSize"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:gravity="center_vertical"
                         android:text="@string/choose_category_title"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/txt_size_h1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ibtn_back"
                         app:layout_constraintTop_toTopOf="parent"
@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="مشاور" />
@@ -147,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="سرپرست" />
@@ -178,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="مدیر" />
@@ -225,7 +225,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="کاربر عادی" />
@@ -256,7 +256,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="معامله گر" />

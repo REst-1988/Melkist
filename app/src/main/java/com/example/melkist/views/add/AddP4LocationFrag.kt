@@ -1,7 +1,6 @@
 package com.example.melkist.views.add
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.AddActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP4LocationBinding
 import com.example.melkist.utils.CR_KEY
@@ -36,6 +36,7 @@ class AddP4LocationFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        readyProvinceAndCity()
         viewModel.mapSnapShot.observe(viewLifecycleOwner) {
             binding.imgMapSnapshot.setImageBitmap(it)
         }
@@ -72,6 +73,19 @@ class AddP4LocationFrag : Fragment() {
                 }
             }
         }
+    }
+
+    private fun readyProvinceAndCity() {
+        if (viewModel.provinceId == 0)
+            viewModel.provinceId = (activity as AddActivity).user.provinceId ?: 17
+        if (viewModel.cityId == 0)
+            viewModel.cityId = (activity as AddActivity).user.cityId ?: 733
+        if (viewModel.provinceTitle == "")
+            viewModel.provinceTitle =
+                (activity as AddActivity).user.provinceTitle ?: resources.getString(R.string.fars)
+        if (viewModel.cityTitle == "")
+            viewModel.cityTitle =
+                (activity as AddActivity).user.cityTitle ?: resources.getString(R.string.shiraz)
     }
 
     private fun isReadyForNextFrag(): Boolean {

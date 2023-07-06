@@ -39,3 +39,6 @@ const val CITY = 102
 const val REGION_1 = 103
 const val REGION_2 = 104
 const val REGION_3 = 105
+
+const val INBOX = 0
+const val OUTBOX = 1

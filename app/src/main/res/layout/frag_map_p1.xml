@@ -8,7 +8,7 @@
 
         <variable
             name="viewmodel"
-            type="com.example.melkist.viewmodels.MapViewModel" />
+            type="com.example.melkist.viewmodels.MainViewModel" />
 
         <variable
             name="fragment"
@@ -57,7 +57,7 @@
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/byekan"
+                        android:fontFamily="@font/iransans"
                         android:gravity="center"
                         android:onClick="@{() -> fragment.onChangeItemType()}"
                         android:paddingStart="@dimen/normal_padding"
@@ -120,9 +120,9 @@
                 android:clickable="true"
                 android:elevation="4dp"
                 android:focusable="true"
-                android:fontFamily="@font/byekan"
+                android:fontFamily="@font/iransans"
                 android:gravity="center"
-                android:onClick="@{() -> fragment.onChooseClick()}"
+                android:onClick="@{() -> fragment.onChooseClickAfterSelectingPolygon()}"
                 android:src="@drawable/ic_baseline_filter_alt_24"
                 android:text="@string/choose_raw"
                 android:textColor="@color/normal_text_color"

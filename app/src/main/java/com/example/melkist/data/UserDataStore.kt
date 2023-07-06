@@ -42,24 +42,24 @@ class UserDataStore(context: Context) {
         user: LoginResponseModel, context: Context
     ) {
         context.dataStore.edit { preferences ->
-            user.data?.let {
-                preferences[userIdPk] = user.data!!.id!!
-                preferences[userFirstNamePk] = user.data!!.firstName!!
-                preferences[userLastNamePk] = user.data!!.lastName!!
-                preferences[userMobileIdPk] = user.data!!.mobileId!!
-                preferences[userprofilePicPk] = user.data!!.profilePic ?: "" // should be ""
+            user.data?.let { data ->
+                preferences[userIdPk] = data.id!!
+                preferences[userFirstNamePk] = data.firstName!!
+                preferences[userLastNamePk] = data.lastName!!
+                preferences[userMobileIdPk] = data.mobileId!!
+                preferences[userprofilePicPk] = data.profilePic ?: "" // should be ""
                 // I use "" to check if user need to navigate to login or mainAct
-                preferences[userRoleIdPk] = user.data!!.roleId!!
+                preferences[userRoleIdPk] = data.roleId!!
                 preferences[userParentIdPk] =
-                    user.data!!.parentId ?: 0 // TODO: must be change every user must have a parent
-                preferences[userIsFirstTimePk] = user.data!!.isFirstTime!!
-                preferences[userCityIdPk] = user.data!!.city!!.cityId!!
-                preferences[userCityTitlePk] = user.data!!.city!!.cityTitle!!
-                preferences[userProvinceIdPk] = user.data!!.city!!.province!!.provinceId!!
-                preferences[userProvinceTitlePk] = user.data!!.city!!.province!!.provinceTitle!!
-                preferences[userEmailPk] = user.data!!.email ?: ""
-                preferences[tokenPk] = "Bearer " + user.token.toString()
+                    data.parentId ?: 0 // TODO: must be change every user must have a parent
+                preferences[userIsFirstTimePk] = data.isFirstTime!!
+                preferences[userCityIdPk] = data.city!!.cityId!!
+                preferences[userCityTitlePk] = data.city.cityTitle!!
+                preferences[userProvinceIdPk] = data.city.province!!.provinceId!!
+                preferences[userProvinceTitlePk] = data.city.province.provinceTitle!!
+                preferences[userEmailPk] = data.email ?: ""
             }
+            preferences[tokenPk] = "Bearer " + user.token.toString()
         }
     }
 

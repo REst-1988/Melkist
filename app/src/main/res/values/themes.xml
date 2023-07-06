@@ -24,4 +24,9 @@
         <item name="colorPrimary">@color/main_dark_color2</item>
     </style>
 
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textColor">@color/sub_item_text_color</item>
+        <item name="android:fontFamily">@font/iransans</item>
+    </style>
+
 </resources>

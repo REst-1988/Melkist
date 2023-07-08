@@ -2,6 +2,8 @@ package com.example.melkist.utils
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
@@ -13,9 +15,13 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.InspectableProperty
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import com.example.melkist.MainActivity
 import com.example.melkist.R
@@ -109,8 +115,7 @@ fun formatNumber(numberDouble: Double): String {
     val decimalFormat = DecimalFormat("#,###")
     return decimalFormat.format(numberDouble)
 }
-@InspectableProperty
-fun TextInputEditText.addLiveSeparatorListener()  {
+fun TextInputEditText.addLiveSeparatorListener() {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -126,11 +131,37 @@ fun TextInputEditText.addLiveSeparatorListener()  {
         }
     })
 }
+fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextView, unit: String) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun afterTextChanged(p0: Editable?) {
+            this@addLiveSeparatorListenerWithNumToLetterCallback.removeTextChangedListener(this)
+            val text: String = p0.toString()
+            if (!TextUtils.isEmpty(text)) {
+                val value: Long = BigDecimal(text.replace(",", "")).toLong()
+                val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
+                this@addLiveSeparatorListenerWithNumToLetterCallback.setText(format)
+                this@addLiveSeparatorListenerWithNumToLetterCallback.setSelection(format.length)
+                tv.text = String.format(
+                    "%s %s", numInLetter(context, value), unit
+                )
+            }
+            this@addLiveSeparatorListenerWithNumToLetterCallback.addTextChangedListener(this)
+        }
+    })
+}
 @InspectableProperty
 fun TextInputEditText.getRemovedSeparatorValue (): Long {
     if (!this.text.isNullOrBlank())
         return this.text.toString().replace(",", "").toLong()
     return 0L
+}
+
+fun copyToClipboard (context: Context, title: String, value: String){
+    val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(title, value)
+    clipboard.setPrimaryClip(clip)
 }
 
 fun getPersianYear(): Int = PersianDate().shYear

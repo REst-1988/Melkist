@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.calculator.CalculatorMortgageRentFrag">
+
+    <data>
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.calculator.CalculatorMortgageRentFrag" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_tool_bar">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center_vertical"
+                        android:text="@string/mortgage_rent_calculator"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txt_size_h1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_mortgage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/large_margin"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:errorEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_mortgage_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edit_text"
+                android:fontFamily="@font/iransans"
+                android:hint="@string/add_current_mortgage_value"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:textColor="@color/edit_text_text_color"
+                android:textDirection="rtl"
+                android:textSize="@dimen/normal_text_size"  />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/txt_current_mortgage_to_letter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:fontFamily="@font/iransans"
+            android:textColor="@color/sub_item_text_color"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintTop_toBottomOf="@id/et_mortgage" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_rent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/large_margin"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:errorEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/txt_current_mortgage_to_letter">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_rent_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edit_text"
+                android:fontFamily="@font/iransans"
+                android:hint="@string/add_current_rent_value"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:textColor="@color/edit_text_text_color"
+                android:textDirection="rtl"
+                android:textSize="@dimen/normal_text_size"  />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/txt_current_rent_to_letter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:fontFamily="@font/iransans"
+            android:textColor="@color/sub_item_text_color"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintTop_toBottomOf="@id/et_rent" />
+        <Button
+            android:id="@+id/btn_calculate"
+            style="@style/Theme.Melkist.Buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            android:fontFamily="@font/iransans"
+            app:layout_constraintTop_toBottomOf="@id/txt_current_rent_to_letter"
+            android:text="@string/calculate" />
+
+        <TextView
+            android:id="@+id/txt_mortgage_number_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:paddingTop="@dimen/text_view_padding"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/short_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_calculate"
+            app:layout_constraintEnd_toEndOf="@id/txt_mortgage_number"
+            android:text="@string/mortgage_amount"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/txt_mortgage_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:padding="@dimen/text_view_padding"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/short_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_mortgage_number_title"
+            tools:text="250,000,000 تومان"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <TextView
+            android:id="@+id/txt_rent_number_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:paddingTop="@dimen/text_view_padding"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/short_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txt_rent_number"
+            app:layout_constraintTop_toBottomOf="@id/btn_calculate"
+            android:text="@string/rent_amount"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <TextView
+            android:id="@+id/txt_rent_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:padding="@dimen/text_view_padding"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/short_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_rent_number_title"
+            tools:text="10,000,000 تومان"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <SeekBar
+            android:id="@+id/seekbar_mortgage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/normal_margin"
+            android:progress="50"
+            app:layout_constraintTop_toBottomOf="@id/txt_mortgage_number"
+            android:visibility="gone"
+            tools:visibility="visible" />
+        <TextView
+            android:id="@+id/txt_drag_left_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:padding="@dimen/text_view_padding"
+            android:textColor="@color/sub_item_text_color"
+            android:textSize="@dimen/very_short_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableLeft="@drawable/baseline_keyboard_double_arrow_left_24"
+            android:drawableRight="@drawable/baseline_keyboard_double_arrow_right_24"
+            android:drawablePadding="@dimen/extra_large_padding"
+            app:layout_constraintTop_toBottomOf="@id/seekbar_mortgage"
+            android:text="@string/drag_right_left"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

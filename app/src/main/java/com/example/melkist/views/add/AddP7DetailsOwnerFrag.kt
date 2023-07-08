@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -150,6 +151,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
         alertDialog.setCancelable(true)
         alertDialog.show()
         binding.txtTitle.text = String.format("%s (%s)", title, unit)
+        binding.etInput.showSoftInputOnFocus
+        binding.etInput.requestFocus()
         binding.etInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -171,7 +174,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
         binding.btnConfirm.setOnClickListener {
             if (binding.etInput.text.isNotEmpty()) {
                 result.value = binding.etInput.text.toString().replace(",", "")
-                alertDialog.cancel()
+                alertDialog.dismiss()
             } else {
                 showToast(
                     requireContext(), resources.getString(R.string.on_empty_dialog_edittext_feild)

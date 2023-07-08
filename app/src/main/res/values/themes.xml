@@ -21,7 +21,14 @@
     </style>
 
     <style name="Theme.Melkist.Buttons" parent="Theme.Melkist">
-        <item name="colorPrimary">@color/main_dark_color2</item>
+        <item name="colorPrimary">@color/custom_button_color</item>
+    </style>
+
+    <style name="dialog_theme" parent="android:style/Theme.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:background">@color/empty_background_color</item>
+        <item name="android:windowBackground">@color/empty_background_color</item>
     </style>
 
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">

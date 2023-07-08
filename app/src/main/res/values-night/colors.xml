@@ -15,4 +15,7 @@
     <color name="tool_bar_color_2">#3E3E3E</color>
     <color name="splash_color_light">#3E3E3E</color>
     <color name="add_btn_main_act_color">#7A91D5</color>
+    <color name="custom_dialog_button_color">@color/purple_200</color>
+    <color name="custom_button_color">@color/purple_200</color>
+    <color name="custom_button_color_selected">#FFEB3B</color>
 </resources>

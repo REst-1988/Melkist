@@ -80,6 +80,9 @@
         <action
             android:id="@+id/action_navigation_calculator_to_calculatorMortgageRentFrag"
             app:destination="@id/calculatorMortgageRentFrag" />
+        <action
+            android:id="@+id/action_navigation_calculator_to_calculatorCommissionFrag"
+            app:destination="@id/calculatorCommissionFrag" />
     </fragment>
     <fragment
         android:id="@+id/profileAlertsFrag"
@@ -99,5 +102,10 @@
         android:id="@+id/calculatorMortgageRentFrag"
         android:name="com.example.melkist.views.calculator.CalculatorMortgageRentFrag"
         android:label="frag_mortgage_rent_calculator"
-        tools:layout="@layout/frag_mortgage_rent_calculator" />
+        tools:layout="@layout/frag_calculator_mortgage_rent" />
+    <fragment
+        android:id="@+id/calculatorCommissionFrag"
+        android:name="com.example.melkist.views.calculator.CalculatorCommissionFrag"
+        android:label="frag_calculator_commission"
+        tools:layout="@layout/frag_calculator_commission" />
 </navigation>

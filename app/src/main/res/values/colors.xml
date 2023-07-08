@@ -35,4 +35,7 @@
     <color name="yellow">#FFEB3B</color>
     <color name="add_btn_main_act_color">#FF233B88</color>
     <color name="badge_color">#FF8400</color>
+    <color name="custom_dialog_button_color">@color/purple_500</color>
+    <color name="custom_button_color">@color/purple_500</color>
+    <color name="custom_button_color_selected">#FFBF00</color>
 </resources>

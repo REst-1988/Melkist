@@ -172,6 +172,19 @@ interface ApiService {
         @Query("file_id") fileId: Int
     ): PublicResponseModel// TODO: check this out
 
+    @POST("dashboard/admin/getAllUserSubset")
+    suspend fun getAllUserSubset(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int,
+        @Query("role_id") roleId: Int
+    ): Users
+
+    @POST("dashboard/admin/file/getFileInfoByUserId")
+    suspend fun getFileInfoByUserId(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int
+    ): MyFilesResponse
+
 /*    @GET("users")
     @Headers(
         "Accept: application/vnd.github+json",

@@ -104,8 +104,11 @@ class LoginForm : Fragment() {
         binding?.etPasswordLoginAct?.error = null
         if (response.data?.isFirstTime != false)
             findNavController().navigate(R.id.action_loginForm_to_profilePicFrag)
-        else
+        else {
             startActivity(Intent(requireActivity(), MainActivity::class.java))
+            requireActivity().finish()
+        }
+
     }
 
     private fun onFalseResult(response: LoginResponseModel) {

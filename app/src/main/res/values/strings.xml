@@ -125,7 +125,7 @@
     <string name="is_show_exact_address">آیا آدرس دقیق برای مخاطبان نمایش داده شود؟</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="wrong_username_password">نام کاربری یا کلمه عبور اشتباه است</string>
-    <string name="choose_profile_pic">برای پروفایل خود یک عکس مناسب انتخاب نمایید</string>
+    <string name="choose_profile_pic">از اینکه برای پروفایل خود عکس انتخاب کردید اطمینان حاصل فرمایید</string>
     <string name="choose_profile_pic_title">عکس پروفایل</string>
     <string name="select">انتخاب</string>
     <string name="show_all_files_title">نمایش همه موارد</string>
@@ -221,6 +221,38 @@
     <string name="mortgage_amount">مقدار رهن</string>
     <string name="rent_amount">مقدار اجاره</string>
     <string name="drag_right_left">به راست یا چپ بکشید</string>
+    <string name="rent_to_mortgage">تبدیل اجاره به رهن</string>
+    <string name="mortgage_to_rent_onversion">تبدیل رهن به اجاره</string>
+    <string name="new_mortgage_amount_title">مبلغ رهن جدید</string>
+    <string name="new_rent_amount_title">مبلغ اجاره جدید</string>
+    <string name="quick_conversion">تبدیل سریع</string>
+    <string name="new_rent_value">اجاره جدید را وارد کنید</string>
+    <string name="new_mortgage_value">رهن جدید را وارد کنید</string>
+    <string name="call_backup">تماس با پشتیبانی</string>
+    <string name="our_site">سایت ما</string>
+    <string name="change_password">تغییر رمزعبور</string>
+    <string name="notifications_title">مدیریت اعلان ها</string>
+    <string name="according_to_the_system_settings">متناسب با تنظیمات سیستم</string>
+    <string name="show_all">نمایش همه</string>
+    <string name="invalid_permission">در حال حاضر سطح کاربری شما مجاز به انجام این عملیات مجاز نمی باشد</string>
+    <string name="add_team_member">عضو جدید اضافه کنید</string>
+    <string name="profile_info">اطلاعات حساب کاربری</string>
+    <string name="role">سمت: %s</string>
+    <string name="national_code">کد ملی: %s</string>
+    <string name="mobile">شماره تماس: %s</string>
+    <string name="is_verify">وضعیت احراز هویت: %s</string>
+    <string name="email">ایمیل: %s</string>
+    <string name="create_at">تاریخ عضویت %s</string>
+    <string name="verified">تایید شده</string>
+    <string name="to_verify">در انتظار تایید</string>
+    <string name="first_name_last_name">%s %s</string>
+    <string name="add_new_file">فایل جدید اضافه کنید</string>
+    <string name="rooms">%s خواب</string>
+    <string name="price_with_variable">%s تومان</string>
+    <string name="dots">...</string>
+    <string name="yes">بله</string>
+    <string name="no">خیر</string>
+    <string name="are_you_sure">آیا اطمینان دارید؟</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->
@@ -361,5 +393,11 @@
         <item>نمایش همه فایل ها</item>
         <item>نمایش فایل های خواهان</item>
         <item>نمایش فایل های مالک</item>
+    </string-array>
+
+    <string-array name="theme_options">
+        <item>@string/according_to_the_system_settings</item>
+        <item>حالت شب</item>
+        <item>حالت روز</item>
     </string-array>
 </resources>

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP5RecieveVerificationSmsBinding
 import com.example.melkist.utils.concatenateText
@@ -107,7 +108,10 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     }
 
     private fun startNextStep() {
-        findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
+        if (activity == LoginActivity::class.java)
+            findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
+        else
+            findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag2_to_profileManageTeamFrag)
         viewModel.restVerificationResponse(viewModel.verifyResponse)
     }
 
@@ -151,10 +155,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     }
 
     fun back() {
-        findNavController()
-            .navigate(
-                R.id.action_signupP5ReceiveVerificationSmsFrag_to_signupP1SignupFormFrag
-            )
+        findNavController().popBackStack()
     }
 
     fun onSendVerifyCodeAgain() {

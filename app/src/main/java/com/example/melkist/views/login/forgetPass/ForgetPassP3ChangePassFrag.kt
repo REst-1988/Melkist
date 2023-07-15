@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP3ChangePassBinding
 import com.example.melkist.utils.concatenateText
@@ -59,7 +60,10 @@ class ForgetPassP3ChangePassFrag : Fragment() {
                         d.dismiss()
                     }
                 else
-                    Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
+                    Log.e(
+                        "TAG",
+                        "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ",
+                    )
             /*showToast(
                 requireContext(),
                 resources.getString(R.string.somthing_goes_wrong)
@@ -68,19 +72,24 @@ class ForgetPassP3ChangePassFrag : Fragment() {
     }
 
     private fun readyForStartNextSetion() {
-        findNavController()
-            .navigate(
-                R.id.action_forgetPassP3ChangePassFrag_to_LoginForm
-            )
+        if (activity == LoginActivity::class.java)
+            findNavController()
+                .navigate(
+                    R.id.action_forgetPassP3ChangePassFrag_to_LoginForm
+                )
+        else
+            findNavController()
+                .navigate(
+                    R.id.action_forgetPassP3ChangePassFrag2_to_profileOptionsFrag
+                )
     }
 
     fun back() {
-        findNavController().navigate(
-            R.id.action_forgetPassP3ChangePassFrag_to_forgetPassP1EnterNcodePhoneFrag
-        )
+        findNavController().popBackStack()
     }
 
     fun onConfirm() {
+        // TODO: this has a bug, second tey for changing password may contain an error
         if (isPassword()) {
             viewModel.password = binding.etPassword.editText!!.text.toString()
             viewModel.requestChangePasswordByMobile()

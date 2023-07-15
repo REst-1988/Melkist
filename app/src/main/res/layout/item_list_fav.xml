@@ -21,8 +21,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_img_profile"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="@dimen/short_margin"
@@ -30,35 +30,55 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/img_profile"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        tools:src="@drawable/avatar_user" />
+                        android:layout_height="match_parent">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_img_profile_1"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="40dp"
+                            app:cardElevation="0dp"
+                            android:layout_centerInParent="true">
+
+                            <ImageView
+                                android:id="@+id/img_profile"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                tools:src="@drawable/avatar_user" />
+
+                        </androidx.cardview.widget.CardView>
+
+
+
+                    </RelativeLayout>
+
+
 
                 </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/img_main"
-                    android:layout_width="120dp"
-                    android:layout_height="130dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                <TextView
+                    android:id="@+id/spacer"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/background_tool_bar"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_agent"/>
 
                 <TextView
                     android:id="@+id/txt_real_estate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginStart="@dimen/large_margin"
                     android:layout_marginEnd="@dimen/short_margin"
                     android:fontFamily="@font/iransans"
-                    android:padding="@dimen/short_text_view_padding"
-                    android:textColor="@color/normal_text_color"
+                    android:padding="@dimen/very_short_text_view_padding"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/short_text_size"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_profile"
                     app:layout_constraintStart_toEndOf="@id/card_img_profile"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="املاک جهانی" />
@@ -67,28 +87,24 @@
                     android:id="@+id/txt_agent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/short_margin"
-                    android:layout_marginEnd="@dimen/short_margin"
+                    android:layout_marginStart="@dimen/normal_margin"
                     android:fontFamily="@font/iransans"
-                    android:padding="@dimen/short_text_view_padding"
-                    android:textColor="@color/normal_text_color"
+                    android:padding="@dimen/very_short_text_view_padding"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/short_text_size"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_profile"
                     app:layout_constraintStart_toEndOf="@id/txt_real_estate"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="رضا استعجاب" />
 
-                <TextView
-                    android:id="@+id/spacer"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="@dimen/normal_margin"
-                    android:layout_marginEnd="@dimen/normal_margin"
-                    android:background="@color/negative_empty_background_color_sub_item"
-                    app:layout_constraintEnd_toStartOf="@id/img_main"
-                    app:layout_constraintStart_toEndOf="@id/card_img_profile"
-                    app:layout_constraintTop_toBottomOf="@id/txt_real_estate" />
-
+                <ImageView
+                    android:id="@+id/img_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_agent"/>
                 <TextView
                     android:id="@+id/txt_region"
                     android:layout_width="wrap_content"
@@ -96,7 +112,7 @@
                     android:layout_marginStart="@dimen/short_margin"
                     android:layout_marginEnd="@dimen/short_margin"
                     android:fontFamily="@font/iransans"
-                    android:padding="@dimen/short_text_view_padding"
+                    android:padding="@dimen/very_very_short_text_view_padding"
                     android:textColor="@color/normal_text_color"
                     android:textSize="@dimen/short_text_size"
                     app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +126,7 @@
                     android:layout_marginStart="@dimen/short_margin"
                     android:layout_marginEnd="@dimen/short_margin"
                     android:fontFamily="@font/iransans"
-                    android:padding="@dimen/short_text_view_padding"
+                    android:padding="@dimen/very_very_short_text_view_padding"
                     android:textColor="@color/normal_text_color"
                     android:textSize="@dimen/short_text_size"
                     app:layout_constraintStart_toEndOf="@id/txt_region"
@@ -124,7 +140,7 @@
                     android:layout_marginStart="@dimen/short_margin"
                     android:layout_marginEnd="@dimen/short_margin"
                     android:fontFamily="@font/iransans"
-                    android:padding="@dimen/short_text_view_padding"
+                    android:padding="@dimen/very_very_short_text_view_padding"
                     android:textColor="@color/normal_text_color"
                     android:textSize="@dimen/short_text_size"
                     app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +154,7 @@
                     android:layout_marginStart="@dimen/short_margin"
                     android:layout_marginEnd="@dimen/short_margin"
                     android:fontFamily="@font/iransans"
-                    android:padding="@dimen/short_text_view_padding"
+                    android:padding="@dimen/very_very_short_text_view_padding"
                     android:textColor="@color/normal_text_color"
                     android:textSize="@dimen/short_text_size"
                     app:layout_constraintStart_toEndOf="@id/txt_size"

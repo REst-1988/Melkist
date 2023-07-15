@@ -19,6 +19,7 @@ import com.example.melkist.databinding.ItemListFavBinding
 import com.example.melkist.models.Fav
 import com.example.melkist.models.Period
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.showToast
 
 class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
@@ -53,7 +54,7 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
             binding.txtRegion.text = data.locations[0].region.title
             binding.txtRoomNo.text = getPropertyPeriodsText(data.roomNo, R.string.room)
             binding.txtSize.text = getPropertyPeriodsText(data.size, R.string.squere_meter)
-            binding.txtPrice.text = getPropertyPeriodsText(data.price, R.string.tooman)
+            binding.txtPrice.text = getPropertyPeriodsPriceText(data.price, R.string.tooman)
             binding.txtRealEstate.text = String.format("%s %s", context.resources.getString(R.string.real_estate_title), data.user.realEstate)
             binding.txtAgent.text = String.format("%s %s", data.user.firstName, data.user.lastName)
             Log.e("TAG", "bind: ${data.user.profilePic}", )
@@ -82,6 +83,16 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
                 unit
             )
             return String.format("%s %s", period.from, conjunctions)
+        }
+
+        private fun getPropertyPeriodsPriceText(period: Period, @StringRes unit: Int): String {
+            val conjunctions = if (period.to == period.from) " ${context.resources.getString(unit)}"
+            else context.resources.getString(
+                R.string.to
+            ) + " " + formatNumber(period.to!!.toDouble()) + " " + context.resources.getString(
+                unit
+            )
+            return String.format("%s %s", formatNumber(period.from!!.toDouble()), conjunctions)
         }
     }
 
@@ -138,5 +149,4 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
             }
         }
     }
-
 }

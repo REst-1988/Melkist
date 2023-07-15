@@ -42,6 +42,6 @@ class SignupP2ChoosingRealEstateOrUserFrag : Fragment() {
     }
 
     fun onBack(){
-        findNavController().navigate(R.id.action_signupP2ChoosingRealEstateOrUserFrag_to_signupP1SignupFormFrag)
+        findNavController().popBackStack()
     }
 }

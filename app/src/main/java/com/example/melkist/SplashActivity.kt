@@ -11,9 +11,12 @@ import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
+import com.example.melkist.data.Ds
+import com.example.melkist.data.OptionsDs
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivitySplashScreenBinding
 import com.example.melkist.models.User
+import com.example.melkist.utils.changeAppTheme
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.SplashViewModel
 import com.google.android.gms.tasks.OnCompleteListener
@@ -51,11 +54,16 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
         try {
             checkAppVersion()
-            userDataStore = UserDataStore(this)
+            userDataStore = Ds.getDataStore(this)
             listenToAppVersionResponse()
             userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
                 user = value
+                Log.e("SplashActivity", "onCreate: user = $value", )
                 checkFirebaseTokenAndProceed()
+            }
+            OptionsDs.getDataStore(this).themePreferenceFlow.asLiveData().observe(this){
+                Log.e("TAG", "onCreate: theme = $it", )
+                it?.let { theme -> changeAppTheme(theme) }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -82,17 +90,8 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkFirebaseTokenResponse(firebaseTokenResult: Boolean?) {
         when (firebaseTokenResult) {
-            true -> {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                this@SplashActivity.finish()
-            }
-
-            false -> {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                this@SplashActivity.finish()
-                overridePendingTransition(0, 0)
-            }
-
+            true -> startMainActivityOnTrueResult()
+            false -> startLoginActivityOnFalseResult()
             else -> showDialogWithMessage(
                 this@SplashActivity,
                 resources.getString(R.string.somthing_goes_wrong)
@@ -101,6 +100,17 @@ class SplashActivity : AppCompatActivity() {
                 this@SplashActivity.finish()
             }
         }
+    }
+
+    private fun startMainActivityOnTrueResult() {
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        this@SplashActivity.finish()
+    }
+
+    private fun startLoginActivityOnFalseResult() {
+        startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+        this@SplashActivity.finish()
+        overridePendingTransition(0, 0)
     }
 
     private fun checkFirebaseTokenAndProceed() {

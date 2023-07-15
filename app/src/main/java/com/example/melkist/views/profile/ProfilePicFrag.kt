@@ -19,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.melkist.MainActivity
 import com.example.melkist.R
+import com.example.melkist.adapters.bindingadapter.bindImage
+import com.example.melkist.data.Ds
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.FragProfilePicBinding
 import com.example.melkist.utils.concatenateText
@@ -43,7 +45,7 @@ class ProfilePicFrag : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        userDataStore = UserDataStore(requireContext())
+        userDataStore = Ds.getDataStore(requireContext())
         binding = FragProfilePicBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -56,11 +58,19 @@ class ProfilePicFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userDataStore.preferenceFlow.asLiveData().observe(viewLifecycleOwner) { user ->
+            viewModel.profileImage = user.profilePic
             viewModel.isFirstTime = user.isFirstTime
             viewModel.userId = user.id
             viewModel.token = user.token
         }
+        checkIfHasProfilePicAndAllocate()
         listenToUploadResponse()
+    }
+
+    private fun checkIfHasProfilePicAndAllocate() {
+        if (viewModel.isFirstTime == false && viewModel.profileImage != null){
+            bindImage(binding.imgUser, viewModel.profileImage)
+        }
     }
 
     private fun listenToUploadResponse() {
@@ -75,6 +85,8 @@ class ProfilePicFrag : Fragment() {
                         )
                     }
                     startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    requireActivity().finish()
+                    // TODO: change this for profile entry
                 }
                 false -> {
                     showToast(requireContext(), concatenateText(response.errors))
@@ -99,7 +111,6 @@ class ProfilePicFrag : Fragment() {
             .setFixAspectRatio(true)
             .start(requireContext(), this)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -142,7 +153,6 @@ class ProfilePicFrag : Fragment() {
         } else {
             binding.txtPlain.setTextColor(Color.RED)
             showToast(requireContext(), resources.getString(R.string.choose_profile_pic))
-
         }
     }
 

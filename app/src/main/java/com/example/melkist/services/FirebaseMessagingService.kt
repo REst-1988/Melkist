@@ -43,11 +43,11 @@ class FirebaseMessagingService: FirebaseMessagingService() {
             PendingIntent.FLAG_IMMUTABLE,
         )
 
-        val channelId = "I'm about to be success"
+        val channelId = resources.getString(R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.logo_white)
-            .setContentTitle("Reza thank you")
+            .setContentTitle(messageHeader)
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)

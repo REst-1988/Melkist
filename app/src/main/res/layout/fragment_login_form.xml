@@ -69,6 +69,7 @@
                     android:layout_marginStart="@dimen/normal_margin"
                     android:layout_marginTop="40dp"
                     android:layout_marginEnd="@dimen/normal_margin"
+                    android:textAlignment="center"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:errorEnabled="true"
@@ -112,6 +113,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:selectAllOnFocus="true"
+                        android:textAlignment="center"
                         android:textColor="@color/edit_text_text_color"
                         android:textDirection="rtl"
                         android:textSize="@dimen/normal_text_size" />
@@ -125,15 +127,15 @@
                     android:layout_marginTop="@dimen/normal_margin"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/iransans"
+                    android:maxLength="11"
                     android:onClick="@{() -> fragment.onClickLogin()}"
                     android:text="@string/login"
                     android:theme="@style/Theme.Melkist.Buttons"
+                    app:bindLoading="@{viewmodel.status}"
                     app:layout_constraintEnd_toStartOf="@id/btn_signup"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_password_login_act"
-                    tools:text="@string/login"
-                    android:maxLength="11"
-                    app:bindLoading="@{viewmodel.status}"/>
+                    tools:text="@string/login" />
 
                 <Button
                     android:id="@+id/btn_signup"
@@ -146,11 +148,11 @@
                     android:onClick="@{() -> fragment.onClickSignup()}"
                     android:text="@string/signup"
                     android:theme="@style/Theme.Melkist.Buttons"
+                    app:bindLoading="@{viewmodel.status}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_login"
                     app:layout_constraintTop_toBottomOf="@id/et_password_login_act"
-                    tools:text="@string/signup"
-                    app:bindLoading="@{viewmodel.status}"/>
+                    tools:text="@string/signup" />
 
                 <TextView
                     android:id="@+id/txt_forget_user_pass"
@@ -165,19 +167,19 @@
                     android:paddingBottom="@dimen/login_frag_margin"
                     android:text="@string/forget_user_pass"
                     android:textColor="@color/deep_blue"
+                    app:bindLoading="@{viewmodel.status}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_login"
-                    app:bindLoading="@{viewmodel.status}"/>
+                    app:layout_constraintTop_toBottomOf="@id/btn_login" />
 
                 <ProgressBar
+                    android:id="@+id/progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/progress"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/et_password_login_act"
+                    app:bindProgressLoading="@{viewmodel.status}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:bindProgressLoading="@{viewmodel.status}"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_password_login_act" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

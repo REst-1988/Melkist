@@ -11,6 +11,7 @@ import androidx.lifecycle.asLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.melkist.data.Ds
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivityMainBinding
 import com.example.melkist.interfaces.Interaction
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), Interaction{
     override fun onResume() {
         super.onResume()
         if (user == null) {
-            val userDataStore = UserDataStore(this)
+            val userDataStore = Ds.getDataStore(this)
             userDataStore.preferenceFlow.asLiveData().observe(this) {
                 user = it
             }

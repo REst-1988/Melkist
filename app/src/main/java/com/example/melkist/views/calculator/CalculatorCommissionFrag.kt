@@ -89,7 +89,7 @@ class CalculatorCommissionFrag : Fragment() {
             viewModel.calculateRentCommission()
             CalculatorResultDialogFrag(R.style.dialog_theme).show(
                 childFragmentManager,
-                viewModel.CONDITION_RENT
+                viewModel.conditionCommission
             )
         }
     }
@@ -98,7 +98,7 @@ class CalculatorCommissionFrag : Fragment() {
         viewModel.mortgageAmount = binding.etMortgageAmountChild.getRemovedSeparatorValue()
         if (viewModel.mortgageAmount in 1000000..100000000000000) {
             binding.etMortgageAmount.error = null
-                viewModel.calculateMortgageCommission()
+            viewModel.calculateMortgageCommission()
             CalculatorResultDialogFrag(R.style.dialog_theme).show(
                 childFragmentManager,
                 viewModel.CONDITION_MORTGAGE
@@ -115,7 +115,7 @@ class CalculatorCommissionFrag : Fragment() {
     }
 
     fun onCalculateClick() {
-        when (viewModel.condition) {
+        when (viewModel.conditionCommission) {
             viewModel.CONDITION_BUY_SALE -> onCalculateBuySale()
             viewModel.CONDITION_RENT -> onCalculateRent()
             viewModel.CONDITION_MORTGAGE -> onCalculateMortgage()
@@ -123,7 +123,7 @@ class CalculatorCommissionFrag : Fragment() {
     }
 
     fun onBuySaleClick() {
-        viewModel.condition = viewModel.CONDITION_BUY_SALE
+        viewModel.conditionCommission = viewModel.CONDITION_BUY_SALE
         resetBtnColorsAndVisibilitiesAndAmounts()
         binding.btnBuySale.setBackgroundColor(resources.getColor(R.color.custom_button_color_selected))
         binding.layoutBuySale.visibility = View.VISIBLE
@@ -140,7 +140,7 @@ class CalculatorCommissionFrag : Fragment() {
     }
 
     fun onRentClick() {
-        viewModel.condition = viewModel.CONDITION_RENT
+        viewModel.conditionCommission = viewModel.CONDITION_RENT
         resetBtnColorsAndVisibilitiesAndAmounts()
         binding.btnRent.setBackgroundColor(resources.getColor(R.color.custom_button_color_selected))
         binding.layoutRent.visibility = View.VISIBLE
@@ -167,7 +167,7 @@ class CalculatorCommissionFrag : Fragment() {
     }
 
     fun onMortgageClick() {
-        viewModel.condition = viewModel.CONDITION_MORTGAGE
+        viewModel.conditionCommission = viewModel.CONDITION_MORTGAGE
         resetBtnColorsAndVisibilitiesAndAmounts()
         binding.btnMortgage.setBackgroundColor(resources.getColor(R.color.custom_button_color_selected))
         binding.layoutMortgage.visibility = View.VISIBLE

@@ -13,6 +13,7 @@ import com.example.melkist.models.FileTypes
 import com.example.melkist.models.FilterFileData
 import com.example.melkist.models.InboxOutboxModel
 import com.example.melkist.models.LocationResponse
+import com.example.melkist.models.MyFilesResponse
 import com.example.melkist.models.PcrsData
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.models.RegionResponseData
@@ -37,6 +38,8 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
     val inboxResponse: LiveData<InboxOutboxModel> = _inboxResponse
     private val _outboxResponse = MutableLiveData<InboxOutboxModel>()
     val outboxResponse: LiveData<InboxOutboxModel> = _outboxResponse
+    private val _myFiles = MutableLiveData<MyFilesResponse>()
+    val myFiles: LiveData<MyFilesResponse> = _myFiles
 
     enum class ItemType { SHOW_ALL, SHOW_SEEKER, SHOW_OWNER }
     enum class ReqSource { CATEGORY, SUB_CATEGORY }
@@ -222,6 +225,21 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
                 _outboxResponse.value =
                     Api.retrofitService.outbox(token = token, userId = userId)
                 Log.e("TAG", "getOutbox: ${_outboxResponse.value.toString()} ", )
+                _status.value = ApiStatus.DONE
+            }catch (e: java.lang.Exception){
+                _status.value = ApiStatus.ERROR
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getMyFiles(userId: Int, token: String){
+        viewModelScope.launch {
+            _status.value = ApiStatus.LOADING
+            try {
+                _myFiles.value =
+                    Api.retrofitService.getFileInfoByUserId(token = token, userId = userId)
+                Log.e("TAG", "getMyFiles: ${_myFiles.value.toString()} ", )
                 _status.value = ApiStatus.DONE
             }catch (e: java.lang.Exception){
                 _status.value = ApiStatus.ERROR

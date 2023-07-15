@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="User"
+            type="com.example.melkist.models.User" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/short_margin"
+            android:layoutDirection="rtl"
+            app:cardCornerRadius="@dimen/melkist_card_corner">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/card_img_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_img_profile_card"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="@dimen/short_margin"
+                        app:cardCornerRadius="40dp"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:id="@+id/img_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            tools:src="@drawable/avatar_user"
+                            app:imgUrl="@{User.profilePic}"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/txt_last_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/short_text_size"
+                    app:layout_constraintBottom_toBottomOf="@id/card_img_profile"
+                    app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                    app:layout_constraintTop_toTopOf="@id/card_img_profile"
+                    android:text="@{User.lastName}"
+                    tools:text="استعجاب" />
+
+                <TextView
+                    android:id="@+id/txt_firs_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/short_text_size"
+                    app:layout_constraintBottom_toBottomOf="@id/card_img_profile"
+                    app:layout_constraintStart_toEndOf="@id/txt_last_name"
+                    app:layout_constraintTop_toTopOf="@id/card_img_profile"
+                    android:text="@{User.firstName}"
+                    tools:text="رضا" />
+
+                <TextView
+                    android:id="@+id/spacer"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/normal_margin"
+                    app:layout_constraintStart_toEndOf="@id/txt_firs_name"
+                    app:layout_constraintEnd_toStartOf="@id/txt_role"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@color/negative_empty_background_color_sub_item"
+                     />
+
+                <TextView
+                    android:id="@+id/txt_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/normal_margin"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/short_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@{User.role.title}"
+                    tools:text="سرپرست" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</layout>

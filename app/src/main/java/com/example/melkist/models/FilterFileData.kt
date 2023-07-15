@@ -13,13 +13,3 @@ data class FilterFileData(
     @Json (name = "fileCategoryType_id") val subCatId: Int?,
     @Json (name = "region_id") val regionId: Int?
 ): Serializable
-
-data class FileType(
-    val id: Int,
-    val title: String
-)
-
-data class FileTypes(
-    val seeker: FileType = FileType(id = 1, title = "خواهان"),
-    val owner: FileType = FileType(id = 2, title = "مالک")
-)

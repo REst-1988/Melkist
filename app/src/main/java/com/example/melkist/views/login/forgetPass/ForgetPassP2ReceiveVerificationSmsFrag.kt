@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP2ReceiveVerificationSmsBinding
 import com.example.melkist.utils.concatenateText
@@ -60,7 +61,8 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
                 viewModel.stopTimer()
                 showToast(
                     requireContext(),
-                    viewModel.verifyResponse.value!!.message!!)
+                    viewModel.verifyResponse.value!!.message!!
+                )
                 startNextStep()
             } else if (viewModel.isResponseNotOk(viewModel.verifyResponse)) {
                 if (viewModel.verifyResponse.value!!.errors[0].isNotEmpty())
@@ -71,7 +73,10 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
                         d.dismiss()
                     }
             } else
-                Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
+                Log.e(
+                    "TAG",
+                    "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ",
+                )
             /*showToast(
                 requireContext(),
                 resources.getString(R.string.somthing_goes_wrong)
@@ -80,10 +85,16 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
     }
 
     private fun startNextStep() {
-        findNavController()
-            .navigate(
-                R.id.action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag
-            )
+        if (activity == LoginActivity::class.java)
+            findNavController()
+                .navigate(
+                    R.id.action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag
+                )
+        else
+            findNavController()
+                .navigate(
+                    R.id.action_forgetPassP2ReceiveVerificationSmsFrag2_to_forgetPassP3ChangePassFrag2
+                )
         viewModel.restVerificationResponse(viewModel.verifyResponse)
     }
 
@@ -127,10 +138,7 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
     }
 
     fun back() {
-        findNavController()
-            .navigate(
-                R.id.action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP1EnterNcodePhoneFrag
-            )
+        findNavController().popBackStack()
     }
 
     fun onSendVerifyCodeAgain() {

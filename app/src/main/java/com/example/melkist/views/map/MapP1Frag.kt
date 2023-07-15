@@ -236,11 +236,11 @@ class MapP1Frag : Fragment() {
     private fun setTitleColor() {
         when (viewModel.getItemType()) {
             MainViewModel.ItemType.SHOW_OWNER -> binding.cardHeader.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.main_dark_color2)
+                ContextCompat.getColor(requireContext(), R.color.main_owner_color)
             )
 
             MainViewModel.ItemType.SHOW_SEEKER -> binding.cardHeader.setCardBackgroundColor(
-                ContextCompat.getColor(requireContext(), R.color.main_green_color2)
+                ContextCompat.getColor(requireContext(), R.color.main_seeker_color)
             )
 
             else -> binding.cardHeader.setCardBackgroundColor(

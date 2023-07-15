@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
 import com.example.melkist.utils.concatenateText
@@ -80,7 +81,10 @@ class SignupP1SignupFormFrag : Fragment() {
 
     fun cancel() {
         viewModel.resetSignupFieldsByChoosingMainField()
-        findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_loginForm)
+        if (activity == LoginActivity::class.java)
+            findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_loginForm)
+        else
+            findNavController().navigate(R.id.action_signupP1SignupFormFrag2_to_profileManageTeamFrag)
     }
 
     fun onCommit() {

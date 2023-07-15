@@ -20,6 +20,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.InspectableProperty
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
@@ -97,6 +98,17 @@ fun showDialogWithMessage(
         .setPositiveButton(context.resources.getText(R.string.confirm), action).show()
 }
 
+fun showDialogWith2Actions(
+    context: Context, message: String, action: (DialogInterface, Int) -> Unit, action2: (DialogInterface, Int) -> Unit
+){
+    val builder = AlertDialog.Builder(context)
+    builder.setMessage(message)
+        .setCancelable(false)
+        .setPositiveButton(context.resources.getText(R.string.yes), action)
+        .setNegativeButton(context.resources.getText(R.string.no), action)
+        .show()
+}
+
 fun concatenateText(texts: List<String>?): String {
     var allErrors = ""
     if (texts != null) for (error in texts) {
@@ -162,6 +174,14 @@ fun copyToClipboard (context: Context, title: String, value: String){
     val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(title, value)
     clipboard.setPrimaryClip(clip)
+}
+
+fun changeAppTheme (theme: Int) {
+    when (theme) {
+        0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
 }
 
 fun getPersianYear(): Int = PersianDate().shYear

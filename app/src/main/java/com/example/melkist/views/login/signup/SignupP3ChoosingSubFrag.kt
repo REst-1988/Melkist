@@ -78,7 +78,6 @@ class SignupP3ChoosingSubFrag : Fragment() {
     }
 
     fun back(){
-        findNavController()
-            .navigate(R.id.action_signupP3ChoosingSubFrag_to_signupP1SignupFormFrag)
+        findNavController().popBackStack()
     }
 }

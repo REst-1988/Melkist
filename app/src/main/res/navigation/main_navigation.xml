@@ -26,6 +26,18 @@
         <action
             android:id="@+id/action_navigation_profle_to_profileAlertsFrag"
             app:destination="@id/profileAlertsFrag" />
+        <action
+            android:id="@+id/action_navigation_profle_to_profileOptionsFrag"
+            app:destination="@id/profileOptionsFrag" />
+        <action
+            android:id="@+id/action_navigation_profle_to_profileManageTeamFrag"
+            app:destination="@id/profileManageTeamFrag" />
+        <action
+            android:id="@+id/action_navigation_profle_to_profileMyFilesFrag"
+            app:destination="@id/profileMyFilesFrag" />
+        <action
+            android:id="@+id/action_navigation_profle_to_profileUserProfileFrag"
+            app:destination="@id/profileUserProfileFrag" />
     </fragment>
 
     <fragment
@@ -108,4 +120,113 @@
         android:name="com.example.melkist.views.calculator.CalculatorCommissionFrag"
         android:label="frag_calculator_commission"
         tools:layout="@layout/frag_calculator_commission" />
+    <fragment
+        android:id="@+id/profileOptionsFrag"
+        android:name="com.example.melkist.views.profile.ProfileOptionsFrag"
+        android:label="frag_profile_options"
+        tools:layout="@layout/frag_profile_options" >
+        <action
+            android:id="@+id/action_profileOptionsFrag_to_forgetPassP1EnterNcodePhoneFrag2"
+            app:destination="@id/forgetPassP1EnterNcodePhoneFrag2" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPassP1EnterNcodePhoneFrag2"
+        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP1EnterNcodePhoneFrag"
+        android:label="frag_forget_pass_p1_enter_ncode_phone"
+        tools:layout="@layout/frag_forget_pass_p1_enter_ncode_phone" >
+        <action
+            android:id="@+id/action_forgetPassP1EnterNcodePhoneFrag2_to_forgetPassP2ReceiveVerificationSmsFrag2"
+            app:destination="@id/forgetPassP2ReceiveVerificationSmsFrag2" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPassP2ReceiveVerificationSmsFrag2"
+        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP2ReceiveVerificationSmsFrag"
+        android:label="frag_forget_pass_p2_receive_verification_sms"
+        tools:layout="@layout/frag_forget_pass_p2_receive_verification_sms" >
+        <action
+            android:id="@+id/action_forgetPassP2ReceiveVerificationSmsFrag2_to_forgetPassP3ChangePassFrag2"
+            app:destination="@id/forgetPassP3ChangePassFrag2" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPassP3ChangePassFrag2"
+        android:name="com.example.melkist.views.login.forgetPass.ForgetPassP3ChangePassFrag"
+        android:label="frag_forget_pass_p3_change_pass"
+        tools:layout="@layout/frag_forget_pass_p3_change_pass" >
+        <action
+            android:id="@+id/action_forgetPassP3ChangePassFrag2_to_profileOptionsFrag"
+            app:destination="@id/profileOptionsFrag"
+            app:popUpTo="@id/profileOptionsFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileManageTeamFrag"
+        android:name="com.example.melkist.views.profile.ProfileManageTeamFrag"
+        android:label="frag_profile_manage_team"
+        tools:layout="@layout/frag_profile_manage_team" >
+        <action
+            android:id="@+id/action_profileManageTeamFrag_to_signupP1SignupFormFrag2"
+            app:destination="@id/signupP1SignupFormFrag2" />
+        <action
+            android:id="@+id/action_profileManageTeamFrag_to_profileUserProfileFrag"
+            app:destination="@id/profileUserProfileFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupP1SignupFormFrag2"
+        android:name="com.example.melkist.views.login.signup.SignupP1SignupFormFrag"
+        android:label="frag_signup_p1_signup_form"
+        tools:layout="@layout/frag_signup_p1_signup_form" >
+        <action
+            android:id="@+id/action_signupP1SignupFormFrag2_to_signupP2ChoosingRealEstateOrUserFrag2"
+            app:destination="@id/signupP2ChoosingRealEstateOrUserFrag2" />
+        <action
+            android:id="@+id/action_signupP1SignupFormFrag2_to_signupP3ChoosingSubFrag2"
+            app:destination="@id/signupP3ChoosingSubFrag2" />
+        <action
+            android:id="@+id/action_signupP1SignupFormFrag2_to_signupP4ChoosingPcrsFrag2"
+            app:destination="@id/signupP4ChoosingPcrsFrag2" />
+        <action
+            android:id="@+id/action_signupP1SignupFormFrag2_to_signupP5ReceiveVerificationSmsFrag2"
+            app:destination="@id/signupP5ReceiveVerificationSmsFrag2" />
+        <action
+            android:id="@+id/action_signupP1SignupFormFrag2_to_profileManageTeamFrag"
+            app:destination="@id/profileManageTeamFrag"
+            app:popUpTo="@id/profileManageTeamFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupP2ChoosingRealEstateOrUserFrag2"
+        android:name="com.example.melkist.views.login.signup.SignupP2ChoosingRealEstateOrUserFrag"
+        android:label="frag_signup_p2_choosing_real_estate_or_user"
+        tools:layout="@layout/frag_signup_p2_choosing_real_estate_or_user" />
+    <fragment
+        android:id="@+id/signupP3ChoosingSubFrag2"
+        android:name="com.example.melkist.views.login.signup.SignupP3ChoosingSubFrag"
+        android:label="frag_signup_p3_choosing_sub"
+        tools:layout="@layout/frag_signup_p3_choosing_sub" />
+    <fragment
+        android:id="@+id/signupP4ChoosingPcrsFrag2"
+        android:name="com.example.melkist.views.login.signup.SignupP4ChoosingPcrsFrag"
+        android:label="frag_signup_p4_choosing_pcrs"
+        tools:layout="@layout/frag_signup_p4_choosing_pcrs" />
+    <fragment
+        android:id="@+id/signupP5ReceiveVerificationSmsFrag2"
+        android:name="com.example.melkist.views.login.signup.SignupP5ReceiveVerificationSmsFrag"
+        android:label="frag_signup_p5_recieve_verification_sms"
+        tools:layout="@layout/frag_signup_p5_recieve_verification_sms" >
+        <action
+            android:id="@+id/action_signupP5ReceiveVerificationSmsFrag2_to_profileManageTeamFrag"
+            app:destination="@id/profileManageTeamFrag"
+            app:popUpTo="@id/profileManageTeamFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileUserProfileFrag"
+        android:name="com.example.melkist.views.profile.ProfileUserProfileFrag"
+        android:label="frag_profile_user_profile"
+        tools:layout="@layout/frag_profile_user_profile" />
+    <fragment
+        android:id="@+id/profileMyFilesFrag"
+        android:name="com.example.melkist.views.profile.ProfileMyFilesFrag"
+        android:label="frag_profile_myfiles"
+        tools:layout="@layout/frag_profile_myfiles" />
 </navigation>

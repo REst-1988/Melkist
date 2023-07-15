@@ -87,6 +87,6 @@ class SignupP4ChoosingPcrsFrag: Fragment() {
             SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.resetSignupFieldsByRealEstate()
             else -> viewModel.resetSignupFieldsBySupervisor()
         }
-        findNavController().navigate(R.id.action_signupP4ChoosingPcrsFrag_to_signupP1SignupFormFrag)
+        findNavController().popBackStack()
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,11 +13,17 @@ import com.example.melkist.R
 import com.example.melkist.adapters.ChoosingCatSubCatAdapter
 import com.example.melkist.adapters.ChoosingPcrsAdapter
 import com.example.melkist.adapters.FavListAdapter
+import com.example.melkist.adapters.MyFilesAdapter
+import com.example.melkist.adapters.TeamMemberAdapter
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.Fav
+import com.example.melkist.models.FileData
+import com.example.melkist.models.Location
 import com.example.melkist.models.PcrsData
-import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.models.User
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.formatNumber
+import java.io.File
 
 @BindingAdapter("imgUrl")
 fun bindImage(imageView: ImageView, url: String?) {
@@ -32,10 +39,10 @@ fun bindImage(imageView: ImageView, url: String?) {
 @BindingAdapter("listData")
 fun bindRecyclerView(
     recyclerView: RecyclerView,
-    data: List<PcrsData>?// TODO: fav response
+    data: List<PcrsData>?
 ) {
-    val adapter = recyclerView.adapter as ChoosingPcrsAdapter // TODO: fav adapter
-    adapter.submitList(data) // TODO: fav data
+    val adapter = recyclerView.adapter as ChoosingPcrsAdapter
+    adapter.submitList(data)
 }
 
 @BindingAdapter("favListData")
@@ -44,6 +51,24 @@ fun bindFavRecyclerView(
     data: List<Fav>?
 ) {
     val adapter = recyclerView.adapter as FavListAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("teamMemberData")
+fun bindTeamMemberData(
+    recyclerView: RecyclerView,
+    data: List<User>?
+) {
+    val adapter = recyclerView.adapter as TeamMemberAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("myFilesData")
+fun bindMyFilesData(
+    recyclerView: RecyclerView,
+    data: List<FileData>?
+) {
+    val adapter = recyclerView.adapter as MyFilesAdapter
     adapter.submitList(data)
 }
 
@@ -91,6 +116,16 @@ fun bindProgressLoading(progressBar: ProgressBar?, status: ApiStatus) {
 fun bindVisibility(view: View?, isVisible: Boolean) {
     view?.let {
         if (isVisible)
+            it.visibility = View.VISIBLE
+        else
+            it.visibility = View.GONE
+    }
+}
+
+@BindingAdapter(value = ["bindList", "bindStatus"])
+fun bindNoData(view: View?, list: List<Any>?, status: ApiStatus){
+    view?.let {
+        if (status == ApiStatus.DONE && list.isNullOrEmpty())
             it.visibility = View.VISIBLE
         else
             it.visibility = View.GONE

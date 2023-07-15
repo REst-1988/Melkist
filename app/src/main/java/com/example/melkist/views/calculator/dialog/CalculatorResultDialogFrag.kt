@@ -54,7 +54,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onRealEstateCommissionFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.realEstateCommissionFee.toString()
         )
         showToast(
@@ -72,7 +72,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onRealEstateTaxFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.realEstateCommissionTaxFee.toString()
         )
         showToast(
@@ -91,7 +91,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onRealEstateTotalFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.realEstateCommissionTotalFee.toString()
         )
         showToast(
@@ -109,7 +109,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onOwnerQuotaFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.ownerQuotaFee.toString()
         )
         showToast(
@@ -127,7 +127,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onOwnerQuotaTaxFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.ownerQuotaTaxFee.toString()
         )
         showToast(
@@ -145,7 +145,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onOwnerQuotaTotalFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.ownerQuotaTotalFee.toString()
         )
         showToast(
@@ -163,7 +163,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onBuyerQuotaFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.buyerQuotaFee.toString()
         )
         showToast(
@@ -181,7 +181,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onBuyerQuotaTaxFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.buyerQuotaTaxFee.toString()
         )
         showToast(
@@ -199,7 +199,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun onBuyerQuotaTotalFeeCopyClick() {
         copyToClipboard(
             requireContext(),
-            viewModel.CONDITION_BUY_SALE,
+            viewModel.conditionCommission,
             viewModel.buyerQuotaTotalFee.toString()
         )
         showToast(

@@ -22,6 +22,7 @@ class ProfilePicViewModel : ViewModel() {
     val uploadResponse: LiveData<PublicResponseModel> = _uploadResponse
 
 
+    var profileImage: String? = null
     var isFirstTime: Boolean? = null
     var userId: Int? = null
     var token: String? = null

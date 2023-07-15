@@ -1,18 +1,29 @@
 package com.example.melkist.views.profile
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.LoginActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
+import com.example.melkist.data.Ds
+import com.example.melkist.databinding.DialogContactUsBinding
 import com.example.melkist.databinding.FragProfileP1Binding
 import com.example.melkist.interfaces.Interaction
+import com.example.melkist.utils.showDialogWith2Actions
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.MainViewModel
+import kotlinx.coroutines.launch
+
 
 class ProfileP1Frag : Fragment() {
 
@@ -50,6 +61,7 @@ class ProfileP1Frag : Fragment() {
             )
         }
     }
+
     // This is for hide and unhiding bottom nav bar
     override fun onDetach() {
         super.onDetach()
@@ -61,15 +73,26 @@ class ProfileP1Frag : Fragment() {
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
     }
 
+    private fun extiConfirm () {
+        startActivity(
+            Intent(requireActivity(), LoginActivity::class.java)
+        )
+        lifecycleScope.launch {
+            Ds.getDataStore(requireContext()).emptyPreferences(requireContext())
+        }
+        requireActivity().finish()
+    }
+
     /******************** binding methods ***************************/
 
     fun getUserImage(): String {
         var url = ""
         (activity as MainActivity).user?.apply {
-            url = profilePic?:""
+            url = profilePic ?: ""
         }
         return url
     }
+
     fun userNameText(): String {
         var user = ""
         (activity as MainActivity).user?.apply {
@@ -79,7 +102,8 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onEditUserClick() {
-        // TODO
+        findNavController().navigate(R.id.action_navigation_profle_to_profileUserProfileFrag)
+        interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onAlertsClick() {
@@ -89,30 +113,72 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onMyFilesClick() {
-        //TODO()
+        findNavController()
+            .navigate(R.id.action_navigation_profle_to_profileMyFilesFrag)
+        interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onManageTeamClick() {
-        //TODO()
+        findNavController().navigate(
+            R.id.action_navigation_profle_to_profileManageTeamFrag
+        )
+        interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onAiClick() {
-        //TODO("show dialog says soon will run")
+        showDialogWithMessage(
+            requireContext(),
+            resources.getString(R.string.invalid_permission)
+        ) { d, _ ->
+            d.dismiss()
+        }
     }
 
     fun onStatisticsClick() {
-        //TODO("show a dialog says cooming soon")
+        showDialogWithMessage(
+            requireContext(),
+            resources.getString(R.string.invalid_permission)
+        ) { d, _ ->
+            d.dismiss()
+        }
     }
 
     fun onOptionsClick() {
-        //TODO()
+        findNavController().navigate(
+            R.id.action_navigation_profle_to_profileOptionsFrag
+        )
+        interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onContactUsClick() {
-        // TODO
+        val binding =
+            DialogContactUsBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog
+            .Builder(context)
+            .create()
+        dialog.setView(binding.root)
+        dialog.setCancelable(true)
+        dialog.show()
+        binding.btnCallBackup.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:09173381951") // TODO: change this to client number
+            startActivity(intent)
+        }
+        binding.btnOurSite.setOnClickListener {
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(resources.getString(R.string.site_url) + "/main") //TODO: change this to last site address
+            )
+            startActivity(browserIntent)
+        }
     }
 
     fun onExitClick() {
-        //TODO("sign out of system")
+        showDialogWith2Actions(
+            requireContext(),
+            resources.getString(R.string.are_you_sure),
+            {_, _ -> extiConfirm()},
+            {d, _ -> d.dismiss()}
+        )
     }
 }

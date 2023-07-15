@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP1EnterNcodePhoneBinding
 import com.example.melkist.utils.concatenateText
@@ -36,6 +37,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
                 viewmodel = viewModel
                 fragment = this@ForgetPassP1EnterNcodePhoneFrag
             }
+            binding.txtTitle.text = resources.getString(R.string.change_password)
             listenToSendVerificationCode()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -49,7 +51,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     }
 
     fun back() {
-        findNavController().navigate(R.id.action_forgetPassP1EnterNcodePhoneFrag_to_loginForm)
+        findNavController().popBackStack()
     }
 
     private fun requestVerificationCodeForNcodePhone() {
@@ -84,10 +86,16 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     }
 
     private fun startNextFragAndResetResponse() {
-        findNavController()
-            .navigate(
-                R.id.action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag
-            )
+        if (activity == LoginActivity::class.java)
+            findNavController()
+                .navigate(
+                    R.id.action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag
+                )
+        else
+            findNavController()
+                .navigate(
+                    R.id.action_forgetPassP1EnterNcodePhoneFrag2_to_forgetPassP2ReceiveVerificationSmsFrag2
+                )
         viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
         setViewModelFieldsIfVerificationCodeSent()
     }

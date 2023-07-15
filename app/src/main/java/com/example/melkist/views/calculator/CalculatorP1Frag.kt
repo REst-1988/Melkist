@@ -39,6 +39,7 @@ class CalculatorP1Frag : Fragment() {
             findNavController().navigate(
                 R.id.action_navigation_calculator_to_calculatorCommissionFrag
             )
+            interaction?.changBottomNavViewVisibility(View.GONE)
         }
         binding.rl3.setOnClickListener {
             // TODO

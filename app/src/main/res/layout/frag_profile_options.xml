@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/normal_margin"
+    tools:context=".views.profile.ProfileOptionsFrag">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.OptionsViewModel" />
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.profile.ProfileOptionsFrag" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_tool_bar">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center_vertical"
+                        android:text="@string/options_title"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txt_size_h1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/normal_margin">
+
+            <LinearLayout
+                android:id="@+id/layout_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onChangePasswordClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_lock_24" />
+
+                <TextView
+                    android:id="@+id/txt_change_password_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:gravity="start|center"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/change_password"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onNotificationClick()}"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_edit_notifications_24" />
+
+                <TextView
+                    android:id="@+id/txt_notification_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:gravity="start|center"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/notifications_title"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txt_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:gravity="end|center"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@{fragment.showNotificationText(viewmodel.notifOption)}"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="@string/show_all" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> fragment.onThemeClick()}"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_format_paint_theme_24" />
+                <TextView
+                    android:id="@+id/txt_theme_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:gravity="start|center"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/choose_type_title"
+                    android:textColor="@color/negative_empty_background_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txt_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:gravity="end|center"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@{fragment.showThemeText(viewmodel.theme)}"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="@string/according_to_the_system_settings" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

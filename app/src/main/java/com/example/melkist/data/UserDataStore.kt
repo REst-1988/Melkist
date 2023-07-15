@@ -1,5 +1,6 @@
 package com.example.melkist.data
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -13,6 +14,15 @@ import java.io.IOException
 
 private const val USER_PREFERENCES = "user_preferences"
 private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES)
+
+object Ds {
+    var instance: UserDataStore? = null
+    fun getDataStore(context: Context) : UserDataStore{
+        if (instance == null)
+            instance =  UserDataStore(context)
+        return instance!!
+    }
+}
 
 class UserDataStore(context: Context) {
     private val userIdPk = intPreferencesKey("id") // userIdPreferencesKey
@@ -86,12 +96,18 @@ class UserDataStore(context: Context) {
             lastName = preferences[userLastNamePk],
             mobileId = preferences[userMobileIdPk],
             email = preferences[userEmailPk],
+            nationalCode = null,
             profilePic = preferences[userprofilePicPk],
+            isVerify = null,
+            createAt = null,
+            updateAt = null,
             roleId = preferences[userRoleIdPk],
             parentId = preferences[userParentIdPk],
             isFirstTime = preferences[userIsFirstTimePk],
             cityId = preferences[userCityIdPk],
             cityTitle = preferences[userCityTitlePk],
+            mobile = null,
+            role = null,
             provinceId = preferences[userProvinceIdPk],
             provinceTitle = preferences[userProvinceTitlePk],
             realEstate = preferences[userRealEstatePk],

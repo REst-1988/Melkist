@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.melkist.R
+import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.showToast
 import com.example.melkist.views.map.MapP1Frag
@@ -25,13 +26,8 @@ class ImagePagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        var imgUri: Uri? = null
         file.data!!.images?.apply {
-            imgUri = this[position].toUri().buildUpon().scheme("https").build() // TODO: CHECK if https or http
-        }
-        holder.imageView.load(imgUri) {
-            placeholder(R.drawable.loading_animation)
-            error(R.drawable.ic_broken_image)
+            bindImage(holder.imageView, this[position])
         }
         holder.itemView.setOnClickListener {
             fragment?.onMoreDetailFileClick()

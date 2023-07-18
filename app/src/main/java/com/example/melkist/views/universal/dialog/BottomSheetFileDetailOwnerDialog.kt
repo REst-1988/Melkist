@@ -1,18 +1,16 @@
 package com.example.melkist.views.universal.dialog
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
-import coil.load
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.ImagePagerAdapter
-import com.example.melkist.databinding.LayoutBottomSheetFileDetailBinding
+import com.example.melkist.adapters.bindingadapter.bindImage
+import com.example.melkist.databinding.LayoutBottomSheetFileDetailOwnerBinding
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.concatenateText
@@ -23,23 +21,23 @@ import com.example.melkist.viewmodels.MainViewModel
 import com.example.melkist.views.map.MapP1Frag
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomSheetFileDetailDialog(
+class BottomSheetFileDetailOwnerDialog(
     private val fragment: MapP1Frag,
     private val fileId: Int
 ) : BottomSheetDialogFragment() {
-    private lateinit var binding: LayoutBottomSheetFileDetailBinding
+    private lateinit var binding: LayoutBottomSheetFileDetailOwnerBinding
     private val viewModel: MainViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as MainActivity).user?.apply {
-            viewModel.getFileInfoById(token!!, fileId)
+            viewModel.getFileInfoById(token!!, fileId, id!!)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = LayoutBottomSheetFileDetailBinding.inflate(
+        binding = LayoutBottomSheetFileDetailOwnerBinding.inflate(
             inflater
         )
         return binding.root
@@ -88,7 +86,7 @@ class BottomSheetFileDetailDialog(
                     showToast(
                         requireContext(), resources.getString(R.string.save_accepted)
                     )
-                    this@BottomSheetFileDetailDialog.dismiss()
+                    this@BottomSheetFileDetailOwnerDialog.dismiss()
                 }
 
                 false -> showToast(
@@ -107,12 +105,8 @@ class BottomSheetFileDetailDialog(
         binding.indicator.setViewPager(binding.viewPager)
 
         response.data?.apply {
-            this.user.profilePic?.apply {
-                val imgUri: Uri? = this.toUri().buildUpon().scheme("https").build()
-                binding.imgUser.load(imgUri) {
-                    placeholder(R.drawable.loading_animation)
-                    error(R.drawable.ic_baseline_person_outline_24)
-                }
+            user.profilePic?.apply {
+                bindImage(binding.imgUser, this)
             }
             binding.txtRoomNo.text = String.format(
                 "%s %s", roomNo.from ?: "", resources.getString(R.string.room)

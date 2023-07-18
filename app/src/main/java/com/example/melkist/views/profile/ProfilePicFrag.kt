@@ -17,18 +17,21 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.melkist.LoginActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.data.Ds
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.FragProfilePicBinding
+import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ProfilePicViewModel
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 class ProfilePicFrag : Fragment() {
@@ -62,13 +65,16 @@ class ProfilePicFrag : Fragment() {
             viewModel.isFirstTime = user.isFirstTime
             viewModel.userId = user.id
             viewModel.token = user.token
+            checkIfHasProfilePicAndAllocate()
         }
-        checkIfHasProfilePicAndAllocate()
         listenToUploadResponse()
     }
 
     private fun checkIfHasProfilePicAndAllocate() {
-        if (viewModel.isFirstTime == false && viewModel.profileImage != null){
+        Log.e("TAG", "checkIfHasProfilePicAndAllocate: isFirstTime = ${viewModel.isFirstTime}", )
+        if (viewModel.isFirstTime == false && !viewModel.profileImage.isNullOrEmpty()){
+
+            Log.e("TAG", "checkIfHasProfilePicAndAllocate: test2", )
             bindImage(binding.imgUser, viewModel.profileImage)
         }
     }
@@ -78,24 +84,34 @@ class ProfilePicFrag : Fragment() {
             Log.e("TAG", "listenToUploadResponse: $response , ${response.result} , ${response.message}", )
             when (response.result) {
                 true -> {
-                    lifecycleScope.launch {
-                        userDataStore.saveImage(
-                            requireContext(),
-                            response
-                        )
-                    }
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
-                    requireActivity().finish()
-                    // TODO: change this for profile entry
+                    saveImage(response)
+                    startNextMovement()
                 }
                 false -> {
                     showToast(requireContext(), concatenateText(response.errors))
                 }
                 else -> {
-                    //showToast(requireContext(), resources.getString(R.string.somthing_goes_wrong)) //
                     Log.e("TAG", "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}", )
                 }
             }
+        }
+    }
+
+    private fun saveImage (response: PublicResponseModel) {
+        lifecycleScope.launch {
+            userDataStore.saveImage(
+                requireContext(),
+                response
+            )
+        }
+    }
+
+    private fun startNextMovement() {
+        if (activity == MainActivity::class.java){
+            back()
+        }else{
+            startActivity(Intent(requireActivity(), MainActivity::class.java))
+            requireActivity().finish()
         }
     }
 

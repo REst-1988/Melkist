@@ -132,6 +132,7 @@ interface ApiService {
     suspend fun getFileInfoById(
         @Header("Authorization") token: String,
         @Query("file_id") fileId: Int,
+        @Query("user_id") userId: Int
     ): FileDataResponse
 
     @POST("dashboard/admin/file/saveFavoriteFile")

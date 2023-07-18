@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.melkist.R
+import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
 import com.example.melkist.databinding.DialogLayoutInboxOutboxBinding
 import com.example.melkist.databinding.ItemListInboxOutboxBinding
@@ -58,71 +59,60 @@ class InboxOutboxAdapter(private val context: Context, private val inboxOutbox: 
         }
 
         private fun bindInbox(data: Status) {
-            val imgUri = data.file!!.images!![0].toUri().buildUpon().scheme("https").build()
-            Log.e("TAG", "bind 1: $imgUri", )
-            inboxOutboxBinding.imgMain.load(imgUri) {
-                placeholder(R.drawable.loading_animation)
-                error(R.drawable.ic_broken_image)
+            data.file?.images?.apply {
+                bindImage(inboxOutboxBinding.imgMain, this[0])
             }
-            val userImgUrl =
-                data.targetUser!!.profilePic?.toUri()?.buildUpon()?.scheme("https")?.build()
-            Log.e("TAG", "bind 1: $userImgUrl", )
-            inboxOutboxBinding.imgProfile.load(userImgUrl) {
-                placeholder(R.drawable.loading_animation)
-                error(R.drawable.ic_broken_image)
+            data.targetUser?.profilePic?.apply {
+                bindImage(inboxOutboxBinding.imgProfile, this)
             }
             inboxOutboxBinding.txtTitle.text =
                 context.resources.getString(
                     R.string.cooperation_request_inbox
                 )
-            inboxOutboxBinding.txtApplicant.text =
-                context.resources.getString(
-                    R.string.applicant_inbox,
-                    data.targetUser.firstName,
-                    data.targetUser.lastName,
-                    data.targetUser.realEstate
-                )
-            inboxOutboxBinding.txtRegion.text =
-                context.resources.getString(
-                    R.string.region_outbox_outbox,
-                    data.file.locations!![0].region.title
-                )
+            data.targetUser?.apply {
+                inboxOutboxBinding.txtApplicant.text =
+                    context.resources.getString(
+                        R.string.applicant_inbox,
+                        this.firstName,
+                        this.lastName,
+                        this.realEstate
+                    )
+            }
+            data.file?.locations?.apply {
+                inboxOutboxBinding.txtRegion.text =
+                    context.resources.getString(
+                        R.string.region_outbox_outbox,
+                        this[0].region.title
+                    )
+            }
         }
 
         private fun bindOutbox(data: Status) {
-            val imgUri = data.file!!.images!![0].toUri().buildUpon().scheme("https").build()
-            Log.e("TAG", "bind2: $imgUri", )
-            inboxOutboxBinding.imgMain.load(imgUri) {
-                Log.e("TAG", "bind3: $imgUri", )
-                placeholder(R.drawable.loading_animation)
-                error(R.drawable.ic_broken_image)
+            data.file?.images?.apply {
+                bindImage(inboxOutboxBinding.imgMain, this[0])
             }
-            val userImgUrl =
-                data.targetUser!!.profilePic?.toUri()?.buildUpon()?.scheme("https")?.build()
-            Log.e("TAG", "bind2: $userImgUrl", )
-            inboxOutboxBinding.imgProfile.load(userImgUrl) {
-                placeholder(R.drawable.loading_animation)
-                error(R.drawable.ic_broken_image)
+            data.targetUser?.profilePic?.apply {
+                bindImage(inboxOutboxBinding.imgProfile, this)
             }
             inboxOutboxBinding.txtTitle.text =
                 context.resources.getString(
                     R.string.cooperation_request_outbox
                 )
-            inboxOutboxBinding.txtApplicant.text =
-                context.resources.getString(
-                    R.string.applicant_outbox,
-                    data.targetUser.firstName,
-                    data.targetUser.lastName,
-                    data.targetUser.realEstate
-                )
-            try { // TODO: delete this after correction the server by amir
+            data.targetUser?.apply {
+                inboxOutboxBinding.txtApplicant.text =
+                    context.resources.getString(
+                        R.string.applicant_outbox,
+                        this.firstName,
+                        this.lastName,
+                        this.realEstate
+                    )
+            }
+            data.file?.locations?.apply {
                 inboxOutboxBinding.txtRegion.text =
                     context.resources.getString(
                         R.string.region_outbox_outbox,
-                        data.file.locations!![0].region.title
+                        this[0].region.title
                     )
-            } catch (e: Exception){
-                e.printStackTrace()
             }
         }
     }

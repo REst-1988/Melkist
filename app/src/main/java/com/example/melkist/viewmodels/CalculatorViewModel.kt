@@ -33,6 +33,7 @@ class CalculatorViewModel : ViewModel() {
     var buyerQuotaTaxFee = 0L
     var buyerQuotaTotalFee = 0L
 
+
     //////////////////////  rent mortgage calculations /////////////////////////////////////////////
     fun getMaxMortgageValue() = oldMortgageAmount + (oldRentAmount * 50 / 1)
 

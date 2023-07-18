@@ -12,20 +12,24 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.InspectableProperty
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.LiveData
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
-import com.example.melkist.MainActivity
+import androidx.lifecycle.Observer
 import com.example.melkist.R
+import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
+import com.example.melkist.models.Period
 import com.example.melkist.models.User
 import com.google.android.material.textfield.TextInputEditText
 import saman.zamani.persiandate.PersianDate
@@ -99,8 +103,11 @@ fun showDialogWithMessage(
 }
 
 fun showDialogWith2Actions(
-    context: Context, message: String, action: (DialogInterface, Int) -> Unit, action2: (DialogInterface, Int) -> Unit
-){
+    context: Context,
+    message: String,
+    action: (DialogInterface, Int) -> Unit,
+    action2: (DialogInterface, Int) -> Unit
+) {
     val builder = AlertDialog.Builder(context)
     builder.setMessage(message)
         .setCancelable(false)
@@ -109,10 +116,74 @@ fun showDialogWith2Actions(
         .show()
 }
 
+fun getTimeStampForLoadImages(): String {
+    return System.currentTimeMillis().toString()
+}
+
+fun getPropertyPeriodsText(context: Context, period: Period, @StringRes titleUnit: Int, @StringRes unit: Int): String {
+    var text = ""
+    if (period.from == null && period.to == null) {
+        text = String.format("%s: %s", context.resources.getString(titleUnit), context.resources.getString(R.string.all_items))
+    } else if (period.from != null && period.from ==  period.to) {
+        text = String.format("%s %s", period.from, context.resources.getString(unit))
+    } else {
+        var from = ""
+        var to = ""
+        if (period.from != null)
+            from = String.format("%s %s", context.resources.getString(R.string.from), period.from)
+        if (period.to != null)
+            to = String.format("%s %s", context.resources.getString(R.string.to), period.to)
+        text = String.format("%s %s %s", from, to, context.resources.getString(unit))
+    }
+    return text
+}
+
+fun getPropertyPeriodsPriceText(context: Context, periodPrice: Period): String {
+    var text = ""
+    if (periodPrice.from == null && periodPrice.to == null) {
+        text = String.format("%s: %s", context.resources.getString(R.string.price), context.resources.getString(R.string.all_items))
+    } else if (periodPrice.from != null && periodPrice.from ==  periodPrice.to) {
+        text = String.format("%s %s", formatNumber(periodPrice.from.toDouble()), context.resources.getString(R.string.tooman))
+    } else {
+        var from = ""
+        var to = ""
+        if (periodPrice.from != null)
+            from = String.format("%s %s", context.resources.getString(R.string.from), formatNumber(periodPrice.from.toDouble()))
+        if (periodPrice.to != null)
+            to = String.format("%s %s", context.resources.getString(R.string.to), formatNumber(periodPrice.to.toDouble()))
+        text = String.format("%s %s %s", from, to, context.resources.getString(R.string.tooman))
+    }
+    return text
+}
+
+
+fun getPropertyPeriodsTextDeprecated(context: Context, period: Period, @StringRes unit: Int): String {
+    val conjunctions = if (period.to == period.from) " ${context.resources.getString(unit)}"
+    else context.resources.getString(
+        R.string.to
+    ) + " " + period.to + " " + context.resources.getString(
+        unit
+    )
+    return String.format("%s %s", period.from?:"", conjunctions)
+}
+
+fun getPropertyPeriodsPriceTextDeprecated(context: Context, period: Period, @StringRes unit: Int): String {
+    val conjunctions = if (period.to == period.from) " ${context.resources.getString(unit)}"
+    else context.resources.getString(
+        R.string.to
+    ) + " " + formatNumber(period.to!!.toDouble()) + " " + context.resources.getString(
+        unit
+    )
+    return String.format("%s %s", formatNumber(period.from!!.toDouble()), conjunctions)
+}
+
 fun concatenateText(texts: List<String>?): String {
     var allErrors = ""
-    if (texts != null) for (error in texts) {
-        allErrors += ("$error, ")
+    texts?.apply {
+        val iterator: Iterator<String> = iterator()
+        while (iterator.hasNext()){
+            allErrors += "${iterator.next()}${if(iterator.hasNext()) ", " else ""}"
+        }
     }
     return allErrors
 }
@@ -127,6 +198,7 @@ fun formatNumber(numberDouble: Double): String {
     val decimalFormat = DecimalFormat("#,###")
     return decimalFormat.format(numberDouble)
 }
+
 fun TextInputEditText.addLiveSeparatorListener() {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -143,6 +215,7 @@ fun TextInputEditText.addLiveSeparatorListener() {
         }
     })
 }
+
 fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextView, unit: String) {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -163,20 +236,100 @@ fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextVi
         }
     })
 }
+
+
+fun showInputDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title: String, unit: String?, observer: Observer<in String?>) {
+    val result = MutableLiveData("")
+    val binding =
+        DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
+    val alertDialog = AlertDialog.Builder(context).create()
+    alertDialog.setView(binding.root)
+    alertDialog.setCancelable(true)
+    alertDialog.show()
+    binding.txtTitle.text = String.format("%s (%s)", title, unit)
+    binding.etInput.showSoftInputOnFocus
+    binding.etInput.requestFocus()
+    binding.etInput.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun afterTextChanged(p0: Editable?) {
+            binding.etInput.removeTextChangedListener(this)
+            val text: String = p0.toString()
+            if (!TextUtils.isEmpty(text)) {
+                val value: Long = BigDecimal(text.replace(",", "")).toLong()
+                val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
+                binding.etInput.setText(format)
+                binding.etInput.setSelection(format.length)
+                binding.txtInLetters.text = String.format(
+                    "%s %s", numInLetter(context, value), unit
+                )
+            }
+            binding.etInput.addTextChangedListener(this)
+        }
+    })
+    binding.btnConfirm.setOnClickListener {
+        if (binding.etInput.text.isNotEmpty()) {
+            result.value = binding.etInput.text.toString().replace(",", "")
+            alertDialog.dismiss()
+        } else {
+            showToast(
+                context, context.resources.getString(R.string.on_empty_dialog_edittext_feild)
+            )
+        }
+    }
+    result.observe(viewLifecycleOwner, observer)
+}
+
+
+fun showAgeDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title: String, observer: Observer<in String?>) {
+    val result = MutableLiveData("")
+    val binding =
+        DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
+    val alertDialog = AlertDialog.Builder(context).create()
+    alertDialog.setView(binding.root)
+    alertDialog.setCancelable(true)
+    alertDialog.show()
+    binding.txtTitle.text = title
+    binding.etInput.filters = arrayOf(InputFilter.LengthFilter(4))
+    binding.txtInLetters.visibility = View.GONE
+    binding.btnConfirm.setOnClickListener {
+        if (binding.etInput.text.isNotEmpty()) {
+            if (isConditionsOk(binding.etInput.text.toString())) {
+                result.value = binding.etInput.text.toString()
+                alertDialog.cancel()
+            } else {
+                showToast(
+                    context, context.resources.getString(R.string.input_right_number)
+                )
+            }
+        } else {
+            showToast(
+                context, context.resources.getString(R.string.on_empty_dialog_edittext_feild)
+            )
+        }
+    }
+    result.observe(viewLifecycleOwner, observer)
+}
+
+private fun isConditionsOk(input: String): Boolean {
+    return input.toInt() <= getPersianYear() && input.toInt() >= 1150
+}
+
 @InspectableProperty
-fun TextInputEditText.getRemovedSeparatorValue (): Long {
+fun TextInputEditText.getRemovedSeparatorValue(): Long {
     if (!this.text.isNullOrBlank())
         return this.text.toString().replace(",", "").toLong()
     return 0L
 }
 
-fun copyToClipboard (context: Context, title: String, value: String){
-    val clipboard: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+fun copyToClipboard(context: Context, title: String, value: String) {
+    val clipboard: ClipboardManager =
+        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(title, value)
     clipboard.setPrimaryClip(clip)
 }
 
-fun changeAppTheme (theme: Int) {
+fun changeAppTheme(theme: Int) {
     when (theme) {
         0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

@@ -90,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@id/img_user_card"
             tools:text="@string/my_name" />
 
-        <ImageButton
+<!--        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/short_margin"
@@ -101,7 +101,7 @@
             android:src="@drawable/baseline_edit_24"
             app:layout_constraintBottom_toBottomOf="@id/txt_name"
             app:layout_constraintEnd_toEndOf="@id/txt_name"
-            app:layout_constraintTop_toTopOf="@id/txt_name" />
+            app:layout_constraintTop_toTopOf="@id/txt_name" />-->
 
         <TextView
             android:id="@+id/spacer_1"

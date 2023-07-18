@@ -76,8 +76,8 @@ class UserDataStore(context: Context) {
     suspend fun saveImage(context: Context, uploadResponseModel: PublicResponseModel) {
         context.dataStore.edit { preferences ->
             uploadResponseModel.message?.let {
-                preferences[userprofilePicPk] = uploadResponseModel.message!!
-                preferences[userIsFirstTimePk] = true
+                preferences[userprofilePicPk] = it
+                preferences[userIsFirstTimePk] = false
             }
         }
     }

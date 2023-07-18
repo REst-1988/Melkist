@@ -31,7 +31,9 @@ import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPersianYear
 import com.example.melkist.utils.numInLetter
+import com.example.melkist.utils.showAgeDialog
 import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.showInputDialog
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.theartofdev.edmodo.cropper.CropImage
@@ -108,82 +110,6 @@ class AddP7DetailsOwnerFrag : Fragment() {
             .setMultiTouchEnabled(true).setAspectRatio(16, 9).start(requireContext(), this)
     }
 
-    private fun showAgeDialog(title: String, observer: Observer<in String?>) {
-        val result = MutableLiveData("")
-        val binding =
-            DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(requireContext()))
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setView(binding.root)
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-        binding.txtTitle.text = title
-        binding.etInput.filters = arrayOf(InputFilter.LengthFilter(4))
-        binding.txtInLetters.visibility = View.GONE
-        binding.btnConfirm.setOnClickListener {
-            if (binding.etInput.text.isNotEmpty()) {
-                if (isConditionsOk(binding.etInput.text.toString())) {
-                    result.value = binding.etInput.text.toString()
-                    alertDialog.cancel()
-                } else {
-                    showToast(
-                        requireContext(), resources.getString(R.string.input_right_number)
-                    )
-                }
-            } else {
-                showToast(
-                    requireContext(), resources.getString(R.string.on_empty_dialog_edittext_feild)
-                )
-            }
-        }
-        result.observe(viewLifecycleOwner, observer)
-    }
-
-    private fun isConditionsOk(input: String): Boolean {
-        return input.toInt() <= getPersianYear() && input.toInt() >= 1150
-    }
-
-    private fun showInputDialog(title: String, unit: String?, observer: Observer<in String?>) {
-        val result = MutableLiveData("")
-        val binding =
-            DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(requireContext()))
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setView(binding.root)
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-        binding.txtTitle.text = String.format("%s (%s)", title, unit)
-        binding.etInput.showSoftInputOnFocus
-        binding.etInput.requestFocus()
-        binding.etInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-                binding.etInput.removeTextChangedListener(this)
-                val text: String = p0.toString()
-                if (!TextUtils.isEmpty(text)) {
-                    val value: Long = BigDecimal(text.replace(",", "")).toLong()
-                    val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
-                    binding.etInput.setText(format)
-                    binding.etInput.setSelection(format.length)
-                    binding.txtInLetters.text = String.format(
-                        "%s %s", numInLetter(requireContext(), value), unit
-                    )
-                }
-                binding.etInput.addTextChangedListener(this)
-            }
-        })
-        binding.btnConfirm.setOnClickListener {
-            if (binding.etInput.text.isNotEmpty()) {
-                result.value = binding.etInput.text.toString().replace(",", "")
-                alertDialog.dismiss()
-            } else {
-                showToast(
-                    requireContext(), resources.getString(R.string.on_empty_dialog_edittext_feild)
-                )
-            }
-        }
-        result.observe(viewLifecycleOwner, observer)
-    }
-
     private fun showRationaleDialog(source: String, posAction: (DialogInterface, Int) -> Unit) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("${resources.getString(R.string.need_permission)} $source")
@@ -232,6 +158,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     fun onChoosingAge() {
         showAgeDialog(
+            requireContext(),
+            viewLifecycleOwner,
             resources.getString(R.string.age_title)
         ) {
             if (!it.isNullOrEmpty()) {
@@ -251,6 +179,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     fun onChoosingMeasure() {
         showInputDialog(
+            requireContext(),
+            viewLifecycleOwner,
             resources.getString(R.string.measurement), resources.getString(R.string.meter_squere)
         ) {
             if (!it.isNullOrEmpty()) {
@@ -270,6 +200,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     fun onChoosingRoomCount() {
         showInputDialog(
+            requireContext(),
+            viewLifecycleOwner,
             resources.getString(R.string.room_no), resources.getString(R.string.number)
         ) {
             if (!it.isNullOrEmpty()) {
@@ -288,7 +220,11 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun onChoosingPrice() {
-        showInputDialog(resources.getString(R.string.price), resources.getString(R.string.tooman)) {
+        showInputDialog(
+            requireContext(),
+            viewLifecycleOwner,
+            resources.getString(R.string.price),
+            resources.getString(R.string.tooman)) {
             if (!it.isNullOrEmpty()) {
                 viewModel.priceFrom = it.toLong()
                 binding.txtChoosePrice.text = formatNumber(it.toDouble())

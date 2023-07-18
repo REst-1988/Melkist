@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_map"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="100dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_img_logo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/empty_background_color"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/logo_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/img_user_card"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/short_margin"
+            android:elevation="12dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_user"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_circled_user"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/ibtn_bookmark"
+            android:layout_width="@dimen/rounded_btns_fade"
+            android:layout_height="@dimen/rounded_btns_fade"
+            android:layout_margin="@dimen/short_margin"
+            android:background="@drawable/background_rounded_btns"
+            android:elevation="4dp"
+            android:src="@drawable/ic_baseline_bookmark_border_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ibtn_share"
+            android:layout_width="@dimen/rounded_btns_fade"
+            android:layout_height="@dimen/rounded_btns_fade"
+            android:layout_margin="@dimen/short_margin"
+            android:background="@drawable/background_rounded_btns"
+            android:elevation="4dp"
+            android:src="@drawable/ic_baseline_share_24"
+            app:layout_constraintStart_toEndOf="@id/ibtn_bookmark"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ibtn_more"
+            android:layout_width="56dp"
+            android:layout_height="@dimen/rounded_btns_fade"
+            android:layout_margin="@dimen/short_margin"
+            android:background="@drawable/background_cylinder_btns"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:focusable="true"
+            android:fontFamily="@font/iransans"
+            android:gravity="center"
+            android:text="@string/more"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/short_text_size"
+            app:layout_constraintStart_toEndOf="@id/ibtn_share"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fade_bottom_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/empty_background_color_fade"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/txt_room_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="2 خواب" />
+
+            <TextView
+                android:id="@+id/txt_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_room_no"
+                tools:text="127 متر مربع" />
+
+
+            <TextView
+                android:id="@+id/txt_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_price"
+                tools:text="معالی آباد" />
+
+            <TextView
+                android:id="@+id/txt_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="5،000،000،000 تومان" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

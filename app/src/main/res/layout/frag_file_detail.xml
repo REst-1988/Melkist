@@ -277,8 +277,7 @@
                         android:textColor="@color/sub_item_text_color"
                         android:textSize="@dimen/normal_text_size"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txt_region_title"
-                        app:setVisibility="@{fragment.isShowOtherRegion()}" />
+                        app:layout_constraintTop_toBottomOf="@id/txt_region_title" />
 
                     <TextView
                         android:id="@+id/txt_region_other"
@@ -291,7 +290,6 @@
                         android:textSize="@dimen/normal_text_size"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_region"
-                        app:setVisibility="@{fragment.isShowOtherRegion()}"
                         tools:text="فرهنگ شهر، کوی وحدت" />
 
                     <TextView

@@ -3,6 +3,7 @@ package com.example.melkist.utils
 enum class ApiStatus { LOADING, ERROR, DONE }
 enum class ItemType {CHOOSE, SEEKER, OWNER, ALL}
 
+const val ONE_MILLION = 1000000
 public const val GalleryPick = 1
 public const val CAMERA_REQUEST = 100
 public const val STORAGE_REQUEST = 200
@@ -31,6 +32,15 @@ const val ROOM_FROM_TAG = "room_from"
 const val ROOM_TO_TAG = "room_to1"
 const val PRICE_FROM_TAG = "price_from"
 const val PRICE_TO_TAG = "price_to"
+
+const val AGE_TAG = "age"
+const val SIZE_TAG = "size"
+const val ROOM_TAG = "room"
+const val FLOOR_TAG = "room"
+const val UNITS_TAG = "units"
+const val ALLAY_TAG = "allay"
+const val DIRECTION_TAG = "direction"
+const val PRICE_TAG = "price"
 
 const val TYPE_OPTIONS_TAG = "type_options"
 enum class Cr {PROVINCE, CITY, REGION_1, REGION_2, REGION_3}

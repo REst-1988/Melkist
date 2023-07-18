@@ -145,6 +145,7 @@
     <string name="size_squere_meter">متراژ (مترمربع)</string>
     <string name="squere_meter">مترمربع</string>
     <string name="filter_file">فیلتر فایل ها</string>
+    <string name="meter">متر</string>
     <string name="all">همه</string>
     <string name="choose_type_first">ابتدا نوع آگهی را انتخاب نمایید!</string>
     <string name="choose_type_cat_first">لطفا ابتدا نوع آگهی و دسته بندی را انتخاب نمایید!</string>
@@ -187,7 +188,7 @@
     <string name="shiraz">شیراز</string>
     <string name="mortgage_rent_calculator">ماشین حساب رهن و اجاره</string>
     <string name="commission_calculator">ماشین حساب کمیسیون</string>
-    <string name="expert_calculator">ماشین حساب کارشناسی</string>
+    <string name="expert_calculator">ماشین حساب کارشناسی آپارتمان</string>
     <string name="add_current_mortgage_value">مقدار فعلی رهن را وارد نمایید</string>
     <string name="add_current_rent_value">مقدار فعلی اجاره را وارد نمایید</string>
     <string name="rent_mortgage">رهن و اجاره</string>
@@ -253,6 +254,22 @@
     <string name="yes">بله</string>
     <string name="no">خیر</string>
     <string name="are_you_sure">آیا اطمینان دارید؟</string>
+    <string name="two_place_holder_text">%s %s</string>
+    <string name="all_items">همه موارد</string>
+    <string name="max_new_house_price">حداکثر قیمت هر متر نوساز در منطقه</string>
+    <string name="expert_calculator_text">جهت تعیین قیمت کارشناسی ملک مورد نظر، اطلاعات زیر را با دقت تکمیل نمایید</string>
+    <string name="expert_calculator_dialog_fill_fields">جهت تعیین قیمت کارشناسی ملک مورد نظر، کلیه اطلاعات را تکمیل نمایید</string>
+    <string name="min_new_house_price">حداقل قیمت هر متر نوساز در منطقه</string>
+    <string name="unlocked_title_question">آیا کلید خورده است؟</string>
+    <string name="elevator_title_question">آیا آسانسور دارد؟</string>
+    <string name="floor_title">در طبقه چندم واقع است؟</string>
+    <string name="units_title">تعداد کل واحدهای آپارتمان</string>
+    <string name="allay_title">عرض کوچه چند متر است؟</string>
+    <string name="room_title">چند خواب دارد؟</string>
+    <string name="northern_title_question">جهت جغرافیایی ملک</string>
+    <string name="parking_title_question">آیا پارکینگ دارد؟</string>
+    <string name="commercial_title_question">آیا پایین ملک، تجاری است؟</string>
+    <string name="access_only_for_real_estates">درسترسی این قسمت فقط جهت مجموعه مشاورین املاک وجود دارد</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->
@@ -323,7 +340,7 @@
         <item>1 خواب</item>
         <item>2 خواب</item>
         <item>3 خواب</item>
-        <item>4 خواب</item>
+        <item>4 خواب به بالا</item>
     </string-array>
 
     <string-array name="int_room_no_list">
@@ -334,6 +351,54 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+    </string-array>
+
+    <string-array name="floor_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_floor_list"-->
+        <item>همکف</item>
+        <item>اول</item>
+        <item>دوم</item>
+        <item>سوم</item>
+        <item>چهارم</item>
+        <item>پنجم به بالا</item>
+    </string-array>
+
+    <string-array name="units_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_units_list"-->
+        <item>1 تا 6 واحد</item>
+        <item>7 تا 12 واحد</item>
+        <item>13 تا 18 واحد</item>
+        <item>19 الی 30 واحد</item>
+        <item>بیش از 30 واحد</item>
+    </string-array>
+
+    <string-array name="allay_list">
+        <item>کمتر از 4 متر</item>
+        <item>بیشتر از 4 متر</item>
+    </string-array>
+
+    <string-array name="direction_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_direction_list"-->
+        <item>شمالی</item>
+        <item>شرقی</item>
+        <item>جنوبی</item>
+        <item>غربی</item>
+    </string-array>
+
+    <string-array name="int_direction_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "direction_list"-->
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="price_list">

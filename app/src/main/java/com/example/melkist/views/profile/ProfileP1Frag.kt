@@ -102,7 +102,7 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onEditUserClick() {
-        findNavController().navigate(R.id.action_navigation_profle_to_profileUserProfileFrag)
+        findNavController().navigate(R.id.action_navigation_profle_to_profilePicFrag2)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 

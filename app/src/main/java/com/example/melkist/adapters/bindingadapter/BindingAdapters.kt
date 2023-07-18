@@ -23,12 +23,14 @@ import com.example.melkist.models.PcrsData
 import com.example.melkist.models.User
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.formatNumber
+import com.example.melkist.utils.getTimeStampForLoadImages
 import java.io.File
 
 @BindingAdapter("imgUrl")
 fun bindImage(imageView: ImageView, url: String?) {
     url?.let {
-        val imgUri = url.toUri().buildUpon().scheme("https").build() // TODO: CHECK if https or http
+        val a = "$url?d=${getTimeStampForLoadImages()}"
+        val imgUri = a.toUri().buildUpon().scheme("https").build() // TODO: CHECK if https or htt
         imageView.load(imgUri) {
             placeholder(R.drawable.loading_animation)
             error(R.drawable.ic_broken_image)

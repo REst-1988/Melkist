@@ -13,9 +13,14 @@ import com.example.melkist.R
 import com.example.melkist.adapters.ImagePagerAdapter
 import com.example.melkist.databinding.FragFileDetailBinding
 import com.example.melkist.models.FileDataResponse
+import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
 import com.example.melkist.models.Period
+import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
+import com.example.melkist.utils.getPropertyPeriodsPriceText
+import com.example.melkist.utils.getPropertyPeriodsText
+import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 
 class FileDetailFrag : Fragment() {
@@ -26,7 +31,13 @@ class FileDetailFrag : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        data = viewModel.fileAllData.value!!
+        Log.e("TAG", "onCreate test 1: ${viewModel.fileAllData.value}")
+        if (viewModel.fileAllData.value == null) {
+            showToast(requireContext(), resources.getString(R.string.error_getting_data))
+            back()
+        } else {
+            data = viewModel.fileAllData.value!!
+        }
     }
 
     override fun onCreateView(
@@ -44,14 +55,24 @@ class FileDetailFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewPager.adapter = ImagePagerAdapter(null, data)
-        binding.indicator.setViewPager(binding.viewPager)
+        data.data?.typeInfo?.fileType?.apply {
+            if (id == FileTypes().owner.id) {
+                binding.viewPager.visibility = View.VISIBLE
+                binding.indicator.visibility = View.VISIBLE
+                binding.viewPager.adapter = ImagePagerAdapter(null, data)
+                binding.indicator.setViewPager(binding.viewPager)
+            } else {
+                binding.viewPager.visibility = View.GONE
+                binding.indicator.visibility = View.GONE
+            }
+        }
         listenToCooperationResponse()
     }
 
     private fun listenToCooperationResponse() {
-        viewModel.publicResponse.observe(viewLifecycleOwner){
-            Log.e("TAG", "listenToCooperationResponse: ${it.toString()}", )
+        viewModel.publicResponse.observe(viewLifecycleOwner) {
+            //TODO: finish this
+            Log.e("TAG", "listenToCooperationResponse: ${it.toString()}")
         }
     }
 
@@ -59,29 +80,29 @@ class FileDetailFrag : Fragment() {
         var text = ""
         if (locations.size > 1) {
             binding.txtRegionOther.visibility = View.VISIBLE
-            for (i in 1 until locations.size) text += locations[i].region.title
-        } else
+            binding.txtRegionOtherTitle.visibility = View.VISIBLE
+            val a = mutableListOf<String>()
+            for (i in 1 until locations.size)
+                a.add(locations[i].region.title)
+            text = concatenateText(a)
+        } else {
             binding.txtRegionOther.visibility = View.GONE
+            binding.txtRegionOtherTitle.visibility = View.GONE
+        }
         return text
     }
 
-    private fun getPropertyPeriodsText(period: Period): String {
-        val conjunctions = if (period.to == period.from)
-            ""
-        else
-            resources.getString(R.string.to) + " " + period.to
-        return String.format("%s %s", period.from, conjunctions)
-    }
-
     private fun calculatePricePerMeter(price: Period, size: Period): String {
-        val priceTo = price.to ?: 0
-        val priceFrom = price.from ?: 0
-        val sizeTo = size.to ?: 1
-        val sizeFrom = size.from ?: 1
+        val priceTo = (price.to ?: 0).toDouble()
+        val priceFrom = (price.from ?: 0).toDouble()
+        val sizeTo = (size.to ?: 1).toDouble()
+        val sizeFrom = (size.from ?: 1).toDouble()
         return if (price.to == price.from)
-            (priceFrom / sizeFrom).toString()
+            formatNumber(priceFrom / sizeFrom)
         else
-            (priceFrom / sizeFrom).toString() + " " + resources.getString(R.string.to) + " " + (priceTo / sizeTo)
+            formatNumber(priceFrom / sizeFrom) + " " + resources.getString(R.string.to) + " " + formatNumber(
+                priceTo / sizeTo
+            )
     }
 
     /************** binding methods ************************/
@@ -108,7 +129,7 @@ class FileDetailFrag : Fragment() {
     }
 
     fun realEstateText(): String {
-        return data.data!!.user.realEstate?: resources.getString(R.string.freelancer)
+        return data.data!!.user.realEstate ?: resources.getString(R.string.freelancer)
     }
 
     fun reginText(): String {
@@ -119,45 +140,54 @@ class FileDetailFrag : Fragment() {
         return showOtherRegions(data.data!!.locations)
     }
 
-    fun isShowOtherRegion(): Boolean {
-        return true // TODO: check this replace with right method
-    }
-
     ////////////////////////////////////////
     fun ageText(): String {
-        return getPropertyPeriodsText(data.data!!.age)
+        return getPropertyPeriodsText(
+            requireContext(),
+            data.data!!.age,
+            R.string.age_title,
+            R.string.year
+        )
     }
 
     fun sizeText(): String {
-        return String.format(
-            "%s %s",
-            getPropertyPeriodsText(data.data!!.size),
-            resources.getString(R.string.squere_meter)
+        return getPropertyPeriodsText(
+            requireContext(),
+            data.data!!.size,
+            R.string.meterage,
+            R.string.squere_meter
         )
     }
 
     fun roomNoText(): String {
-        return getPropertyPeriodsText(data.data!!.roomNo)
+        return getPropertyPeriodsText(
+            requireContext(),
+            data.data!!.roomNo,
+            R.string.room,
+            R.string.room
+        )
     }
 
     fun priceText(): String {
-        return String.format(
-            "%s %s",
-            formatNumber(getPropertyPeriodsText(data.data!!.price).toDouble()),
-            resources.getString(R.string.tooman)
-        )
+        return getPropertyPeriodsPriceText(requireContext(), data.data!!.price)
     }
 
     fun pricePerMeterText(): String {
-        return String.format(
-            "%s %s",
-            formatNumber(calculatePricePerMeter(data.data!!.price, data.data!!.size).toDouble()),
-            resources.getString(R.string.tooman)
-        )
+        return if (isShowPricePerMeter())
+            String.format(
+                "%s %s",
+                calculatePricePerMeter(
+                    data.data!!.price,
+                    data.data!!.size
+                ),
+                resources.getString(R.string.tooman)
+            )
+        else
+            ""
     }
 
     fun isShowPricePerMeter(): Boolean {
-        return true // TODO: check this replace with right method (proper item in request amir)
+        return data.data!!.typeInfo!!.subCategory!!.id == 1 || data.data!!.typeInfo!!.subCategory!!.id == 2
     }
 
     fun descriptionsText(): String {

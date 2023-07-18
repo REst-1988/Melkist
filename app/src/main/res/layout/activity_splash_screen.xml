@@ -58,7 +58,7 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/iransans"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="20sp" />
+                android:textSize="@dimen/normal_text_size" />
 
             <ProgressBar
                 android:id="@+id/progress_version_control"

@@ -40,7 +40,6 @@ class BottomSheetUniversalList (val list: List<String>) : BottomSheetDialogFragm
             setFragmentResult(tag, bundleOf(DATA to position))
             this.dismiss()
         }
-
     }
 
 }

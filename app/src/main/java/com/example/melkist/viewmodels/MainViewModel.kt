@@ -132,12 +132,12 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
         return REGION_1
     }
 
-    fun getFileInfoById(token: String, fileId: Int) {
+    fun getFileInfoById(token: String, fileId: Int, userId: Int) {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
             try {
                 _fileAllData.value =
-                    Api.retrofitService.getFileInfoById(token, fileId)
+                    Api.retrofitService.getFileInfoById(token, fileId, userId)
                 Log.e("TAG", "getFileInfoById: ${fileAllData.value!!.data}")
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
@@ -246,5 +246,9 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
                 e.printStackTrace()
             }
         }
+    }
+
+    fun resetSaveResponse() {
+        _saveFavResponse.value = PublicResponseModel(null, null, listOf())
     }
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.melkist.R
+import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.LayoutItemListMyFilesBinding
 import com.example.melkist.models.FileData
 import com.example.melkist.models.FileTypes
@@ -76,13 +77,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
                     formatNumber(data.price.from!!.toDouble())
                 )
                 data.images?.let {
-                    val imgUri = it[0].toUri().buildUpon().scheme("https").build()
-
-                    Log.e("TAG", "bindingOwner: test $imgUri", )
-                    imgMainOwner.load(imgUri) {
-                        placeholder(R.drawable.loading_animation)
-                        error(R.drawable.ic_broken_image)
-                    }
+                    bindImage(imgMainOwner, it[0])
                 }
             }
         }

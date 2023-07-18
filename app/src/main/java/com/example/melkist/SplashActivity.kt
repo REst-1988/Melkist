@@ -58,11 +58,11 @@ class SplashActivity : AppCompatActivity() {
             listenToAppVersionResponse()
             userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
                 user = value
-                Log.e("SplashActivity", "onCreate: user = $value", )
+                Log.e("SplashActivity", "onCreate: user = $value")
                 checkFirebaseTokenAndProceed()
             }
-            OptionsDs.getDataStore(this).themePreferenceFlow.asLiveData().observe(this){
-                Log.e("TAG", "onCreate: theme = $it", )
+            OptionsDs.getDataStore(this).themePreferenceFlow.asLiveData().observe(this) {
+                Log.e("TAG", "onCreate: theme = $it")
                 it?.let { theme -> changeAppTheme(theme) }
             }
         } catch (e: Exception) {

@@ -36,8 +36,8 @@
             android:id="@+id/action_navigation_profle_to_profileMyFilesFrag"
             app:destination="@id/profileMyFilesFrag" />
         <action
-            android:id="@+id/action_navigation_profle_to_profileUserProfileFrag"
-            app:destination="@id/profileUserProfileFrag" />
+            android:id="@+id/action_navigation_profle_to_profilePicFrag2"
+            app:destination="@id/profilePicFrag2" />
     </fragment>
 
     <fragment
@@ -95,6 +95,9 @@
         <action
             android:id="@+id/action_navigation_calculator_to_calculatorCommissionFrag"
             app:destination="@id/calculatorCommissionFrag" />
+        <action
+            android:id="@+id/action_navigation_calculator_to_calculatorExpertsFrag"
+            app:destination="@id/calculatorExpertsFrag" />
     </fragment>
     <fragment
         android:id="@+id/profileAlertsFrag"
@@ -229,4 +232,14 @@
         android:name="com.example.melkist.views.profile.ProfileMyFilesFrag"
         android:label="frag_profile_myfiles"
         tools:layout="@layout/frag_profile_myfiles" />
+    <fragment
+        android:id="@+id/profilePicFrag2"
+        android:name="com.example.melkist.views.profile.ProfilePicFrag"
+        android:label="frag_profile_pic"
+        tools:layout="@layout/frag_profile_pic" />
+    <fragment
+        android:id="@+id/calculatorExpertsFrag"
+        android:name="com.example.melkist.views.calculator.CalculatorExpertsFrag"
+        android:label="fragment_calculator_experts"
+        tools:layout="@layout/fragment_calculator_experts" />
 </navigation>

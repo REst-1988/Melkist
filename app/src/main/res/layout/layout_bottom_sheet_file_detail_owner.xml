@@ -53,7 +53,7 @@
             android:innerRadius="0dp"
             android:shape="ring"
             android:thicknessRatio="1.9"
-            app:cardCornerRadius="40dp"
+            app:cardCornerRadius="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 

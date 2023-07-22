@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.MyFilesAdapter
@@ -42,9 +43,20 @@ class ProfileMyFilesFrag : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.rvMyFiles.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
+    }
+
     fun choosingItemAction(file: FileData){
-        // TODO
-        showToast(requireContext(), file.toString())
+        (activity as MainActivity).user?.apply {
+            viewModel.setFileAllDataForMyFiles(this, file)
+            findNavController().navigate(
+                R.id.action_profileMyFilesFrag_to_fileDetailFrag
+            )
+        }
     }
 
     /******************** binding methods ***************************/
@@ -55,5 +67,4 @@ class ProfileMyFilesFrag : Fragment() {
     fun onAddFileClick() {
         // TODO
     }
-
 }

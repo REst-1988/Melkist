@@ -15,439 +15,471 @@
             type="com.example.melkist.views.profile.ProfileP1Frag" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layoutDirection="rtl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layoutDirection="rtl">
+        android:layout_height="match_parent">
 
-
-        <ImageView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/grunge_paint_background_small"
-            app:layout_constraintBottom_toTopOf="@id/spacer_1"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/img_user_card"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/normal_margin"
-            android:clickable="true"
-            android:elevation="12dp"
-            android:focusable="true"
-            android:innerRadius="0dp"
-            android:onClick="@{() -> fragment.onEditUserClick()}"
-            android:shape="ring"
-            android:thicknessRatio="1.9"
-            app:cardCornerRadius="60dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentScrim="@color/main_dark_color2"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+                app:title="@string/app_name">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_collapseMode="parallax">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/grunge_paint_background_small"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/img_user_card"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginTop="@dimen/extra_extra_large_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/normal_margin"
+                        android:clickable="true"
+                        android:elevation="12dp"
+                        android:focusable="true"
+                        android:innerRadius="0dp"
+                        android:onClick="@{() -> fragment.onEditUserClick()}"
+                        android:shape="ring"
+                        android:thicknessRatio="1.9"
+                        app:cardCornerRadius="60dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/img_user"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:scaleType="centerCrop"
+                                app:imgUrl="@{fragment.getUserImage()}"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@drawable/ic_circled_user" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+                    <!--app:layout_scrollFlags="scroll|enterAlways"-->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/txt_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:alpha="0.7"
+                            android:background="@drawable/background_cylinder_btns"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="center"
+                            android:onClick="@{() -> fragment.onEditUserClick()}"
+                            android:paddingStart="@dimen/extra_extra_large_padding"
+                            android:paddingTop="@dimen/short_padding"
+                            android:paddingEnd="@dimen/extra_extra_large_padding"
+                            android:paddingBottom="@dimen/short_padding"
+                            android:text="@{fragment.userNameText()}"
+                            android:textColor="@color/normal_text_color"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/my_name" />
+
+                    </RelativeLayout>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/img_user"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:scaleType="centerCrop"
-                    app:imgUrl="@{fragment.getUserImage()}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_circled_user" />
+                <TextView
+                    android:id="@+id/spacer_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/color_boarder"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <LinearLayout
+                    android:id="@+id/layout_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/short_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/short_margin"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/spacer_1">
+
+                    <LinearLayout
+                        android:id="@+id/layout_alerts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onAlertsClick()}"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/baseline_notifications_active_24" />
+
+                        <TextView
+                            android:id="@+id/txt_alert_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/alerts"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="@dimen/icons"
+                            android:layout_height="@dimen/icons"
+                            android:layout_marginEnd="@dimen/short_margin"
+                            android:background="@drawable/background_badge"
+                            android:gravity="center"
+                            android:text="3"
+                            android:textColor="@color/normal_text_color" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_files"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onMyFilesClick()}"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/baseline_insert_drive_file_24" />
+
+                        <TextView
+                            android:id="@+id/txt_my_files_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/my_files_title"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_manage_team"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onManageTeamClick()}"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/baseline_groups_24" />
+
+                        <TextView
+                            android:id="@+id/txt_manage_team_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/manage_team_title"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onAiClick()}"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_ai_24" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_category_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/ai_title"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_statistics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onStatisticsClick()}"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/baseline_bar_chart_24" />
+
+                        <TextView
+                            android:id="@+id/txt_statistics_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/statistics"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/spacer_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="@dimen/short_margin"
+                    android:background="@color/color_boarder"
+                    app:layout_constraintTop_toBottomOf="@id/layout_top" />
+
+                <LinearLayout
+                    android:id="@+id/layout_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/short_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onOptionsClick()}"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/spacer_2">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/baseline_settings_24" />
+
+                    <TextView
+                        android:id="@+id/txt_options_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/options_title"
+                        android:textColor="@color/negative_empty_background_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_contact_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/short_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onContactUsClick()}"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/layout_options">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/baseline_call_24" />
+
+                    <TextView
+                        android:id="@+id/txt_contact_us_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/contact_us_title"
+                        android:textColor="@color/negative_empty_background_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onExitClick()}"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/layout_contact_us">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/baseline_exit_to_app_24" />
+
+                    <TextView
+                        android:id="@+id/txt_exit_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/exit_title"
+                        android:textColor="@color/negative_empty_background_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/txt_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/short_margin"
-            android:alpha="0.7"
-            android:background="@color/empty_background_color"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/iransans"
-            android:gravity="center"
-            android:onClick="@{() -> fragment.onEditUserClick()}"
-            android:paddingStart="@dimen/extra_extra_large_padding"
-            android:paddingTop="@dimen/short_padding"
-            android:paddingEnd="@dimen/extra_extra_large_padding"
-            android:paddingBottom="@dimen/short_padding"
-            android:text="@{fragment.userNameText()}"
-            android:textColor="@color/normal_text_color"
-            android:textSize="@dimen/normal_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_user_card"
-            tools:text="@string/my_name" />
-
-<!--        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/short_margin"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> fragment.onEditUserClick()}"
-            android:src="@drawable/baseline_edit_24"
-            app:layout_constraintBottom_toBottomOf="@id/txt_name"
-            app:layout_constraintEnd_toEndOf="@id/txt_name"
-            app:layout_constraintTop_toTopOf="@id/txt_name" />-->
-
-        <TextView
-            android:id="@+id/spacer_1"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/color_boarder"
-            app:layout_constraintTop_toBottomOf="@id/txt_name" />
-
-        <LinearLayout
-            android:id="@+id/layout_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/short_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:layout_marginBottom="@dimen/short_margin"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/spacer_1">
-
-            <LinearLayout
-                android:id="@+id/layout_alerts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> fragment.onAlertsClick()}"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/baseline_notifications_active_24" />
-
-                <TextView
-                    android:id="@+id/txt_alert_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/iransans"
-                    android:gravity="start|center"
-                    android:padding="@dimen/text_view_padding"
-                    android:text="@string/alerts"
-                    android:textColor="@color/negative_empty_background_color"
-                    android:textSize="@dimen/normal_text_size" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="@dimen/icons"
-                    android:layout_height="@dimen/icons"
-                    android:layout_marginEnd="@dimen/short_margin"
-                    android:background="@drawable/background_badge"
-                    android:textColor="@color/normal_text_color"
-                    android:gravity="center"
-                    android:text="3" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_files"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> fragment.onMyFilesClick()}"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/baseline_insert_drive_file_24" />
-
-                <TextView
-                    android:id="@+id/txt_my_files_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/iransans"
-                    android:gravity="start|center"
-                    android:padding="@dimen/text_view_padding"
-                    android:text="@string/my_files_title"
-                    android:textColor="@color/negative_empty_background_color"
-                    android:textSize="@dimen/normal_text_size" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_manage_team"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> fragment.onManageTeamClick()}"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/baseline_groups_24" />
-
-                <TextView
-                    android:id="@+id/txt_manage_team_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/iransans"
-                    android:gravity="start|center"
-                    android:padding="@dimen/text_view_padding"
-                    android:text="@string/manage_team_title"
-                    android:textColor="@color/negative_empty_background_color"
-                    android:textSize="@dimen/normal_text_size" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> fragment.onAiClick()}"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_ai_24" />
-
-                <TextView
-                    android:id="@+id/txt_choose_category_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/iransans"
-                    android:gravity="start|center"
-                    android:padding="@dimen/text_view_padding"
-                    android:text="@string/ai_title"
-                    android:textColor="@color/negative_empty_background_color"
-                    android:textSize="@dimen/normal_text_size" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_statistics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> fragment.onStatisticsClick()}"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/baseline_bar_chart_24" />
-
-                <TextView
-                    android:id="@+id/txt_statistics_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/iransans"
-                    android:gravity="start|center"
-                    android:padding="@dimen/text_view_padding"
-                    android:text="@string/statistics"
-                    android:textColor="@color/negative_empty_background_color"
-                    android:textSize="@dimen/normal_text_size" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/spacer_2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="@dimen/short_margin"
-            android:background="@color/color_boarder"
-            app:layout_constraintTop_toBottomOf="@id/layout_top" />
-
-        <LinearLayout
-            android:id="@+id/layout_options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/short_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> fragment.onOptionsClick()}"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/spacer_2">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/baseline_settings_24" />
-
-            <TextView
-                android:id="@+id/txt_options_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/iransans"
-                android:gravity="start|center"
-                android:padding="@dimen/text_view_padding"
-                android:text="@string/options_title"
-                android:textColor="@color/negative_empty_background_color"
-                android:textSize="@dimen/normal_text_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_contact_us"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/short_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> fragment.onContactUsClick()}"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layout_options">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/baseline_call_24" />
-
-            <TextView
-                android:id="@+id/txt_contact_us_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/iransans"
-                android:gravity="start|center"
-                android:padding="@dimen/text_view_padding"
-                android:text="@string/contact_us_title"
-                android:textColor="@color/negative_empty_background_color"
-                android:textSize="@dimen/normal_text_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_exit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{() -> fragment.onExitClick()}"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layout_contact_us">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/baseline_exit_to_app_24" />
-
-            <TextView
-                android:id="@+id/txt_exit_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/iransans"
-                android:gravity="start|center"
-                android:padding="@dimen/text_view_padding"
-                android:text="@string/exit_title"
-                android:textColor="@color/negative_empty_background_color"
-                android:textSize="@dimen/normal_text_size" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

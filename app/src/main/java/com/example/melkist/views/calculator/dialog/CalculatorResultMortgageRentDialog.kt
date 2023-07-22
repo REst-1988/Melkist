@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.melkist.R
 import com.example.melkist.databinding.DialogCalculatorResultMortgageRentBinding
+import com.example.melkist.utils.HUNDRED_THOUSAND
 import com.example.melkist.utils.copyToClipboard
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.showToast
@@ -21,7 +22,6 @@ class CalculatorResultMortgageRentDialog(
 
     private lateinit var binding: DialogCalculatorResultMortgageRentBinding
     private val viewModel: CalculatorViewModel by activityViewModels()
-    private val HUNDRED_THOUSAND = 100000
     private var newRentValue = 0L
     private var newMortgageValue = 0L
 

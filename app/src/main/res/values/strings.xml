@@ -270,6 +270,13 @@
     <string name="parking_title_question">آیا پارکینگ دارد؟</string>
     <string name="commercial_title_question">آیا پایین ملک، تجاری است؟</string>
     <string name="access_only_for_real_estates">درسترسی این قسمت فقط جهت مجموعه مشاورین املاک وجود دارد</string>
+    <string name="expert_evaluation_house_price">قیمت کارشناسی ملک شما</string>
+    <string name="expert_evaluation_house_price_per_meter">قیمت هر متر</string>
+    <string name="null_value">مقدار null</string>
+    <string name="are_you_sure_about_delete_file">آیا از حذف فایل خود اطمینان دارید؟</string>
+    <string name="create_at_file">ایجاد شده در: </string>
+    <string name="type_title">نوع</string>
+    <string name="type_value">%s, %s (%s)</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->

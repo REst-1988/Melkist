@@ -21,9 +21,10 @@ data class FileData(
     @Json(name = "created_at") val created_at: String,
     @Json(name = "updated_at") val updatedAt: String,
     @Json val images: List<String>?,
-    @Json val user: User,
+    @Json var user: User,
     @Json val city: City,
-    @Json(name = "filetypefilecategoryfilecategorytype") val typeInfo: TypeInfo?
+    @Json(name = "filetypefilecategoryfilecategorytype") val typeInfo: TypeInfo?,
+    @Json var isFav: Boolean?
 )
 
 data class Location(

@@ -1,22 +1,19 @@
 package com.example.melkist.adapters
 
-import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.models.FileDataResponse
-import com.example.melkist.utils.showToast
 import com.example.melkist.views.map.MapP1Frag
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ImagePagerAdapter(
     private val fragment: MapP1Frag?,
+    private val bottomSheet: BottomSheetDialogFragment?,
     private val file: FileDataResponse
 ): RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>() {
 
@@ -26,16 +23,16 @@ class ImagePagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        file.data!!.images?.apply {
-            bindImage(holder.imageView, this[position])
+        file.data?.images?.apply {
+                bindImage(holder.imageView, this[position])
         }
         holder.itemView.setOnClickListener {
-            fragment?.onMoreDetailFileClick()
+            fragment?.onMoreDetailFileClick(bottomSheet!!)
         }
     }
 
     override fun getItemCount(): Int {
-        return file.data!!.images!!.size
+        return file.data?.images?.size?:0
     }
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

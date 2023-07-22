@@ -2,6 +2,8 @@ package com.example.melkist.views.fav
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +13,20 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.FavListAdapter
 import com.example.melkist.databinding.FragFavListBinding
 import com.example.melkist.interfaces.Interaction
+import com.example.melkist.models.Fav
+import com.example.melkist.models.FileDataResponse
 import com.example.melkist.models.FilterFileData
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.FILTER_RESULT_KEY
+import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.MainViewModel
 
 class FavListFrag : Fragment() {
@@ -33,7 +39,7 @@ class FavListFrag : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(FILTER_RESULT_KEY){ _, bundle ->
+        setFragmentResultListener(FILTER_RESULT_KEY) { _, bundle ->
             val filterfileData = bundle.getSerializable(DATA)!! as FilterFileData
             Log.e("TAG", "onCreate: rooms.from = ${filterfileData.rooms.from}")
             Log.e("TAG", "onCreate: rooms.to = ${filterfileData.rooms.to}")
@@ -47,11 +53,11 @@ class FavListFrag : Fragment() {
             Log.e("TAG", "onCreate: size.to = ${filterfileData.size.to}")
             Log.e("TAG", "onCreate: subCatId= ${filterfileData.subCatId}")
             Log.e("TAG", "onCreate: typeId = ${filterfileData.typeId}")
-/*            viewModel.resetLocations()// TODO: check this out uncomment
-            viewModel.getFavFilterFiles(
-                (activity as MainActivity).user.token!!,
-                filterfileData
-            )*/
+            /*            viewModel.resetLocations()// TODO: check this out uncomment
+                        viewModel.getFavFilterFiles(
+                            (activity as MainActivity).user.token!!,
+                            filterfileData
+                        )*/
         }
     }
 
@@ -73,12 +79,27 @@ class FavListFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.rvFavList.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
         (activity as MainActivity).user?.apply {
             viewModel.getFavoritesFile(
                 token!!,
                 id!!
             )
         }
+        activeSearchableFav()
+        viewModel.fileAllData.removeObservers(viewLifecycleOwner)
+    }
+
+    private fun activeSearchableFav() {
+        binding.searchView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     override fun onDestroyView() {
@@ -101,10 +122,42 @@ class FavListFrag : Fragment() {
             )
         }
     }
+
     // This is for hide and unhiding bottom nav bar
     override fun onDetach() {
         super.onDetach()
         interaction = null
+    }
+
+    fun choosingItemAction(fav: Fav) {
+        listenToFileDetailData()
+        (activity as MainActivity).user?.apply {
+            viewModel.getFileInfoById(
+                token!!,
+                fileId = fav.id,
+                id!!
+            )
+        }
+    }
+
+    private fun listenToFileDetailData() {
+        viewModel.fileAllData.observe(viewLifecycleOwner) { response ->
+            when (response.result) {
+                true -> {
+                    findNavController().navigate(R.id.action_navigation_fav_to_fileDetailFrag)
+                    interaction?.changBottomNavViewVisibility(View.GONE)
+                }
+
+                false -> onFalseResultGettingFileData(response)
+                else -> {}
+            }
+        }
+    }
+
+    private fun onFalseResultGettingFileData(response: FileDataResponse) {
+        showDialogWithMessage(
+            requireContext(), concatenateText(response.errors)
+        ) { d, _ -> d.dismiss() }
     }
 
     /******************** binding stuff ***********************/
@@ -155,6 +208,7 @@ class FavListFrag : Fragment() {
             override fun onAnimationEnd(animation: Animation) {
                 binding.searchView.visibility = View.GONE
                 binding.ibtnCloseSearchview.visibility = View.GONE
+                binding.searchView.clearFocus()
             }
 
             override fun onAnimationRepeat(animation: Animation) {}

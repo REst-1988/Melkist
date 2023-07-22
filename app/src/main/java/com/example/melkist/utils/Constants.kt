@@ -4,6 +4,8 @@ enum class ApiStatus { LOADING, ERROR, DONE }
 enum class ItemType {CHOOSE, SEEKER, OWNER, ALL}
 
 const val ONE_MILLION = 1000000
+const val HUNDRED_THOUSAND = 100000
+const val TEN_THOUSAND = 10000
 public const val GalleryPick = 1
 public const val CAMERA_REQUEST = 100
 public const val STORAGE_REQUEST = 200

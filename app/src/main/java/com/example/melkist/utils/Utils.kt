@@ -18,12 +18,12 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.InspectableProperty
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatDelegat
-import androidx.lifecycle.Lifecycle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -77,6 +77,13 @@ fun isOnline(context: Context): Boolean { //TODO: CHECK INTERNET with my note 3 
 fun showToast(context: Context, s: String) {
     Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
     Log.e("Tag", "result: $s")
+}
+
+fun ImageButton.showFav(isFav: Boolean) {
+    if (isFav)
+        setImageResource(R.drawable.baseline_bookmark_added_24)
+    else
+        setImageResource(R.drawable.ic_baseline_bookmark_border_24)
 }
 
 fun internetProblemDialog(
@@ -136,6 +143,11 @@ fun getPropertyPeriodsText(context: Context, period: Period, @StringRes titleUni
         text = String.format("%s %s %s", from, to, context.resources.getString(unit))
     }
     return text
+}
+
+fun handleSystemException(e: Exception){
+    // TODO: handle exception sending to web
+    e.printStackTrace()
 }
 
 fun getPropertyPeriodsPriceText(context: Context, periodPrice: Period): String {

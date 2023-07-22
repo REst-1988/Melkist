@@ -2,72 +2,76 @@ package com.example.melkist.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.melkist.utils.HUNDRED_THOUSAND
 import com.example.melkist.utils.ONE_MILLION
 import com.example.melkist.utils.getPersianYear
 import kotlin.math.pow
 
-const val NO_ELEVATOR_VALUE_FIRST_FLOOR = 1.0/90.0
-const val NO_ELEVATOR_VALUE_SECOND_FLOOR = 1.0/80
-const val NO_ELEVATOR_VALUE_THIRD_FLOOR = 1.0/70
-const val NO_ELEVATOR_VALUE_FORTH_FLOOR = 1.0/60
-const val NO_ELEVATOR_VALUE_FIFTH_AND_MORE_FLOOR = 1.0/50
-const val MORE_THAN_18_UNIT = 1.0/60
-const val ALLAY_LESS_THAN_4_METER = 1.0/40
-const val NORTHERN_UNIT = 1.0/60
-const val SIZE_MORE_THAN_75_METER_WITH_ONE_ROOM = 1.0/80
-const val UNDERNEATH_COMMERCIAL_UNIT = 1.0/60
+const val NO_ELEVATOR_VALUE_FIRST_FLOOR = 1.0 / 90.0
+const val NO_ELEVATOR_VALUE_SECOND_FLOOR = 1.0 / 80
+const val NO_ELEVATOR_VALUE_THIRD_FLOOR = 1.0 / 70
+const val NO_ELEVATOR_VALUE_FORTH_FLOOR = 1.0 / 60
+const val NO_ELEVATOR_VALUE_FIFTH_AND_MORE_FLOOR = 1.0 / 50
+const val MORE_THAN_18_UNIT = 1.0 / 60
+const val ALLAY_LESS_THAN_4_METER = 1.0 / 40
+const val NORTHERN_UNIT = 1.0 / 60
+const val SIZE_MORE_THAN_75_METER_WITH_ONE_ROOM = 1.0 / 80
+const val UNDERNEATH_COMMERCIAL_UNIT = 1.0 / 60
 const val NO_PARKING_VALUE_WITH_AGE_1_TO_7 = 12.5
 const val NO_PARKING_VALUE_WITH_AGE_8_TO_11 = 9
 const val NO_PARKING_VALUE_WITH_AGE_12_AND_MORE = 5
 
-class CalculatorExpertViewModel: ViewModel() {
+class CalculatorExpertViewModel : ViewModel() {
 
     // Expert values //
-    var housePrice = 0.0
-    var housePricePerMeter = 0.0
+    var housePrice = 0L
+    var housePricePerMeter = 0L
 
-    var maxNewPropertyValue = /*0L*/ 80000000L
-    var minNewPropertyValue = /*0L*/ 70000000L
-    var buildYear = /*0*/ 1395
+    var maxNewPropertyValue = 0L
+    var minNewPropertyValue = 0L
+    var buildYear = 0
     var room = ""
-    var roomNo = /*0*/ 3
-    var size = /*0*/ 137
+    var roomNo = 0
+    var size = 0
     var floor = ""
-    var floorNo = /*0*/ 4
-    var units = /*""*/ "qwe"
+    var floorNo = 0
+    var units = ""
     var isMoreThan18units = false
-    var allay = /*""*/ "aa"
+    var allay = ""
     var isAllayWidthMoreThan4 = false
-    var direction = /*""*/ "as"
-    var isNorthern =  false
-    var isUnlock = /*false*/ true
-    var isHasElevator = /*false*/ true
-    var isHasParking = /*false*/ true
+    var direction = ""
+    var isNorthern = false
+    var isUnlock = false
+    var isHasElevator = false
+    var isHasParking = false
     var isHasCommercialUnit = false
 
     // should calculate
-    var isMoreThan75AndHasOneRoom = false
+    private var isMoreThan75AndHasOneRoom = false
 
     fun showItemLogs() {
-        Log.e("TAG", "showItems: \n" +
-                "    var maxNewPropertyValue = $maxNewPropertyValue\n" +
-                "    var minNewPropertyValue = $minNewPropertyValue\n" +
-                "    var age = $buildYear\n" +
-                "    var room = $room\n" +
-                "    var isMoreThan75AndHasOneRoom = $isMoreThan75AndHasOneRoom\n" +
-                "    var size = $size\n" +
-                "    var floor = $floor\n" +
-                "    var floorNo = $floorNo\n" +
-                "    var units = $units" +
-                "    var isMoreThan18units = $isMoreThan18units\n" +
-                "    var allay = $allay\n" +
-                "    var isAllayWidthMoreThan4 = $isAllayWidthMoreThan4\n"  +
-                "    var direction = $direction\n" +
-                "    var isNorthern = $isNorthern\n" +
-                "    var unlock = $isUnlock\n" +
-                "    var elevator = $isHasElevator\n" +
-                "    var parking = $isHasParking\n" +
-                "    var commercial = $isHasCommercialUnit\n", )
+        Log.e(
+            "TAG",
+            "showItems: \n" +
+                    "    var maxNewPropertyValue = $maxNewPropertyValue\n" +
+                    "    var minNewPropertyValue = $minNewPropertyValue\n" +
+                    "    var age = $buildYear\n" +
+                    "    var room = $room\n" +
+                    "    var isMoreThan75AndHasOneRoom = $isMoreThan75AndHasOneRoom\n" +
+                    "    var size = $size\n" +
+                    "    var floor = $floor\n" +
+                    "    var floorNo = $floorNo\n" +
+                    "    var units = $units" +
+                    "    var isMoreThan18units = $isMoreThan18units\n" +
+                    "    var allay = $allay\n" +
+                    "    var isAllayWidthMoreThan4 = $isAllayWidthMoreThan4\n" +
+                    "    var direction = $direction\n" +
+                    "    var isNorthern = $isNorthern\n" +
+                    "    var unlock = $isUnlock\n" +
+                    "    var elevator = $isHasElevator\n" +
+                    "    var parking = $isHasParking\n" +
+                    "    var commercial = $isHasCommercialUnit\n",
+        )
     }
 
     fun isAllFieldsOkay(): Boolean {
@@ -82,44 +86,68 @@ class CalculatorExpertViewModel: ViewModel() {
         return isNewValues && isAge && isSize && isRoom && isFloor && isUnits && isAllay && isDirection
     }
 
-    private fun isNewValues (): Boolean {
+    private fun isNewValues(): Boolean {
         return maxNewPropertyValue != 0L && minNewPropertyValue != 0L && maxNewPropertyValue >= minNewPropertyValue
     }
 
     fun calculatePrice() {
         val normPropertyValue = (maxNewPropertyValue + minNewPropertyValue) / 2
-        Log.e("TAG", "calculatePrice: normPropertyValue $normPropertyValue ", )
+        //Log.e("TAG", "calculatePrice: normPropertyValue $normPropertyValue ", )
         val normPValueInMillion = normPropertyValue / ONE_MILLION
-        Log.e("TAG", "calculatePrice: normPValueInMillion $normPValueInMillion ", )
+        //Log.e("TAG", "calculatePrice: normPValueInMillion $normPValueInMillion ", )
         val isUnlockPrice = normPValueInMillion * (if (isUnlock) 0.95 else 1.0)
-        Log.e("TAG", "calculatePrice: isUnlockPrice $isUnlockPrice ", )
+        //Log.e("TAG", "calculatePrice: isUnlockPrice $isUnlockPrice ", )
         val isUnlockPriceTenth = isUnlockPrice * 10
-        Log.e("TAG", "calculatePrice: isUnlockPriceTenth $isUnlockPriceTenth ", )
+        //Log.e("TAG", "calculatePrice: isUnlockPriceTenth $isUnlockPriceTenth ", )
         val isUnlockPriceTenthLength = isUnlockPriceTenth.toInt().toString().length
-        Log.e("TAG", "calculatePrice: isUnlockPriceTenthLength $isUnlockPriceTenthLength ", )
+        //Log.e("TAG", "calculatePrice: isUnlockPriceTenthLength $isUnlockPriceTenthLength ", )
         val value = 10.0.pow((isUnlockPriceTenthLength - 1).toDouble())
-        Log.e("TAG", "calculatePrice: value $value ", )
+        //Log.e("TAG", "calculatePrice: value $value ", )
         val upperIsUnlockPriceTenth = isUnlockPriceTenth + value
-        Log.e("TAG", "calculatePrice: UpperIsUnlockPriceTenth $upperIsUnlockPriceTenth ", )
+        //Log.e("TAG", "calculatePrice: UpperIsUnlockPriceTenth $upperIsUnlockPriceTenth ", )
         val baseValue = upperIsUnlockPriceTenth * (getPersianYear() - buildYear)
-        Log.e("TAG", "calculatePrice: baseValue $baseValue ", )
+        //Log.e("TAG", "calculatePrice: baseValue $baseValue ", )
         val basePrice = isUnlockPrice - (baseValue / 1000)
-        Log.e("TAG", "calculatePrice: basePrice $basePrice ", )
+        //Log.e("TAG", "calculatePrice: basePrice $basePrice ", )
         val pricePerMeterRaw = basePrice - (basePrice * (
-                    noElevatorSubtraction(floorNo) +
-                            moreThan18UnitsSubtraction() +
-                            allayWidthMoreThan4Subtraction() +
-                            northernUnitSubtraction() +
-                            underneathCommercialUnitSubtraction() +
-                            moreThan75MeterWithOneRoomSubtraction(size, roomNo)
+                noElevatorSubtraction(floorNo) +
+                        moreThan18UnitsSubtraction() +
+                        allayWidthMoreThan4Subtraction() +
+                        northernUnitSubtraction() +
+                        underneathCommercialUnitSubtraction() +
+                        moreThan75MeterWithOneRoomSubtraction(size, roomNo)
                 ))
-        Log.e("TAG", "calculatePrice: pricePerMeterRaw $pricePerMeterRaw ", )
+        //Log.e("TAG", "calculatePrice: noElevatorSubtraction(floorNo)  ${noElevatorSubtraction(floorNo)}", )
+        //Log.e("TAG", "calculatePrice: moreThan18UnitsSubtraction()  ${moreThan18UnitsSubtraction()}", )
+        //Log.e("TAG", "calculatePrice: allayWidthMoreThan4Subtraction()  ${allayWidthMoreThan4Subtraction()}", )
+        //Log.e("TAG", "calculatePrice: northernUnitSubtraction()  ${northernUnitSubtraction()}", )
+        //Log.e("TAG", "calculatePrice: underneathCommercialUnitSubtraction()  ${underneathCommercialUnitSubtraction()}", )
+        //Log.e("TAG", "calculatePrice: moreThan75MeterWithOneRoomSubtraction(size, roomNo)  ${moreThan75MeterWithOneRoomSubtraction(size, roomNo)}", )
+        //Log.e("TAG", "calculatePrice: pricePerMeterRaw $pricePerMeterRaw ", )
         val totalPriceRaw = pricePerMeterRaw * size * ONE_MILLION
-        Log.e("TAG", "calculatePrice: totalPriceRaw $totalPriceRaw ", )
-        housePrice = totalPriceRaw - (basePrice * noParkingSubtraction(getPersianYear() - buildYear))
-        Log.e("TAG", "calculatePrice: housePrice $housePrice ", )
-        housePricePerMeter = housePrice / size
-        Log.e("TAG", "calculatePrice: housePricePerMeter $housePricePerMeter ", )
+        //Log.e("TAG", "calculatePrice: totalPriceRaw $totalPriceRaw ", )
+        val housePrice =
+            (totalPriceRaw - (basePrice * ONE_MILLION * noParkingSubtraction(buildYear))) // TODO: check with Mr Alinejhad if this is write
+        //Log.e("TAG", "calculatePrice: noParkingSubtraction(getPersianYear() - buildYear)  ${noParkingSubtraction(buildYear)}", )
+        //Log.e("TAG", "calculatePrice: housePrice $housePrice ", )
+        val housePricePerMeter = housePrice / size
+        // Log.e("TAG", "calculatePrice: housePricePerMeter $housePricePerMeter ", )
+        Log.e("TAG", "calculatePrice: housePrice / ONE_MILLION ${housePrice / ONE_MILLION} ")
+        Log.e(
+            "TAG",
+            "calculatePrice: (housePrice / ONE_MILLION).toInt() ${(housePrice / ONE_MILLION).toInt()} ",
+        )
+        Log.e(
+            "TAG",
+            "((housePrice / ONE_MILLION).toInt() * ONE_MILLION) ${(((housePrice / ONE_MILLION).toInt()).toLong() * ONE_MILLION)} ",
+        )
+        Log.e(
+            "TAG",
+            "((housePrice / ONE_MILLION).toInt() * ONE_MILLION).toLong() ${(((housePrice / ONE_MILLION).toInt()).toLong() * ONE_MILLION)} ",
+        )
+        this.housePrice = ((housePrice / ONE_MILLION).toInt().toLong() * ONE_MILLION)
+        this.housePricePerMeter =
+            ((housePricePerMeter / HUNDRED_THOUSAND).toInt().toLong() * HUNDRED_THOUSAND)
     }
 
     private fun northernUnitSubtraction(): Double {
@@ -136,7 +164,7 @@ class CalculatorExpertViewModel: ViewModel() {
             0.0
     }
 
-    private fun noElevatorSubtraction (floorNo: Int): Double {
+    private fun noElevatorSubtraction(floorNo: Int): Double {
         var value = 0.0
         if (!isHasElevator)
             value = when {
@@ -166,18 +194,18 @@ class CalculatorExpertViewModel: ViewModel() {
     }
 
     private fun moreThan75MeterWithOneRoomSubtraction(size: Int, roomNo: Int): Double {
-        return if (size < 75 && roomNo <= 1){
+        return if (size < 75 && roomNo <= 1) {
             isMoreThan75AndHasOneRoom = true
             SIZE_MORE_THAN_75_METER_WITH_ONE_ROOM
-        }else {
+        } else {
             isMoreThan75AndHasOneRoom = false
             0.0
         }
     }
 
-    private fun noParkingSubtraction (age: Int): Double {
+    private fun noParkingSubtraction(buildYear: Int): Double {
         return if (!isHasParking)
-            when (getPersianYear() - age){
+            when (getPersianYear() - buildYear) {
                 in 0..7 -> NO_PARKING_VALUE_WITH_AGE_1_TO_7
                 in 8..11 -> NO_PARKING_VALUE_WITH_AGE_8_TO_11.toDouble()
                 else -> NO_PARKING_VALUE_WITH_AGE_12_AND_MORE.toDouble()

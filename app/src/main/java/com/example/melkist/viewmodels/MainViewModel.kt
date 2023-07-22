@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.FavFileResponse
+import com.example.melkist.models.FileData
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.models.FileResponse
 import com.example.melkist.models.FileTypes
@@ -17,6 +18,7 @@ import com.example.melkist.models.MyFilesResponse
 import com.example.melkist.models.PcrsData
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.models.RegionResponseData
+import com.example.melkist.models.User
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.REGION_1
@@ -28,10 +30,14 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
     val status: LiveData<ApiStatus> = _status
     private val _fileAllData = MutableLiveData<FileDataResponse>()
     val fileAllData: LiveData<FileDataResponse> = _fileAllData
+    private val _deleteFileResponse = MutableLiveData<PublicResponseModel>()
+    val deleteFileResponse: LiveData<PublicResponseModel> = _deleteFileResponse
     private val _saveFavResponse = MutableLiveData<PublicResponseModel>()
     val saveFavResponse: LiveData<PublicResponseModel> = _saveFavResponse
-    private val _publicResponse = MutableLiveData<PublicResponseModel> ()
-    val publicResponse: LiveData<PublicResponseModel> = _publicResponse
+    private val _deleteFavResponse = MutableLiveData<PublicResponseModel>()
+    val deleteFavResponse: LiveData<PublicResponseModel> = _deleteFavResponse
+    private val _cooperationResponse = MutableLiveData<PublicResponseModel> ()
+    val cooperationResponse: LiveData<PublicResponseModel> = _cooperationResponse
     private val _favList = MutableLiveData<FavFileResponse>()
     val favList: LiveData<FavFileResponse> = _favList
     private val _inboxResponse = MutableLiveData<InboxOutboxModel>()
@@ -135,6 +141,7 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
     fun getFileInfoById(token: String, fileId: Int, userId: Int) {
         viewModelScope.launch {
             _status.value = ApiStatus.LOADING
+            //resetFileAllData()
             try {
                 _fileAllData.value =
                     Api.retrofitService.getFileInfoById(token, fileId, userId)
@@ -142,7 +149,26 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
                 _status.value = ApiStatus.DONE
             } catch (e: Exception) {
                 e.printStackTrace()
+                resetFileAllData()
                 _status.value = ApiStatus.ERROR
+            }
+        }
+    }
+
+    fun deleteFile(token: String, fileId: Int){
+        viewModelScope.launch{
+            _status.value = ApiStatus.LOADING
+            try {
+                _deleteFileResponse.value =
+                    Api.retrofitService.deleteFile(
+                        token,
+                        fileId
+                    )
+                Log.e("TAG", "deleteFile: ${_deleteFileResponse.value} ", )
+                _status.value = ApiStatus.DONE
+            } catch (e: Exception){
+                _status.value = ApiStatus.ERROR
+                e.printStackTrace()
             }
         }
     }
@@ -157,7 +183,26 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
                         userId,
                         fileId
                     )
-                Log.e("TAG", "getOutbox: ${_saveFavResponse.value.toString()} ", )
+                Log.e("TAG", "saveFavFile: ${_saveFavResponse.value.toString()} ", )
+                _status.value = ApiStatus.DONE
+            } catch (e: Exception){
+                _status.value = ApiStatus.ERROR
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun deleteFavFile (token: String, userId: Int, fileId: Int) {
+        viewModelScope.launch{
+            _status.value = ApiStatus.LOADING
+            try {
+                _deleteFavResponse.value =
+                    Api.retrofitService.deleteFavoriteFiles(
+                        token,
+                        userId,
+                        fileId
+                    )
+                Log.e("TAG", "deleteFavFile: ${_deleteFavResponse.value.toString()} ", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception){
                 _status.value = ApiStatus.ERROR
@@ -174,13 +219,13 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
         viewModelScope.launch{
             _status.value = ApiStatus.LOADING
             try {
-                _publicResponse.value =
+                _cooperationResponse.value =
                     Api.retrofitService.sendCooperationRequest(
                         token,
                         userId,
                         fileId
                     )
-                Log.e("TAG", "getOutbox: ${_publicResponse.value.toString()} ", )
+                Log.e("TAG", "sendCooperationRequest: ${_cooperationResponse.value.toString()} ", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception){
                 _status.value = ApiStatus.ERROR
@@ -194,7 +239,7 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
             _status.value = ApiStatus.LOADING
             try {
                 _favList.value = Api.retrofitService.getFavoriteFiles(token, userId)
-                Log.e("TAG", "getOutbox: ${_favList.value.toString()} ", )
+                Log.e("TAG", "getFavoritesFile: ${_favList.value.toString()} ", )
                 _status.value = ApiStatus.DONE
             } catch (e: Exception){
                 e.printStackTrace()
@@ -209,7 +254,7 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
             try {
                 _inboxResponse.value =
                     Api.retrofitService.inbox(token = token, userId = userId)
-                Log.e("TAG", "getOutbox: ${_inboxResponse.value.toString()} ", )
+                Log.e("TAG", "getInbox: ${_inboxResponse.value.toString()} ", )
                 _status.value = ApiStatus.DONE
             }catch (e: java.lang.Exception){
                 _status.value = ApiStatus.ERROR
@@ -250,5 +295,18 @@ class MainViewModel: ViewModel() {// TODO: every view model should combined to 4
 
     fun resetSaveResponse() {
         _saveFavResponse.value = PublicResponseModel(null, null, listOf())
+    }
+
+    fun resetFileAllData() {
+        _fileAllData.value = FileDataResponse(null, null, null)
+    }
+
+    fun resetDeleteResponse() {
+        _deleteFavResponse.value = PublicResponseModel(null, null, listOf())
+    }
+
+    fun setFileAllDataForMyFiles(user: User, file: FileData) {
+        file.user = user
+        _fileAllData.value = FileDataResponse(result = true, data = file, null)
     }
 }

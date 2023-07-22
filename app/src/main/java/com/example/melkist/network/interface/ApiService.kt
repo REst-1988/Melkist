@@ -135,8 +135,21 @@ interface ApiService {
         @Query("user_id") userId: Int
     ): FileDataResponse
 
+    @POST("dashboard/admin/file/delete")
+    suspend fun deleteFile(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int
+    ): PublicResponseModel
+
     @POST("dashboard/admin/file/saveFavoriteFile")
     suspend fun saveFavoriteFile(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int,
+        @Query("file_id") fileId: Int
+    ): PublicResponseModel
+
+    @POST("dashboard/admin/file/deleteFavoriteFile")
+    suspend fun deleteFavoriteFiles(
         @Header("Authorization") token: String,
         @Query("user_id") userId: Int,
         @Query("file_id") fileId: Int
@@ -147,6 +160,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("user_id") userId: Int
     ): FavFileResponse
+
 
     @POST("dashboard/admin/file/filterFiles")
     suspend fun filterFiles(

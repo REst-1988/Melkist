@@ -5,12 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.LayoutItemListMyFilesBinding
@@ -18,6 +16,7 @@ import com.example.melkist.models.FileData
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
 import com.example.melkist.utils.formatNumber
+import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.views.profile.ProfileMyFilesFrag
 
 class MyFilesAdapter(private val fragment: Fragment) :
@@ -56,8 +55,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
                 txtSubCatSeeker.text = data.typeInfo!!.subCategory!!.title
                 txtCatSeeker.text = data.typeInfo.category!!.title
                 txtRegionSeeker.text = data.locations.getLocationTexts()
-                txtPriceFromSeeker.text = data.price.from.getPriceText()
-                txtPriceToSeeker.text = data.price.to.getPriceText()
+                txtPriceSeeker.text = getPropertyPeriodsPriceText(context, data.price)
             }
         }
 

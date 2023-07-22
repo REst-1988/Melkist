@@ -1,6 +1,7 @@
 package com.example.melkist.views.calculator
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.example.melkist.utils.showAgeDialog
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showInputDialog
 import com.example.melkist.viewmodels.CalculatorExpertViewModel
+import com.example.melkist.views.calculator.dialog.CalculatorResultExpertDialogFrag
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
 
 class CalculatorExpertsFrag : Fragment() {
@@ -57,31 +59,74 @@ class CalculatorExpertsFrag : Fragment() {
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.apply {
+            buildYear = 1395
+            size = 137
+            room = resources.getStringArray(R.array.room_no_list)[3]
+            roomNo = 2
+            floor = resources.getStringArray(R.array.floor_list)[4]
+            floorNo = 4
+            units = resources.getStringArray(R.array.units_list)[4]
+            isMoreThan18units = true
+            allay = resources.getStringArray(R.array.allay_list)[1]
+            isAllayWidthMoreThan4 = true
+            direction = resources.getStringArray(R.array.direction_list)[0]
+            isNorthern = true
+        }
+        binding.apply {
+            etMinPriceChild.setText("80000000")
+            etMaxPriceChild.setText("90000000")
+            switchUnlocked.isChecked = true
+            switchElevator.isChecked = true
+            switchParking.isChecked = true
+            switchCommercial.isChecked = false
+
+            txtChooseAge.text = showAgeText()
+            txtChooseSize.text = showSizeText()
+            txtChooseRoom.text = showRoomText()
+            txtChooseFloor.text = showFloorText()
+            txtChooseUnits.text = showUnitsText()
+            txtChooseAllay.text = showAllayText()
+            txtChooseNorthern.text = showNorthernText()
+        }
+    }
+
     /******************* binding methods **********************/
     fun back() {
         findNavController().popBackStack()
     }
 
     fun onBtnCalculateClick() {
+
         viewModel.showItemLogs()
+
         viewModel.minNewPropertyValue = binding.etMinPriceChild.getRemovedSeparatorValue()
         viewModel.maxNewPropertyValue = binding.etMaxPriceChild.getRemovedSeparatorValue()
         if (viewModel.isAllFieldsOkay()) {
             viewModel.calculatePrice()
+            CalculatorResultExpertDialogFrag(
+                R.style.dialog_theme,
+                viewModel.housePrice,
+                viewModel.housePricePerMeter
+            ).show(
+                childFragmentManager,
+                "expert_calculator"
+            )
         } else {
             showDialogWithMessage(
                 requireContext(),
                 resources.getString(R.string.expert_calculator_dialog_fill_fields)
-            ) {
-                d, _ -> d.dismiss()
+            ) { d, _ ->
+                d.dismiss()
             }
         }
     }
 
-
     fun onUnlockSwitchSelect(check: Boolean) {
         viewModel.isUnlock = check
-        if (check){
+        if (check) {
             binding.txtUnlockedYes.setTextColor(resources.getColor(R.color.normal_text_color))
             binding.txtUnlockedNo.setTextColor(resources.getColor(R.color.sub_item_text_color_fade))
         } else {
@@ -99,6 +144,7 @@ class CalculatorExpertsFrag : Fragment() {
         binding.switchUnlocked.isChecked = false
         onUnlockSwitchSelect(false)
     }
+
     fun onTxtElevatorYesClick() {
         binding.switchElevator.isChecked = true
         onElevatorSwitchSelect(true)
@@ -108,6 +154,7 @@ class CalculatorExpertsFrag : Fragment() {
         binding.switchElevator.isChecked = false
         onElevatorSwitchSelect(false)
     }
+
     fun onTxtParkingYesClick() {
         binding.switchParking.isChecked = true
         onParkingSwitchSelect(true)
@@ -117,6 +164,7 @@ class CalculatorExpertsFrag : Fragment() {
         binding.switchParking.isChecked = false
         onParkingSwitchSelect(false)
     }
+
     fun onTxtCommercialYesClick() {
         binding.switchCommercial.isChecked = true
         onCommercialSwitchSelect(true)
@@ -129,7 +177,7 @@ class CalculatorExpertsFrag : Fragment() {
 
     fun onElevatorSwitchSelect(check: Boolean) {
         viewModel.isHasElevator = check
-        if (check){
+        if (check) {
             binding.txtElevatorYes.setTextColor(resources.getColor(R.color.normal_text_color))
             binding.txtElevatorNo.setTextColor(resources.getColor(R.color.sub_item_text_color_fade))
         } else {
@@ -140,7 +188,7 @@ class CalculatorExpertsFrag : Fragment() {
 
     fun onParkingSwitchSelect(check: Boolean) {
         viewModel.isHasParking = check
-        if (check){
+        if (check) {
             binding.txtParkingYes.setTextColor(resources.getColor(R.color.normal_text_color))
             binding.txtParkingNo.setTextColor(resources.getColor(R.color.sub_item_text_color_fade))
         } else {
@@ -176,8 +224,13 @@ class CalculatorExpertsFrag : Fragment() {
             binding.txtChooseAge.setTextColor(resources.getColor(R.color.sub_item_text_color_fade))
             resources.getString(R.string.enter)
         } else {
+            Log.e("", "showAgeText: ${viewModel.buildYear}")
             binding.txtChooseAge.setTextColor(resources.getColor(R.color.normal_text_color))
-            String.format("%s %s", viewModel.buildYear.toString(), resources.getString(R.string.year))
+            String.format(
+                "%s %s",
+                viewModel.buildYear.toString(),
+                resources.getString(R.string.year)
+            )
         }
     }
 

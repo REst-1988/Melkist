@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polygon
 import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.awaitMapLoad
@@ -71,23 +72,23 @@ class MapP1Frag : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(FILTER_RESULT_KEY) { _, bundle ->
-            val filterfileData = bundle.getSerializable(DATA)!! as FilterFileData
-            Log.e("TAG", "onCreate: rooms.from = ${filterfileData.rooms.from}")
-            Log.e("TAG", "onCreate: rooms.to = ${filterfileData.rooms.to}")
-            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.from}")
-            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.to}")
-            Log.e("TAG", "onCreate: catId = ${filterfileData.catId}")
-            Log.e("TAG", "onCreate: price.from = ${filterfileData.price.from}")
-            Log.e("TAG", "onCreate: price.to = ${filterfileData.price.to}")
-            Log.e("TAG", "onCreate: regionId = ${filterfileData.regionId}")
-            Log.e("TAG", "onCreate: size.from = ${filterfileData.size.from}")
-            Log.e("TAG", "onCreate: size.to = ${filterfileData.size.to}")
-            Log.e("TAG", "onCreate: subCatId= ${filterfileData.subCatId}")
-            Log.e("TAG", "onCreate: typeId = ${filterfileData.typeId}")
+            val filterFileData = bundle.getSerializable(DATA)!! as FilterFileData
+            Log.e("TAG", "onCreate: rooms.from = ${filterFileData.rooms.from}")
+            Log.e("TAG", "onCreate: rooms.to = ${filterFileData.rooms.to}")
+            Log.e("TAG", "onCreate: age.from = ${filterFileData.age.from}")
+            Log.e("TAG", "onCreate: age.from = ${filterFileData.age.to}")
+            Log.e("TAG", "onCreate: catId = ${filterFileData.catId}")
+            Log.e("TAG", "onCreate: price.from = ${filterFileData.price.from}")
+            Log.e("TAG", "onCreate: price.to = ${filterFileData.price.to}")
+            Log.e("TAG", "onCreate: regionId = ${filterFileData.regionId}")
+            Log.e("TAG", "onCreate: size.from = ${filterFileData.size.from}")
+            Log.e("TAG", "onCreate: size.to = ${filterFileData.size.to}")
+            Log.e("TAG", "onCreate: subCatId= ${filterFileData.subCatId}")
+            Log.e("TAG", "onCreate: typeId = ${filterFileData.typeId}")
             viewModel.resetLocations()
             (activity as MainActivity).user?.apply {
                 viewModel.getFilterFiles(
-                    token!!, filterfileData
+                    token!!, filterFileData
                 )
             }
         }
@@ -166,7 +167,6 @@ class MapP1Frag : Fragment() {
         (activity as MainActivity).user?.apply {
             viewModel.getFiles(token!!, cityId!!)
         }
-
     }
 
     override fun onDestroyView() {
@@ -310,9 +310,10 @@ class MapP1Frag : Fragment() {
         return false
     }
 
-    fun onMoreDetailFileClick() {
+    fun onMoreDetailFileClick(bottomSheet: BottomSheetDialogFragment) {
         findNavController().navigate(R.id.action_navigation_map_to_fileDetailFrag)
         interaction?.changBottomNavViewVisibility(View.GONE)
+        bottomSheet.dismiss()
     }
 
     /************************ binding methods *********************************/
@@ -379,5 +380,4 @@ class MapP1Frag : Fragment() {
         findNavController().navigate(R.id.action_navigation_map_to_filterFilesFrag)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
-
 }

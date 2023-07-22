@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="@dimen/normal_padding"
             app:bindLoading="@{viewmodel.status}"
             app:favListData="@{viewmodel.favList.component2()}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

@@ -24,6 +24,7 @@ import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
 import com.example.melkist.utils.showToast
+import com.example.melkist.views.fav.FavListFrag
 
 class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
     ListAdapter<Fav, FavListAdapter.FavListViewHolder>(DiffUtilCallBack), Filterable {
@@ -79,28 +80,20 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
         val fav = getItem(position)
         holder.bind(fav)
         holder.itemView.setOnClickListener{
-            choosingItemAction(fav)
+            (fragment as FavListFrag).choosingItemAction(fav)
         }
-    }
-
-    private fun choosingItemAction(fav: Fav) {
-        //TODO: change this to real choose option
-        showToast(fragment.requireContext(), "item ${fav.id} clicked!")
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
+                Log.e("TAG", "performFiltering: $charString", )
                 mFilteredList = if (charString.isNotEmpty()  && charString != "") {
                     mListRef!!
                         .filter {
                             it.locations[0].region.title.contains(charString) ||
-                                    concatenateText(it.locations[0].region.tags).contains(charString) ||
-                                    it.locations[1].region.title.contains(charString) ||
-                                    concatenateText(it.locations[1].region.tags).contains(charString) ||
-                                    it.locations[2].region.title.contains(charString) ||
-                                    concatenateText(it.locations[2].region.tags).contains(charString)
+                                    concatenateText(it.locations[0].region.tags).contains(charString)
                         }
                 }else{
                     mListRef

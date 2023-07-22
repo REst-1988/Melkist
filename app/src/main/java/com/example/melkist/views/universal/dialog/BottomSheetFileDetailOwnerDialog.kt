@@ -16,6 +16,7 @@ import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 import com.example.melkist.views.map.MapP1Frag
@@ -25,10 +26,13 @@ class BottomSheetFileDetailOwnerDialog(
     private val fragment: MapP1Frag,
     private val fileId: Int
 ) : BottomSheetDialogFragment() {
+
     private lateinit var binding: LayoutBottomSheetFileDetailOwnerBinding
     private val viewModel: MainViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // TODO: check if what happened with any deleted file
         (activity as MainActivity).user?.apply {
             viewModel.getFileInfoById(token!!, fileId, id!!)
         }
@@ -45,21 +49,29 @@ class BottomSheetFileDetailOwnerDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
         initObservers()
     }
 
-    private fun initListeners() {
+    private fun initListeners(response: FileDataResponse) {
         binding.ibtnBookmark.setOnClickListener {
-            (activity as MainActivity).user?.apply {
-                viewModel.saveFavFile(token!!, id!!, fileId)
+            response.data?.isFav?.apply {
+                if (this) {
+                    (activity as MainActivity).user?.apply {
+                        viewModel.deleteFavFile(token!!, id!!, fileId)
+                    }
+                } else {
+                    (activity as MainActivity).user?.apply {
+                        viewModel.saveFavFile(token!!, id!!, fileId)
+                    }
+                }
             }
         }
+
         binding.ibtnShare.setOnClickListener {
             showToast(requireContext(), resources.getString(R.string.next_phase))
         }
         binding.ibtnMore.setOnClickListener {
-            fragment.onMoreDetailFileClick()
+            fragment.onMoreDetailFileClick(this)
         }
     }
 
@@ -73,38 +85,70 @@ class BottomSheetFileDetailOwnerDialog(
         viewModel.fileAllData.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> onOkGettingFileAllDataResponse(response)
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(response.errors)
-                ) { d, _ -> d.dismiss() }
-
-                else -> Log.e("TAG", "initObservers: ${resources.getString(R.string.global_error)}")
+                false -> onFalseResultGettingFileData(response)
+                else -> {}
             }
         }
+
         viewModel.saveFavResponse.observe(viewLifecycleOwner) { response ->
+            Log.e("TAG", "saveFavResponse: test $response")
+            when (response.result) {
+                true -> {
+                    response.message?.let {
+                        showToast(
+                            requireContext(), it
+                        )
+                        binding.ibtnBookmark.setImageResource(R.drawable.baseline_bookmark_added_24)
+                        viewModel.resetSaveResponse()
+                        viewModel.fileAllData.value?.data?.isFav = true
+                    }
+                }
+
+                false -> {
+                    showToast(
+                        requireContext(), concatenateText(response.errors)
+                    )
+                    viewModel.resetSaveResponse()
+                }
+
+                else -> Log.e("TAG", "saveFavResponse: ${resources.getString(R.string.null_value)}")
+            }
+        }
+
+        viewModel.deleteFavResponse.observe(viewLifecycleOwner) { response ->
+            Log.e("TAG", "deleteFavResponse: test $response")
             when (response.result) {
                 true -> {
                     showToast(
-                        requireContext(), resources.getString(R.string.save_accepted)
+                        requireContext(), response.message!!
                     )
-                    this@BottomSheetFileDetailOwnerDialog.dismiss()
+                    binding.ibtnBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
+                    viewModel.resetDeleteResponse()
+                    viewModel.fileAllData.value?.data?.isFav = false
                 }
 
-                false -> showToast(
-                    requireContext(), resources.getString(R.string.global_error)
-                )
+                false -> {
+                    showToast(
+                        requireContext(), concatenateText(response.errors)
+                    )
+                    viewModel.resetDeleteResponse()
+                }
 
-                else -> showToast(
-                    requireContext(), resources.getString(R.string.global_error)
+                else -> Log.e(
+                    "TAG",
+                    "deleteFavResponse: ${resources.getString(R.string.null_value)}"
                 )
             }
         }
     }
 
     private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
-        binding.viewPager.adapter = ImagePagerAdapter(fragment, response)
+        binding.viewPager.adapter = ImagePagerAdapter(fragment, this, response)
         binding.indicator.setViewPager(binding.viewPager)
 
         response.data?.apply {
+            showToast(requireContext(), id.toString())// TODO delete this, this is just for test
+
             user.profilePic?.apply {
                 bindImage(binding.imgUser, this)
             }
@@ -124,6 +168,18 @@ class BottomSheetFileDetailOwnerDialog(
                     resources.getString(R.string.tooman)
                 )
             }
+            isFav?.apply {
+                binding.ibtnBookmark.showFav(isFav!!)
+            }
         }
+
+        initListeners(response)
+    }
+
+    private fun onFalseResultGettingFileData(response: FileDataResponse) {
+        showDialogWithMessage(
+            requireContext(), concatenateText(response.errors)
+        ) { d, _ -> d.dismiss() }
+        this.dismiss()
     }
 }

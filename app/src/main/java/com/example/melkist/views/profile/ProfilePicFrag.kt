@@ -107,7 +107,7 @@ class ProfilePicFrag : Fragment() {
     }
 
     private fun startNextMovement() {
-        if (activity == MainActivity::class.java){
+        if (activity is MainActivity){
             back()
         }else{
             startActivity(Intent(requireActivity(), MainActivity::class.java))

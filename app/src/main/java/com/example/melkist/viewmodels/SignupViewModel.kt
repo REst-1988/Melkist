@@ -133,7 +133,10 @@ class SignupViewModel() : ViewModel() {
                 _pcrsList.value =
                     Api.retrofitService.getGetProvinces().data!!
                 Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _status.value = ApiStatus.DONE
+                _pcrsList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
@@ -148,7 +151,10 @@ class SignupViewModel() : ViewModel() {
                 _pcrsList.value =
                     Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
                 Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _status.value = ApiStatus.DONE
+                _pcrsList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
@@ -163,7 +169,10 @@ class SignupViewModel() : ViewModel() {
                 _pcrsList.value =
                     Api.retrofitService.getRealEstateByCityId(cityId).data!!
                 Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _status.value = ApiStatus.DONE
+                _pcrsList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
@@ -178,7 +187,10 @@ class SignupViewModel() : ViewModel() {
                 _pcrsList.value =
                     Api.retrofitService.getSuperVisorByManagerId(parentId!!).data!!
                 Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _status.value = ApiStatus.DONE
+                _pcrsList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR

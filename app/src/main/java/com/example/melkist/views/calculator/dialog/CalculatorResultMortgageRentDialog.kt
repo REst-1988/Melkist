@@ -22,8 +22,6 @@ class CalculatorResultMortgageRentDialog(
 
     private lateinit var binding: DialogCalculatorResultMortgageRentBinding
     private val viewModel: CalculatorViewModel by activityViewModels()
-    private var newRentValue = 0L
-    private var newMortgageValue = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,6 @@ class CalculatorResultMortgageRentDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        calculation()
         initMortgageRentValue()
         setMinMaxValueOfSeekBar()
         binding.seekbarMortgage.setOnSeekBarChangeListener(object :
@@ -59,21 +56,6 @@ class CalculatorResultMortgageRentDialog(
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-    }
-
-    private fun calculation() {
-        when (tag) {
-            viewModel.CONDITION_RENT_TO_MORTGAGE -> {
-                newMortgageValue =
-                    viewModel.calculateNewMortgageResult(viewModel.newInputAmount).toLong()
-                newRentValue = viewModel.newInputAmount
-            }
-
-            viewModel.CONDITION_MORTGAGE_TO_RENT -> {
-                newMortgageValue = viewModel.newInputAmount
-                newRentValue = viewModel.calculateNewRentResult(viewModel.newInputAmount).toLong()
-            }
-        }
     }
 
     private fun setMortgageNewNumberSeekbar(progress: Int) {
@@ -96,8 +78,8 @@ class CalculatorResultMortgageRentDialog(
 
     private fun setMinMaxValueOfSeekBar() {
         binding.apply {
-            seekbarMortgage.max = (viewmodel!!.getMaxMortgageValue() / HUNDRED_THOUSAND).toInt()
-            seekbarMortgage.progress = (newMortgageValue / HUNDRED_THOUSAND).toInt()
+            seekbarMortgage.max = (viewModel!!.getMaxMortgageValue() / HUNDRED_THOUSAND).toInt()
+            seekbarMortgage.progress = (viewModel.newMortgageValue / HUNDRED_THOUSAND).toInt()
         }
     }
 
@@ -105,14 +87,14 @@ class CalculatorResultMortgageRentDialog(
         binding.apply {
             txtMortgageNumber.text = String.format(
                 "%s %s", formatNumber(
-                    newMortgageValue.toDouble()
+                    viewModel.newMortgageValue.toDouble()
                 ), resources.getString(
                     R.string.tooman
                 )
             )
             txtRentNumber.text = String.format(
                 "%s %s", formatNumber(
-                    newRentValue.toDouble()
+                    viewModel.newRentValue.toDouble()
                 ), resources.getString(
                     R.string.tooman
                 )
@@ -137,9 +119,9 @@ class CalculatorResultMortgageRentDialog(
 
     fun resultText(): String {
         val result = when (tag) {
-            viewModel.CONDITION_RENT_TO_MORTGAGE -> newMortgageValue
+            viewModel.CONDITION_RENT_TO_MORTGAGE -> viewModel.newMortgageValue
 
-            viewModel.CONDITION_MORTGAGE_TO_RENT -> newRentValue
+            viewModel.CONDITION_MORTGAGE_TO_RENT -> viewModel.newRentValue
 
             else -> 0
         }
@@ -172,7 +154,7 @@ class CalculatorResultMortgageRentDialog(
                 copyToClipboard(
                     requireContext(),
                     viewModel.conditionRentMortgage,
-                    newMortgageValue.toString()
+                    viewModel.newMortgageValue.toString()
                 )
             }
 
@@ -180,7 +162,7 @@ class CalculatorResultMortgageRentDialog(
                 copyToClipboard(
                     requireContext(),
                     viewModel.conditionRentMortgage,
-                    newRentValue.toString()
+                    viewModel.newRentValue.toString()
                 )
             }
         }

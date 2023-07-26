@@ -43,7 +43,11 @@ class ChooseCatSubCatViewModel : ViewModel() {
                 Log.e("TAG", "getFileCategoryType: $typeId")
                 _itemOptionList.value =
                     Api.retrofitService.getFileCategories(token, typeId).data!!
-                _status.value = ApiStatus.DONE
+                Log.e("TAG", "_itemOptionList: ${_itemOptionList.value.toString()} ", )
+                _itemOptionList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
@@ -58,7 +62,11 @@ class ChooseCatSubCatViewModel : ViewModel() {
                 Log.e("TAG", "getFileCategoryType: $typeId , $catId")
                 _itemOptionList.value =
                     Api.retrofitService.getFileCategoryTypes(token, typeId, catId = catId!!).data!!
-                _status.value = ApiStatus.DONE
+                Log.e("TAG", "_itemOptionList: ${_itemOptionList.value.toString()} ", )
+                _itemOptionList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR

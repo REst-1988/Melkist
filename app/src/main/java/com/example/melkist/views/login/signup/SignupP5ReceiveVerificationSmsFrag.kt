@@ -108,7 +108,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     }
 
     private fun startNextStep() {
-        if (activity == LoginActivity::class.java)
+        if (activity is LoginActivity)
             findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
         else
             findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag2_to_profileManageTeamFrag)

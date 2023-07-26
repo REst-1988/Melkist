@@ -183,12 +183,11 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:layout_width="@dimen/icons"
-                            android:layout_height="@dimen/icons"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
                             android:layout_marginEnd="@dimen/short_margin"
                             android:background="@drawable/background_badge"
                             android:gravity="center"
-                            android:text="3"
                             android:textColor="@color/normal_text_color" />
 
                         <ImageView
@@ -221,6 +220,44 @@
                             android:gravity="start|center"
                             android:padding="@dimen/text_view_padding"
                             android:text="@string/my_files_title"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_cooperation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onCooperationClick()}"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/baseline_handshake_24" />
+
+                        <TextView
+                            android:id="@+id/txt_cooperation_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/cooperation_title"
                             android:textColor="@color/negative_empty_background_color"
                             android:textSize="@dimen/normal_text_size" />
 

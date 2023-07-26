@@ -92,23 +92,23 @@ class CalculatorExpertViewModel : ViewModel() {
 
     fun calculatePrice() {
         val normPropertyValue = (maxNewPropertyValue + minNewPropertyValue) / 2
-        //Log.e("TAG", "calculatePrice: normPropertyValue $normPropertyValue ", )
+        Log.e("TAG", "calculatePrice: normPropertyValue $normPropertyValue ", )
         val normPValueInMillion = normPropertyValue / ONE_MILLION
-        //Log.e("TAG", "calculatePrice: normPValueInMillion $normPValueInMillion ", )
+        Log.e("TAG", "calculatePrice: normPValueInMillion $normPValueInMillion ", )
         val isUnlockPrice = normPValueInMillion * (if (isUnlock) 0.95 else 1.0)
-        //Log.e("TAG", "calculatePrice: isUnlockPrice $isUnlockPrice ", )
+        Log.e("TAG", "calculatePrice: isUnlockPrice $isUnlockPrice ", )
         val isUnlockPriceTenth = isUnlockPrice * 10
-        //Log.e("TAG", "calculatePrice: isUnlockPriceTenth $isUnlockPriceTenth ", )
+        Log.e("TAG", "calculatePrice: isUnlockPriceTenth $isUnlockPriceTenth ", )
         val isUnlockPriceTenthLength = isUnlockPriceTenth.toInt().toString().length
-        //Log.e("TAG", "calculatePrice: isUnlockPriceTenthLength $isUnlockPriceTenthLength ", )
+        Log.e("TAG", "calculatePrice: isUnlockPriceTenthLength $isUnlockPriceTenthLength ", )
         val value = 10.0.pow((isUnlockPriceTenthLength - 1).toDouble())
-        //Log.e("TAG", "calculatePrice: value $value ", )
+        Log.e("TAG", "calculatePrice: value $value ", )
         val upperIsUnlockPriceTenth = isUnlockPriceTenth + value
-        //Log.e("TAG", "calculatePrice: UpperIsUnlockPriceTenth $upperIsUnlockPriceTenth ", )
+        Log.e("TAG", "calculatePrice: UpperIsUnlockPriceTenth $upperIsUnlockPriceTenth ", )
         val baseValue = upperIsUnlockPriceTenth * (getPersianYear() - buildYear)
-        //Log.e("TAG", "calculatePrice: baseValue $baseValue ", )
+        Log.e("TAG", "calculatePrice: baseValue $baseValue ", )
         val basePrice = isUnlockPrice - (baseValue / 1000)
-        //Log.e("TAG", "calculatePrice: basePrice $basePrice ", )
+        Log.e("TAG", "calculatePrice: basePrice $basePrice ", )
         val pricePerMeterRaw = basePrice - (basePrice * (
                 noElevatorSubtraction(floorNo) +
                         moreThan18UnitsSubtraction() +
@@ -117,19 +117,19 @@ class CalculatorExpertViewModel : ViewModel() {
                         underneathCommercialUnitSubtraction() +
                         moreThan75MeterWithOneRoomSubtraction(size, roomNo)
                 ))
-        //Log.e("TAG", "calculatePrice: noElevatorSubtraction(floorNo)  ${noElevatorSubtraction(floorNo)}", )
-        //Log.e("TAG", "calculatePrice: moreThan18UnitsSubtraction()  ${moreThan18UnitsSubtraction()}", )
-        //Log.e("TAG", "calculatePrice: allayWidthMoreThan4Subtraction()  ${allayWidthMoreThan4Subtraction()}", )
-        //Log.e("TAG", "calculatePrice: northernUnitSubtraction()  ${northernUnitSubtraction()}", )
-        //Log.e("TAG", "calculatePrice: underneathCommercialUnitSubtraction()  ${underneathCommercialUnitSubtraction()}", )
-        //Log.e("TAG", "calculatePrice: moreThan75MeterWithOneRoomSubtraction(size, roomNo)  ${moreThan75MeterWithOneRoomSubtraction(size, roomNo)}", )
-        //Log.e("TAG", "calculatePrice: pricePerMeterRaw $pricePerMeterRaw ", )
+        Log.e("TAG", "calculatePrice: noElevatorSubtraction(floorNo)  ${noElevatorSubtraction(floorNo)}", )
+        Log.e("TAG", "calculatePrice: moreThan18UnitsSubtraction()  ${moreThan18UnitsSubtraction()}", )
+        Log.e("TAG", "calculatePrice: allayWidthMoreThan4Subtraction()  ${allayWidthMoreThan4Subtraction()}", )
+        Log.e("TAG", "calculatePrice: northernUnitSubtraction()  ${northernUnitSubtraction()}", )
+        Log.e("TAG", "calculatePrice: underneathCommercialUnitSubtraction()  ${underneathCommercialUnitSubtraction()}", )
+        Log.e("TAG", "calculatePrice: moreThan75MeterWithOneRoomSubtraction(size, roomNo)  ${moreThan75MeterWithOneRoomSubtraction(size, roomNo)}", )
+        Log.e("TAG", "calculatePrice: pricePerMeterRaw $pricePerMeterRaw ", )
         val totalPriceRaw = pricePerMeterRaw * size * ONE_MILLION
-        //Log.e("TAG", "calculatePrice: totalPriceRaw $totalPriceRaw ", )
+        Log.e("TAG", "calculatePrice: totalPriceRaw $totalPriceRaw ", )
         val housePrice =
             (totalPriceRaw - (basePrice * ONE_MILLION * noParkingSubtraction(buildYear))) // TODO: check with Mr Alinejhad if this is write
-        //Log.e("TAG", "calculatePrice: noParkingSubtraction(getPersianYear() - buildYear)  ${noParkingSubtraction(buildYear)}", )
-        //Log.e("TAG", "calculatePrice: housePrice $housePrice ", )
+        Log.e("TAG", "calculatePrice: noParkingSubtraction(getPersianYear() - buildYear)  ${noParkingSubtraction(buildYear)}", )
+        Log.e("TAG", "calculatePrice: housePrice $housePrice ", )
         val housePricePerMeter = housePrice / size
         // Log.e("TAG", "calculatePrice: housePricePerMeter $housePricePerMeter ", )
         Log.e("TAG", "calculatePrice: housePrice / ONE_MILLION ${housePrice / ONE_MILLION} ")

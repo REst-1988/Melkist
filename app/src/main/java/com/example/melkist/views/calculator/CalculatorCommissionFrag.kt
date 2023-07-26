@@ -9,6 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragCalculatorCommissionBinding
+import com.example.melkist.utils.HUNDRED_MILLION
+import com.example.melkist.utils.HUNDRED_THOUSAND
+import com.example.melkist.utils.HUNDRED_TRILLION
+import com.example.melkist.utils.ONE_MILLION
+import com.example.melkist.utils.ONE_QUADRILLION
+import com.example.melkist.utils.ONE_TRILLION
 import com.example.melkist.utils.addLiveSeparatorListenerWithNumToLetterCallback
 import com.example.melkist.utils.getRemovedSeparatorValue
 import com.example.melkist.viewmodels.CalculatorViewModel
@@ -50,7 +56,7 @@ class CalculatorCommissionFrag : Fragment() {
 
     private fun onCalculateBuySale() {
         viewModel.dealAmount = binding.etBuySaleAmountChild.getRemovedSeparatorValue()
-        if (viewModel.dealAmount in 1000000..1000000000000000){
+        if (viewModel.dealAmount in HUNDRED_MILLION..ONE_QUADRILLION){
             binding.etBuySaleAmount.error = null
             viewModel.calculateBuySaleCommissions()
             CalculatorResultDialogFrag(R.style.dialog_theme).show(
@@ -68,16 +74,16 @@ class CalculatorCommissionFrag : Fragment() {
         var a = false
         var b = false
         var c = false
-        if (viewModel.rentMortgageAmount in 0..100000000000000)
+        if (viewModel.rentMortgageAmount in 0..ONE_TRILLION)
             a = true
         else
             binding.etRentMortgageAmount.error = resources.getString(R.string.write_right_amount)
-        if (viewModel.rentMortgageAmount in 0..10000000000)
+        if (viewModel.rentMortgageAmount in 0..ONE_TRILLION)
             b = true
         else
             binding.etRentRentAmount.error = resources.getString(R.string.write_right_amount)
 
-        if (viewModel.rentMortgageAmount + viewModel.rentMortgageAmount >= 100000)
+        if (viewModel.rentMortgageAmount + viewModel.rentMortgageAmount >= HUNDRED_THOUSAND)
             c = true
         else {
             binding.etRentMortgageAmount.error = resources.getString(R.string.write_right_amount)
@@ -96,7 +102,7 @@ class CalculatorCommissionFrag : Fragment() {
 
     private fun onCalculateMortgage() {
         viewModel.mortgageAmount = binding.etMortgageAmountChild.getRemovedSeparatorValue()
-        if (viewModel.mortgageAmount in 1000000..100000000000000) {
+        if (viewModel.mortgageAmount in ONE_MILLION..HUNDRED_TRILLION) {
             binding.etMortgageAmount.error = null
             viewModel.calculateMortgageCommission()
             CalculatorResultDialogFrag(R.style.dialog_theme).show(

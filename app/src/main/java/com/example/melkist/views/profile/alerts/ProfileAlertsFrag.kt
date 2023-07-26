@@ -34,8 +34,10 @@ class ProfileAlertsFrag : Fragment() {
 
     private fun setupTabLayoutAndPagerLayout() {
         val adapter = ProfileAlertsViewPagerAdapter(requireActivity())
-        adapter.addFragment(ProfileInboxOutboxFrag(INBOX), resources.getString(R.string.in_box))
-        adapter.addFragment(ProfileInboxOutboxFrag(OUTBOX), resources.getString(R.string.out_box))
+        val inbox = ProfileInboxFrag(this)
+        val outbox = ProfileOutboxFrag(this)
+        adapter.addFragment(inbox, resources.getString(R.string.in_box))
+        adapter.addFragment(outbox, resources.getString(R.string.out_box))
         binding.viewPager.adapter = adapter
         binding.viewPager.currentItem = INBOX
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
@@ -45,5 +47,13 @@ class ProfileAlertsFrag : Fragment() {
 
     fun back() {
         findNavController().popBackStack()
+    }
+
+    //////////////// helper methods /////////////////
+
+    fun navigateToDetail() {
+        findNavController().navigate(
+            R.id.action_profileAlertsFrag_to_fileDetailFrag
+        )
     }
 }

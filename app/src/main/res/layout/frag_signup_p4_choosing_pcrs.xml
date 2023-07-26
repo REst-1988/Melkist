@@ -91,12 +91,30 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:listData="@{viewmodel.pcrsList}"/>
 
+        <ImageView
+            android:id="@+id/img_empty_no_data"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            app:bindingCrashEmptyData="@{viewmodel.status}"/>
+
+        <TextView
+            android:id="@+id/txt_empty_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/img_empty_no_data"
+            android:fontFamily="@font/iransans"
+            android:textSize="@dimen/txt_size_h2"
+            android:textColor="@color/sub_item_text_color"
+            app:bindingCrashEmptyData="@{viewmodel.status}"/>
+
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            app:bindProgressLoading="@{viewmodel.status}" />
+            app:bindProgressLoading="@{viewmodel.status}"/>
     </RelativeLayout>
 
 </layout>

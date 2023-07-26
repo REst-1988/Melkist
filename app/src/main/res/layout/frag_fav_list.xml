@@ -95,8 +95,34 @@
             android:paddingStart="@dimen/normal_padding"
             android:paddingEnd="@dimen/normal_padding"
             android:queryHint="@string/search"
+            android:hint="@string/search_in_region"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/img_empty_no_data"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            app:bindingCrashEmptyData="@{viewmodel.status}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt_empty_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/img_empty_no_data"
+            android:fontFamily="@font/iransans"
+            android:textSize="@dimen/txt_size_h2"
+            android:textColor="@color/sub_item_text_color"
+            app:bindingCrashEmptyData="@{viewmodel.status}"
+            app:layout_constraintTop_toBottomOf="@id/img_empty_no_data"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

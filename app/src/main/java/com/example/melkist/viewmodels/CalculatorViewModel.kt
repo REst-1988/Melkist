@@ -8,6 +8,10 @@ class CalculatorViewModel : ViewModel() {
     var oldMortgageAmount = 0L
     var oldRentAmount = 0L
     var newInputAmount = 0L
+
+    var newRentValue = 0L
+    var newMortgageValue = 0L
+
     val CONDITION_MORTGAGE_TO_RENT = "MortgageToRent"
     val CONDITION_RENT_TO_MORTGAGE = "rentToMortgage"
     var conditionRentMortgage = CONDITION_RENT_TO_MORTGAGE
@@ -40,8 +44,23 @@ class CalculatorViewModel : ViewModel() {
     fun calculateNewRentResult(newMortgageValue: Long) =
         (oldRentAmount) + (((oldMortgageAmount) - newMortgageValue) * 1 / 50)
 
-    fun calculateNewMortgageResult(newRentValue: Long) =
+    private fun calculateNewMortgageResult(newRentValue: Long) =
         oldMortgageAmount + ((oldRentAmount - newRentValue) / 1 * 50)
+
+    fun rentMortgageCalculation(tag: String) {
+        when (tag) {
+            CONDITION_RENT_TO_MORTGAGE -> {
+                newMortgageValue =
+                    calculateNewMortgageResult(newInputAmount)
+                newRentValue = newInputAmount
+            }
+
+            CONDITION_MORTGAGE_TO_RENT -> {
+                newMortgageValue = newInputAmount
+                newRentValue = calculateNewRentResult(newInputAmount)
+            }
+        }
+    }
 
     //////////////////////  commission calculations ////////////////////////////////////////////////
     fun calculateBuySaleCommissions() {
@@ -95,5 +114,9 @@ class CalculatorViewModel : ViewModel() {
         buyerQuotaFee = 0L
         buyerQuotaTaxFee = 0L
         buyerQuotaTotalFee = 0L
+    }
+
+    fun isResultsOk(): Boolean {
+        return newMortgageValue > 0 && newRentValue > 0
     }
 }

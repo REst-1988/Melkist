@@ -117,9 +117,9 @@ fun showDialogWith2Actions(
 ) {
     val builder = AlertDialog.Builder(context)
     builder.setMessage(message)
-        .setCancelable(false)
+        .setCancelable(true)
         .setPositiveButton(context.resources.getText(R.string.yes), action)
-        .setNegativeButton(context.resources.getText(R.string.no), action)
+        .setNegativeButton(context.resources.getText(R.string.no), action2)
         .show()
 }
 
@@ -128,6 +128,7 @@ fun getTimeStampForLoadImages(): String {
 }
 
 fun getPropertyPeriodsText(context: Context, period: Period, @StringRes titleUnit: Int, @StringRes unit: Int): String {
+    Log.e("TAG", "getPropertyPeriodsText: ${period.from}  ${period.to}", )
     var text = ""
     if (period.from == null && period.to == null) {
         text = String.format("%s: %s", context.resources.getString(titleUnit), context.resources.getString(R.string.all_items))
@@ -143,6 +144,19 @@ fun getPropertyPeriodsText(context: Context, period: Period, @StringRes titleUni
         text = String.format("%s %s %s", from, to, context.resources.getString(unit))
     }
     return text
+}
+
+fun calculatePricePerMeter(context: Context, price: Period, size: Period): String {
+    val priceTo = (price.to ?: 0).toDouble()
+    val priceFrom = (price.from ?: 0).toDouble()
+    val sizeTo = (size.to ?: 1).toDouble()
+    val sizeFrom = (size.from ?: 1).toDouble()
+    return if (price.to == price.from)
+        formatNumber(priceFrom / sizeFrom)
+    else
+        formatNumber(priceFrom / sizeFrom) + " " + context.resources.getString(R.string.to) + " " + formatNumber(
+            priceTo / sizeTo
+        )
 }
 
 fun handleSystemException(e: Exception){

@@ -18,13 +18,10 @@ import com.example.melkist.adapters.TeamMemberAdapter
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.Fav
 import com.example.melkist.models.FileData
-import com.example.melkist.models.Location
 import com.example.melkist.models.PcrsData
 import com.example.melkist.models.User
 import com.example.melkist.utils.ApiStatus
-import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getTimeStampForLoadImages
-import java.io.File
 
 @BindingAdapter("imgUrl")
 fun bindImage(imageView: ImageView, url: String?) {
@@ -84,13 +81,34 @@ fun bindRecyclerViewCatSubCat(
     adapter.submitList(data)
 }
 
-@BindingAdapter("bindingCrashData")
-fun bindingCrashData (view: View?, status: ApiStatus){
+@BindingAdapter("bindingCrashEmptyData")
+fun bindingCrashEmptyData (view: View?, status: ApiStatus){
     view?.let {
-        when (status) {
-            ApiStatus.ERROR -> it.visibility = View.VISIBLE
-            else -> it.visibility = View.GONE
-        }
+        if (it is ImageView)
+            when (status) {
+                ApiStatus.ERROR -> {
+                    it.visibility = View.VISIBLE
+                    it.setImageResource(R.drawable.ic_broken_image)
+                }
+                ApiStatus.NO_DATA -> {
+                    it.visibility = View.VISIBLE
+                    it.setImageResource(R.drawable.baseline_no_data_24)
+
+                }
+                else -> it.visibility = View.GONE
+            }
+        if (it is TextView)
+            when (status) {
+                ApiStatus.ERROR -> {
+                    it.visibility = View.VISIBLE
+                    it.text = view.context.getString(R.string.error_getting_data)
+                }
+                ApiStatus.NO_DATA -> {
+                    it.visibility = View.VISIBLE
+                    it.text = view.context.getString(R.string.empty_data)
+                }
+                else -> it.visibility = View.GONE
+            }
     }
 }
 
@@ -124,12 +142,64 @@ fun bindVisibility(view: View?, isVisible: Boolean) {
     }
 }
 
-@BindingAdapter(value = ["bindList", "bindStatus"])
-fun bindNoData(view: View?, list: List<Any>?, status: ApiStatus){
+@BindingAdapter("bindNoData")
+fun bindNoData(view: View?, status: ApiStatus){
     view?.let {
-        if (status == ApiStatus.DONE && list.isNullOrEmpty())
-            it.visibility = View.VISIBLE
-        else
-            it.visibility = View.GONE
+        when(status){
+            ApiStatus.ERROR -> {
+                it.visibility = View.VISIBLE
+                it.setBackgroundResource(R.drawable.ic_broken_image)
+            }
+            ApiStatus.NO_DATA -> {
+                it.visibility = View.VISIBLE
+                it.setBackgroundResource(R.drawable.icons8_add_administrator_100)
+            }
+            else -> {
+                it.visibility = View.GONE
+            }
+        }
+        if (it is TextView)
+            when (status) {
+                ApiStatus.ERROR -> {
+                    it.visibility = View.VISIBLE
+                    it.text = view.context.getString(R.string.error_getting_data)
+                }
+                ApiStatus.NO_DATA -> {
+                    it.visibility = View.VISIBLE
+                    it.text = view.context.getString(R.string.add_team_member)
+                }
+                else -> it.visibility = View.GONE
+            }
+    }
+}
+
+@BindingAdapter("bindNoDataFile")
+fun bindNoDataFile(view: View?, status: ApiStatus){
+    view?.let {
+        when(status){
+            ApiStatus.ERROR -> {
+                it.visibility = View.VISIBLE
+                it.setBackgroundResource(R.drawable.ic_broken_image)
+            }
+            ApiStatus.NO_DATA -> {
+                it.visibility = View.VISIBLE
+                it.setBackgroundResource(R.drawable.baseline_upload_file_24)
+            }
+            else -> {
+                it.visibility = View.GONE
+            }
+        }
+        if (it is TextView)
+            when (status) {
+                ApiStatus.ERROR -> {
+                    it.visibility = View.VISIBLE
+                    it.text = view.context.getString(R.string.error_getting_data)
+                }
+                ApiStatus.NO_DATA -> {
+                    it.visibility = View.VISIBLE
+                    it.text = view.context.getString(R.string.add_new_file)
+                }
+                else -> it.visibility = View.GONE
+            }
     }
 }

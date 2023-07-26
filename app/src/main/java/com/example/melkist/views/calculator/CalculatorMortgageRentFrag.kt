@@ -9,8 +9,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragCalculatorMortgageRentBinding
+import com.example.melkist.utils.HUNDRED_BILLION
+import com.example.melkist.utils.ONE_BILLION
+import com.example.melkist.utils.ONE_MILLION
+import com.example.melkist.utils.ONE_TRILLION
+import com.example.melkist.utils.TEN_BILLION
 import com.example.melkist.utils.addLiveSeparatorListenerWithNumToLetterCallback
 import com.example.melkist.utils.getRemovedSeparatorValue
+import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.CalculatorViewModel
 import com.example.melkist.views.calculator.dialog.CalculatorResultMortgageRentDialog
 
@@ -53,6 +60,29 @@ class CalculatorMortgageRentFrag : Fragment() {
         }
     }
 
+    private fun isFieldsOk():Boolean {
+        val a = if (binding.etMortgageChild.getRemovedSeparatorValue() in 0..ONE_TRILLION){
+            true
+        }else{
+            binding.etMortgage.error = resources.getString(R.string.write_right_amount)
+            false
+        }
+        val b = if (binding.etRentChild.getRemovedSeparatorValue() in 0..TEN_BILLION){
+            true
+        }else{
+            binding.etRent.error = resources.getString(R.string.write_right_amount)
+            false
+        }
+        val c = if (binding.etInputChild.getRemovedSeparatorValue() in 0..TEN_BILLION){
+            true
+        }else{
+            binding.etRent.error = resources.getString(R.string.write_right_amount)
+            false
+        }
+        return a && b && c
+    }
+
+
     /**************** binding methods ***************************/
     fun back() {
         findNavController().popBackStack()
@@ -73,17 +103,23 @@ class CalculatorMortgageRentFrag : Fragment() {
     }
 
     fun onBtnCalculateClick() {
-        // TODO: check if new amount not mor than rent or mortgage
-        // TODO: check max input values for old and new amounts
         binding.apply {
             viewModel.oldMortgageAmount = etMortgageChild.getRemovedSeparatorValue()
             viewModel.oldRentAmount = etRentChild.getRemovedSeparatorValue()
             viewModel.newInputAmount = etInputChild.getRemovedSeparatorValue()
-            CalculatorResultMortgageRentDialog(
-                R.style.dialog_theme
-            ).show(
-                childFragmentManager, viewModel.conditionRentMortgage
-            )
+            if(isFieldsOk()){
+                viewModel.rentMortgageCalculation(viewModel.conditionRentMortgage)
+                if (viewModel.isResultsOk())
+                    CalculatorResultMortgageRentDialog(
+                        R.style.dialog_theme
+                    ).show(
+                        childFragmentManager, viewModel.conditionRentMortgage
+                    )
+                else
+                    showDialogWithMessage(requireContext(), resources.getString(R.string.negative_values)) {
+                        d,_ -> d.dismiss()
+                    }
+            }
         }
     }
 }

@@ -24,7 +24,9 @@ data class FileData(
     @Json var user: User,
     @Json val city: City,
     @Json(name = "filetypefilecategoryfilecategorytype") val typeInfo: TypeInfo?,
-    @Json var isFav: Boolean?
+    @Json var isFav: Boolean?,
+    @Json val status: Int?,
+    @Json val mobileNumber: String?
 )
 
 data class Location(

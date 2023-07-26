@@ -86,7 +86,10 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
     }
 
     private fun startNextFragAndResetResponse() {
-        if (activity == LoginActivity::class.java)
+        Log.e("TAG", "startNextFragAndResetResponse 1: ${activity is LoginActivity}", )
+        Log.e("TAG", "startNextFragAndResetResponse 2: ${activity == LoginActivity::class}", )
+        Log.e("TAG", "startNextFragAndResetResponse 3: ${activity == LoginActivity::class.java}", )
+        if (activity is LoginActivity)
             findNavController()
                 .navigate(
                     R.id.action_forgetPassP1EnterNcodePhoneFrag_to_forgetPassP2ReceiveVerificationSmsFrag

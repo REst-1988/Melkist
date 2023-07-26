@@ -10,4 +10,7 @@
         android:toXScale="120%"
         android:fromYScale="100%"
         android:toYScale="120%"/>
+
+    <translate
+        android:toYDelta="-40%"/>
 </set>

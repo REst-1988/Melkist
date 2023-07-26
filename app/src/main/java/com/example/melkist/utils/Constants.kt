@@ -1,11 +1,20 @@
 package com.example.melkist.utils
 
-enum class ApiStatus { LOADING, ERROR, DONE }
+enum class ApiStatus { LOADING, ERROR, NO_DATA ,DONE }
 enum class ItemType {CHOOSE, SEEKER, OWNER, ALL}
 
-const val ONE_MILLION = 1000000
-const val HUNDRED_THOUSAND = 100000
-const val TEN_THOUSAND = 10000
+const val ONE_QUADRILLION = 1_000_000_000_000_000
+const val HUNDRED_TRILLION = 100_000_000_000_000
+const val TEN_TRILLION = 10_000_000_000_000
+const val ONE_TRILLION = 1_000_000_000_000
+const val HUNDRED_BILLION = 100_000_000_000
+const val TEN_BILLION = 10_000_000_000
+const val ONE_BILLION = 1_000_000_000
+const val HUNDRED_MILLION = 100_000_000
+const val TEN_MILLION = 10_000_000
+const val ONE_MILLION = 1_000_000
+const val HUNDRED_THOUSAND = 100_000
+const val TEN_THOUSAND = 10_000
 public const val GalleryPick = 1
 public const val CAMERA_REQUEST = 100
 public const val STORAGE_REQUEST = 200
@@ -54,3 +63,9 @@ const val REGION_3 = 105
 
 const val INBOX = 0
 const val OUTBOX = 1
+const val RECEIVED = 0
+const val SENT = 1
+
+const val STATUS_APPROVED = 1
+const val STATUS_DENY = 0
+const val STATUS_NO_ACTION = -1

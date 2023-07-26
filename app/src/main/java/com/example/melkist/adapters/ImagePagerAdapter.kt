@@ -14,25 +14,28 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class ImagePagerAdapter(
     private val fragment: MapP1Frag?,
     private val bottomSheet: BottomSheetDialogFragment?,
-    private val file: FileDataResponse
-): RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>() {
+    private val images: List<String>?
+) : RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_image_view_pager, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.layout_image_view_pager, parent, false)
         return ImageViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        file.data?.images?.apply {
-                bindImage(holder.imageView, this[position])
+        images?.apply {
+            bindImage(holder.imageView, this[position])
         }
         holder.itemView.setOnClickListener {
-            fragment?.onMoreDetailFileClick(bottomSheet!!)
+            bottomSheet?.apply {
+                fragment?.onMoreDetailFileClick(this)
+            }
         }
     }
 
     override fun getItemCount(): Int {
-        return file.data?.images?.size?:0
+        return images?.size ?: 0
     }
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

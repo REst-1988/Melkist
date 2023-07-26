@@ -316,6 +316,7 @@
 
                     </RelativeLayout>
 
+<!--
                     <CheckBox
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -326,6 +327,7 @@
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
                         app:setVisibility="@{fragment.isShowIsShowExactAddress()}" />
+-->
 
                     <TextView
                         android:id="@+id/spacer_1"

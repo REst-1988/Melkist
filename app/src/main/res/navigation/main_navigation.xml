@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_navigation_profle_to_profilePicFrag2"
             app:destination="@id/profilePicFrag2" />
+        <action
+            android:id="@+id/action_navigation_profle_to_profileCooperationFrag"
+            app:destination="@id/profileCooperationFrag" />
     </fragment>
 
     <fragment
@@ -110,10 +113,13 @@
         <action
             android:id="@+id/action_profileAlertsFrag_to_profileInboxOutboxFrag"
             app:destination="@id/profileInboxOutboxFrag" />
+        <action
+            android:id="@+id/action_profileAlertsFrag_to_fileDetailFrag"
+            app:destination="@id/fileDetailFrag" />
     </fragment>
     <fragment
         android:id="@+id/profileInboxOutboxFrag"
-        android:name="com.example.melkist.views.profile.alerts.ProfileInboxOutboxFrag"
+        android:name="com.example.melkist.views.profile.alerts.ProfileInboxFrag"
         android:label="frag_profile_in_box_out_box"
         tools:layout="@layout/frag_profile_in_box_out_box" />
     <fragment
@@ -249,4 +255,17 @@
         android:name="com.example.melkist.views.calculator.CalculatorExpertsFrag"
         android:label="fragment_calculator_experts"
         tools:layout="@layout/fragment_calculator_experts" />
+    <fragment
+        android:id="@+id/profileCooperationFrag"
+        android:name="com.example.melkist.views.profile.cooperations.ProfileCooperationFrag"
+        android:label="frag_profile_cooperations"
+        tools:layout="@layout/frag_profile_cooperations" >
+        <action
+            android:id="@+id/action_profileCooperationFrag_to_profileSendReceivedCooperationFrag"
+            app:destination="@id/profileSendReceivedCooperationFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileSendReceivedCooperationFrag"
+        android:name="com.example.melkist.views.profile.cooperations.ProfileSendCooperationFrag"
+        android:label="ProfileSendReceivedCooperationFrag" />
 </navigation>

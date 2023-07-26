@@ -1,37 +1,37 @@
 package com.example.melkist
 
-import android.content.ContentValues
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.asLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.melkist.data.Ds
-import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivityMainBinding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.User
-import com.example.melkist.views.fav.FavListFrag
-import com.example.melkist.views.map.MapP1Frag
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
+import com.example.melkist.utils.showToast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), Interaction{
+class MainActivity : AppCompatActivity(), Interaction {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navView: BottomNavigationView
     var user: User? = null
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         navView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -52,6 +52,17 @@ class MainActivity : AppCompatActivity(), Interaction{
                 )
             )
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher =
+                registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                    if (!it)
+                        showToast(
+                            this,
+                            resources.getString(R.string.permission_no_garent)
+                        )
+                }
+        }
     }
 
     override fun onResume() {
@@ -62,7 +73,34 @@ class MainActivity : AppCompatActivity(), Interaction{
                 user = it
             }
         }
+        checkNotificationPermission()
+
     }
+
+    //////////// helper methods ///////////
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                //showPermissionDialog()
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    /*    private fun showPermissionDialog() {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(
+                resources.getString(R.string.request_notification_permission))
+                .setCancelable(true)
+                .setPositiveButton(resources.getText(R.string.allow), action1)
+                .setNegativeButton(resources.getText(R.string.not_allow), action2)
+                .show()
+            )
+        }*/
 
     override fun changBottomNavViewVisibility(visibility: Int) {
         navView.visibility = visibility

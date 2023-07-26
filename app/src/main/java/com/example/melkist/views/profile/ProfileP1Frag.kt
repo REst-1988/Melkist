@@ -118,6 +118,12 @@ class ProfileP1Frag : Fragment() {
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
+    fun onCooperationClick() {
+        findNavController()
+            .navigate(R.id.action_navigation_profle_to_profileCooperationFrag)
+        interaction?.changBottomNavViewVisibility(View.GONE)
+    }
+
     fun onManageTeamClick() {
         findNavController().navigate(
             R.id.action_navigation_profle_to_profileManageTeamFrag

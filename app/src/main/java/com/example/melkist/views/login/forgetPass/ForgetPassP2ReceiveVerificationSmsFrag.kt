@@ -85,7 +85,7 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
     }
 
     private fun startNextStep() {
-        if (activity == LoginActivity::class.java)
+        if (activity is LoginActivity)
             findNavController()
                 .navigate(
                     R.id.action_forgetPassP2ReceiveVerificationSmsFrag_to_forgetPassP3ChangePassFrag

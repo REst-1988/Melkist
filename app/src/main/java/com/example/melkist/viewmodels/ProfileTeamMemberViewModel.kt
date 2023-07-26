@@ -28,8 +28,11 @@ class ProfileTeamMemberViewModel : ViewModel() {
                 _teamMembers.value = Api.retrofitService.getAllUserSubset(
                     token, userId, roleId
                 )
-                _status.value = ApiStatus.DONE
-                Log.e("TAG", "getTeamMembers: ${teamMembers.value?.data}", )
+                Log.e("TAG", "_teamMembers: ${_teamMembers.value.toString()} ", )
+                _teamMembers.value?.apply {
+                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             }catch (e: Exception){
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR

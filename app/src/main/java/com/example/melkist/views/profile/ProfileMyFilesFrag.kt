@@ -1,5 +1,6 @@
 package com.example.melkist.views.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.melkist.AddActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.MyFilesAdapter
@@ -65,6 +67,8 @@ class ProfileMyFilesFrag : Fragment() {
     }
 
     fun onAddFileClick() {
-        // TODO
+        startActivity(
+            Intent(requireActivity(), AddActivity::class.java)
+        )
     }
 }

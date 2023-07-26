@@ -15,6 +15,7 @@ import com.example.melkist.databinding.FragFileDetailBinding
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
 import com.example.melkist.models.Period
+import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPropertyPeriodsPriceText
@@ -59,18 +60,16 @@ class FileDetailFrag : Fragment() {
     }
 
     private fun initRequireViews() {
-        Log.e(
-            "initRequireViews",
-            "initRequireViews: initRequireViews ${getTimeStampForLoadImages()} ",
-        )
         viewModel.fileAllData.value?.data?.apply {
             typeInfo?.fileType?.let { idTitle ->
                 if (idTitle.id == FileTypes().owner.id) {
                     binding.viewPager.visibility = View.VISIBLE
                     binding.indicator.visibility = View.VISIBLE
-                    binding.viewPager.adapter =
-                        ImagePagerAdapter(null, null, viewModel.fileAllData.value!!)
-                    binding.indicator.setViewPager(binding.viewPager)
+                    viewModel.fileAllData.value?.data?.images?.apply {
+                        binding.viewPager.adapter =
+                            ImagePagerAdapter(null, null, this)
+                        binding.indicator.setViewPager(binding.viewPager)
+                    }
                 } else {
                     binding.viewPager.visibility = View.GONE
                     binding.indicator.visibility = View.GONE
@@ -78,11 +77,15 @@ class FileDetailFrag : Fragment() {
             }
             (activity as MainActivity).user?.let { user ->
                 if (this.user.id == user.id) {
-                    binding.layoutBtnCooperationRequest.visibility = View.GONE
-                    binding.layoutBtnDeleteFile.visibility = View.VISIBLE
+                    binding.apply {
+                        layoutBtnCooperationRequest.visibility = View.GONE
+                        layoutBtnDeleteFile.visibility = View.VISIBLE
+                    }
                 } else {
-                    binding.layoutBtnCooperationRequest.visibility = View.VISIBLE
-                    binding.layoutBtnDeleteFile.visibility = View.GONE
+                    binding.apply {
+                        layoutBtnCooperationRequest.visibility = View.VISIBLE
+                        layoutBtnDeleteFile.visibility = View.GONE
+                    }
                 }
             }
             isFav?.apply {
@@ -194,7 +197,10 @@ class FileDetailFrag : Fragment() {
 
         viewModel.deleteFileResponse.observe(viewLifecycleOwner) { response ->
             when (response.result) {
-                true -> back()
+                true -> {
+                    viewModel.resetDeleteFileResponse()
+                    back()
+                }
                 false -> showToast(requireContext(), concatenateText(response.errors))
                 null -> Log.e(
                     "TAG",
@@ -222,19 +228,6 @@ class FileDetailFrag : Fragment() {
         return text
     }
 
-    private fun calculatePricePerMeter(price: Period, size: Period): String {
-        val priceTo = (price.to ?: 0).toDouble()
-        val priceFrom = (price.from ?: 0).toDouble()
-        val sizeTo = (size.to ?: 1).toDouble()
-        val sizeFrom = (size.from ?: 1).toDouble()
-        return if (price.to == price.from)
-            formatNumber(priceFrom / sizeFrom)
-        else
-            formatNumber(priceFrom / sizeFrom) + " " + resources.getString(R.string.to) + " " + formatNumber(
-                priceTo / sizeTo
-            )
-    }
-
     /************** binding methods ************************/
     fun back() {
         findNavController().popBackStack()
@@ -250,6 +243,18 @@ class FileDetailFrag : Fragment() {
                 )
             }
         }
+    }
+
+    fun onApproveCooperation() {
+        // TODO
+    }
+
+    fun denyCooperation() {
+        // TODO
+    }
+
+    fun onCall() {
+        // TODO
     }
 
     fun funOnDeleteFileClick() {
@@ -373,6 +378,7 @@ class FileDetailFrag : Fragment() {
             String.format(
                 "%s %s",
                 calculatePricePerMeter(
+                    requireContext(),
                     viewModel.fileAllData.value!!.data!!.price,
                     viewModel.fileAllData.value!!.data!!.size
                 ),

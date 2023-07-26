@@ -81,7 +81,7 @@ class SignupP1SignupFormFrag : Fragment() {
 
     fun cancel() {
         viewModel.resetSignupFieldsByChoosingMainField()
-        if (activity == LoginActivity::class.java)
+        if (activity is LoginActivity)
             findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_loginForm)
         else
             findNavController().navigate(R.id.action_signupP1SignupFormFrag2_to_profileManageTeamFrag)

@@ -143,8 +143,11 @@ class BottomSheetFileDetailOwnerDialog(
     }
 
     private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
-        binding.viewPager.adapter = ImagePagerAdapter(fragment, this, response)
-        binding.indicator.setViewPager(binding.viewPager)
+        response.data?.images?.apply {
+            binding.viewPager.adapter =
+                ImagePagerAdapter(fragment, this@BottomSheetFileDetailOwnerDialog, this)
+            binding.indicator.setViewPager(binding.viewPager)
+        }
 
         response.data?.apply {
             showToast(requireContext(), id.toString())// TODO delete this, this is just for test

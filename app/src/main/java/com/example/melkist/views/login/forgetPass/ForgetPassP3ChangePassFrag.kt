@@ -72,7 +72,7 @@ class ForgetPassP3ChangePassFrag : Fragment() {
     }
 
     private fun readyForStartNextSetion() {
-        if (activity == LoginActivity::class.java)
+        if (activity is LoginActivity)
             findNavController()
                 .navigate(
                     R.id.action_forgetPassP3ChangePassFrag_to_LoginForm

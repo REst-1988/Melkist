@@ -61,17 +61,7 @@
         android:layoutDirection="rtl"
         app:layout_anchor="@+id/app_bar"
         app:layout_anchorGravity="bottom"
-        app:tabTextAppearance="@style/tab_text">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.tabs.TabLayout>
+        app:tabTextAppearance="@style/tab_text"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

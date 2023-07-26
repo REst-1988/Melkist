@@ -138,7 +138,7 @@ interface ApiService {
     @POST("dashboard/admin/file/delete")
     suspend fun deleteFile(
         @Header("Authorization") token: String,
-        @Query("id") id: Int
+        @Query("id") fileId: Int
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/saveFavoriteFile")
@@ -168,16 +168,18 @@ interface ApiService {
         @Body filerFileData: FilterFileData
     ): LocationResponse
 
-    @POST("dashboard/admin/file/inboxRequest")
-    suspend fun inbox(
+    @POST("dashboard/admin/file/inboxRequestByStatus")
+    suspend fun inboxByStatus(
         @Header("Authorization") token: String,
-        @Query("user_id") userId: Int
+        @Query("user_id") userId: Int,
+        @Query("status") status: Int?
     ): InboxOutboxModel
 
-    @POST("dashboard/admin/file/outboxRequest")
-    suspend fun outbox(
+    @POST("dashboard/admin/file/outboxRequestByStatus")
+    suspend fun outboxByStatus(
         @Header("Authorization") token: String,
-        @Query("user_id") userId: Int
+        @Query("user_id") userId: Int,
+        @Query("status") status: Int?
     ): InboxOutboxModel
 
     @POST("dashboard/admin/file/sendCooperationRequest")
@@ -200,46 +202,54 @@ interface ApiService {
         @Query("user_id") userId: Int
     ): MyFilesResponse
 
-/*    @GET("users")
-    @Headers(
-        "Accept: application/vnd.github+json",
-        "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-        "X-GitHub-Api-Version: 2022-11-28")
-    suspend fun getUserList(): List<GitUser>
+    @POST("dashboard/admin/file/setAlertStatus")
+    suspend fun setAlertStatus(
+        @Header("Authorization") token: String,
+        @Query("filerequest_id") fileRequestId: Int,
+        @Query("user_id") userId: Int,
+        @Query("status") status: Int
+    ): PublicResponseModel?
 
-    @GET("search/users")
-    @Headers(
-        "Accept: application/vnd.github+json",
-        "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-        "X-GitHub-Api-Version: 2022-11-28")
-    suspend fun getSearchUsers(
-        @Query("q") query: String
-    ): SearchModel
+    /*    @GET("users")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
+            "X-GitHub-Api-Version: 2022-11-28")
+        suspend fun getUserList(): List<GitUser>
 
-    @GET("users/{username}")
-    @Headers(
-        "Accept: application/vnd.github+json",
-        "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-        "X-GitHub-Api-Version: 2022-11-28")
-    suspend fun getUser(
-        @Path(value = "username") username: String
-    ): UserModel
+        @GET("search/users")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
+            "X-GitHub-Api-Version: 2022-11-28")
+        suspend fun getSearchUsers(
+            @Query("q") query: String
+        ): SearchModel
 
-    @GET("users/{username}/followers")
-    @Headers(
-        "Accept: application/vnd.github+json",
-        "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-        "X-GitHub-Api-Version: 2022-11-28")
-    suspend fun getFollower(
-        @Path(value = "username") username: String
-    ): List<GitUser>
+        @GET("users/{username}")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
+            "X-GitHub-Api-Version: 2022-11-28")
+        suspend fun getUser(
+            @Path(value = "username") username: String
+        ): UserModel
 
-    @GET("users/{username}/following")
-    @Headers(
-        "Accept: application/vnd.github+json",
-        "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-        "X-GitHub-Api-Version: 2022-11-28")
-    suspend fun getFollowing(
-        @Path(value = "username") username: String
-    ): List<GitUser>*/
+        @GET("users/{username}/followers")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
+            "X-GitHub-Api-Version: 2022-11-28")
+        suspend fun getFollower(
+            @Path(value = "username") username: String
+        ): List<GitUser>
+
+        @GET("users/{username}/following")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
+            "X-GitHub-Api-Version: 2022-11-28")
+        suspend fun getFollowing(
+            @Path(value = "username") username: String
+        ): List<GitUser>*/
 }

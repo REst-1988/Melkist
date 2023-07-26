@@ -179,6 +179,7 @@
 
     <string name="cooperation_request_inbox">درخواست همکاری دریافت شده</string>
     <string name="applicant_inbox">از %s %s مشاورین املاک %s</string>
+    <string name="applicant">%s %s مشاورین املاک %s</string>
     <string name="cooperation_request_outbox">درخواست همکاری ارسال شده</string>
     <string name="applicant_outbox">به %s %s مشاورین املاک %s</string>
     <string name="region_outbox_outbox">جهت ملک %s</string>
@@ -235,7 +236,7 @@
     <string name="notifications_title">مدیریت اعلان ها</string>
     <string name="according_to_the_system_settings">متناسب با تنظیمات سیستم</string>
     <string name="show_all">نمایش همه</string>
-    <string name="invalid_permission">در حال حاضر سطح کاربری شما مجاز به انجام این عملیات مجاز نمی باشد</string>
+    <string name="invalid_permission">در حال حاضر سطح کاربری شما مجاز به انجام این عملیات نمی باشد</string>
     <string name="add_team_member">عضو جدید اضافه کنید</string>
     <string name="profile_info">اطلاعات حساب کاربری</string>
     <string name="role">سمت: %s</string>
@@ -277,6 +278,25 @@
     <string name="create_at_file">ایجاد شده در: </string>
     <string name="type_title">نوع</string>
     <string name="type_value">%s, %s (%s)</string>
+    <string name="cooperation_title">همکاری</string>
+    <string name="recieved">دریافت شده</string>
+    <string name="sent">ارسال شده</string>
+    <string name="status_true">تایید شده</string>
+    <string name="cooperation_with">همکاری با</string>
+    <string name="negative_values">مقدار رهن یا اجاره بیش از حد تبدیل می یاشد</string>
+    <string name="empty_data">داده ای جهت نمایش وجود ندارد!</string>
+    <string name="create_at_no_place_holder">تاریخ عضویت</string>
+    <string name="empty"></string>
+    <string name="more_detail">اطلاعات بیشتر</string>
+    <string name="decline">رد شده</string>
+    <string name="request_notification_permission">ملکیست برای دریافت نوتیفیکیشن مربوط به درخواست های همکاری، هشدار ها، سیستم هوش مصنوعی نیازمند دریافت اجازه دسترسی به نوتیفیکیشن دارد</string>
+    <string name="allow">اجازه می دهم</string>
+    <string name="not_allow">اجازه نمی دهم</string>
+    <string name="permission_no_garent">اجازه دسترسی داده نشد!</string>
+    <string name="search_in_region">جستجو در محله</string>
+    <string name="deny">رد درخواست</string>
+    <string name="approve">قبول درخواست</string>
+    <string name="call_advertiser">تماس با آگهی دهنده</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->

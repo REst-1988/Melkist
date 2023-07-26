@@ -1,5 +1,6 @@
 package com.example.melkist.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,7 +30,11 @@ class ChooseCrViewModel: ViewModel() {
             try {
                 _regionList.value =
                     Api.retrofitService.getRegionsByCity(cityId).data!!
-                _status.value = ApiStatus.DONE
+                Log.e("TAG", "_regionList: ${_regionList.value.toString()} ", )
+                _regionList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
@@ -43,7 +48,11 @@ class ChooseCrViewModel: ViewModel() {
             try {
                 _pcrsList.value =
                     Api.retrofitService.getGetProvinces().data!!
-                _status.value = ApiStatus.DONE
+                Log.e("TAG", "_pcrsList: ${_pcrsList.value.toString()} ", )
+                _pcrsList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR
@@ -57,7 +66,11 @@ class ChooseCrViewModel: ViewModel() {
             try {
                 _pcrsList.value =
                     Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
-                _status.value = ApiStatus.DONE
+                Log.e("TAG", "_pcrsList: ${_pcrsList.value.toString()} ", )
+                _pcrsList.value?.apply {
+                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                    else _status.value = ApiStatus.DONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _status.value = ApiStatus.ERROR

@@ -66,6 +66,7 @@ class ProfileOptionsFrag : Fragment() {
         )
     }
 
+/*
     fun onNotificationClick() {
         // TODO
     }
@@ -73,6 +74,7 @@ class ProfileOptionsFrag : Fragment() {
     fun showNotificationText(theme: Int): String {
         return "" //TODO()
     }
+*/
 
     fun onThemeClick() {
         val bottomFrag = BottomSheetUniversalList(

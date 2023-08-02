@@ -20,7 +20,6 @@ class InboxOutboxAdapter(
     private val fragOutbox: ProfileOutboxFrag?,
     private val inboxOutbox: Int
 ) : ListAdapter<Status, InboxOutboxAdapter.ViewHolder>(DiffUtilCallBack) {
-
     // Diff call back does not used in this project yet but it would be handy for future changes
     companion object DiffUtilCallBack : DiffUtil.ItemCallback<Status>() {
         override fun areItemsTheSame(oldItem: Status, newItem: Status): Boolean {
@@ -49,7 +48,8 @@ class InboxOutboxAdapter(
 
         private fun bindInbox(data: Status) {
             data.file?.images?.apply {
-                bindImage(inboxOutboxBinding.imgMain, this[0])
+                if (this.isNotEmpty()) bindImage(inboxOutboxBinding.imgMain, this[0])
+                else inboxOutboxBinding.imgMain.setImageDrawable(null)
             }
             data.targetUser?.profilePic?.apply {
                 bindImage(inboxOutboxBinding.imgProfile, this)
@@ -72,6 +72,7 @@ class InboxOutboxAdapter(
         private fun bindOutbox(data: Status) {
             data.file?.images?.apply {
                 if (this.isNotEmpty()) bindImage(inboxOutboxBinding.imgMain, this[0])
+                else inboxOutboxBinding.imgMain.setImageDrawable(null)
             }
             data.targetUser?.profilePic?.apply {
                 bindImage(inboxOutboxBinding.imgProfile, this)
@@ -107,10 +108,8 @@ class InboxOutboxAdapter(
             if (inboxOutbox == INBOX) {
                 fragInbox?.showInboxDialog(item)
             } else {
-                fragOutbox?.showOutboxDialog(item, currentList.filter { it.requestId == item.requestId })
+                fragOutbox?.showOutboxDialog(item)
             }
         }
     }
-
-
 }

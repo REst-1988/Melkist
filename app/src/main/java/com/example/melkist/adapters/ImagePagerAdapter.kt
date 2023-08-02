@@ -25,7 +25,10 @@ class ImagePagerAdapter(
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         images?.apply {
-            bindImage(holder.imageView, this[position])
+            if (get(position).isNotEmpty())
+                bindImage(holder.imageView, this[position])
+            else
+                holder.imageView.setImageDrawable(null)
         }
         holder.itemView.setOnClickListener {
             bottomSheet?.apply {

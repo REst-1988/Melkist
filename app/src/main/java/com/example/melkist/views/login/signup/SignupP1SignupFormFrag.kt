@@ -91,6 +91,7 @@ class SignupP1SignupFormFrag : Fragment() {
         if (isAllFieldIsOkay()) {
             setAllFields()
             viewModel.checkSignupData(
+                requireActivity(),
                 viewModel.firstName,
                 viewModel.lastName,
                 viewModel.realEstateNameForManager,

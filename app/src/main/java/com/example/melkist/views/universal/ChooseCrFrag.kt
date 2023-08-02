@@ -105,18 +105,20 @@ class ChooseCrFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("TAG", "onResume: $reqSource ", )
+        Log.e("TAG", "onResume: $reqSource ")
         when (reqSource) {
             PROVINCE -> {
-                viewModel.getProvinces()
+                viewModel.getProvinces(requireActivity())
             }
+
             CITY -> {
                 id?.let {
-                    viewModel.getCity(it)
+                    viewModel.getCity(requireActivity(), it)
                 }
             }
+
             else -> id?.let {
-                viewModel.getRegion(it)
+                viewModel.getRegion(requireActivity(), it)
             }
         }
     }
@@ -132,13 +134,23 @@ class ChooseCrFrag : Fragment() {
         }
     }
 
-    fun onChooseProvinceCityItems (pcrs: PcrsData){
+    fun onChooseProvinceCityItems(pcrs: PcrsData) {
         setFragmentResult(CR_KEY, bundleOf(DATA to arrayOf(pcrs.id.toString(), pcrs.title)))
         back()
     }
 
     fun onChooseItem(cr: RegionResponseData) {
-        setFragmentResult(CR_KEY, bundleOf(DATA to arrayOf(cr.id.toString(), cr.title)))
+        setFragmentResult(
+            CR_KEY,
+            bundleOf(
+                DATA to arrayOf(
+                    cr.id.toString(),
+                    cr.title,
+                    cr.lat.toString(),
+                    cr.lng.toString()
+                )
+            )
+        )
         back()
     }
 

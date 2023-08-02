@@ -35,9 +35,11 @@ class ChooseCatSubcatFrag : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arrayBundle = arguments?.getStringArrayList(CAT_ID_KEY)
-        token = arrayBundle!![0]
-        viewModel.itemType = arrayBundle!![1].toInt()
-        viewModel.catId = arrayBundle!![2].toInt()
+        arrayBundle?.apply {
+            token = this[0]
+            viewModel.itemType = this[1].toInt()
+            viewModel.catId = this[2].toInt()
+        }
     }
 
     override fun onCreateView(
@@ -60,16 +62,19 @@ class ChooseCatSubcatFrag : Fragment() {
         arrayBundle?.apply {
             if (viewModel.catId == EMPTY_CATEGORY_ID)
                 viewModel.getFileCategories(
+                    requireActivity(),
                     token,
                     viewModel.itemType
                 )
             else
                 viewModel.getFileCategoryType(
+                    requireActivity(),
                     token,
                     viewModel.itemType,
                     viewModel.catId
                 )
         }
+        arrayBundle?:back()
     }
     override fun onStop() {
         super.onStop()

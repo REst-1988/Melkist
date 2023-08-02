@@ -1,5 +1,6 @@
 package com.example.melkist.viewmodels
 
+import android.app.Activity
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,6 +12,9 @@ import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.models.Roles
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.internetProblemDialog
+import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -111,117 +115,178 @@ class SignupViewModel() : ViewModel() {
         _timeLeft.value = 0
     }
 
-    fun sendMobileVerificationCode(mobile: String, code: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _verifyResponse.value =
-                    Api.retrofitService.verifyCode(mobile, code)
-                Log.e("TAG", "callServerAppVersion: ${verifyResponse.value.toString()}", )
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun sendMobileVerificationCode(activity: Activity, mobile: String, code: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                sendMobileVerificationCode(
+                    activity,
+                    mobile,
+                    code
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _verifyResponse.value =
+                        Api.retrofitService.verifyCode(mobile, code)
+                    Log.e("TAG", "callServerAppVersion: ${verifyResponse.value.toString()}")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, sendMobileVerificationCode, ", e)
+                }
+            }
     }
 
-    fun getProvinces() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _pcrsList.value =
-                    Api.retrofitService.getGetProvinces().data!!
-                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _pcrsList.value?.apply {
-                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getProvinces(activity: Activity) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getProvinces(
+                    activity
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _pcrsList.value =
+                        Api.retrofitService.getGetProvinces().data!!
+                    Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
+                    _pcrsList.value?.apply {
+                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, getProvinces, ", e)
+                }
+            }
     }
 
-    fun getCities() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _pcrsList.value =
-                    Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
-                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _pcrsList.value?.apply {
-                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getCities(activity: Activity) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getCities(
+                    activity
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _pcrsList.value =
+                        Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
+                    Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
+                    _pcrsList.value?.apply {
+                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, getCities, ", e)
+                }
+            }
     }
 
-    fun getRealEstate() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _pcrsList.value =
-                    Api.retrofitService.getRealEstateByCityId(cityId).data!!
-                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _pcrsList.value?.apply {
-                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getRealEstate(activity: Activity) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getRealEstate(
+                    activity
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _pcrsList.value =
+                        Api.retrofitService.getRealEstateByCityId(cityId).data!!
+                    Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
+                    _pcrsList.value?.apply {
+                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, getRealEstate, ", e)
+                }
+            }
     }
 
-    fun getSuperVisor() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _pcrsList.value =
-                    Api.retrofitService.getSuperVisorByManagerId(parentId!!).data!!
-                Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}", )
-                _pcrsList.value?.apply {
-                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getSuperVisor(activity: Activity) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getSuperVisor(
+                    activity
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _pcrsList.value =
+                        Api.retrofitService.getSuperVisorByManagerId(parentId!!).data!!
+                    Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
+                    _pcrsList.value?.apply {
+                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, getSuperVisor, ", e)
+                }
+            }
     }
 
     fun checkSignupData(
-        name: String?, lastName: String?, title: String?,
-        cityId: Int?, mobile: String, nationalCode: String, email: String?,
+        activity: Activity,
+        name: String?,
+        lastName: String?,
+        title: String?,
+        cityId: Int?,
+        mobile: String,
+        nationalCode: String,
+        email: String?,
         roleId: Int
     ) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _verificationCodeResponse.value =
-                    Api.retrofitService.checkSignupData(
-                        name, lastName, title, cityId,
-                        mobile, nationalCode, email, roleId
-                    )
-                Log.e("TAG", "callServerAppVersion: ${_verificationCodeResponse.value.toString()}", )
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                checkSignupData(
+                    activity,
+                    name,
+                    lastName,
+                    title,
+                    cityId,
+                    mobile,
+                    nationalCode,
+                    email,
+                    roleId
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _verificationCodeResponse.value =
+                        Api.retrofitService.checkSignupData(
+                            name, lastName, title, cityId,
+                            mobile, nationalCode, email, roleId
+                        )
+                    Log.e(
+                        "TAG",
+                        "callServerAppVersion: ${_verificationCodeResponse.value.toString()}",
+                    )
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, checkSignupData, ", e)
+                }
+            }
     }
 
 
-    fun registerUserRealEstate() {
+    fun registerUserRealEstate(activity: Activity) {
         Log.e(
             "TAG", "registerUserRealstate: test " +
                     String.format(
@@ -238,29 +303,36 @@ class SignupViewModel() : ViewModel() {
                         subConditionRoleId
                     )
         )
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _registerResponse.value =
-                    Api.retrofitService.registerUserRealEstate(
-                        realEstateNameForManager,
-                        cityId,
-                        firstName!!,
-                        lastName!!,
-                        mobileNo,
-                        nationalCode.toString(),
-                        email,
-                        password,
-                        parentId ?: 0 /*every user is a child of head manager*/,
-                        subConditionRoleId
-                    )
-                Log.e("TAG", "callServerAppVersion: ${_registerResponse.value.toString()}", )
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                registerUserRealEstate(
+                    activity
+                )
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _registerResponse.value =
+                        Api.retrofitService.registerUserRealEstate(
+                            realEstateNameForManager,
+                            cityId,
+                            firstName!!,
+                            lastName!!,
+                            mobileNo,
+                            nationalCode.toString(),
+                            email,
+                            password,
+                            parentId ?: 0 /*every user is a child of head manager*/,
+                            subConditionRoleId
+                        )
+                    Log.e("TAG", "callServerAppVersion: ${_registerResponse.value.toString()}")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "SignupViewModel, registerUserRealEstate, ", e)
+                }
+            }
     }
 
     fun choosingItemAction(pcrs: PcrsData) {
@@ -269,16 +341,19 @@ class SignupViewModel() : ViewModel() {
                 provinceId = pcrs.id!!
                 provinceTitle = pcrs.title!!
             }
+
             SignupViewModel.Pcrs.CITY -> {
                 cityId = pcrs.id!!
                 cityTitle = pcrs.title!!
             }
+
             SignupViewModel.Pcrs.REAL_ESTATE -> {
                 realEstateId = pcrs.id!!
                 realEstateTitle = pcrs.title!!
                 Log.e("TAG", "choosingItemAction: ${pcrs.user?.id}")
                 parentId = pcrs.user?.id
             }
+
             else -> {
                 supervisorId = pcrs.id!!
                 supervisorTitle = pcrs.title!!

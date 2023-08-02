@@ -1,19 +1,18 @@
 package com.example.melkist.viewmodels
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.melkist.models.CatSubCatModel
-import com.example.melkist.models.FileTypes
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.EMPTY_CATEGORY_ID
-import com.example.melkist.utils.ItemType
-import com.example.melkist.utils.OWNER_ITEM_TYPE
-import com.example.melkist.utils.SEEKER_ITEM_TYPE
-import com.example.melkist.utils.User.token
+import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.internetProblemDialog
+import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.launch
 
 class ChooseCatSubCatViewModel : ViewModel() {
@@ -36,42 +35,56 @@ class ChooseCatSubCatViewModel : ViewModel() {
         return arrayOf(subCatId.toString(), subCatTitle)
     }
 
-    fun getFileCategories(token: String, typeId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                Log.e("TAG", "getFileCategoryType: $typeId")
-                _itemOptionList.value =
-                    Api.retrofitService.getFileCategories(token, typeId).data!!
-                Log.e("TAG", "_itemOptionList: ${_itemOptionList.value.toString()} ", )
-                _itemOptionList.value?.apply {
-                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getFileCategories(activity: Activity, token: String, typeId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getFileCategories(activity, token, typeId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    Log.e("TAG", "getFileCategoryType: $typeId")
+                    _itemOptionList.value =
+                        Api.retrofitService.getFileCategories(token, typeId).data!!
+                    Log.e("TAG", "getFileCategories: ${_itemOptionList.value.toString()} ")
+                    _itemOptionList.value?.apply {
+                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "${this@ChooseCatSubCatViewModel.javaClass.name}, getFileCategories, ", e)
+                }
+            }
     }
 
-    fun getFileCategoryType(token: String, typeId: Int, catId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                Log.e("TAG", "getFileCategoryType: $typeId , $catId")
-                _itemOptionList.value =
-                    Api.retrofitService.getFileCategoryTypes(token, typeId, catId = catId!!).data!!
-                Log.e("TAG", "_itemOptionList: ${_itemOptionList.value.toString()} ", )
-                _itemOptionList.value?.apply {
-                    if (isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getFileCategoryType(activity: Activity, token: String, typeId: Int, catId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getFileCategoryType(activity, token, typeId, catId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    Log.e("TAG", "getFileCategoryType: $typeId , $catId")
+                    _itemOptionList.value =
+                        Api.retrofitService.getFileCategoryTypes(
+                            token,
+                            typeId,
+                            catId = catId!!
+                        ).data!!
+                    Log.e("TAG", "getFileCategoryType: ${_itemOptionList.value.toString()} ")
+                    _itemOptionList.value?.apply {
+                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "${this@ChooseCatSubCatViewModel.javaClass.name}, getFileCategoryType, ", e)
+                }
+            }
     }
 
     fun emptyList() {

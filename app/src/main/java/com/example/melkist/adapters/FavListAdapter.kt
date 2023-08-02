@@ -61,13 +61,13 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
             binding.txtPrice.text = getPropertyPeriodsPriceText(context, data.price)
             binding.txtRealEstate.text = String.format("%s %s", context.resources.getString(R.string.real_estate_title), data.user.realEstate)
             binding.txtAgent.text = String.format("%s %s", data.user.firstName, data.user.lastName)
-            Log.e("TAG", "bind: ${data.user.profilePic}", )
             data.user.profilePic?.let {
                 bindImage(binding.imgProfile, it)
             }
-            data.image?.let {
-                bindImage(binding.imgMain, it)
+            data.image?.apply {
+                bindImage(binding.imgMain, this)
             }
+            data.image?: binding.imgMain.setImageDrawable(null)
             binding.executePendingBindings()
         }
     }

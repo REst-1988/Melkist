@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.MainActivity
 import com.example.melkist.R
@@ -73,17 +74,17 @@ class ProfileInboxFrag(
         binding.btnMoreDetailDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 try {
-                    viewModel.getFileInfoById(token = token!!, item.file!!.id!!, id!!)
+                    viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
-                    handleSystemException(e)
+                    handleSystemException(lifecycleScope, "ProfileInboxFrag, showInboxDialog, ", e)
                 }
             }
         }
         binding.btnApproveDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 item.requestId?.let { requestId ->
-                    viewModel.setAlertStatus(token!!, requestId, id!!, STATUS_APPROVED)
+                    viewModel.setAlertStatus(requireActivity(), token!!, requestId, id!!, STATUS_APPROVED)
                     alertDialog.dismiss()
                 }
             }
@@ -91,7 +92,7 @@ class ProfileInboxFrag(
         binding.btnDenyDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 item.requestId?.let { requestId ->
-                    viewModel.setAlertStatus(token!!, requestId, id!!, STATUS_DENY)
+                    viewModel.setAlertStatus(requireActivity(), token!!, requestId, id!!, STATUS_DENY)
                     alertDialog.dismiss()
                 }
             }
@@ -100,6 +101,7 @@ class ProfileInboxFrag(
 
     private fun bindInboxDialogItemViews(binding: DialogLayoutInboxOutboxBinding, item: Status) {
         binding.apply {
+            txtDialogTitle.text = resources.getString(R.string.ask_for_cooperation_inbox)
             btnApproveDialog.visibility = View.VISIBLE
             btnDenyDialog.visibility = View.VISIBLE
             item.file?.apply {
@@ -146,9 +148,6 @@ class ProfileInboxFrag(
                 txtRealEstate.text = realEstate
                 txtCreateAt.text = createAt
             }
-            txtStatus1.visibility = View.GONE
-            txtStatus2.visibility = View.GONE
-            txtStatus3.visibility = View.GONE
         }
     }
 
@@ -227,10 +226,10 @@ class ProfileInboxFrag(
         }
     }
 
-    fun getList() {
+    private fun getList() {
         (activity as MainActivity).user?.apply {
             viewModel.getInbox(
-                id!!, token!!
+                requireActivity(), id!!, token!!
             )
         }
     }

@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP1EnterNcodePhoneBinding
+import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ForgetPassViewModel
@@ -40,7 +44,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
             binding.txtTitle.text = resources.getString(R.string.change_password)
             listenToSendVerificationCode()
         } catch (e: Exception) {
-            e.printStackTrace()
+            handleSystemException(lifecycleScope, "ForgetPassP1EnterNcodePhoneFrag, onViewCreated, ", e)
             showToast(requireContext(), requireContext().resources.getString(R.string.global_error))
         }
     }
@@ -58,6 +62,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
         viewModel.setMobileNo(binding.etPhoneNo.editText!!.text.toString())
         viewModel.setNationalCode(binding.etNationalCode.editText!!.text.toString().toLong())
         viewModel.getNcodeMobileVerificationCode(
+            requireActivity(),
             viewModel.getNationalCode().toString(),
             viewModel.getMobileNo()
         )

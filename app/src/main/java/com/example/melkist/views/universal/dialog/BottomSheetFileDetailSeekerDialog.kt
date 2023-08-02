@@ -31,7 +31,7 @@ class BottomSheetFileDetailSeekerDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as MainActivity).user?.apply {
-            viewModel.getFileInfoById(token!!, fileId, id!!)
+            viewModel.getFileInfoById(requireActivity(), token!!, fileId, id!!)
         }
     }
 
@@ -58,17 +58,17 @@ class BottomSheetFileDetailSeekerDialog(
         }
         binding.ibtnBookmark.setOnClickListener {
             (activity as MainActivity).user?.apply {
-                viewModel.saveFavFile(token!!, id!!, fileId)
+                viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
             }
             binding.ibtnBookmark.setOnClickListener {
                 response.data?.isFav?.apply {
                     if (this) {
                         (activity as MainActivity).user?.apply {
-                            viewModel.deleteFavFile(token!!, id!!, fileId)
+                            viewModel.deleteFavFile(requireActivity(), token!!, id!!, fileId)
                         }
                     }else {
                         (activity as MainActivity).user?.apply {
-                            viewModel.saveFavFile(token!!, id!!, fileId)
+                            viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
                         }
                     }
                 }
@@ -133,7 +133,7 @@ class BottomSheetFileDetailSeekerDialog(
                         requireContext(), response.message!!
                     )
                     binding.ibtnBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
-                    viewModel.resetDeleteResponse()
+                    viewModel.resetDeleteFavResponse()
                     viewModel.fileAllData.value?.data?.isFav = false
                 }
 
@@ -141,7 +141,7 @@ class BottomSheetFileDetailSeekerDialog(
                     showToast(
                         requireContext(), concatenateText(response.errors)
                     )
-                    viewModel.resetDeleteResponse()
+                    viewModel.resetDeleteFavResponse()
                 }
 
                 else -> Log.e(
@@ -166,9 +166,7 @@ class BottomSheetFileDetailSeekerDialog(
                 R.string.squere_meter
             )
             binding.txtRegion.text = locations[0].region.title
-            price.from?.apply {
-                binding.txtPrice.text = getPropertyPeriodsPriceText(requireContext(), price)
-            }
+            binding.txtPrice.text = getPropertyPeriodsPriceText(requireContext(), price)
             Log.e("TAG", "onOkGettingFileAllDataResponse: $isFav", )
             isFav?.apply {
                 binding.ibtnBookmark.showFav(this)

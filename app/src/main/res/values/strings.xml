@@ -2,9 +2,6 @@
     <string name="app_name">Melkist</string>
     <string name="site_url">https://melkist.ir</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Calculator</string>
-
     <string name="hint_username">نام کاربری (شماره موبایل)</string>
     <string name="signup">ثبت نام</string>
     <string name="login">ورود</string>
@@ -77,7 +74,7 @@
     <string name="choosing_seeker_header2">(به دنبال مورد مناسب میگردم)</string>
     <string name="choosing_seeker_header2_filer">(فیلتر فایل های خواهان)</string>
     <string name="choosing_seeker_body">شما می توانید با انتخاب این گزینه نیازمندی خودر را در قالب یک آگهی ثبت نموده تا در صورت پیدا شدن مورد مناسب، به شما اطلاع رسانی انجام گیرد</string>
-    <string name="choosing_seeker_body_filter">فیلتر فایل های که خواهان مورد مناسب می باشند</string>
+    <string name="choosing_seeker_body_filter">فیلتر مواردی که خواهان مورد مناسب می باشند</string>
     <string name="choosing_owner_header">مالک</string>
     <string name="choosing_owner_header2">(می خواهم آگهی ثبت نمایم)</string>
     <string name="choosing_owner_header2_filter">(فیلتر فایل های مالک)</string>
@@ -125,7 +122,7 @@
     <string name="is_show_exact_address">آیا آدرس دقیق برای مخاطبان نمایش داده شود؟</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="wrong_username_password">نام کاربری یا کلمه عبور اشتباه است</string>
-    <string name="choose_profile_pic">از اینکه برای پروفایل خود عکس انتخاب کردید اطمینان حاصل فرمایید</string>
+    <string name="choose_profile_pic">برای پروفایل خود عکس مناسب انتخاب نمایید</string>
     <string name="choose_profile_pic_title">عکس پروفایل</string>
     <string name="select">انتخاب</string>
     <string name="show_all_files_title">نمایش همه موارد</string>
@@ -166,7 +163,7 @@
     <string name="year">سال</string>
     <string name="input_right_number">مقدار صحیحی وارد نمایید</string>
     <string name="version">نسخه: %s</string>
-    <string name="internet_connection_problem">خطا در برقراری ارتیاط با سرور. لطفا از اتصال اینترنت اطمینان حاصل فرمایید!</string>
+    <string name="internet_connection_problem">اینترنت دستگاه شما خاموش است. لطفا از اتصال اینترنت اطمینان حاصل فرمایید!</string>
     <string name="quit">انصراف</string>
     <string name="retry">تلاش مجدد</string>
     <string name="contact_us_title">تماس با ما</string>
@@ -184,7 +181,7 @@
     <string name="applicant_outbox">به %s %s مشاورین املاک %s</string>
     <string name="region_outbox_outbox">جهت ملک %s</string>
     <string name="error_getting_data">خطا در دریافت اطلاعات!</string>
-    <string name="freelancer">آزادکار</string>
+    <string name="freelancer">آزاد کار</string>
     <string name="fars">فارس</string>
     <string name="shiraz">شیراز</string>
     <string name="mortgage_rent_calculator">ماشین حساب رهن و اجاره</string>
@@ -258,7 +255,8 @@
     <string name="two_place_holder_text">%s %s</string>
     <string name="all_items">همه موارد</string>
     <string name="max_new_house_price">حداکثر قیمت هر متر نوساز در منطقه</string>
-    <string name="expert_calculator_text">جهت تعیین قیمت کارشناسی ملک مورد نظر، اطلاعات زیر را با دقت تکمیل نمایید</string>
+    <string name="expert_calculator_text">جهت تعیین قیمت کارشناسی ملک مورد نظر، اطلاعات زیر را با دقت تکمیل نمایید.</string>
+    <string name="expert_calculator_text_2">محاسبات با دقت بالا و خطای کمتر از 3% توسط هوش مصنوعی ملکیست انجام می گیرد.</string>
     <string name="expert_calculator_dialog_fill_fields">جهت تعیین قیمت کارشناسی ملک مورد نظر، کلیه اطلاعات را تکمیل نمایید</string>
     <string name="min_new_house_price">حداقل قیمت هر متر نوساز در منطقه</string>
     <string name="unlocked_title_question">آیا کلید خورده است؟</string>
@@ -278,7 +276,7 @@
     <string name="create_at_file">ایجاد شده در: </string>
     <string name="type_title">نوع</string>
     <string name="type_value">%s, %s (%s)</string>
-    <string name="cooperation_title">همکاری</string>
+    <string name="cooperation_title">تعاون</string>
     <string name="recieved">دریافت شده</string>
     <string name="sent">ارسال شده</string>
     <string name="status_true">تایید شده</string>
@@ -297,6 +295,26 @@
     <string name="deny">رد درخواست</string>
     <string name="approve">قبول درخواست</string>
     <string name="call_advertiser">تماس با آگهی دهنده</string>
+    <string name="optional_postal_code">کد پستی ملک (اختیاری)</string>
+    <string name="units_in_floor_title">تعداد واحدها در هر طبقه</string>
+    <string name="calculator_expert_dialog_title">در حال محاسبه توسط هوش مصنوعی ملکیست</string>
+    <string name="lights_title_question">تعداد جهت های نورگیری</string>
+    <string name="make_sure_choose_profile_pic">لطفا برای پروفایل خود عکسی مناسب انتخاب نمایید</string>
+    <string name="nickname">نام مستعار</string>
+    <string name="first_name_last_name_title">نام و نام خانوادگی</string>
+    <string name="commit_changes">ثبت تغییرات</string>
+    <string name="choose_region_first">ابتدا در محله را در قسمت قبل انتخاب نمایید</string>
+    <string name="status_text">%s از مشاورین املاک %s: %s</string>
+    <string name="status_text_freelancer">%s (%s): %s</string>
+    <string name="cooperation_received">در حال همکاری (دریافت شده)</string>
+    <string name="cooperation_send">در حال همکاری (ارسال شده)</string>
+    <string name="ask_for_cooperation_inbox">درخواست همکاری دریافت شده</string>
+    <string name="ask_for_cooperation_outbox">درخواست همکاری ارسال شده</string>
+    <string name="target_user">کاربر مرتبط</string>
+    <string name="try_again_later">در زمانی دیگر مجددا تلاش نمایید</string>
+    <string name="un_filter">حذف فیلتر</string>
+    <string name="empty_filter_items">برای اعمال فیلتر حداقل یکی از فیلد ها را پر کنید!</string>
+    <string name="no_data">داده ای جهت نمایش وجود ندارد</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->
@@ -391,6 +409,15 @@
         <item>پنجم به بالا</item>
     </string-array>
 
+    <string-array name="units_in_floor_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_floor_list"-->
+        <item>تک واحدی</item>
+        <item>دو واحد</item>
+        <item>سه واحد</item>
+        <item>چهار واحد به بالا</item>
+    </string-array>
+
     <string-array name="units_list">
         <!-- NOTE! -->
         <!-- this should be change with "int_units_list"-->
@@ -413,6 +440,14 @@
         <item>شرقی</item>
         <item>جنوبی</item>
         <item>غربی</item>
+    </string-array>
+    <string-array name="lights_list">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_direction_list"-->
+        <item>یک بر نورگیر</item>
+        <item>دو بر نورگیر</item>
+        <item>سه بر نورگیر</item>
+        <item>چهار بر نورگیر</item>
     </string-array>
 
     <string-array name="int_direction_list">

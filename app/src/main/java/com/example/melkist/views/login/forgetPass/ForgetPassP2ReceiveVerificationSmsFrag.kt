@@ -144,6 +144,7 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
     fun onSendVerifyCodeAgain() {
         viewModel.stopTimer()
         viewModel.getNcodeMobileVerificationCode(
+            requireActivity(),
             viewModel.getNationalCode().toString(),
             viewModel.getMobileNo()
         )
@@ -153,7 +154,9 @@ class ForgetPassP2ReceiveVerificationSmsFrag : Fragment() {
 
     fun onVerify() {
         if (isVerifyCodeField()) viewModel.sendMobileVerificationCode(
-            viewModel.getMobileNo(), binding.etVerificationCode.editText!!.text.toString()
+            requireActivity(),
+            viewModel.getMobileNo(),
+            binding.etVerificationCode.editText!!.text.toString()
         )
     }
 }

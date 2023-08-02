@@ -34,7 +34,7 @@ class BottomSheetFileDetailOwnerDialog(
         super.onCreate(savedInstanceState)
         // TODO: check if what happened with any deleted file
         (activity as MainActivity).user?.apply {
-            viewModel.getFileInfoById(token!!, fileId, id!!)
+            viewModel.getFileInfoById(requireActivity(), token!!, fileId, id!!)
         }
     }
 
@@ -57,11 +57,11 @@ class BottomSheetFileDetailOwnerDialog(
             response.data?.isFav?.apply {
                 if (this) {
                     (activity as MainActivity).user?.apply {
-                        viewModel.deleteFavFile(token!!, id!!, fileId)
+                        viewModel.deleteFavFile(requireActivity(), token!!, id!!, fileId)
                     }
                 } else {
                     (activity as MainActivity).user?.apply {
-                        viewModel.saveFavFile(token!!, id!!, fileId)
+                        viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
                     }
                 }
             }
@@ -123,7 +123,7 @@ class BottomSheetFileDetailOwnerDialog(
                         requireContext(), response.message!!
                     )
                     binding.ibtnBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
-                    viewModel.resetDeleteResponse()
+                    viewModel.resetDeleteFavResponse()
                     viewModel.fileAllData.value?.data?.isFav = false
                 }
 
@@ -131,7 +131,7 @@ class BottomSheetFileDetailOwnerDialog(
                     showToast(
                         requireContext(), concatenateText(response.errors)
                     )
-                    viewModel.resetDeleteResponse()
+                    viewModel.resetDeleteFavResponse()
                 }
 
                 else -> Log.e(

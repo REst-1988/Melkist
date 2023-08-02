@@ -35,8 +35,8 @@ class ProfileCooperationFrag : Fragment() {
 
     private fun setupTabLayoutAndPagerLayout() {
         val adapter = ProfileAlertsViewPagerAdapter(requireActivity())
-        adapter.addFragment(ProfileSendCooperationFrag(), resources.getString(R.string.recieved))
-        adapter.addFragment(ProfileSendCooperationFrag(), resources.getString(R.string.sent))
+        adapter.addFragment(ProfileReceivedCooperationFrag(this), resources.getString(R.string.recieved))
+        adapter.addFragment(ProfileSendCooperationFrag(this), resources.getString(R.string.sent))
         binding.viewPager.adapter = adapter
         binding.viewPager.currentItem = INBOX
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
@@ -46,5 +46,11 @@ class ProfileCooperationFrag : Fragment() {
 
     fun back() {
         findNavController().popBackStack()
+    }
+
+    fun navigateToDetail() {
+        findNavController().navigate(
+            R.id.action_profileCooperationFrag_to_fileDetailFrag
+        )
     }
 }

@@ -79,7 +79,9 @@ class AddP6DetailsSeekerFrag : Fragment() {
     }
 
     private fun checkFieldsForNullabilitySeparatorAccepted(view: TextInputLayout): Long? {
-        if (view.editText!!.text.toString().isNotEmpty() && view.editText!!.text.toString() != "") {
+        if (view.editText!!.text.toString()
+                .isNotEmpty() && view.editText!!.text.toString() != "" && view.editText!!.text.toString() != "0"
+        ) {
             if (view.editText!!.text.toString()
                     .contains(",")
             ) return BigDecimal(view.editText!!.text.toString().replace(",", "")).toLong()
@@ -130,7 +132,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
 
     fun onCommit() {
         gatheringData()
-        viewModel.saveFile((activity as AddActivity).user.id!!)
+        viewModel.saveFile(requireActivity(), (activity as AddActivity).user.id!!)
     }
 
     fun onAgeFromClick() {

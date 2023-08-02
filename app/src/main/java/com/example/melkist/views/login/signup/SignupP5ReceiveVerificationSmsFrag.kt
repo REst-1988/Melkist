@@ -63,7 +63,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
             if (viewModel.isResponseOk(viewModel.verifyResponse)) {
                 viewModel.stopTimer()
                 viewModel.restVerificationResponse(viewModel.verifyResponse)
-                viewModel.registerUserRealEstate()
+                viewModel.registerUserRealEstate(requireActivity())
             } else if (viewModel.isResponseNotOk(viewModel.verifyResponse)) {
                 if (viewModel.verifyResponse.value!!.errors[0].isNotEmpty())
                     showDialogWithMessage(
@@ -161,6 +161,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     fun onSendVerifyCodeAgain() {
         viewModel.stopTimer()
         viewModel.checkSignupData(
+            requireActivity(),
             viewModel.firstName,
             viewModel.lastName,
             viewModel.realEstateNameForManager,
@@ -177,6 +178,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
     fun onVerify() {
         if (isVerifyCodeField())
             viewModel.sendMobileVerificationCode(
+                requireActivity(),
                 viewModel.mobileNo,
                 binding.etVerificationCode.editText!!.text.toString()
             )

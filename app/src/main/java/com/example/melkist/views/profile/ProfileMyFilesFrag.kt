@@ -38,6 +38,7 @@ class ProfileMyFilesFrag : Fragment() {
         user?.apply {
             Log.e("TAG", "onCreateView: ${user.id}", )
             viewModel.getMyFiles(
+                requireActivity(),
                 token = user.token!!,
                 userId = user.id!!
             )

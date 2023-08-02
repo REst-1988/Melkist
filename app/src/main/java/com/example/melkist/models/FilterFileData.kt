@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 import java.io.Serializable
 
 data class FilterFileData(
+    @Json (name = "user_id") var userId: Int?,
     @Json (name = "sleepsNumber") val rooms: Period,
     @Json (name = "price") val price: Period,
     @Json (name = "age") val age: Period,

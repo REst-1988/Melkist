@@ -111,17 +111,15 @@
         android:label="frag_profile_alerts"
         tools:layout="@layout/frag_profile_alerts" >
         <action
-            android:id="@+id/action_profileAlertsFrag_to_profileInboxOutboxFrag"
-            app:destination="@id/profileInboxOutboxFrag" />
-        <action
             android:id="@+id/action_profileAlertsFrag_to_fileDetailFrag"
             app:destination="@id/fileDetailFrag" />
+        <action
+            android:id="@+id/action_profileAlertsFrag_to_profileOutboxFrag"
+            app:destination="@id/profileOutboxFrag" />
+        <action
+            android:id="@+id/action_profileAlertsFrag_to_profileInboxFrag"
+            app:destination="@id/profileInboxFrag" />
     </fragment>
-    <fragment
-        android:id="@+id/profileInboxOutboxFrag"
-        android:name="com.example.melkist.views.profile.alerts.ProfileInboxFrag"
-        android:label="frag_profile_in_box_out_box"
-        tools:layout="@layout/frag_profile_in_box_out_box" />
     <fragment
         android:id="@+id/calculatorMortgageRentFrag"
         android:name="com.example.melkist.views.calculator.CalculatorMortgageRentFrag"
@@ -261,11 +259,57 @@
         android:label="frag_profile_cooperations"
         tools:layout="@layout/frag_profile_cooperations" >
         <action
-            android:id="@+id/action_profileCooperationFrag_to_profileSendReceivedCooperationFrag"
-            app:destination="@id/profileSendReceivedCooperationFrag" />
+            android:id="@+id/action_profileCooperationFrag_to_fileDetailFrag"
+            app:destination="@id/fileDetailFrag" />
+        <action
+            android:id="@+id/action_profileCooperationFrag_to_profileReceivedCooperationFrag"
+            app:destination="@id/profileReceivedCooperationFrag" />
+        <action
+            android:id="@+id/action_profileCooperationFrag_to_profileSendCooperationFrag"
+            app:destination="@id/profileSendCooperationFrag" />
     </fragment>
     <fragment
-        android:id="@+id/profileSendReceivedCooperationFrag"
+        android:id="@+id/profileOutboxFrag"
+        android:name="com.example.melkist.views.profile.alerts.ProfileOutboxFrag"
+        android:label="ProfileOutboxFrag" />
+    <fragment
+        android:id="@+id/profileReceivedCooperationFrag"
+        android:name="com.example.melkist.views.profile.cooperations.ProfileReceivedCooperationFrag"
+        android:label="ProfileReceivedCooperationFrag" />
+    <fragment
+        android:id="@+id/profileSendCooperationFrag"
         android:name="com.example.melkist.views.profile.cooperations.ProfileSendCooperationFrag"
-        android:label="ProfileSendReceivedCooperationFrag" />
+        android:label="ProfileSendCooperationFrag" />
+    <fragment
+        android:id="@+id/profileInboxFrag"
+        android:name="com.example.melkist.views.profile.alerts.ProfileInboxFrag"
+        android:label="frag_profile_send_recieved_cooperation"
+        tools:layout="@layout/frag_profile_send_recieved_cooperation" />
+    <dialog
+        android:id="@+id/bottomSheetUniversalList"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetUniversalList"
+        android:label="layout_bottom_sheet_universal_list"
+        tools:layout="@layout/layout_bottom_sheet_universal_list" />
+    <dialog
+        android:id="@+id/bottomSheetFileDetailSeekerDialog"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailSeekerDialog"
+        android:label="BottomSheetFileDetailSeekerDialog" />
+    <dialog
+        android:id="@+id/bottomSheetFileDetailOwnerDialog"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailOwnerDialog"
+        android:label="BottomSheetFileDetailOwnerDialog" />
+    <dialog
+        android:id="@+id/calculatorResultDialogFrag"
+        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultDialogFrag"
+        android:label="CalculatorResultDialogFrag" />
+    <dialog
+        android:id="@+id/calculatorResultMortgageRentDialog"
+        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultMortgageRentDialog"
+        android:label="dialog_calculator_result_mortgage_rent"
+        tools:layout="@layout/dialog_calculator_result_mortgage_rent" />
+    <dialog
+        android:id="@+id/calculatorResultExpertDialogFrag"
+        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultExpertDialogFrag"
+        android:label="frag_calculator_result_expert_dialog"
+        tools:layout="@layout/frag_calculator_result_expert_dialog" />
 </navigation>

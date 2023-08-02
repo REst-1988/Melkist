@@ -22,6 +22,7 @@ class CalculatorResultExpertDialogFrag(
 ) : DialogFragment() {
 
     private lateinit var binding: FragCalculatorResultExpertDialogBinding
+    private val WAITING = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +41,8 @@ class CalculatorResultExpertDialogFrag(
         super.onViewCreated(view, savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({
             showViews()
-        }, 3000)
-        showToast(
-            requireContext(),
-            "Fake waiting to make user feels system doing hard calculation, Check if needed??"
-        ) // TODO: Fake waiting Check if needed??
+        }, WAITING)
+
         binding.apply {
             btnCloseDialog.setOnClickListener {
                 this@CalculatorResultExpertDialogFrag.dismiss()
@@ -75,6 +73,7 @@ class CalculatorResultExpertDialogFrag(
     private fun showViews() {
         binding.apply {
             progress.visibility = View.GONE
+            dialogTitle.visibility = View.GONE
             layoutViews.visibility = View.VISIBLE
             txtHousePrice.text = String.format(
                 "%s %s",

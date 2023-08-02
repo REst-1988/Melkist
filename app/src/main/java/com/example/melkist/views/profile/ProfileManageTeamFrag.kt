@@ -34,6 +34,7 @@ class ProfileManageTeamFrag : Fragment() {
         val user = (activity as MainActivity).user
         user?.apply {
             viewModel.getTeamMembers(
+                requireActivity(),
                 token = user.token!!,
                 userId = user.id!!,
                 roleId = user.roleId!!
@@ -44,7 +45,7 @@ class ProfileManageTeamFrag : Fragment() {
 
 
     fun choosingItemAction(user: User?) {
-        viewModel.user = user
+        viewModel.teamMember = user
         findNavController().navigate(
             R.id.action_profileManageTeamFrag_to_profileUserProfileFrag
         )

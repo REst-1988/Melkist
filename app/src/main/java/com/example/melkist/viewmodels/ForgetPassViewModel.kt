@@ -1,5 +1,6 @@
 package com.example.melkist.viewmodels
 
+import android.app.Activity
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,6 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.internetProblemDialog
+import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,9 +25,14 @@ class ForgetPassViewModel : ViewModel() {
     var password: String = ""
 
     fun getMobileNo() = mobileNo
-    fun setMobileNo(mobile: String) { mobileNo = mobile }
+    fun setMobileNo(mobile: String) {
+        mobileNo = mobile
+    }
+
     fun getNationalCode() = nationalCode
-    fun setNationalCode(code: Long) { nationalCode = code }
+    fun setNationalCode(code: Long) {
+        nationalCode = code
+    }
 
     private val _isTimeUp = MutableLiveData<Boolean>()
     val isTimeUp: LiveData<Boolean> = _isTimeUp
@@ -50,6 +59,7 @@ class ForgetPassViewModel : ViewModel() {
                 override fun onTick(millisUntilFinished: Long) {
                     _timeLeft.value = (millisUntilFinished / 1000).toInt()
                 }
+
                 override fun onFinish() {
                     _isTimeUp.value = true
                 }
@@ -70,49 +80,67 @@ class ForgetPassViewModel : ViewModel() {
         _timeLeft.value = 0
     }
 
-    fun getNcodeMobileVerificationCode(ncode: String, mobile: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _verificationCodeResponse.value =
-                    Api.retrofitService.getForgetPasswordVerificationCode(mobile, ncode)
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getNcodeMobileVerificationCode(activity: Activity, ncode: String, mobile: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getNcodeMobileVerificationCode(activity, ncode, mobile)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _verificationCodeResponse.value =
+                        Api.retrofitService.getForgetPasswordVerificationCode(mobile, ncode)
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "ForgetPassViewModel, getNcodeMobileVerificationCode, ", e)
+                }
+            }
     }
 
-    fun sendMobileVerificationCode(mobile: String, code: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                Log.e("TAG", "sendMobileVerificationCode: 1", )
-                _verifyResponse.value =
-                    Api.retrofitService.verifyCode(mobile, code)
-
-                Log.e("TAG", "sendMobileVerificationCode: 2", )
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun sendMobileVerificationCode(activity: Activity, mobile: String, code: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                sendMobileVerificationCode(activity, mobile, code)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    Log.e("TAG", "sendMobileVerificationCode: 1")
+                    _verifyResponse.value =
+                        Api.retrofitService.verifyCode(mobile, code)
+
+                    Log.e("TAG", "sendMobileVerificationCode: 2")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "ForgetPassViewModel, sendMobileVerificationCode, ", e)
+                }
+            }
     }
 
-    fun requestChangePasswordByMobile() {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _changePassResponse.value =
-                    Api.retrofitService.changePasswordByMobile(getMobileNo(), newPassword = password)
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun requestChangePasswordByMobile(activity: Activity) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                requestChangePasswordByMobile(activity)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _changePassResponse.value =
+                        Api.retrofitService.changePasswordByMobile(
+                            getMobileNo(),
+                            newPassword = password
+                        )
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "ForgetPassViewModel, requestChangePasswordByMobile, ", e)
+                }
+            }
     }
 
     fun restVerificationResponse(vr: LiveData<PublicResponseModel>) {

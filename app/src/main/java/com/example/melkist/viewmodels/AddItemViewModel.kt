@@ -1,5 +1,6 @@
 package com.example.melkist.viewmodels
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
 import android.util.Base64
@@ -20,6 +21,9 @@ import com.example.melkist.utils.PROVINCE
 import com.example.melkist.utils.REGION_1
 import com.example.melkist.utils.REGION_2
 import com.example.melkist.utils.REGION_3
+import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.internetProblemDialog
+import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
@@ -66,6 +70,8 @@ class AddItemViewModel : ViewModel() {
     var cityTitle: String = ""
     var regionId: Int = 0
     var regionTitle: String = ""
+    var regionLat: Double? = null
+    var regionLng: Double? = null
     var region2Id: Int? = null
     var region2Title: String? = null
     var region3Id: Int? = null
@@ -100,12 +106,9 @@ class AddItemViewModel : ViewModel() {
 
     fun getTypeId(): Int {
         val fileTypes = FileTypes()
-        typeId = if (getItemType() == ItemType.SEEKER)
-            fileTypes.seeker.id
-        else if (getItemType() == ItemType.OWNER)
-            fileTypes.owner.id
-        else
-            -1
+        typeId = if (getItemType() == ItemType.SEEKER) fileTypes.seeker.id
+        else if (getItemType() == ItemType.OWNER) fileTypes.owner.id
+        else -1
         return typeId
     }
 
@@ -120,9 +123,7 @@ class AddItemViewModel : ViewModel() {
             userId = userId,
             cityId = cityId,
             locations = listOf(
-                Loc(regionId, lat, lng),
-                Loc(region2Id, null, null),
-                Loc(region3Id, null, null)
+                Loc(regionId, lat, lng), Loc(region2Id, null, null), Loc(region3Id, null, null)
             ),
             isShowExactAddress = isShowExactAddress,
             size = Period(
@@ -145,20 +146,7 @@ class AddItemViewModel : ViewModel() {
     private fun logSendData(userId: Int) {// TODO: delete this after testing
         Log.e(
             "TAG",
-            "gatheringData: " +
-                    "            typeId = $typeId,\n" +
-                    "            catId = $catId,\n" +
-                    "            subCatId = $subCatId,\n" +
-                    "            userId = $userId,\n" +
-                    "            cityId = $cityId,\n" +
-                    "            locations = listOf(Loc($regionId, $lat, $lng),Loc($region2Id, null, null),Loc($region3Id, null, null)),\n" +
-                    "            isShowExactAddress = $isShowExactAddress,\n" +
-                    "            size = Period(${sizeFrom?.toLong()}, (${(sizeTo ?: sizeFrom)?.toLong()}),\n" +
-                    "            rooms = Period(${roomFrom?.toLong()}, ${roomTo?.toLong()}),\n" +
-                    "            age = Period(${ageFrom?.toLong()}, ${ageTo?.toLong()}),\n" +
-                    "            price = Period($priceFrom, ${priceTo}),\n" +
-                    "            description = $descriptions,\n" +
-                    "            images = listOfImages",
+            "gatheringData: " + "            typeId = $typeId,\n" + "            catId = $catId,\n" + "            subCatId = $subCatId,\n" + "            userId = $userId,\n" + "            cityId = $cityId,\n" + "            locations = listOf(Loc($regionId, $lat, $lng),Loc($region2Id, null, null),Loc($region3Id, null, null)),\n" + "            isShowExactAddress = $isShowExactAddress,\n" + "            size = Period(${sizeFrom?.toLong()}, (${(sizeTo ?: sizeFrom)?.toLong()}),\n" + "            rooms = Period(${roomFrom?.toLong()}, ${roomTo?.toLong()}),\n" + "            age = Period(${ageFrom?.toLong()}, ${ageTo?.toLong()}),\n" + "            price = Period($priceFrom, ${priceTo}),\n" + "            description = $descriptions,\n" + "            images = listOfImages",
         )
     }
 
@@ -180,23 +168,25 @@ class AddItemViewModel : ViewModel() {
     private fun isOwner() = typeId == FileTypes().owner.id
 
     private fun getValueFrom(valueFrom: Long?, valueTo: Long?): Long? {
-        return if (isOwner())
-            valueFrom
-        else
-            valueTo
+        return if (isOwner()) valueFrom
+        else valueTo
     }
 
-    fun saveFile(userId: Int) {
-        gatheringData(userId)
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _saveResponse.value =
-                    Api.retrofitService.saveFile(fileSave)
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun saveFile(activity: Activity, userId: Int) {
+        if (!isOnline(activity)) internetProblemDialog(activity) { _, _ ->
+            saveFile(activity, userId)
+        }
+        else {
+            gatheringData(userId)
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _saveResponse.value = Api.retrofitService.saveFile(fileSave)
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "${this@AddItemViewModel.javaClass.name}, getRegion, ", e)
+                }
             }
         }
     }

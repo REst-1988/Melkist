@@ -11,12 +11,14 @@ import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.example.melkist.data.Ds
 import com.example.melkist.data.OptionsDs
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivitySplashScreenBinding
 import com.example.melkist.models.User
 import com.example.melkist.utils.changeAppTheme
+import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.SplashViewModel
 import com.google.android.gms.tasks.OnCompleteListener
@@ -46,13 +48,17 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySplashScreenBinding.inflate(LayoutInflater.from(this))
-        binding.apply {
-            lifecycleOwner = this@SplashActivity
-            viewmodel = viewModel
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
+            handleSystemException(lifecycleScope, "SplashActivity, setDefaultUncaughtExceptionHandler ", null, paramThrowable)
+            finish()
         }
-        setContentView(binding.root)
         try {
+            binding = ActivitySplashScreenBinding.inflate(LayoutInflater.from(this))
+            binding.apply {
+                lifecycleOwner = this@SplashActivity
+                viewmodel = viewModel
+            }
+            setContentView(binding.root)
             checkAppVersion()
             userDataStore = Ds.getDataStore(this)
             listenToAppVersionResponse()
@@ -66,25 +72,29 @@ class SplashActivity : AppCompatActivity() {
                 it?.let { theme -> changeAppTheme(theme) }
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            handleSystemException(lifecycleScope, "SplashActivity, onCreate ", e)
         }
     }
 
     private fun listenToAppVersionResponse() {
-        viewModel.appVersionResponse.observe(this) { response ->
-            response?.apply {
-                when (versionResult) {
-                    true -> createDelay(firebaseTokenResult)
-                    false -> downloadLastVersion()
-                    else -> showDialogWithMessage(
-                        this@SplashActivity,
-                        resources.getString(R.string.somthing_goes_wrong)
-                    ) { d, _ ->
-                        d.dismiss()
-                        this@SplashActivity.finish()
+        try {
+            viewModel.appVersionResponse.observe(this) { response ->
+                response?.apply {
+                    when (versionResult) {
+                        true -> createDelay(firebaseTokenResult)
+                        false -> downloadLastVersion()
+                        else -> showDialogWithMessage(
+                            this@SplashActivity,
+                            resources.getString(R.string.somthing_goes_wrong)
+                        ) { d, _ ->
+                            d.dismiss()
+                            this@SplashActivity.finish()
+                        }
                     }
                 }
             }
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "SplashActivity, listenToAppVersionResponse ", e)
         }
     }
 
@@ -121,7 +131,7 @@ class SplashActivity : AppCompatActivity() {
             }
             val token = task.result // Get new FCM registration token
             Log.e(ContentValues.TAG, token)
-            viewModel.callServerAppVersion(userId = user?.id, token, appVersion)
+            viewModel.callServerAppVersion(this, userId = user?.id, token, appVersion)
         })
     }
 
@@ -141,25 +151,14 @@ class SplashActivity : AppCompatActivity() {
             )
     }
 
-//    private fun checkSituation(user: User?) {  // TODO: deprecated method no need delete if not necessary
-//        if (user?.id != null
-//            && user.id > 0
-//            && !user.isFirstTime!!
-//            && user.profilePic != ""
-//        ) {
-//            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-//            this@SplashActivity.finish()
-//        } else {
-//            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-//            this@SplashActivity.finish()
-//            overridePendingTransition(0, 0)
-//        }
-//    }
-
     private fun downloadLastVersion() {
-        val browserIntent =
-            Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(R.string.site_url)))
-        startActivity(browserIntent)
+        try {
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(R.string.site_url)))
+            startActivity(browserIntent)
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "SplashActivity, downloadLastVersion ", e)
+        }
     }
 
     override fun onDestroy() {

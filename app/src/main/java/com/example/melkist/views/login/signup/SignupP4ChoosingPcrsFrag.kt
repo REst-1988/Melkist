@@ -67,10 +67,10 @@ class SignupP4ChoosingPcrsFrag: Fragment() {
     override fun onResume() {
         super.onResume()
         when (viewModel.pcrsCondition) {
-            SignupViewModel.Pcrs.PROVINCE -> viewModel.getProvinces()
-            SignupViewModel.Pcrs.CITY -> viewModel.getCities()
-            SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.getRealEstate()
-            else -> viewModel.getSuperVisor()
+            SignupViewModel.Pcrs.PROVINCE -> viewModel.getProvinces(requireActivity())
+            SignupViewModel.Pcrs.CITY -> viewModel.getCities(requireActivity())
+            SignupViewModel.Pcrs.REAL_ESTATE -> viewModel.getRealEstate(requireActivity())
+            else -> viewModel.getSuperVisor(requireActivity())
         }
     }
 

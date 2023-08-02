@@ -47,7 +47,6 @@ class MyFilesAdapter(private val fragment: Fragment) :
         }
 
         private fun bindSeeker(data: FileData) {
-            Log.e("TAG", "bind 1 data = $data")
             binding.apply {
                 layoutSeeker.visibility = View.VISIBLE
                 layoutOwner.visibility = View.GONE
@@ -60,7 +59,6 @@ class MyFilesAdapter(private val fragment: Fragment) :
         }
 
         private fun bindingOwner(data: FileData) {
-            Log.e("TAG", "bind 2 data = $data")
             binding.apply {
                 layoutSeeker.visibility = View.GONE
                 layoutOwner.visibility = View.VISIBLE
@@ -75,7 +73,9 @@ class MyFilesAdapter(private val fragment: Fragment) :
                     formatNumber(data.price.from!!.toDouble())
                 )
                 data.images?.let {
-                    bindImage(imgMainOwner, it[0])
+                    if (it.isNotEmpty())
+                        bindImage(imgMainOwner, it[0])
+                    else imgMainOwner.setImageDrawable(null)
                 }
             }
         }

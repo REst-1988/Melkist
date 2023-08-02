@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.MainActivity
 import com.example.melkist.R
@@ -19,10 +20,7 @@ import com.example.melkist.databinding.DialogLayoutInboxOutboxBinding
 import com.example.melkist.databinding.FragProfileInBoxOutBoxBinding
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Status
-import com.example.melkist.utils.INBOX
 import com.example.melkist.utils.OUTBOX
-import com.example.melkist.utils.STATUS_APPROVED
-import com.example.melkist.utils.STATUS_DENY
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
@@ -38,6 +36,7 @@ class ProfileOutboxFrag(
 
     private lateinit var binding: FragProfileInBoxOutBoxBinding
     private val viewModel: MainViewModel by activityViewModels()
+    private val statusList: MutableList<Status> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -61,9 +60,9 @@ class ProfileOutboxFrag(
         }
     }
 
-    fun showOutboxDialog(item: Status, list: List<Status>) {
+    fun showOutboxDialog(item: Status) {
         val binding = DialogLayoutInboxOutboxBinding.inflate(LayoutInflater.from(context))
-        bindOutboxDialogItemViews(binding, item, list)
+        bindOutboxDialogItemViews(binding, item)
         val alertDialog = AlertDialog.Builder(context).create()
         alertDialog.setView(binding.root)
         alertDialog.setCancelable(true)
@@ -75,10 +74,10 @@ class ProfileOutboxFrag(
         binding.btnMoreDetailDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 try {
-                    viewModel.getFileInfoById(token = token!!, item.file!!.id!!, id!!)
+                    viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
-                    handleSystemException(e)
+                    handleSystemException(lifecycleScope, "ProfileOutboxFrag, showOutboxDialog, ", e)
                 }
             }
         }
@@ -101,8 +100,11 @@ class ProfileOutboxFrag(
         }
     }
 
-    private fun bindOutboxDialogItemViews(binding: DialogLayoutInboxOutboxBinding, item: Status, list: List<Status>) {
+    private fun bindOutboxDialogItemViews(
+        binding: DialogLayoutInboxOutboxBinding, item: Status
+    ) {
         binding.apply {
+            txtDialogTitle.text = resources.getString(R.string.ask_for_cooperation_outbox)
             btnApproveDialog.visibility = View.GONE
             btnDenyDialog.visibility = View.GONE
 
@@ -125,10 +127,7 @@ class ProfileOutboxFrag(
                 }
                 age?.apply {
                     txtAge.text = getPropertyPeriodsText(
-                        requireContext(),
-                        this,
-                        R.string.empty,
-                        R.string.year
+                        requireContext(), this, R.string.empty, R.string.year
                     )
                 }
                 size?.apply {
@@ -153,33 +152,51 @@ class ProfileOutboxFrag(
                 txtRealEstate.text = realEstate
                 txtCreateAt.text = createAt
             }
-            val a = arrayOf(binding.txtStatus1, binding.txtStatus2, binding.txtStatus3)
+            val a = arrayOf(txtStatus1, txtStatus2, txtStatus3)
+            val b = statusList.filter { it.requestId == item.requestId }
             a.forEach {
                 it.visibility = View.GONE
             }
-            for (i in 0 .. list.size) {
-                a[i].visibility = View.VISIBLE
-                getStatusStringAndColor(item.status, binding.txtStatus1)
+            for (i in b.indices) {
+                if (i < a.size) a[i].visibility = View.VISIBLE
+                getStatusStringAndColor(b[i], a[i])
             }
         }
     }
 
-    private fun getStatusStringAndColor (status: Int?, tv: TextView) {
-        when (status) {
+    private fun getStatusStringAndColor(item: Status, tv: TextView) {
+        var stringStatus = ""
+        when (item.status) {
             1 -> {
-                tv.text = resources.getString(R.string.verified)
+                stringStatus = resources.getString(R.string.verified)
                 tv.setTextColor(resources.getColor(android.R.color.holo_green_dark))
             }
 
             0 -> {
-                tv.text = resources.getString(R.string.decline)
+                stringStatus = resources.getString(R.string.decline)
                 tv.setTextColor(resources.getColor(android.R.color.holo_red_dark))
             }
 
             else -> {
-                tv.text = resources.getString(R.string.to_verify)
+                stringStatus = resources.getString(R.string.to_verify)
                 tv.setTextColor(resources.getColor(android.R.color.holo_orange_dark))
             }
+        }
+        item.targetUser?.apply {
+            if (realEstate == resources.getString(R.string.freelancer))
+                tv.text = resources.getString(
+                    R.string.status_text_freelancer,
+                    lastName,
+                    realEstate,
+                    stringStatus
+                )
+            else
+                tv.text = resources.getString(
+                    R.string.status_text,
+                    lastName,
+                    realEstate,
+                    stringStatus
+                )
         }
     }
 
@@ -190,17 +207,30 @@ class ProfileOutboxFrag(
         )
     }
 
-    fun setupOutboxList() {
+    private fun setupOutboxList() {
         val adapter2 = InboxOutboxAdapter(null, this, OUTBOX)
         binding.rvInboxOutbox.adapter = adapter2
         getList()
+        listenToOutboxResponse(adapter2)
+
+    }
+
+    fun getList() {
+        (activity as MainActivity).user?.apply {
+            viewModel.getOutbox(
+                requireActivity(), id!!, token!!
+            )
+        }
+    }
+
+    private fun listenToOutboxResponse(adapter: InboxOutboxAdapter) {
         viewModel.outboxResponse.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> {
-                    adapter2
-                        .submitList(
-                            response.data?.filter { it.isManReceiver == true}
-                        )
+                    response.data?.apply {
+                        statusList.addAll(response.data)
+                    }
+                    adapter.submitList(response.data?.filter { it.isManReceiver == true })
                 }
 
                 false -> {
@@ -208,19 +238,9 @@ class ProfileOutboxFrag(
                     viewModel.resetOutboxResponse()
                 }
 
-                else -> {
-                    Log.e("TAG", "setupOutbox: ${response.errors}")
-                }
+                else -> Log.e("TAG", "setupOutbox: ${response.errors}")
             }
             binding.pullToRefreshMainList.isRefreshing = false
-        }
-    }
-
-    fun getList() {
-        (activity as MainActivity).user?.apply {
-            viewModel.getOutbox(
-                id!!, token!!
-            )
         }
     }
 }

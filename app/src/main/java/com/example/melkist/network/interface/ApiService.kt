@@ -8,6 +8,11 @@ import retrofit2.http.Query
 
 interface ApiService {
 
+    @POST("reportBugToSlack")
+    suspend fun reportBugToSlack(
+        @Body message: String
+    )
+
     @POST("checkAppVersion")
     suspend fun versionControl(
         @Query("user_id") userId: Int?,
@@ -195,6 +200,12 @@ interface ApiService {
         @Query("user_id") userId: Int,
         @Query("role_id") roleId: Int
     ): Users
+
+    @POST("dashboard/admin/deleteUser")
+    suspend fun deleteUser(
+        @Header("Authorization") token: String,
+        @Query("user_id") userId: Int,
+    ): PublicResponseModel
 
     @POST("dashboard/admin/file/getFileInfoByUserId")
     suspend fun getFileInfoByUserId(

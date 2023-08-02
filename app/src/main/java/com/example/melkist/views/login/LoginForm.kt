@@ -61,6 +61,7 @@ class LoginForm : Fragment() {
             Log.d(ContentValues.TAG, token)
 
             viewModel.login(
+                requireActivity(),
                 binding?.etUsernameLoginAct?.editText?.text.toString(),
                 binding?.etPasswordLoginAct?.editText?.text.toString(),
                 token

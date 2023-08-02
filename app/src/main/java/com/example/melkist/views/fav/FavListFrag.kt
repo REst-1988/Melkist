@@ -26,6 +26,7 @@ import com.example.melkist.models.FilterFileData
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.FILTER_RESULT_KEY
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.hasFilterData
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.MainViewModel
 
@@ -36,30 +37,6 @@ class FavListFrag : Fragment() {
     private var _binding: FragFavListBinding? = null
     private var interaction: Interaction? = null
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setFragmentResultListener(FILTER_RESULT_KEY) { _, bundle ->
-            val filterfileData = bundle.getSerializable(DATA)!! as FilterFileData
-            Log.e("TAG", "onCreate: rooms.from = ${filterfileData.rooms.from}")
-            Log.e("TAG", "onCreate: rooms.to = ${filterfileData.rooms.to}")
-            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.from}")
-            Log.e("TAG", "onCreate: age.from = ${filterfileData.age.to}")
-            Log.e("TAG", "onCreate: catId = ${filterfileData.catId}")
-            Log.e("TAG", "onCreate: price.from = ${filterfileData.price.from}")
-            Log.e("TAG", "onCreate: price.to = ${filterfileData.price.to}")
-            Log.e("TAG", "onCreate: regionId = ${filterfileData.regionId}")
-            Log.e("TAG", "onCreate: size.from = ${filterfileData.size.from}")
-            Log.e("TAG", "onCreate: size.to = ${filterfileData.size.to}")
-            Log.e("TAG", "onCreate: subCatId= ${filterfileData.subCatId}")
-            Log.e("TAG", "onCreate: typeId = ${filterfileData.typeId}")
-            /*            viewModel.resetLocations()// TODO: check this out uncomment
-                        viewModel.getFavFilterFiles(
-                            (activity as MainActivity).user.token!!,
-                            filterfileData
-                        )*/
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,25 +59,17 @@ class FavListFrag : Fragment() {
         binding.rvFavList.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
-        (activity as MainActivity).user?.apply {
-            viewModel.getFavoritesFile(
-                token!!,
-                id!!
-            )
+        getFavList()
+        binding.pullToRefreshMainList.setOnRefreshListener {
+            getFavList()
+        }
+        viewModel.favList.observe(viewLifecycleOwner) {
+            binding.pullToRefreshMainList.isRefreshing = false
         }
         activeSearchableFav()
         viewModel.fileAllData.removeObservers(viewLifecycleOwner)
     }
 
-    private fun activeSearchableFav() {
-        binding.searchView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                adapter.filter.filter(s)
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -110,6 +79,20 @@ class FavListFrag : Fragment() {
     override fun onResume() {
         super.onResume()
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
+        readyViewsOnFilter()
+        if (viewModel.filterFileData == null)
+            getFavList()
+        else {
+            viewModel.resetLocations()
+            (activity as MainActivity).user?.apply {
+                viewModel.filterFileData!!.userId = id
+                viewModel.getFilterFiles(
+                    requireActivity(), token!!, viewModel.filterFileData!!
+                )
+
+            }
+        }
+
     }
 
     override fun onAttach(context: Context) {
@@ -129,10 +112,31 @@ class FavListFrag : Fragment() {
         interaction = null
     }
 
+    private fun getFavList() = (activity as MainActivity).user?.apply {
+        viewModel.getFavoritesFile(
+            requireActivity(),
+            token!!,
+            id!!
+        )
+    }
+
+    private fun activeSearchableFav() {
+        binding.searchView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
     fun choosingItemAction(fav: Fav) {
+        viewModel.resetFileAllData()
         listenToFileDetailData()
         (activity as MainActivity).user?.apply {
             viewModel.getFileInfoById(
+                requireActivity(),
                 token!!,
                 fileId = fav.id,
                 id!!
@@ -158,6 +162,14 @@ class FavListFrag : Fragment() {
         showDialogWithMessage(
             requireContext(), concatenateText(response.errors)
         ) { d, _ -> d.dismiss() }
+    }
+
+    private fun readyViewsOnFilter() {
+        if (viewModel.filterFileData != null) {
+            binding.ibtnFilter.setBackgroundResource(R.drawable.background_rounded_btns_sharp)
+        } else {
+            binding.ibtnFilter.setBackgroundResource(R.drawable.background_rounded_btns)
+        }
     }
 
     /******************** binding stuff ***********************/

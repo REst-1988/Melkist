@@ -10,5 +10,7 @@ data class RegionResponseModel(
 data class RegionResponseData(
     @Json val id: Int? = 0,
     @Json val title: String = "",
-    @Json val tags: List<String>? = listOf()
+    @Json val tags: List<String>? = listOf(),
+    @Json val lat: Double?,
+    @Json val lng: Double?
 )

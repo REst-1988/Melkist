@@ -102,6 +102,7 @@
         </androidx.cardview.widget.CardView>
 
         <ImageView
+            android:id="@+id/img_add_edit"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="2dp"
@@ -126,6 +127,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_user_card" />
 
+        <TextView
+            android:id="@+id/txt_first_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:gravity="center"
+            android:padding="@dimen/normal_text_size"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintBottom_toTopOf="@id/btn_commit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_user_card" />
+
+        <EditText
+            android:id="@+id/txt_nick_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/normal_margin"
+            android:fontFamily="@font/iransans"
+            android:gravity="center"
+            android:hint="@string/nickname"
+            android:padding="@dimen/normal_text_size"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintBottom_toTopOf="@id/btn_commit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_first_last_name" />
+
         <Button
             android:id="@+id/btn_commit"
             style="@style/Theme.Melkist.Buttons"
@@ -135,7 +166,7 @@
             android:layout_margin="@dimen/normal_margin"
             android:fontFamily="@font/iransans"
             android:onClick="@{() -> fragment.onSend()}"
-            android:text="@string/select"
+            android:text="@string/commit"
             app:bindLoading="@{viewmodel.status}"
             app:layout_constraintBottom_toBottomOf="parent" />
 

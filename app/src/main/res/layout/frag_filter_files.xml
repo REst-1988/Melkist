@@ -670,7 +670,7 @@
         <Button
             android:id="@+id/btn_filter"
             style="@style/Theme.Melkist.Buttons"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/normal_margin"
@@ -680,8 +680,26 @@
             android:onClick="@{() -> fragment.onFilterClick()}"
             android:text="@string/filter"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_unfilter"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_unfilter"
+            style="@style/Theme.Melkist.Buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:drawableEnd="@drawable/baseline_filter_alt_off_24"
+            android:fontFamily="@font/iransans"
+            android:onClick="@{() -> fragment.onUnFilterClick()}"
+            android:text="@string/un_filter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_filter" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

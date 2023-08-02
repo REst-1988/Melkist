@@ -12,13 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.DialogLayoutInboxOutboxBinding
-import com.example.melkist.databinding.ItemListInboxOutboxBinding
 import com.example.melkist.databinding.ItemListSendReceivedCooperationBinding
 import com.example.melkist.models.Status
 import com.example.melkist.utils.INBOX
 import com.example.melkist.utils.RECEIVED
+import com.example.melkist.views.profile.cooperations.ProfileReceivedCooperationFrag
+import com.example.melkist.views.profile.cooperations.ProfileSendCooperationFrag
 
-class SendReceivedCooperationAdapter(private val context: Context, private val sendReceived: Int) :
+class SendReceivedCooperationAdapter(
+    private val fragReceived: ProfileReceivedCooperationFrag?,
+    private val fragSend: ProfileSendCooperationFrag?,
+    private val sendReceived: Int
+) :
     ListAdapter<Status, SendReceivedCooperationAdapter.ViewHolder>(DiffUtilCallBack) {
 
     // Diff call back does not used in this project yet but it would be handy for future changes
@@ -40,17 +45,18 @@ class SendReceivedCooperationAdapter(private val context: Context, private val s
         fun bind(data: Status) {
             if (sendReceived == RECEIVED) {
                 sendReceivedBinding.mainLayout.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                bindInbox(data)
+                bindReceived(data)
             } else {
                 sendReceivedBinding.mainLayout.layoutDirection = View.LAYOUT_DIRECTION_LTR
-                bindOutbox(data)
+                bindSend(data)
             }
         }
 
-        private fun bindInbox(data: Status) {
+        private fun bindReceived(data: Status) {
             data.file?.images?.apply {
                 if (this.isNotEmpty())
                     bindImage(sendReceivedBinding.imgMain, this[0])
+                else sendReceivedBinding.imgMain.setImageDrawable(null)
             }
             data.targetUser?.profilePic?.apply {
                 bindImage(sendReceivedBinding.imgProfile, this)
@@ -73,10 +79,11 @@ class SendReceivedCooperationAdapter(private val context: Context, private val s
             }
         }
 
-        private fun bindOutbox(data: Status) {
+        private fun bindSend(data: Status) {
             data.file?.images?.apply {
                 if (this.isNotEmpty())
                     bindImage(sendReceivedBinding.imgMain, this[0])
+                else sendReceivedBinding.imgMain.setImageDrawable(null)
             }
             data.targetUser?.profilePic?.apply {
                 bindImage(sendReceivedBinding.imgProfile, this)
@@ -116,32 +123,11 @@ class SendReceivedCooperationAdapter(private val context: Context, private val s
         val item = getItem(position)
         holder.bind(item)
         holder.itemView.setOnClickListener {
-            if (sendReceived == INBOX){
-                showInboxDialog(item)
-            }else{
-                showOutboxDialog(item)
+            if (sendReceived == RECEIVED) {
+                fragReceived?.showReceivedDialog(item)
+            } else {
+                fragSend?.showSendDialog(item)
             }
         }
-    }
-
-    private fun showInboxDialog(item: Status) {
-        val result = MutableLiveData("")
-        val binding =
-            DialogLayoutInboxOutboxBinding.inflate(LayoutInflater.from(context))
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setView(binding.root)
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-    }
-
-
-    private fun showOutboxDialog(item: Status) {
-        val result = MutableLiveData("")
-        val binding =
-            DialogLayoutInboxOutboxBinding.inflate(LayoutInflater.from(context))
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setView(binding.root)
-        alertDialog.setCancelable(true)
-        alertDialog.show()
     }
 }

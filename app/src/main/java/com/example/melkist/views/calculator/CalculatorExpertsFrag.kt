@@ -15,7 +15,9 @@ import com.example.melkist.utils.ALLAY_TAG
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.DIRECTION_TAG
 import com.example.melkist.utils.FLOOR_TAG
+import com.example.melkist.utils.LIGHTS_TAG
 import com.example.melkist.utils.ROOM_TAG
+import com.example.melkist.utils.UNITS_IN_FLOOR
 import com.example.melkist.utils.UNITS_TAG
 import com.example.melkist.utils.addLiveSeparatorListenerWithNumToLetterCallback
 import com.example.melkist.utils.getRemovedSeparatorValue
@@ -99,11 +101,10 @@ class CalculatorExpertsFrag : Fragment() {
     }
 
     fun onBtnCalculateClick() {
-
         viewModel.showItemLogs()
-
         viewModel.minNewPropertyValue = binding.etMinPriceChild.getRemovedSeparatorValue()
         viewModel.maxNewPropertyValue = binding.etMaxPriceChild.getRemovedSeparatorValue()
+        // TODO: postal code should sent to server
         if (viewModel.isAllFieldsOkay()) {
             viewModel.calculatePrice()
             CalculatorResultExpertDialogFrag(
@@ -304,6 +305,28 @@ class CalculatorExpertsFrag : Fragment() {
         }
     }
 
+    fun onChoosingUnitsInFloor() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.units_in_floor_list).toList())
+        bottomFrag.show(childFragmentManager, UNITS_IN_FLOOR)
+        bottomFrag.setFragmentResultListener(UNITS_IN_FLOOR) { _, positionBundle ->
+            viewModel.unitsInFloor =
+                resources.getStringArray(R.array.units_in_floor_list)[positionBundle.getInt(DATA)]
+            viewModel.isSingleUnits = positionBundle.getInt(DATA) == 0
+            binding.txtChooseUnitsInFloor.text = showUnitsInFloorText()
+        }
+    }
+
+    fun showUnitsInFloorText(): String {
+        return if (viewModel.unitsInFloor == "") {
+            binding.txtChooseUnitsInFloor.setTextColor(resources.getColor(R.color.sub_item_text_color_fade))
+            resources.getString(R.string.choose)
+        } else {
+            binding.txtChooseUnitsInFloor.setTextColor(resources.getColor(R.color.normal_text_color))
+            viewModel.unitsInFloor
+        }
+    }
+
     fun onChoosingUnits() {
         val bottomFrag =
             BottomSheetUniversalList(resources.getStringArray(R.array.units_list).toList())
@@ -368,6 +391,28 @@ class CalculatorExpertsFrag : Fragment() {
         } else {
             binding.txtChooseNorthern.setTextColor(resources.getColor(R.color.normal_text_color))
             viewModel.direction
+        }
+    }
+
+    fun onChoosingLights() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.lights_list).toList())
+        bottomFrag.show(childFragmentManager, LIGHTS_TAG)
+        bottomFrag.setFragmentResultListener(LIGHTS_TAG) { _, positionBundle ->
+            viewModel.lights =
+                resources.getStringArray(R.array.lights_list)[positionBundle.getInt(DATA)]
+            viewModel.isLights = positionBundle.getInt(DATA) != 0
+            binding.txtChooseLights.text = showLightsText()
+        }
+    }
+
+    fun showLightsText(): String {
+        return if (viewModel.lights == "") {
+            binding.txtChooseLights.setTextColor(resources.getColor(R.color.sub_item_text_color_fade))
+            resources.getString(R.string.choose)
+        } else {
+            binding.txtChooseLights.setTextColor(resources.getColor(R.color.normal_text_color))
+            viewModel.lights
         }
     }
 }

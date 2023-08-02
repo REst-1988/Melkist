@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP5MapsBinding
+import com.example.melkist.utils.handleSystemException
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -30,10 +32,18 @@ class AddP5MapsFrag : Fragment() {
         val shiraz = position
         this.googleMap = googleMap
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shiraz, 12.0f))
+
+        if (viewModel.lat != null && viewModel.lng != null) {
+            position = LatLng(viewModel.lat!!, viewModel.lng!!)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 14.0f))
+        } else if (viewModel.regionId != 0 && viewModel.regionLat != null && viewModel.regionLng != null) {
+            position = LatLng(viewModel.regionLat!!, viewModel.regionLng!!)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 14.0f))
+        }
         googleMap.setOnCameraIdleListener {
-                position = googleMap.cameraPosition.target
-                Log.d("MapActivity", "Position: $position")
-            }
+            position = googleMap.cameraPosition.target
+            Log.d("MapActivity", "Position: $position")
+        }
     }
 
     override fun onCreateView(
@@ -52,9 +62,12 @@ class AddP5MapsFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
-
+        try {
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(callback)
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "AddP5MapsFrag, onViewCreated,", e)
+        }
     }
 
     /************** binding commands **********************/
@@ -68,7 +81,7 @@ class AddP5MapsFrag : Fragment() {
         viewModel.lat = position.latitude
         viewModel.lng = position.longitude
         googleMap.addMarker(MarkerOptions().position(position))
-        googleMap.snapshot {imageBitmap ->
+        googleMap.snapshot { imageBitmap ->
             imageBitmap?.apply {
                 viewModel.setMapSnapShot(this)
             }

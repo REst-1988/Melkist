@@ -29,9 +29,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.melkist.R
 import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
+import com.example.melkist.models.FilterFileData
 import com.example.melkist.models.Period
 import com.example.melkist.models.User
+import com.example.melkist.network.Api
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import saman.zamani.persiandate.PersianDate
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -41,10 +45,9 @@ object User {
     var token: String? = null
 }
 
-fun isOnline(context: Context): Boolean { //TODO: CHECK INTERNET with my note 3 for make it sure that it worked well
+fun isOnline(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
@@ -96,6 +99,8 @@ fun internetProblemDialog(
         .setPositiveButton(activity.resources.getText(R.string.retry), action)
         .setNegativeButton(activity.resources.getString(R.string.quit)) { d, _ ->
             d.dismiss()
+            showToast(activity, activity.resources.getString(R.string.try_again_later))
+            activity.finish()
         }
         .show()
 }
@@ -127,12 +132,21 @@ fun getTimeStampForLoadImages(): String {
     return System.currentTimeMillis().toString()
 }
 
-fun getPropertyPeriodsText(context: Context, period: Period, @StringRes titleUnit: Int, @StringRes unit: Int): String {
-    Log.e("TAG", "getPropertyPeriodsText: ${period.from}  ${period.to}", )
+fun getPropertyPeriodsText(
+    context: Context,
+    period: Period,
+    @StringRes titleUnit: Int,
+    @StringRes unit: Int
+): String {
+    Log.e("TAG", "getPropertyPeriodsText: ${period.from}  ${period.to}")
     var text = ""
     if (period.from == null && period.to == null) {
-        text = String.format("%s: %s", context.resources.getString(titleUnit), context.resources.getString(R.string.all_items))
-    } else if (period.from != null && period.from ==  period.to) {
+        text = String.format(
+            "%s: %s",
+            context.resources.getString(titleUnit),
+            context.resources.getString(R.string.all_items)
+        )
+    } else if (period.from != null && period.from == period.to) {
         text = String.format("%s %s", period.from, context.resources.getString(unit))
     } else {
         var from = ""
@@ -159,56 +173,67 @@ fun calculatePricePerMeter(context: Context, price: Period, size: Period): Strin
         )
 }
 
-fun handleSystemException(e: Exception){
-    // TODO: handle exception sending to web
-    e.printStackTrace()
+fun handleSystemException(scope: CoroutineScope,  from: String?, e: Exception? = null, t: Throwable? = null) {
+    scope.launch {
+        try {
+            e?.apply {
+                Api.retrofitService.reportBugToSlack(from + " " + stackTraceToString())
+            }
+            t?.apply {
+                Api.retrofitService.reportBugToSlack(from + " " + stackTraceToString())
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    e?.apply {
+        printStackTrace()
+    }
+    t?.apply {
+        printStackTrace()
+    }
 }
 
 fun getPropertyPeriodsPriceText(context: Context, periodPrice: Period): String {
     var text = ""
     if (periodPrice.from == null && periodPrice.to == null) {
-        text = String.format("%s: %s", context.resources.getString(R.string.price), context.resources.getString(R.string.all_items))
-    } else if (periodPrice.from != null && periodPrice.from ==  periodPrice.to) {
-        text = String.format("%s %s", formatNumber(periodPrice.from.toDouble()), context.resources.getString(R.string.tooman))
+        text = String.format(
+            "%s: %s",
+            context.resources.getString(R.string.price),
+            context.resources.getString(R.string.all_items)
+        )
+    } else if (periodPrice.from != null && periodPrice.from == periodPrice.to) {
+        text = String.format(
+            "%s %s",
+            formatNumber(periodPrice.from.toDouble()),
+            context.resources.getString(R.string.tooman)
+        )
     } else {
         var from = ""
         var to = ""
         if (periodPrice.from != null)
-            from = String.format("%s %s", context.resources.getString(R.string.from), formatNumber(periodPrice.from.toDouble()))
+            from = String.format(
+                "%s %s",
+                context.resources.getString(R.string.from),
+                formatNumber(periodPrice.from.toDouble())
+            )
         if (periodPrice.to != null)
-            to = String.format("%s %s", context.resources.getString(R.string.to), formatNumber(periodPrice.to.toDouble()))
+            to = String.format(
+                "%s %s",
+                context.resources.getString(R.string.to),
+                formatNumber(periodPrice.to.toDouble())
+            )
         text = String.format("%s %s %s", from, to, context.resources.getString(R.string.tooman))
     }
     return text
-}
-
-
-fun getPropertyPeriodsTextDeprecated(context: Context, period: Period, @StringRes unit: Int): String {
-    val conjunctions = if (period.to == period.from) " ${context.resources.getString(unit)}"
-    else context.resources.getString(
-        R.string.to
-    ) + " " + period.to + " " + context.resources.getString(
-        unit
-    )
-    return String.format("%s %s", period.from?:"", conjunctions)
-}
-
-fun getPropertyPeriodsPriceTextDeprecated(context: Context, period: Period, @StringRes unit: Int): String {
-    val conjunctions = if (period.to == period.from) " ${context.resources.getString(unit)}"
-    else context.resources.getString(
-        R.string.to
-    ) + " " + formatNumber(period.to!!.toDouble()) + " " + context.resources.getString(
-        unit
-    )
-    return String.format("%s %s", formatNumber(period.from!!.toDouble()), conjunctions)
 }
 
 fun concatenateText(texts: List<String>?): String {
     var allErrors = ""
     texts?.apply {
         val iterator: Iterator<String> = iterator()
-        while (iterator.hasNext()){
-            allErrors += "${iterator.next()}${if(iterator.hasNext()) ", " else ""}"
+        while (iterator.hasNext()) {
+            allErrors += "${iterator.next()}${if (iterator.hasNext()) ", " else ""}"
         }
     }
     return allErrors
@@ -264,7 +289,13 @@ fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextVi
 }
 
 
-fun showInputDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title: String, unit: String?, observer: Observer<in String?>) {
+fun showInputDialog(
+    context: Context,
+    viewLifecycleOwner: LifecycleOwner,
+    title: String,
+    unit: String?,
+    observer: Observer<in String?>
+) {
     val result = MutableLiveData("")
     val binding =
         DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
@@ -295,8 +326,14 @@ fun showInputDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title:
     })
     binding.btnConfirm.setOnClickListener {
         if (binding.etInput.text.isNotEmpty()) {
-            result.value = binding.etInput.text.toString().replace(",", "")
-            alertDialog.dismiss()
+            if (isConditionsOkForFields(binding.etInput.text.toString())) {
+                result.value = binding.etInput.text.toString().replace(",", "")
+                alertDialog.dismiss()
+            } else {
+                showToast(
+                    context, context.resources.getString(R.string.input_right_number)
+                )
+            }
         } else {
             showToast(
                 context, context.resources.getString(R.string.on_empty_dialog_edittext_feild)
@@ -306,8 +343,12 @@ fun showInputDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title:
     result.observe(viewLifecycleOwner, observer)
 }
 
-
-fun showAgeDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title: String, observer: Observer<in String?>) {
+fun showAgeDialog(
+    context: Context,
+    viewLifecycleOwner: LifecycleOwner,
+    title: String,
+    observer: Observer<in String?>
+) {
     val result = MutableLiveData("")
     val binding =
         DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
@@ -337,11 +378,13 @@ fun showAgeDialog(context: Context, viewLifecycleOwner: LifecycleOwner, title: S
     result.observe(viewLifecycleOwner, observer)
 }
 
-private fun isConditionsOk(input: String): Boolean {
-    return input.toInt() <= getPersianYear() && input.toInt() >= 1150
-}
+private fun isConditionsOk(input: String): Boolean =
+    input.toInt() <= getPersianYear() && input.toInt() >= 1150
 
-@InspectableProperty
+
+private fun isConditionsOkForFields(input: String): Boolean =
+    input.toInt() > 0
+
 fun TextInputEditText.getRemovedSeparatorValue(): Long {
     if (!this.text.isNullOrBlank())
         return this.text.toString().replace(",", "").toLong()
@@ -364,25 +407,6 @@ fun changeAppTheme(theme: Int) {
 }
 
 fun getPersianYear(): Int = PersianDate().shYear
-
-// this function also adding separator to numbers but it is old one used in Shanno project
-fun addSeparator(numberLong: Long): String {
-    val number = numberLong.toString().trim()
-    val buffer = StringBuffer(number)
-    val a = buffer.reverse().toString().trim()
-    var result = ""
-    var counter = 0
-    for (i in a.indices) {
-        if (counter % 3 == 0) {
-            result = result + "," + a[i]
-            counter = 0
-        } else {
-            result += a[i]
-        }
-        counter++
-    }
-    return StringBuffer(result).reverse().toString().trim { it <= ' ' }
-}
 
 fun numInLetter(context: Context, num: Long): String {
     //var result = ""
@@ -417,95 +441,20 @@ fun numInLetter(context: Context, num: Long): String {
     return soFar
 }
 
-object Words {
-
-    private val hundredsNames = arrayOf(
-        " صد", " دویست", " سیصد", " چهارصد", " پانصد", " ششصد", " هفتصد", " نه صد"
-    )
-    private val tensNames = arrayOf(
-        "", " ده", " بیست", " سی", " چهل", " پنجاه", " شصت", " هفتاد", " هشتاد", " نود"
-    )
-    private val numNames = arrayOf(
-        "",
-        " یک",
-        " دو",
-        " سه",
-        " چهار",
-        " پنج",
-        " شش",
-        " هفت",
-        " هشت",
-        " نه",
-        " ده",
-        " یازده",
-        " دوازده",
-        " سیزده",
-        " چهارده",
-        " پانزده",
-        " شانزده",
-        " هفده",
-        " هجده",
-        " نوزده"
-    )
-
-    fun convertLessThanOneThousand(number: Int): String {
-        var number = number
-        var soFar: String
-        if (number % 100 < 20) {
-            soFar = numNames[number % 100]
-            number /= 100
-        } else {
-            soFar = numNames[number % 10]
-            number /= 10
-            soFar = tensNames[number % 10] + soFar
-            number /= 10
-        }
-        return if (number == 0) soFar else numNames[number] + " صد" + soFar
-    }
-
-    fun convert(number: Long): String {
-        // 0 to 999 999 999 999
-        if (number == 0L) {
-            return "صفر"
-        }
-        var snumber = java.lang.Long.toString(number)
-
-        // pad with "0"
-        val mask = "000000000000"
-        val df = DecimalFormat(mask)
-        snumber = df.format(number)
-
-        // XXXnnnnnnnnn
-        val billions = snumber.substring(0, 3).toInt()
-        // nnnXXXnnnnnn
-        val millions = snumber.substring(3, 6).toInt()
-        // nnnnnnXXXnnn
-        val hundredThousands = snumber.substring(6, 9).toInt()
-        // nnnnnnnnnXXX
-        val thousands = snumber.substring(9, 12).toInt()
-        val tradBillions: String = when (billions) {
-            0 -> ""
-            1 -> (convertLessThanOneThousand(billions) + " میلیارد ")
-            else -> (convertLessThanOneThousand(billions) + " میلیارد ")
-        }
-        var result = tradBillions
-        val tradMillions: String = when (millions) {
-            0 -> ""
-            1 -> (convertLessThanOneThousand(millions) + " میلیون ")
-            else -> (convertLessThanOneThousand(millions) + " میلیون ")
-        }
-        result += tradMillions
-        val tradHundredThousands: String = when (hundredThousands) {
-            0 -> ""
-            1 -> "یک هزار "
-            else -> (convertLessThanOneThousand(hundredThousands) + " هزار ")
-        }
-        result += tradHundredThousands
-        val tradThousand: String = convertLessThanOneThousand(thousands)
-        result += tradThousand
-
-        // remove extra spaces!
-        return result.replace("^\\s+".toRegex(), "").replace("\\b\\s{2,}\\b".toRegex(), " ")
+fun hasFilterData(filerFileData: FilterFileData): Boolean {
+    return filerFileData.let { filterFile ->
+        filterFile.rooms.from != 0L ||
+                filterFile.rooms.to != 0L ||
+                filterFile.price.from != 0L ||
+                filterFile.price.to != 0L ||
+                filterFile.age.from != 0L ||
+                filterFile.age.to != 0L ||
+                filterFile.size.from != 0L ||
+                filterFile.size.to != 0L ||
+                filterFile.typeId != null ||
+                filterFile.catId != null ||
+                filterFile.subCatId != null ||
+                filterFile.regionId != null
     }
 }
 

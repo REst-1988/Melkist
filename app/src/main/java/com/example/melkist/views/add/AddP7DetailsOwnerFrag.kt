@@ -50,16 +50,9 @@ class AddP7DetailsOwnerFrag : Fragment() {
             if (uri != null) startCrop(uri) else Log.e("TAG", "getContent URI is NULL: ")
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: test 1")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-        Log.e("TAG", "onCreate: test 2")
         binding = FragAddP7DetailsOwnerBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -71,11 +64,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("TAG", "onCreate: test 3")
         viewModel.saveResponse.observe(viewLifecycleOwner) {
-            Log.e("TAG", "onViewCreated: ${it.result}")
-            Log.e("TAG", "onViewCreated: ${it.message}")
-            Log.e("TAG", "onViewCreated: ${concatenateText(it.errors)}")
             when (it.result) {
                 true -> showDialogWithMessage(
                     requireContext(), it.message ?: ""
@@ -141,7 +130,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
         ) viewModel.descriptions =
             binding.etDescriptions.editText!!.text.toString()
         if (isDataReady())
-            viewModel.saveFile((activity as AddActivity).user.id!!)
+            viewModel.saveFile(requireActivity(), (activity as AddActivity).user.id!!)
         else
             showDialogWithMessage(
                 requireContext(),

@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -18,6 +19,7 @@ import com.example.melkist.data.Ds
 import com.example.melkist.databinding.ActivityMainBinding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.User
+import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -30,51 +32,61 @@ class MainActivity : AppCompatActivity(), Interaction {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        navView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_map, R.id.navigation_profle, R.id.navigation_fav
-            )
-        )
-        navView.itemIconTintList = null
-        // setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-        navView.selectedItemId = R.id.navigation_add
-        binding.ibtnAdd.setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    AddActivity::class.java
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
+            handleSystemException(lifecycleScope, "MainActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
+            finish()
+        }
+        try {
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+            navView = binding.navView
+            val navController = findNavController(R.id.nav_host_fragment_activity_main)
+            val appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.navigation_map, R.id.navigation_profle, R.id.navigation_fav
                 )
             )
-        }
+            navView.itemIconTintList = null
+            // setupActionBarWithNavController(navController, appBarConfiguration)
+            navView.setupWithNavController(navController)
+            navView.selectedItemId = R.id.navigation_add
+            binding.ibtnAdd.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this,
+                        AddActivity::class.java
+                    )
+                )
+            }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissionLauncher =
-                registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-                    if (!it)
-                        showToast(
-                            this,
-                            resources.getString(R.string.permission_no_garent)
-                        )
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher =
+                    registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                        if (!it)
+                            showToast(
+                                this,
+                                resources.getString(R.string.permission_no_garent)
+                            )
+                    }
+            }
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "MainActivity, onCreate, ", e)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (user == null) {
-            val userDataStore = Ds.getDataStore(this)
-            userDataStore.preferenceFlow.asLiveData().observe(this) {
-                user = it
+        try {
+            if (user == null) {
+                val userDataStore = Ds.getDataStore(this)
+                userDataStore.preferenceFlow.asLiveData().observe(this) {
+                    user = it
+                }
             }
+            checkNotificationPermission()
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "MainActivity, onResume, ", e)
         }
-        checkNotificationPermission()
-
     }
 
     //////////// helper methods ///////////

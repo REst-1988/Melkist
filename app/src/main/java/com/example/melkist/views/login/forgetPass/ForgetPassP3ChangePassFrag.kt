@@ -92,7 +92,7 @@ class ForgetPassP3ChangePassFrag : Fragment() {
         // TODO: this has a bug, second tey for changing password may contain an error
         if (isPassword()) {
             viewModel.password = binding.etPassword.editText!!.text.toString()
-            viewModel.requestChangePasswordByMobile()
+            viewModel.requestChangePasswordByMobile(requireActivity())
         }
     }
 

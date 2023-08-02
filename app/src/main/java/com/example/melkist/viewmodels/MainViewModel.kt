@@ -1,5 +1,6 @@
 package com.example.melkist.viewmodels
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,6 +24,8 @@ import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.REGION_1
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.internetProblemDialog
+import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.launch
 
 class MainViewModel :
@@ -46,8 +49,11 @@ class MainViewModel :
     val inboxResponse: LiveData<InboxOutboxModel> = _inboxResponse
     private val _outboxResponse = MutableLiveData<InboxOutboxModel>()
     val outboxResponse: LiveData<InboxOutboxModel> = _outboxResponse
-    private val _sendReceiveCooperationResponse = MutableLiveData<InboxOutboxModel>()
-    val sendReceiveCooperationResponse: LiveData<InboxOutboxModel> = _sendReceiveCooperationResponse
+    private val _cooperationResponseListReceived = MutableLiveData<InboxOutboxModel>()
+    val cooperationResponseListReceived: LiveData<InboxOutboxModel> =
+        _cooperationResponseListReceived
+    private val _cooperationResponseListSend = MutableLiveData<InboxOutboxModel>()
+    val cooperationResponseListSend: LiveData<InboxOutboxModel> = _cooperationResponseListSend
     private val _myFiles = MutableLiveData<MyFilesResponse>()
     val myFiles: LiveData<MyFilesResponse> = _myFiles
     private val _setStatusResponse = MutableLiveData<PublicResponseModel>()
@@ -75,6 +81,7 @@ class MainViewModel :
     private val _filesResponse = MutableLiveData<FileResponse>()
     val filesResponse: LiveData<FileResponse> = _filesResponse
 
+    var filterFileData: FilterFileData? = null
     var catId: Int? = null
     var catTitle: String? = null
     var subCatId: Int? = null
@@ -87,34 +94,44 @@ class MainViewModel :
         itemType = type
     }
 
-    fun getFiles(token: String, cityId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _locationResponse.value =
-                    Api.retrofitService.getAllFilesByCity(token = token, cityId = cityId)
-                Log.e("TAG", "getFileInfoById: ${_locationResponse.value!!.data}")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getFiles(activity: Activity, token: String, cityId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getFiles(activity, token, cityId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _locationResponse.value =
+                        Api.retrofitService.getAllFilesByCity(token = token, cityId = cityId)
+                    Log.e("TAG", "getFileInfoById: ${_locationResponse.value}")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getFiles, ", e)
+                }
+            }
     }
 
-    fun getFilterFiles(token: String, filterFileData: FilterFileData) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _locationResponse.value =
-                    Api.retrofitService.filterFiles(token = token, filterFileData)
-                Log.e("TAG", "getFileInfoById: ${_locationResponse.value!!.data}")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
+    fun getFilterFiles(activity: Activity, token: String, filterFileData: FilterFileData) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getFilterFiles(activity, token, filterFileData)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _locationResponse.value =
+                        Api.retrofitService.filterFiles(token = token, filterFileData)
+                    Log.e("TAG", "getFilterFiles: ${_locationResponse.value}")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getFilterFiles, ", e)
+                }
+            }
     }
 
     fun resetLocations() {
@@ -146,233 +163,310 @@ class MainViewModel :
         return REGION_1
     }
 
-    fun getFileInfoById(token: String, fileId: Int, userId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            //resetFileAllData()
-            try {
-                _fileAllData.value =
-                    Api.retrofitService.getFileInfoById(token, fileId, userId)
-                Log.e("TAG", "getFileInfoById: ${fileAllData.value!!.data}")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                e.printStackTrace()
-                resetFileAllData()
-                _status.value = ApiStatus.ERROR
+    fun getFileInfoById(activity: Activity, token: String, fileId: Int, userId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getFileInfoById(activity, token, fileId, userId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                //resetFileAllData()
+                try {
+                    _fileAllData.value =
+                        Api.retrofitService.getFileInfoById(token, fileId, userId)
+                    Log.e("TAG", "getFileInfoById: ${fileAllData.value!!.data}")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    resetFileAllData()
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getFileInfoById, ", e)
+                }
+            }
     }
 
-    fun deleteFile(token: String, fileId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _deleteFileResponse.value =
-                    Api.retrofitService.deleteFile(
-                        token,
-                        fileId
-                    )
-                Log.e("TAG", "deleteFile: ${_deleteFileResponse.value} ")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
+    fun deleteFile(activity: Activity, token: String, fileId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                deleteFile(activity, token, fileId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _deleteFileResponse.value =
+                        Api.retrofitService.deleteFile(
+                            token,
+                            fileId
+                        )
+                    Log.e("TAG", "deleteFile: ${_deleteFileResponse.value} ")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, deleteFile, ", e)
+                }
+            }
     }
 
-    fun saveFavFile(token: String, userId: Int, fileId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _saveFavResponse.value =
-                    Api.retrofitService.saveFavoriteFile(
-                        token,
-                        userId,
-                        fileId
-                    )
-                Log.e("TAG", "saveFavFile: ${_saveFavResponse.value.toString()} ")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
+    fun saveFavFile(activity: Activity, token: String, userId: Int, fileId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                saveFavFile(activity, token, userId, fileId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _saveFavResponse.value =
+                        Api.retrofitService.saveFavoriteFile(
+                            token,
+                            userId,
+                            fileId
+                        )
+                    Log.e("TAG", "saveFavFile: ${_saveFavResponse.value.toString()} ")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, saveFavFile, ", e)
+                }
+            }
     }
 
-    fun deleteFavFile(token: String, userId: Int, fileId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _deleteFavResponse.value =
-                    Api.retrofitService.deleteFavoriteFiles(
-                        token,
-                        userId,
-                        fileId
-                    )
-                Log.e("TAG", "deleteFavFile: ${_deleteFavResponse.value.toString()} ")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
+    fun deleteFavFile(activity: Activity, token: String, userId: Int, fileId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                deleteFavFile(activity, token, userId, fileId)
             }
-        }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _deleteFavResponse.value =
+                        Api.retrofitService.deleteFavoriteFiles(
+                            token,
+                            userId,
+                            fileId
+                        )
+                    Log.e("TAG", "deleteFavFile: ${_deleteFavResponse.value.toString()} ")
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, deleteFavFile, ", e)
+                }
+            }
     }
 
     fun sendCooperationRequest(
+        activity: Activity,
         token: String,
         userId: Int,
         fileId: Int
     ) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _cooperationResponse.value =
-                    Api.retrofitService.sendCooperationRequest(
-                        token,
-                        userId,
-                        fileId
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                sendCooperationRequest(activity, token, userId, fileId)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _cooperationResponse.value =
+                        Api.retrofitService.sendCooperationRequest(
+                            token,
+                            userId,
+                            fileId
+                        )
+                    Log.e(
+                        "TAG",
+                        "sendCooperationRequest: ${_cooperationResponse.value.toString()} "
                     )
-                Log.e("TAG", "sendCooperationRequest: ${_cooperationResponse.value.toString()} ")
-                _status.value = ApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
-            }
-        }
-    }
-
-    fun getFavoritesFile(token: String, userId: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _favList.value = Api.retrofitService.getFavoriteFiles(token, userId)
-                Log.e("TAG", "getFavoritesFile: ${_favList.value.toString()} ")
-                _favList.value?.apply {
-                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, sendCooperationRequest, ", e)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _status.value = ApiStatus.ERROR
             }
-        }
     }
 
-    fun getInbox(userId: Int, token: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _inboxResponse.value =
-                    Api.retrofitService.inboxByStatus(token = token, userId = userId, status = null)
-                Log.e("TAG", "getInbox: ${_inboxResponse.value.toString()} ")
-                _inboxResponse.value?.apply {
-                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
+    fun getFavoritesFile(activity: Activity, token: String, userId: Int) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getFavoritesFile(activity, token, userId)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _favList.value = Api.retrofitService.getFavoriteFiles(token, userId)
+                    Log.e("TAG", "getFavoritesFile: ${_favList.value.toString()} ")
+                    _favList.value?.apply {
+                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getFavoritesFile, ", e)
                 }
-            } catch (e: java.lang.Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
             }
-        }
     }
 
-    fun getOutbox(userId: Int, token: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _outboxResponse.value =
-                    Api.retrofitService.outboxByStatus(token = token, userId = userId, null)
-                Log.e("TAG", "getOutbox: ${_outboxResponse.value.toString()} ")
-                _outboxResponse.value?.apply {
-                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
+    fun getInbox(activity: Activity, userId: Int, token: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getInbox(activity, userId, token)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _inboxResponse.value =
+                        Api.retrofitService.inboxByStatus(
+                            token = token,
+                            userId = userId,
+                            status = null
+                        )
+                    Log.e("TAG", "getInbox: ${_inboxResponse.value.toString()} ")
+                    _inboxResponse.value?.apply {
+                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: java.lang.Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getInbox, ", e)
                 }
-            } catch (e: java.lang.Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
             }
-        }
     }
 
-    fun getReceivedCooperation(userId: Int, token: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _sendReceiveCooperationResponse.value =
-                    Api.retrofitService.inboxByStatus(token = token, userId = userId, status = 1)
-                Log.e(
-                    "TAG",
-                    "_receiveSendCooperationResponse: ${_sendReceiveCooperationResponse.value.toString()} ",
-                )
-                sendReceiveCooperationResponse.value?.apply {
-                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
+    fun getOutbox(activity: Activity, userId: Int, token: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getOutbox(activity, userId, token)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _outboxResponse.value =
+                        Api.retrofitService.outboxByStatus(token = token, userId = userId, null)
+                    Log.e("TAG", "getOutbox: ${_outboxResponse.value.toString()} ")
+                    _outboxResponse.value?.apply {
+                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getOutbox, ", e)
                 }
-            } catch (e: java.lang.Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
             }
-        }
     }
 
-    fun getSendCooperation(userId: Int, token: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _sendReceiveCooperationResponse.value =
-                    Api.retrofitService.outboxByStatus(token = token, userId = userId, 1)
-                Log.e(
-                    "TAG",
-                    "getSendCooperation: ${_sendReceiveCooperationResponse.value.toString()} ",
-                )
-                sendReceiveCooperationResponse.value?.apply {
-                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: java.lang.Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
+    fun getReceivedCooperation(activity: Activity, userId: Int, token: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getReceivedCooperation(activity, userId, token)
             }
-        }
-    }
-
-    fun getMyFiles(userId: Int, token: String) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _myFiles.value =
-                    Api.retrofitService.getFileInfoByUserId(token = token, userId = userId)
-                Log.e("TAG", "getMyFiles: ${_myFiles.value.toString()} ")
-                _myFiles.value?.apply {
-                    if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
-                    else _status.value = ApiStatus.DONE
-                }
-            } catch (e: java.lang.Exception) {
-                _status.value = ApiStatus.ERROR
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-    fun setAlertStatus(token: String, fileRequestId: Int, userId: Int, status: Int) {
-        viewModelScope.launch {
-            _status.value = ApiStatus.LOADING
-            try {
-                _setStatusResponse.value =
-                    Api.retrofitService.setAlertStatus(
-                        token = token,
-                        fileRequestId = fileRequestId,
-                        userId = userId,
-                        status = status
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _cooperationResponseListReceived.value =
+                        Api.retrofitService.inboxByStatus(
+                            token = token,
+                            userId = userId,
+                            status = 1
+                        )
+                    Log.e(
+                        "TAG",
+                        "_cooperationResponseListReceived: ${_cooperationResponseListReceived.value.toString()} ",
                     )
-                Log.e("TAG", "_setStatusResponse: ${_setStatusResponse.value.toString()} ")
-            } catch (e: java.lang.Exception) {
-                _status.value = ApiStatus.ERROR
-                handleSystemException(e)
+                    cooperationResponseListReceived.value?.apply {
+                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: java.lang.Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getReceivedCooperation, ", e)
+                }
             }
-        }
+    }
+
+    fun getSendCooperation(activity: Activity, userId: Int, token: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getSendCooperation(activity, userId, token)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _cooperationResponseListSend.value =
+                        Api.retrofitService.outboxByStatus(token = token, userId = userId, 1)
+                    Log.e(
+                        "TAG",
+                        "_cooperationResponseListSend: ${_cooperationResponseListSend.value.toString()} ",
+                    )
+                    cooperationResponseListSend.value?.apply {
+                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: java.lang.Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getSendCooperation, ", e)
+                }
+            }
+    }
+
+    fun getMyFiles(activity: Activity, userId: Int, token: String) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getMyFiles(activity, userId, token)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _myFiles.value =
+                        Api.retrofitService.getFileInfoByUserId(token = token, userId = userId)
+                    Log.e("TAG", "getMyFiles: ${_myFiles.value.toString()} ")
+                    _myFiles.value?.apply {
+                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+                } catch (e: java.lang.Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, getMyFiles, ", e)
+                }
+            }
+    }
+
+    fun setAlertStatus(
+        activity: Activity,
+        token: String,
+        fileRequestId: Int,
+        userId: Int,
+        status: Int
+    ) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                setAlertStatus(activity, token, fileRequestId, userId, status)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _setStatusResponse.value =
+                        Api.retrofitService.setAlertStatus(
+                            token = token,
+                            fileRequestId = fileRequestId,
+                            userId = userId,
+                            status = status
+                        )
+                    Log.e("TAG", "_setStatusResponse: ${_setStatusResponse.value.toString()} ")
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(viewModelScope, "MainViewModel, setAlertStatus, ", e)
+                }
+            }
     }
 
     fun resetSaveResponse() {
@@ -383,7 +477,7 @@ class MainViewModel :
         _fileAllData.value = FileDataResponse(null, null, null)
     }
 
-    fun resetDeleteResponse() {
+    fun resetDeleteFavResponse() {
         _deleteFavResponse.value = PublicResponseModel(null, null, listOf())
     }
 
@@ -403,7 +497,16 @@ class MainViewModel :
     fun resetInboxResponse() {
         _inboxResponse.value = InboxOutboxModel(null, null, null)
     }
+
     fun resetOutboxResponse() {
         _outboxResponse.value = InboxOutboxModel(null, null, null)
+    }
+
+    fun resetCooperationResponse() {
+        _cooperationResponse.value = PublicResponseModel(null, null, listOf())
+    }
+
+    fun reseetLocationResponse() {
+        _locationResponse.value = LocationResponse(null, listOf(), null)
     }
 }

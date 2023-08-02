@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.AddActivity
 import com.example.melkist.R
@@ -20,6 +21,7 @@ import com.example.melkist.utils.ITEM_TYPE_KEY
 import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.SEEKER_ITEM_TYPE
 import com.example.melkist.utils.SUB_CAT_RESULT_KEY
+import com.example.melkist.utils.handleSystemException
 import com.example.melkist.viewmodels.AddItemViewModel
 
 
@@ -30,41 +32,49 @@ class AddP1MainFrag : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragAddP1MainBinding.inflate(inflater)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewmodel = viewModel
-            fragment = this@AddP1MainFrag
+        try {
+            binding = FragAddP1MainBinding.inflate(inflater)
+            binding.apply {
+                lifecycleOwner = viewLifecycleOwner
+                viewmodel = viewModel
+                fragment = this@AddP1MainFrag
+            }
+            return binding.root
+        }catch (e: Exception){
+            handleSystemException(lifecycleScope, "AddP1MainFrag, onCreateView, ", e)
         }
-        return binding.root
+        return null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener(ITEM_TYPE_KEY) { _, bundle ->
-            when (bundle.getInt(DATA)) {
-                OWNER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.OWNER)
-                SEEKER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.SEEKER)
+        try {
+            setFragmentResultListener(ITEM_TYPE_KEY) { _, bundle ->
+                when (bundle.getInt(DATA)) {
+                    OWNER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.OWNER)
+                    SEEKER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.SEEKER)
+                }
+                binding!!.txtChooseType.text = showTypeText()
+                viewModel.resetAddItemFieldsByChoosingType()
             }
-            binding!!.txtChooseType.text = showTypeText()
-            viewModel.resetAddItemFieldsByChoosingType()
-        }
-        setFragmentResultListener(CAT_RESULT_KEY) { _, bundle ->
-            bundle.getStringArray(DATA)?.apply {
-                viewModel.catId = this[0].toInt()
-                viewModel.catTitle = this[1]
-                if (this[0].toInt() != 0) {
-                    viewModel.resetAddItemFieldsByChoosingCategory()
+            setFragmentResultListener(CAT_RESULT_KEY) { _, bundle ->
+                bundle.getStringArray(DATA)?.apply {
+                    viewModel.catId = this[0].toInt()
+                    viewModel.catTitle = this[1]
+                    if (this[0].toInt() != 0) {
+                        viewModel.resetAddItemFieldsByChoosingCategory()
+                    }
                 }
             }
-        }
-        setFragmentResultListener(SUB_CAT_RESULT_KEY) { _, bundle ->
-            bundle.getStringArray(DATA)?.apply {
-                viewModel.subCatId = this[0].toInt()
-                viewModel.subCatTitle = this[1]
+            setFragmentResultListener(SUB_CAT_RESULT_KEY) { _, bundle ->
+                bundle.getStringArray(DATA)?.apply {
+                    viewModel.subCatId = this[0].toInt()
+                    viewModel.subCatTitle = this[1]
+                }
             }
+        } catch (e: Exception){
+            handleSystemException(lifecycleScope, "AddP1MainFrag, onViewCreated,", e)
         }
-
     }
 
     /******************* binding commands **************************/

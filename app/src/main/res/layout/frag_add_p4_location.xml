@@ -261,9 +261,9 @@
 
                     </LinearLayout>
 
+                    <!--setVisibility="@{fragment.mapVisibility()}"-->
                     <RelativeLayout
                         android:id="@+id/layout_choose_location"
-                        setVisibility="@{fragment.mapVisibility()}"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginStart="@dimen/normal_margin"
@@ -274,7 +274,6 @@
                         android:focusable="true"
                         android:onClick="@{() -> fragment.onChoosingLocation()}">
 
-                        <!-- TODO: this is only for preview remove it after finishing map part-->
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

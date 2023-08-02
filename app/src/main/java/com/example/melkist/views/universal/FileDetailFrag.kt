@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.MainActivity
 import com.example.melkist.R
@@ -14,10 +15,8 @@ import com.example.melkist.adapters.ImagePagerAdapter
 import com.example.melkist.databinding.FragFileDetailBinding
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
-import com.example.melkist.models.Period
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
-import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
 import com.example.melkist.utils.getTimeStampForLoadImages
@@ -100,6 +99,7 @@ class FileDetailFrag : Fragment() {
                 if (this) {
                     (activity as MainActivity).user?.apply {
                         viewModel.deleteFavFile(
+                            requireActivity(),
                             token!!,
                             id!!,
                             viewModel.fileAllData.value!!.data!!.id
@@ -108,6 +108,7 @@ class FileDetailFrag : Fragment() {
                 } else {
                     (activity as MainActivity).user?.apply {
                         viewModel.saveFavFile(
+                            requireActivity(),
                             token!!,
                             id!!,
                             viewModel.fileAllData.value!!.data!!.id
@@ -130,12 +131,16 @@ class FileDetailFrag : Fragment() {
                             requireContext(), it
                         )
                     }
+                    viewModel.resetCooperationResponse()
                     back()
                 }
 
-                false -> showToast(
-                    requireContext(), concatenateText(response.errors)
-                )
+                false -> {
+                    showToast(
+                        requireContext(), concatenateText(response.errors)
+                    )
+                    viewModel.resetCooperationResponse()
+                }
 
                 else -> {}
             }
@@ -177,7 +182,7 @@ class FileDetailFrag : Fragment() {
                         requireContext(), response.message!!
                     )
                     binding.ibtnBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
-                    viewModel.resetDeleteResponse()
+                    viewModel.resetDeleteFavResponse()
                     viewModel.fileAllData.value?.data?.isFav = false
                 }
 
@@ -185,7 +190,7 @@ class FileDetailFrag : Fragment() {
                     showToast(
                         requireContext(), concatenateText(response.errors)
                     )
-                    viewModel.resetDeleteResponse()
+                    viewModel.resetDeleteFavResponse()
                 }
 
                 else -> Log.e(
@@ -201,7 +206,12 @@ class FileDetailFrag : Fragment() {
                     viewModel.resetDeleteFileResponse()
                     back()
                 }
-                false -> showToast(requireContext(), concatenateText(response.errors))
+
+                false -> {
+                    viewModel.resetDeleteFileResponse()
+                    showToast(requireContext(), concatenateText(response.errors))
+                }
+
                 null -> Log.e(
                     "TAG",
                     "initObservers: ${resources.getString(R.string.null_value)}"
@@ -237,24 +247,13 @@ class FileDetailFrag : Fragment() {
         viewModel.fileAllData.value?.data?.id?.let { fileId ->
             (activity as MainActivity).user?.apply {
                 viewModel.sendCooperationRequest( // TODO: finish this part
+                    requireActivity(),
                     token!!,
                     id!!,
                     fileId
                 )
             }
         }
-    }
-
-    fun onApproveCooperation() {
-        // TODO
-    }
-
-    fun denyCooperation() {
-        // TODO
-    }
-
-    fun onCall() {
-        // TODO
     }
 
     fun funOnDeleteFileClick() {
@@ -264,7 +263,7 @@ class FileDetailFrag : Fragment() {
             { _, _ ->
                 (activity as MainActivity).user?.token?.apply {
                     viewModel.fileAllData.value?.data?.id?.let { fileId ->
-                        viewModel.deleteFile(this, fileId)
+                        viewModel.deleteFile(requireActivity(), this, fileId)
                     }
                 }
             },
@@ -304,7 +303,7 @@ class FileDetailFrag : Fragment() {
                     it.fileType!!.title
                 )
             } catch (e: Exception) {
-                handleSystemException(e)
+                handleSystemException(lifecycleScope, "${this.javaClass.name}, typeText, ", e)
                 null
             }
         }

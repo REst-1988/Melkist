@@ -17,7 +17,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.example.melkist.LoginActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
@@ -31,7 +30,6 @@ import com.example.melkist.viewmodels.ProfilePicViewModel
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 
 class ProfilePicFrag : Fragment() {
@@ -65,17 +63,49 @@ class ProfilePicFrag : Fragment() {
             viewModel.isFirstTime = user.isFirstTime
             viewModel.userId = user.id
             viewModel.token = user.token
+            viewModel.userFirstName = user.firstName
+            viewModel.userLastName = user.lastName
+            // TODO    viewModel.txtNickname = user.nickname
             checkIfHasProfilePicAndAllocate()
         }
         listenToUploadResponse()
     }
 
     private fun checkIfHasProfilePicAndAllocate() {
-        Log.e("TAG", "checkIfHasProfilePicAndAllocate: isFirstTime = ${viewModel.isFirstTime}", )
         if (viewModel.isFirstTime == false && !viewModel.profileImage.isNullOrEmpty()){
-
-            Log.e("TAG", "checkIfHasProfilePicAndAllocate: test2", )
             bindImage(binding.imgUser, viewModel.profileImage)
+            readyViewForChangingProfilePic()
+        }else{
+            readyViewForAddingProfilePic()
+        }
+    }
+
+    private fun readyViewForChangingProfilePic() {
+        binding.apply {
+            imgAddEdit.setImageResource(R.drawable.baseline_edit_24)
+            txtFirstLastName.text = String.format(
+                "%s: %s %s",
+                resources.getString(R.string.first_name_last_name_title),
+                viewModel.userFirstName,
+                viewModel.userLastName
+            )
+            viewModel.txtNickname?.apply {
+                txtNickName.setText(this)
+            } // TODO: create nick name
+            txtPlain.visibility = View.INVISIBLE
+            txtFirstLastName.visibility = View.VISIBLE
+            txtNickName.visibility = View.VISIBLE // TODO: create nick name
+            btnCommit.text = resources.getString(R.string.commit_changes)
+        }
+    }
+
+    private fun readyViewForAddingProfilePic() {
+        binding.apply {
+            imgAddEdit.setImageResource(R.drawable.ic_baseline_add_box_24)
+            txtFirstLastName.visibility = View.INVISIBLE
+            txtNickName.visibility = View.INVISIBLE // TODO: create nick name
+            txtPlain.visibility = View.VISIBLE
+            btnCommit.text = resources.getString(R.string.commit)
         }
     }
 
@@ -161,14 +191,13 @@ class ProfilePicFrag : Fragment() {
         findNavController().popBackStack()
     }
 
-
     fun onSend() {
-        if (viewModel.imgUser != null){
+        if (viewModel.imgUser != null){ // TODO: after adding nick name, changing nickname may okay for saving
             binding.txtPlain.setTextColor(resources.getColor(R.color.normal_text_color))
-            viewModel.uploadProfilePic()
+            viewModel.uploadProfilePic(requireActivity())
         } else {
             binding.txtPlain.setTextColor(Color.RED)
-            showToast(requireContext(), resources.getString(R.string.choose_profile_pic))
+            showToast(requireContext(), resources.getString(R.string.make_sure_choose_profile_pic))
         }
     }
 

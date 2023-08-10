@@ -4,13 +4,10 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.ItemListCatSubCatBinding
 import com.example.melkist.models.CatSubCatModel
@@ -43,7 +40,6 @@ class ChoosingCatSubCatAdapter(val viewModel: ChooseCatSubCatViewModel, val frag
         }
 
         private fun loadImg(data: CatSubCatModel) {
-            Log.e("TAG", "loadImg: ${data.dayIconUrl}  night ${data.nightIconUrl}", )
             val imgUrl = if (isSystemDarkMode(context)) data.nightIconUrl else data.dayIconUrl
             bindImage(binding.img, imgUrl)
         }

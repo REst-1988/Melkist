@@ -188,11 +188,11 @@ interface ApiService {
     ): InboxOutboxModel
 
     @POST("dashboard/admin/file/sendCooperationRequest")
-    suspend fun sendCooperationRequest( // TODO: Finish this part
+    suspend fun sendCooperationRequest(
         @Header("Authorization") token: String,
         @Query("applicant_id") userId: Int,
         @Query("file_id") fileId: Int
-    ): PublicResponseModel// TODO: check this out
+    ): PublicResponseModel
 
     @POST("dashboard/admin/getAllUserSubset")
     suspend fun getAllUserSubset(
@@ -220,47 +220,4 @@ interface ApiService {
         @Query("user_id") userId: Int,
         @Query("status") status: Int
     ): PublicResponseModel?
-
-    /*    @GET("users")
-        @Headers(
-            "Accept: application/vnd.github+json",
-            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-            "X-GitHub-Api-Version: 2022-11-28")
-        suspend fun getUserList(): List<GitUser>
-
-        @GET("search/users")
-        @Headers(
-            "Accept: application/vnd.github+json",
-            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-            "X-GitHub-Api-Version: 2022-11-28")
-        suspend fun getSearchUsers(
-            @Query("q") query: String
-        ): SearchModel
-
-        @GET("users/{username}")
-        @Headers(
-            "Accept: application/vnd.github+json",
-            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-            "X-GitHub-Api-Version: 2022-11-28")
-        suspend fun getUser(
-            @Path(value = "username") username: String
-        ): UserModel
-
-        @GET("users/{username}/followers")
-        @Headers(
-            "Accept: application/vnd.github+json",
-            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-            "X-GitHub-Api-Version: 2022-11-28")
-        suspend fun getFollower(
-            @Path(value = "username") username: String
-        ): List<GitUser>
-
-        @GET("users/{username}/following")
-        @Headers(
-            "Accept: application/vnd.github+json",
-            "Authorization: Bearer ghp_$GIT_INFINITE_TOKEN",
-            "X-GitHub-Api-Version: 2022-11-28")
-        suspend fun getFollowing(
-            @Path(value = "username") username: String
-        ): List<GitUser>*/
 }

@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP1EnterNcodePhoneBinding
-import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showDialogWithMessage

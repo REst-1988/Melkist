@@ -1,5 +1,6 @@
 package com.example.melkist
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
@@ -16,42 +17,30 @@ import com.example.melkist.data.Ds
 import com.example.melkist.data.OptionsDs
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.ActivitySplashScreenBinding
+import com.example.melkist.models.AppVersionResponse
 import com.example.melkist.models.User
 import com.example.melkist.utils.changeAppTheme
+import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.SplashViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.launch
 
-//TODO: checking the version of application
-// TODO: check internet connection
-// TODO: check if user would sign in before
-
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 100 // TODO: change this to 3000
+    private val splashTimeOut: Long = 200
     private lateinit var binding: ActivitySplashScreenBinding
-    private var mHandler: Handler? = null
     private lateinit var userDataStore: UserDataStore
     private var appVersion: String = ""
     private val viewModel: SplashViewModel by viewModels()
     private var user: User? = null
-
-    //1 get user data  DONE
-    //2 get firebase token  DONE
-    //3 check app version   DONE
-    //4 if version not ok download app
-    // 5 if version ok check firebase token
-    // 6 if firebase token not ok login
-    // 7 if ok login
+    private var firebaseToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            handleSystemException(lifecycleScope, "SplashActivity, setDefaultUncaughtExceptionHandler ", null, paramThrowable)
-            finish()
-        }
         try {
             binding = ActivitySplashScreenBinding.inflate(LayoutInflater.from(this))
             binding.apply {
@@ -64,11 +53,11 @@ class SplashActivity : AppCompatActivity() {
             listenToAppVersionResponse()
             userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
                 user = value
-                Log.e("SplashActivity", "onCreate: user = $value")
+                Log.e("SplashActivity", "onCreate: userDataStore = $value")
                 checkFirebaseTokenAndProceed()
             }
             OptionsDs.getDataStore(this).themePreferenceFlow.asLiveData().observe(this) {
-                Log.e("TAG", "onCreate: theme = $it")
+                Log.e("TAG", "onCreate: OptionsDs theme = $it")
                 it?.let { theme -> changeAppTheme(theme) }
             }
         } catch (e: Exception) {
@@ -80,15 +69,20 @@ class SplashActivity : AppCompatActivity() {
         try {
             viewModel.appVersionResponse.observe(this) { response ->
                 response?.apply {
-                    when (versionResult) {
-                        true -> createDelay(firebaseTokenResult)
-                        false -> downloadLastVersion()
+                    when (result) {
+                        true -> onTrueAppVersionResult(response)
+                        false -> onFalseAppVersionResult(response.errors)
                         else -> showDialogWithMessage(
                             this@SplashActivity,
                             resources.getString(R.string.somthing_goes_wrong)
                         ) { d, _ ->
                             d.dismiss()
-                            this@SplashActivity.finish()
+                            viewModel.callServerAppVersion(
+                                this@SplashActivity,
+                                userId = user?.id,
+                                firebaseToken,
+                                appVersion
+                            )
                         }
                     }
                 }
@@ -98,17 +92,27 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkFirebaseTokenResponse(firebaseTokenResult: Boolean?) {
-        when (firebaseTokenResult) {
-            true -> startMainActivityOnTrueResult()
-            false -> startLoginActivityOnFalseResult()
-            else -> showDialogWithMessage(
-                this@SplashActivity,
-                resources.getString(R.string.somthing_goes_wrong)
-            ) { d, _ ->
-                d.dismiss()
-                this@SplashActivity.finish()
+    private fun onTrueAppVersionResult(response: AppVersionResponse) {
+        if (response.versionResult == false) {
+            downloadLastVersion()
+        } else {
+            if (response.firebaseTokenResult == true && response.isFirstTime == false)
+                startMainActivityOnTrueResult()
+            else
+                startLoginActivityOnFalseResult()
+        }
+    }
+
+    private fun onFalseAppVersionResult(errors: List<String>) {
+        showDialogWithMessage(
+            this@SplashActivity,
+            concatenateText(errors)
+        ) { d, _ ->
+            d.dismiss()
+            lifecycleScope.launch {
+                Ds.getDataStore(this@SplashActivity).emptyPreferences()
             }
+            startLoginActivityOnFalseResult()
         }
     }
 
@@ -129,9 +133,19 @@ class SplashActivity : AppCompatActivity() {
                 Log.e(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-            val token = task.result // Get new FCM registration token
-            Log.e(ContentValues.TAG, token)
-            viewModel.callServerAppVersion(this, userId = user?.id, token, appVersion)
+            firebaseToken = task.result // Get new FCM registration token
+            Log.e(ContentValues.TAG, firebaseToken ?: "")
+            Handler(Looper.getMainLooper())
+                .postDelayed(
+                    {
+                        viewModel.callServerAppVersion(
+                            this,
+                            userId = user?.id,
+                            firebaseToken,
+                            appVersion
+                        )
+                    }, splashTimeOut
+                )
         })
     }
 
@@ -139,16 +153,6 @@ class SplashActivity : AppCompatActivity() {
         val pInfo = this.packageManager.getPackageInfo(packageName, 0)
         appVersion = pInfo.versionName
         binding.txtVesrion.text = String.format(resources.getString(R.string.version), appVersion)
-    }
-
-    private fun createDelay(firebaseTokenResult: Boolean?) {
-        mHandler = Handler(Looper.getMainLooper())
-        mHandler!!
-            .postDelayed(
-                {
-                    checkFirebaseTokenResponse(firebaseTokenResult)
-                }, splashTimeOut
-            )
     }
 
     private fun downloadLastVersion() {
@@ -159,11 +163,5 @@ class SplashActivity : AppCompatActivity() {
         } catch (e: Exception) {
             handleSystemException(lifecycleScope, "SplashActivity, downloadLastVersion ", e)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Remove any pending messages from the handler to avoid memory leaks
-        mHandler?.removeCallbacksAndMessages(null)
     }
 }

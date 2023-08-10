@@ -42,32 +42,27 @@ class ForgetPassP3ChangePassFrag : Fragment() {
 
     private fun listenToChangePassResponse() {
         viewModel.changePassResponse.observe(viewLifecycleOwner) {
-            if (viewModel.isResponseOk(viewModel.changePassResponse)) {
-                showToast(requireContext(), viewModel.changePassResponse.value!!.message!!)
-                showDialogWithMessage(
-                    requireContext(),
-                    viewModel.changePassResponse.value!!.message!!
-                ) { d, _ ->
-                    d.dismiss()
-                    readyForStartNextSetion()
-                }
-            } else if (viewModel.isResponseNotOk(viewModel.changePassResponse))
-                if (viewModel.changePassResponse.value!!.errors.isNotEmpty())
-                    showDialogWithMessage(
-                        requireContext(),
-                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
-                    ) { d, _ ->
-                        d.dismiss()
-                    }
-                else
-                    Log.e(
-                        "TAG",
-                        "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ",
-                    )
-            /*showToast(
-                requireContext(),
-                resources.getString(R.string.somthing_goes_wrong)
-            )*/
+            when (it.result) {
+                true -> onTrueResultListenToChangePassResponse()
+                false -> onFalseResultListenToChangePassResponse()
+                else -> {}
+            }
+        }
+    }
+
+    private fun onTrueResultListenToChangePassResponse() {
+        showToast(requireContext(), viewModel.changePassResponse.value!!.message!!)
+        viewModel.resetChangePassResponse()
+        readyForStartNextSetion()
+    }
+
+    private fun onFalseResultListenToChangePassResponse() {
+        showDialogWithMessage(
+            requireContext(),
+            concatenateText(viewModel.verificationCodeResponse.value!!.errors)
+        ) { d, _ ->
+            d.dismiss()
+            viewModel.resetChangePassResponse()
         }
     }
 
@@ -89,7 +84,6 @@ class ForgetPassP3ChangePassFrag : Fragment() {
     }
 
     fun onConfirm() {
-        // TODO: this has a bug, second tey for changing password may contain an error
         if (isPassword()) {
             viewModel.password = binding.etPassword.editText!!.text.toString()
             viewModel.requestChangePasswordByMobile(requireActivity())

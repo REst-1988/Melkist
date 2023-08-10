@@ -16,10 +16,6 @@ class AddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            handleSystemException(lifecycleScope, "AddActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
-            finish()
-        }
         try {
             setContentView(R.layout.activity_add)
             val userDataStore = UserDataStore(this)

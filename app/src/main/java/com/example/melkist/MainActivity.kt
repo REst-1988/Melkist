@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -31,12 +30,12 @@ class MainActivity : AppCompatActivity(), Interaction {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            handleSystemException(lifecycleScope, "MainActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
-            finish()
-        }
         try {
+            super.onCreate(savedInstanceState)
+            /*        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
+                        handleSystemException(lifecycleScope, "MainActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
+                        finish()
+            }*/
             binding = ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
             navView = binding.navView
@@ -75,8 +74,8 @@ class MainActivity : AppCompatActivity(), Interaction {
     }
 
     override fun onResume() {
-        super.onResume()
         try {
+            super.onResume()
             if (user == null) {
                 val userDataStore = Ds.getDataStore(this)
                 userDataStore.preferenceFlow.asLiveData().observe(this) {

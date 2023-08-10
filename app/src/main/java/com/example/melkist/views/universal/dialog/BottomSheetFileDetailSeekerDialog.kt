@@ -51,10 +51,10 @@ class BottomSheetFileDetailSeekerDialog(
 
     private fun initListeners(response: FileDataResponse) {
         binding.imgLogo.setOnClickListener {
-            fragment.onMoreDetailFileClick(this)
+            fragment.onMoreDetailFileClick()
         }
         binding.txtImgLogo.setOnClickListener {
-            fragment.onMoreDetailFileClick(this)
+            fragment.onMoreDetailFileClick()
         }
         binding.ibtnBookmark.setOnClickListener {
             (activity as MainActivity).user?.apply {
@@ -66,7 +66,7 @@ class BottomSheetFileDetailSeekerDialog(
                         (activity as MainActivity).user?.apply {
                             viewModel.deleteFavFile(requireActivity(), token!!, id!!, fileId)
                         }
-                    }else {
+                    } else {
                         (activity as MainActivity).user?.apply {
                             viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
                         }
@@ -78,7 +78,7 @@ class BottomSheetFileDetailSeekerDialog(
             showToast(requireContext(), resources.getString(R.string.next_phase))
         }
         binding.ibtnMore.setOnClickListener {
-            fragment.onMoreDetailFileClick(this)
+            fragment.onMoreDetailFileClick()
         }
     }
 
@@ -92,9 +92,12 @@ class BottomSheetFileDetailSeekerDialog(
         viewModel.fileAllData.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> onOkGettingFileAllDataResponse(response)
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(response.errors)
-                ) { d, _ -> d.dismiss() }
+                false -> {
+                    showDialogWithMessage(
+                        requireContext(), concatenateText(response.errors)
+                    ) { d, _ -> d.dismiss() }
+                    this.dismiss()
+                }
 
                 else -> Log.e("TAG", "fileAllData: ${resources.getString(R.string.null_value)}")
             }
@@ -166,8 +169,7 @@ class BottomSheetFileDetailSeekerDialog(
                 R.string.squere_meter
             )
             binding.txtRegion.text = locations[0].region.title
-            binding.txtPrice.text = getPropertyPeriodsPriceText(requireContext(), price)
-            Log.e("TAG", "onOkGettingFileAllDataResponse: $isFav", )
+            binding.txtPrice.text = getPropertyPeriodsPriceText(requireContext(), price, R.string.price, R.string.tooman)
             isFav?.apply {
                 binding.ibtnBookmark.showFav(this)
             }

@@ -16,7 +16,6 @@ import com.example.melkist.R
 import com.example.melkist.adapters.MyFilesAdapter
 import com.example.melkist.databinding.FragProfileMyfilesBinding
 import com.example.melkist.models.FileData
-import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 
 class ProfileMyFilesFrag : Fragment() {
@@ -36,7 +35,6 @@ class ProfileMyFilesFrag : Fragment() {
         }
         val user = (activity as MainActivity).user
         user?.apply {
-            Log.e("TAG", "onCreateView: ${user.id}", )
             viewModel.getMyFiles(
                 requireActivity(),
                 token = user.token!!,

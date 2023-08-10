@@ -9,15 +9,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
 import com.example.melkist.databinding.FragCalculatorMortgageRentBinding
-import com.example.melkist.utils.HUNDRED_BILLION
-import com.example.melkist.utils.ONE_BILLION
-import com.example.melkist.utils.ONE_MILLION
 import com.example.melkist.utils.ONE_TRILLION
 import com.example.melkist.utils.TEN_BILLION
 import com.example.melkist.utils.addLiveSeparatorListenerWithNumToLetterCallback
 import com.example.melkist.utils.getRemovedSeparatorValue
 import com.example.melkist.utils.showDialogWithMessage
-import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.CalculatorViewModel
 import com.example.melkist.views.calculator.dialog.CalculatorResultMortgageRentDialog
 

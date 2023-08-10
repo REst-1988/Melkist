@@ -63,7 +63,7 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="horizontal">
-        <!--TODO: android:onClick="@{() -> fragment.setItemType(fragment.ItemType.SEEKER)}"-->
+
         <ImageView
             android:id="@+id/img_seeker"
             android:layout_width="50dp"
@@ -127,9 +127,8 @@
         android:background="@drawable/background_choosing_post"
         android:clickable="true"
         android:focusable="true"
-
         android:orientation="horizontal">
-        <!--TODO: android:onClick="@{() -> fragment.setItemType(fragment.ItemType.OWNER)}"-->
+
         <ImageView
             android:id="@+id/img_owner"
             android:layout_width="50dp"

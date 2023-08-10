@@ -15,6 +15,7 @@
     <dimen name="super_short_text_size">10sp</dimen>
     <dimen name="very_short_text_size">12sp</dimen>
     <dimen name="text_view_padding">16dp</dimen>
+    <dimen name="text_view_padding_2">12dp</dimen>
     <dimen name="short_text_view_padding">8dp</dimen>
     <dimen name="very_short_text_view_padding">6dp</dimen>
     <dimen name="very_very_short_text_view_padding">4dp</dimen>

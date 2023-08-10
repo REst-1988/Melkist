@@ -1,6 +1,5 @@
 package com.example.melkist.views.login.signup
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,26 +22,12 @@ class SignupP1SignupFormFrag : Fragment() {
     lateinit var binding: FragSignupP1SignupFormBinding
     private val viewModel: SignupViewModel by activityViewModels()
 
-
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-        Log.e("TAG", "onAttach: run", )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: run", )
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragSignupP1SignupFormBinding.inflate(inflater)
-        Log.e("TAG", "1: hasObservers() ${viewModel.verificationCodeResponse.hasObservers()}" +
-                " own ${viewModel.verificationCodeResponse}", )
         if (viewModel.verificationCodeResponse.hasObservers())
             viewModel.verificationCodeResponse.removeObservers(viewLifecycleOwner)
-        Log.e("TAG", "2: test", )
         listenToCheckVerificationResult()
         return binding.root
     }
@@ -56,28 +41,51 @@ class SignupP1SignupFormFrag : Fragment() {
         }
     }
 
-    private fun listenToCheckVerificationResult() {
-        Log.e("TAG", "listenToCheckVerificationResult: value ${viewModel.verificationCodeResponse.value}" +
-                " own ${viewModel.verificationCodeResponse}", )
-        viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
-            if (viewModel.isResponseOk(viewModel.verificationCodeResponse)) {
-                showToast(requireContext(), viewModel.verificationCodeResponse.value!!.message!!)
-                viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
-                findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag)
-            } else if (viewModel.isResponseNotOk(viewModel.verificationCodeResponse)) {
-                if (viewModel.verificationCodeResponse.value!!.errors[0].isNotEmpty())
-                    showDialogWithMessage(
-                        requireContext(),
-                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
-                    ) { d, _ ->
-                        d.dismiss()
-                    }
-            }else
-                Log.e("TAG", "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}", )
+    override fun onResume() {
+        super.onResume()
+        viewModel.realEstateNameForManager?.apply {
+            binding.etRealEstateName.editText?.setText(this)
+        }
+        viewModel.firstName?.apply {
+            binding.etFirstName.editText?.setText(this)
+        }
+        viewModel.lastName?.apply {
+            binding.etLastName.editText?.setText(this)
+        }
+        if (viewModel.mobileNo != "")
+            binding.etPhoneNo.editText?.setText(viewModel.mobileNo)
+        if (viewModel.nationalCode != 0L)
+            binding.etNationalCode.editText?.setText(viewModel.nationalCode.toString())
+        viewModel.email?.apply {
+            binding.etEmail.editText?.setText(this)
         }
     }
 
+    private fun listenToCheckVerificationResult() {
+        viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
+            when (it.result){
+                true -> onTrueVerificationCodeResponse()
+                false -> onFalseVerificationCodeResponse()
+                else -> {}
+            }
+        }
+    }
 
+    private fun onTrueVerificationCodeResponse() {
+        viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
+        findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag)
+    }
+
+    private fun onFalseVerificationCodeResponse() {
+        if (viewModel.verificationCodeResponse.value!!.errors[0].isNotEmpty())
+            showDialogWithMessage(
+                requireContext(),
+                concatenateText(viewModel.verificationCodeResponse.value!!.errors)
+            ) { d, _ ->
+                d.dismiss()
+                viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
+            }
+    }
 
     fun cancel() {
         viewModel.resetSignupFieldsByChoosingMainField()

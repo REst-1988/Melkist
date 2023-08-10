@@ -10,8 +10,6 @@ import com.example.melkist.R
 import com.example.melkist.adapters.ProfileAlertsViewPagerAdapter
 import com.example.melkist.databinding.FragProfileCooperationsBinding
 import com.example.melkist.utils.INBOX
-import com.example.melkist.utils.RECEIVED
-import com.example.melkist.utils.SENT
 import com.google.android.material.tabs.TabLayoutMediator
 
 

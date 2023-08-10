@@ -20,7 +20,6 @@ class InboxOutboxAdapter(
     private val fragOutbox: ProfileOutboxFrag?,
     private val inboxOutbox: Int
 ) : ListAdapter<Status, InboxOutboxAdapter.ViewHolder>(DiffUtilCallBack) {
-    // Diff call back does not used in this project yet but it would be handy for future changes
     companion object DiffUtilCallBack : DiffUtil.ItemCallback<Status>() {
         override fun areItemsTheSame(oldItem: Status, newItem: Status): Boolean {
             return oldItem.file!!.id == newItem.file!!.id

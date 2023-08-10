@@ -13,15 +13,15 @@ import com.example.melkist.models.User
 import com.example.melkist.views.profile.ProfileManageTeamFrag
 
 class TeamMemberAdapter(private val fragment: Fragment) :
-    ListAdapter<User, TeamMemberAdapter.UserListViewHolder>(DiffUtilCallBack), Filterable {
+    ListAdapter<User, TeamMemberAdapter.UserListViewHolder>(DiffUtilCallBack)/*, Filterable*/ {
 
-    var mListRef: List<User>? = null
+/*    var mListRef: List<User>? = null
     var mFilteredList: List<User>? = null
     private var isFilter = false
 
     init {
         isFilter = false
-    }
+    }*/
 
     companion object DiffUtilCallBack : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
@@ -33,10 +33,10 @@ class TeamMemberAdapter(private val fragment: Fragment) :
         }
     }
 
-    override fun submitList(list: List<User>?) {
+/*    override fun submitList(list: List<User>?) {
         super.submitList(list)
         if (!isFilter) mListRef = list
-    }
+    }*/
 
     class UserListViewHolder(private var binding: ItemListTeamMembersBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -57,14 +57,14 @@ class TeamMemberAdapter(private val fragment: Fragment) :
             (fragment as ProfileManageTeamFrag).choosingItemAction(user)
         }
     }
-    override fun getFilter(): Filter {
+    /*override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
                 mFilteredList = if (charString.isNotEmpty()  && charString != "") {
                     mListRef!!
                         .filter {
-                            TODO()
+
                         }
                 }else{
                     mListRef
@@ -87,5 +87,5 @@ class TeamMemberAdapter(private val fragment: Fragment) :
                 }
             }
         }
-    }
+    }*/
 }

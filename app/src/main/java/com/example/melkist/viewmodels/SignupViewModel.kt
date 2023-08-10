@@ -46,7 +46,7 @@ class SignupViewModel() : ViewModel() {
     var firstName: String? = null
     var lastName: String? = null
     var mobileNo: String = ""
-    var nationalCode: Long = 0
+    var nationalCode: Long = 0L
     var email: String? = null
     var password: String = ""
 
@@ -290,7 +290,7 @@ class SignupViewModel() : ViewModel() {
         Log.e(
             "TAG", "registerUserRealstate: test " +
                     String.format(
-                        "%s  %s\n %s  %s\n %s  %s\n %s  %s\n %s  %s",
+                        "%s, %s\n %s, %s\n %s, %s\n %s, %s\n %s, %s",
                         realEstateNameForManager,
                         cityId,
                         firstName!!,
@@ -299,7 +299,7 @@ class SignupViewModel() : ViewModel() {
                         nationalCode.toString(),
                         email,
                         password,
-                        parentId ?: 1,
+                        parentId ?: 0,
                         subConditionRoleId
                     )
         )
@@ -337,17 +337,17 @@ class SignupViewModel() : ViewModel() {
 
     fun choosingItemAction(pcrs: PcrsData) {
         when (pcrsCondition) {
-            SignupViewModel.Pcrs.PROVINCE -> {
+            Pcrs.PROVINCE -> {
                 provinceId = pcrs.id!!
                 provinceTitle = pcrs.title!!
             }
 
-            SignupViewModel.Pcrs.CITY -> {
+            Pcrs.CITY -> {
                 cityId = pcrs.id!!
                 cityTitle = pcrs.title!!
             }
 
-            SignupViewModel.Pcrs.REAL_ESTATE -> {
+            Pcrs.REAL_ESTATE -> {
                 realEstateId = pcrs.id!!
                 realEstateTitle = pcrs.title!!
                 Log.e("TAG", "choosingItemAction: ${pcrs.user?.id}")
@@ -365,18 +365,10 @@ class SignupViewModel() : ViewModel() {
     fun restVerificationResponse(vr: LiveData<PublicResponseModel>) {
         if (vr.value != null) {
             vr.value!!.result = null
-            vr.value!!.message = ""
+            vr.value!!.message = null
             vr.value!!.errors = listOf()
         }
     }
-
-    fun isResponseOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
-            && vr.value!!.result != null
-            && vr.value!!.result == true
-
-    fun isResponseNotOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
-            && vr.value!!.result != null
-            && vr.value!!.result == false
 
     fun resetSignupFieldsByChoosingMainField() {
         subConditionRoleId = SUB_STATE_CHOOSE

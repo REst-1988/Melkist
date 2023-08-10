@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
-import com.example.melkist.models.FileDataResponse
 import com.example.melkist.views.map.MapP1Frag
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -32,7 +31,7 @@ class ImagePagerAdapter(
         }
         holder.itemView.setOnClickListener {
             bottomSheet?.apply {
-                fragment?.onMoreDetailFileClick(this)
+                fragment?.onMoreDetailFileClick()
             }
         }
     }

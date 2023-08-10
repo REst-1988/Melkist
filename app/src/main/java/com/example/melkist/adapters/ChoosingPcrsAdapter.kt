@@ -73,10 +73,8 @@ class ChoosingPcrsAdapter(val viewModel: ViewModel, val fragment: Fragment) :
         holder.bind(pcrs)
         holder.itemView.setOnClickListener {
             if (viewModel is ChooseCrViewModel) {
-                Log.e("TAG", "onBindViewHolder: aaa test ", )
                 (fragment as ChooseCrFrag).onChooseProvinceCityItems(pcrs)
             } else {
-                Log.e("TAG", "onBindViewHolder: aaa test 2" , )
                 (viewModel as SignupViewModel).choosingItemAction(pcrs)
                 (fragment as SignupP4ChoosingPcrsFrag).back()
             }

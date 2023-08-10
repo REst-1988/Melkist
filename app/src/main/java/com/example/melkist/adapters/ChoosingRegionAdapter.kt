@@ -1,6 +1,5 @@
 package com.example.melkist.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView.*
 import com.example.melkist.databinding.ItemListMultiTextBinding
 import com.example.melkist.models.RegionResponseData
 import com.example.melkist.utils.concatenateText
-import com.example.melkist.viewmodels.AddItemViewModel
 import com.example.melkist.views.universal.ChooseCrFrag
 
 class ChoosingRegionAdapter(val viewModel: ViewModel, val fragment: Fragment):

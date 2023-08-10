@@ -132,7 +132,7 @@ class ProfileInboxFrag(
                     )
 
                     price?.let {
-                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it)
+                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it, R.string.price, R.string.tooman)
                         txtPricePerMeter.text = calculatePricePerMeter(
                             requireContext(), it, this
                         )

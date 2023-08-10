@@ -66,12 +66,11 @@ class BottomSheetFileDetailOwnerDialog(
                 }
             }
         }
-
         binding.ibtnShare.setOnClickListener {
             showToast(requireContext(), resources.getString(R.string.next_phase))
         }
         binding.ibtnMore.setOnClickListener {
-            fragment.onMoreDetailFileClick(this)
+            fragment.onMoreDetailFileClick()
         }
     }
 
@@ -108,6 +107,7 @@ class BottomSheetFileDetailOwnerDialog(
                     showToast(
                         requireContext(), concatenateText(response.errors)
                     )
+                    this.dismiss()
                     viewModel.resetSaveResponse()
                 }
 
@@ -150,8 +150,6 @@ class BottomSheetFileDetailOwnerDialog(
         }
 
         response.data?.apply {
-            showToast(requireContext(), id.toString())// TODO delete this, this is just for test
-
             user.profilePic?.apply {
                 bindImage(binding.imgUser, this)
             }

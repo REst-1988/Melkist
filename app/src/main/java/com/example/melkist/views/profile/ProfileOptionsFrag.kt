@@ -12,7 +12,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.R
-import com.example.melkist.aapplication.MainFrag
 import com.example.melkist.data.OptionsDs
 import com.example.melkist.databinding.FragProfileOptionsBinding
 import com.example.melkist.utils.DATA
@@ -46,7 +45,6 @@ class ProfileOptionsFrag : Fragment() {
             OptionsDs.getDataStore(requireContext()).themePreferenceFlow.asLiveData()
                 .observe(viewLifecycleOwner) {
                     it?.let { theme ->
-                        Log.e("TAG", "onViewCreated: theme  =  $theme",)
                         viewModel.theme = theme
                     }
                 }
@@ -72,16 +70,6 @@ class ProfileOptionsFrag : Fragment() {
         )
     }
 
-/*
-    fun onNotificationClick() {
-        // TODO
-    }
-
-    fun showNotificationText(theme: Int): String {
-        return "" //TODO()
-    }
-*/
-
     fun onThemeClick() {
         try {
             val bottomFrag = BottomSheetUniversalList(
@@ -96,6 +84,7 @@ class ProfileOptionsFrag : Fragment() {
                 }
                 binding.txtTheme.text = showThemeText(viewModel.theme)
                 changeAppTheme(viewModel.theme)
+                back()
             }
         }catch (e: Exception){
             handleSystemException(lifecycleScope, "${this.javaClass.name}, onThemeClick, ", e)

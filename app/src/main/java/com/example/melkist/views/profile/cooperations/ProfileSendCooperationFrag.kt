@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.MainActivity
@@ -136,7 +135,7 @@ class ProfileSendCooperationFrag(
                     )
 
                     price?.let {
-                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it)
+                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it ,R.string.price, R.string.tooman)
                         txtPricePerMeter.text = calculatePricePerMeter(
                             requireContext(), it, this
                         )
@@ -171,14 +170,12 @@ class ProfileSendCooperationFrag(
                 }
             }
             btnCallRequest.setOnClickListener {
-                // TODO: check this (amir should send mobile)
                 item.targetUser?.mobile?.apply {
                     val intent = Intent(Intent.ACTION_DIAL)
-                    intent.data = Uri.parse("tel:$this")
+                    val calling = "tel:${this.mobile}"
+                    intent.data = Uri.parse(calling)
                     startActivity(intent)
                 }
-                // TODO: delete this line after test
-                item.targetUser?.mobile?: showToast(requireContext(),"Amir please send mobile with your API :)")
             }
         }
     }

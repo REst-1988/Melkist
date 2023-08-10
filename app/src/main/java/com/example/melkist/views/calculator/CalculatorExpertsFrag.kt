@@ -33,12 +33,6 @@ class CalculatorExpertsFrag : Fragment() {
     private lateinit var binding: FragmentCalculatorExpertsBinding
     private val viewModel: CalculatorExpertViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // TODO delete this
-        viewModel.calculatePrice()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -63,7 +57,7 @@ class CalculatorExpertsFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.apply {
+/*        viewModel.apply {
             buildYear = 1395
             size = 137
             room = resources.getStringArray(R.array.room_no_list)[3]
@@ -92,7 +86,7 @@ class CalculatorExpertsFrag : Fragment() {
             txtChooseUnits.text = showUnitsText()
             txtChooseAllay.text = showAllayText()
             txtChooseNorthern.text = showNorthernText()
-        }
+        }*/
     }
 
     /******************* binding methods **********************/
@@ -104,7 +98,7 @@ class CalculatorExpertsFrag : Fragment() {
         viewModel.showItemLogs()
         viewModel.minNewPropertyValue = binding.etMinPriceChild.getRemovedSeparatorValue()
         viewModel.maxNewPropertyValue = binding.etMaxPriceChild.getRemovedSeparatorValue()
-        // TODO: postal code should sent to server
+        // : postal code should sent to server
         if (viewModel.isAllFieldsOkay()) {
             viewModel.calculatePrice()
             CalculatorResultExpertDialogFrag(

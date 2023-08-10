@@ -2,20 +2,18 @@ package com.example.melkist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.melkist.utils.handleSystemException
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
+/*        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
             handleSystemException(lifecycleScope, "LoginActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
             finish()
-        }
+        }*/
         try {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_login)

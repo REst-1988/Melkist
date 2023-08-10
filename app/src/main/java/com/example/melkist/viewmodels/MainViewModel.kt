@@ -29,7 +29,7 @@ import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.launch
 
 class MainViewModel :
-    ViewModel() {// TODO: every view model should combined to 4 view model  (splash  main  add login)
+    ViewModel() {
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
@@ -60,28 +60,29 @@ class MainViewModel :
     val setStatusResponse: LiveData<PublicResponseModel> = _setStatusResponse
 
     enum class ItemType { SHOW_ALL, SHOW_SEEKER, SHOW_OWNER }
-    enum class ReqSource { CATEGORY, SUB_CATEGORY }
+/*    enum class ReqSource { CATEGORY, SUB_CATEGORY }*/
 
-    private var reqSource: AddItemViewModel.ReqSource = AddItemViewModel.ReqSource.CATEGORY
+/*    private var reqSource: AddItemViewModel.ReqSource = AddItemViewModel.ReqSource.CATEGORY
     fun getReqSource() = reqSource
     fun setReqSource(reqSource: AddItemViewModel.ReqSource) {
         this.reqSource = reqSource
-    }
-
+    }*/
     private val _locationResponse = MutableLiveData<LocationResponse>()
     val locationResponse: LiveData<LocationResponse> = _locationResponse
 
-    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
-    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
-    private val _pcrsList = MutableLiveData<List<PcrsData>>()
-    val pcrsList: LiveData<List<PcrsData>> = _pcrsList
-    private val _regionList = MutableLiveData<List<RegionResponseData>>()
-    val regionList: LiveData<List<RegionResponseData>> = _regionList
 
-    private val _filesResponse = MutableLiveData<FileResponse>()
-    val filesResponse: LiveData<FileResponse> = _filesResponse
+//    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
+//    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
+//    private val _pcrsList = MutableLiveData<List<PcrsData>>()
+//    val pcrsList: LiveData<List<PcrsData>> = _pcrsList
+//    private val _regionList = MutableLiveData<List<RegionResponseData>>()
+//    val regionList: LiveData<List<RegionResponseData>> = _regionList
+//
+//    private val _filesResponse = MutableLiveData<FileResponse>()
+//    val filesResponse: LiveData<FileResponse> = _filesResponse
 
     var filterFileData: FilterFileData? = null
+    var filterFavData: FilterFileData? = null
     var catId: Int? = null
     var catTitle: String? = null
     var subCatId: Int? = null
@@ -133,10 +134,11 @@ class MainViewModel :
                 }
             }
     }
-
+/*
     fun resetLocations() {
         locationResponse.value!!.data = listOf()
     }
+*/
 
     fun getTypeId(requestCode: ItemType): Int {
         val fileTypes = FileTypes()
@@ -159,9 +161,9 @@ class MainViewModel :
         subCatTitle = null
     }
 
-    fun getReqSourceNumber(): Int {
+/*    fun getReqSourceNumber(): Int {
         return REGION_1
-    }
+    }*/
 
     fun getFileInfoById(activity: Activity, token: String, fileId: Int, userId: Int) {
         if (!isOnline(activity))
@@ -506,7 +508,7 @@ class MainViewModel :
         _cooperationResponse.value = PublicResponseModel(null, null, listOf())
     }
 
-    fun reseetLocationResponse() {
+    fun resetLocationResponse() {
         _locationResponse.value = LocationResponse(null, listOf(), null)
     }
 }

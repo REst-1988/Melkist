@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -47,8 +46,8 @@ class LoginForm : Fragment() {
         showProperAnimation()
         listenToLoginResponse()
 
-        binding!!.etUsernameLoginAct.editText!!.setText("09173381951") // TODO: Remove this line
-        binding!!.etPasswordLoginAct.editText!!.setText("12345678")// TODO: Remove this line
+        //binding!!.etUsernameLoginAct.editText!!.setText("09173381951") //  Remove this line
+        //binding!!.etPasswordLoginAct.editText!!.setText("12345678")//  Remove this line
     }
 
     private fun checkFirebaseToken() {
@@ -98,7 +97,7 @@ class LoginForm : Fragment() {
         lifecycleScope.launch {
             Log.e("TAG", "listenToLoginResponse: $response  ${response.data?.isFirstTime}")
             userDataStore.saveUserToPreferencesStore(
-                response, requireContext()
+                response
             )
         }
         binding?.etUsernameLoginAct?.error = null

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP3ChoosingSubBinding
 import com.example.melkist.models.Roles
 import com.example.melkist.viewmodels.SignupViewModel

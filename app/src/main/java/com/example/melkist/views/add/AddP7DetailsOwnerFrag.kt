@@ -7,30 +7,22 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.InputFilter
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.melkist.AddActivity
 import com.example.melkist.R
-import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
 import com.example.melkist.databinding.FragAddP7DetailsOwnerBinding
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
-import com.example.melkist.utils.getPersianYear
-import com.example.melkist.utils.numInLetter
+import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showAgeDialog
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showInputDialog
@@ -38,7 +30,6 @@ import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import java.math.BigDecimal
 
 
 class AddP7DetailsOwnerFrag : Fragment() {
@@ -64,30 +55,34 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.saveResponse.observe(viewLifecycleOwner) {
-            when (it.result) {
-                true -> showDialogWithMessage(
-                    requireContext(), it.message ?: ""
-                ) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                    cancel()
+        try {
+            viewModel.saveResponse.observe(viewLifecycleOwner) {
+                when (it.result) {
+                    true -> showDialogWithMessage(
+                        requireContext(), it.message ?: ""
+                    ) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                        cancel()
+                    }
+
+                    false -> showDialogWithMessage(
+                        requireContext(), concatenateText(it.errors)
+                    ) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    }
+
+                    else -> showDialogWithMessage(
+                        requireContext(), resources.getString(R.string.global_error)
+                    ) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    }
                 }
 
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(it.errors)
-                ) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
-
-                else -> showDialogWithMessage(
-                    requireContext(), resources.getString(R.string.global_error)
-                ) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
             }
-
+            viewModel.resetImages()
+        }catch (e: Exception){
+            handleSystemException(lifecycleScope, "AddP7DetailsOwnerFrag, onViewCreated", e)
         }
-        viewModel.resetImages()
     }
 
     private fun pickFromGallery() {
@@ -141,7 +136,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun onPickImage() {
-        //showActionDialogForChoosingCameraOrStorage() // TODO: pic image from camera
+        //showActionDialogForChoosingCameraOrStorage() // : pic image from camera
         pickFromGallery()
     }
 
@@ -215,7 +210,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
             resources.getString(R.string.price),
             resources.getString(R.string.tooman)) {
             if (!it.isNullOrEmpty()) {
-                viewModel.priceFrom = it.toLong()
+                viewModel.priceFrom =  it.toLong()
                 binding.txtChoosePrice.text = formatNumber(it.toDouble())
             }
         }
@@ -316,98 +311,3 @@ class AddP7DetailsOwnerFrag : Fragment() {
         }
     }
 }
-
-/** camera part UNSUCCESSFULL/////////////////////////////////////////////////**/
-/*
-in on viewCreated
-cropActivityResultLauncher = registerForActivityResult(
-ActivityResultContracts.StartActivityForResult()){ result ->
-Log.e(TAG, "onViewCreated: check uri 1", )
-if (result.resultCode == AppCompatActivity.RESULT_OK) {
-//startCrop(result.data?.data!!)
-Log.e(TAG, "onViewCreated: ${result.data?.data}",)
-Log.e(TAG, "onViewCreated: ${result.data}",)
-Log.e(TAG, "onViewCreated: ${result.data?.extras}",)
-Log.e(TAG, "onViewCreated: ${result.data?.extras!!.get("data")}",)
-
-val a = CropImage.getPickImageResultUri(requireContext(), result.data)
-
-Log.e(TAG, "onViewCreated: ${a}",)
-startCrop(a)
-*/
-/*                val bundle = result.data!!.extras
-val bitmap = bundle!!.get("data") as Bitmap
-//Log.e("TAG", "onCreate: $uri", )
-binding.img3.setImageBitmap(bitmap)*//*
-}
-}
-
-private fun showActionDialogForChoosingCameraOrStorage() {
-val binding =
-DialogLayoutCameraGaleryChoosingBinding
-.inflate(LayoutInflater.from(requireContext()))
-val alertDialog = AlertDialog.Builder(requireContext()).create()
-alertDialog.setView(binding.root)
-alertDialog.setCancelable(true)
-alertDialog.show()
-binding.chooseFromCamera.setOnClickListener{
-checkCameraPermissionOrProceed()
-alertDialog.cancel()
-}
-binding.chooseFromGalery.setOnClickListener{
-pickFromGallery()
-alertDialog.cancel()
-}
-}
-
-private fun takePicture() {
-val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-cropActivityResultLauncher.launch(intent)
-}
-
-private fun checkCameraPermission(): Boolean { // TODO: need to repair for getting permissions
-return ContextCompat.checkSelfPermission(
-requireContext(),
-android.Manifest.permission.CAMERA
-) == PackageManager.PERMISSION_GRANTED
-}
-
-private val requestCameraPermissionLauncher =
-registerForActivityResult(
-ActivityResultContracts.RequestPermission()
-) { isGranted: Boolean ->
-if (isGranted) {
-takePicture()
-} else {
-Log.e("TAG", "TESSSST: 2")
-}
-}
-
-private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Intent>
-
-*/
-/*
-
-private fun checkCameraPermissionOrProceed() {
-when {
-checkCameraPermission() -> {
-takePicture()
-}
-shouldShowRequestPermissionRationale(
-android.Manifest.permission.CAMERA
-) -> {
-showRationaleDialog(resources.getString(R.string.camera)){ d, _ ->
-requestCameraPermissionLauncher.launch(
-android.Manifest.permission.CAMERA
-)
-d.dismiss()
-}
-}
-else -> {
-requestCameraPermissionLauncher.launch(
-android.Manifest.permission.CAMERA
-)
-}
-}
-}*/
- ***/

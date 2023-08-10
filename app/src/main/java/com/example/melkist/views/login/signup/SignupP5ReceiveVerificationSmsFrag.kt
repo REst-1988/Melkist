@@ -3,7 +3,6 @@ package com.example.melkist.views.login.signup
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +38,6 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
             viewmodel = viewModel
             fragment = this@SignupP5ReceiveVerificationSmsFrag
         }
-
         timerHandling()
         watchEtVerificationCodeField()
         listenToVerifyPhoneResult()
@@ -60,50 +58,54 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
 
     private fun listenToVerifyPhoneResult() {
         viewModel.verifyResponse.observe(viewLifecycleOwner) {
-            if (viewModel.isResponseOk(viewModel.verifyResponse)) {
-                viewModel.stopTimer()
-                viewModel.restVerificationResponse(viewModel.verifyResponse)
-                viewModel.registerUserRealEstate(requireActivity())
-            } else if (viewModel.isResponseNotOk(viewModel.verifyResponse)) {
-                if (viewModel.verifyResponse.value!!.errors[0].isNotEmpty())
-                    showDialogWithMessage(
-                        requireContext(),
-                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
-                    ) { d, _ ->
-                        d.dismiss()
-                    }
-            } else
-                Log.e(
-                    "TAG",
-                    "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ",
-                )
-            /*showToast(
-                requireContext(),
-                resources.getString(R.string.somthing_goes_wrong)
-            )*/
+            when (it.result){
+                true -> onTrueVerifyResponse()
+                false -> onFalseVerifyResponse(it.errors)
+                else -> {}
+            }
+        }
+    }
+
+    private fun onTrueVerifyResponse() {
+        viewModel.stopTimer()
+        viewModel.restVerificationResponse(viewModel.verifyResponse)
+        viewModel.registerUserRealEstate(requireActivity())
+    }
+
+    private fun onFalseVerifyResponse(errors: List<String>) {
+        showDialogWithMessage(
+            requireContext(),
+            concatenateText(errors)
+        ) { d, _ ->
+            d.dismiss()
+            viewModel.restVerificationResponse(viewModel.verifyResponse)
         }
     }
 
     private fun listenToRegisterResult() {
         viewModel.registerResponse.observe(viewLifecycleOwner) {
-            if (viewModel.isResponseOk(viewModel.registerResponse)) {
-                viewModel.stopTimer()
-                viewModel.resetAllData()
-                showToast(requireContext(), viewModel.registerResponse.value!!.message!!)
-                startNextStep()
-            } else if (viewModel.isResponseNotOk(viewModel.registerResponse)) {
-                if (viewModel.registerResponse.value!!.errors[0].isNotEmpty())
-                    showDialogWithMessage(
-                        requireContext(),
-                        concatenateText(viewModel.verificationCodeResponse.value!!.errors)
-                    ) { d, _ ->
-                        d.dismiss()
-                    }
-            } else
-                showToast(
-                    requireContext(),
-                    resources.getString(R.string.somthing_goes_wrong)
-                )
+            when (it.result){
+                true -> onTrueRegisterResult(it.message?:"")
+                false -> onFalseRegisterResult(it.errors)
+                else -> {}
+            }
+        }
+    }
+
+    private fun onTrueRegisterResult(message: String) {
+        viewModel.stopTimer()
+        showToast(requireContext(), message)
+        viewModel.resetAllData()
+        startNextStep()
+    }
+
+    private fun onFalseRegisterResult(errors: List<String>) {
+        showDialogWithMessage(
+            requireContext(),
+            concatenateText(errors)
+        ) { d, _ ->
+            d.dismiss()
+            viewModel.restVerificationResponse(viewModel.registerResponse)
         }
     }
 

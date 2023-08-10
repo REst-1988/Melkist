@@ -1,19 +1,10 @@
 package com.example.melkist.network
 
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.net.NetworkInfo
-import android.os.Build
-import android.util.Log
-import com.example.melkist.data.UserDataStore
 import com.example.melkist.network.`interface`.ApiService
-import com.example.melkist.utils.isOnline
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -27,10 +18,10 @@ private val moshi = Moshi.Builder()
     .build()
 
 
-private val okHttpClient = OkHttpClient().newBuilder() // TODO: CHECK IF CONNECTION TIME OUT IS OK
-    .connectTimeout(120, TimeUnit.SECONDS)
-    .readTimeout(120, TimeUnit.SECONDS)
-    .writeTimeout(120, TimeUnit.SECONDS)
+private val okHttpClient = OkHttpClient().newBuilder()
+    .connectTimeout(180, TimeUnit.SECONDS)
+    .readTimeout(180, TimeUnit.SECONDS)
+    .writeTimeout(180, TimeUnit.SECONDS)
     .build()
 
 

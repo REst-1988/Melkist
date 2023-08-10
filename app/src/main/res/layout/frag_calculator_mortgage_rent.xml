@@ -67,8 +67,9 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/btn_calculate"
-            app:layout_constraintTop_toBottomOf="@id/app_bar">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"
+            android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -220,26 +221,26 @@
                     android:fontFamily="@font/iransans"
                     android:textColor="@color/sub_item_text_color"
                     android:textSize="@dimen/normal_text_size"
-                    app:layout_constraintTop_toBottomOf="@id/et_input" />
+                    app:layout_constraintTop_toBottomOf="@id/et_input"
+                    app:layout_constraintBottom_toTopOf="@id/btn_calculate"/>
 
+                <Button
+                    android:id="@+id/btn_calculate"
+                    style="@style/Theme.Melkist.Buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/normal_margin"
+                    android:fontFamily="@font/iransans"
+                    android:text="@string/calculate"
+                    android:onClick="@{() -> fragment.onBtnCalculateClick()}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <Button
-            android:id="@+id/btn_calculate"
-            style="@style/Theme.Melkist.Buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:layout_marginBottom="@dimen/normal_margin"
-            android:fontFamily="@font/iransans"
-            android:text="@string/calculate"
-            android:onClick="@{() -> fragment.onBtnCalculateClick()}"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

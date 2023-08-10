@@ -22,7 +22,7 @@ data class User(
     @Json val cityTitle: String?,
     @Json val provinceId: Int?,
     @Json val provinceTitle: String?,
-    @Json(name = "realstate") val realEstate: String?, //TODO:
+    @Json(name = "realstate") val realEstate: String?,
     @Json val token: String?
 )
 

@@ -32,7 +32,7 @@ class ProfilePicViewModel : ViewModel() {
     var imgUser: Bitmap? = null
     var userFirstName: String? = null
     var userLastName: String? = null
-    var txtNickname: String? = null // TODO: create nickname
+    // var txtNickname: String? = null //  create nickname
 
     private fun getEncodedImage(imgUser: Bitmap): String? {
         val main = ThumbnailUtils.extractThumbnail(imgUser, 300, 300)

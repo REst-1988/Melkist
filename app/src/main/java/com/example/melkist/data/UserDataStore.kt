@@ -1,6 +1,6 @@
 package com.example.melkist.data
 
-import android.app.Application
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -16,6 +16,7 @@ private const val USER_PREFERENCES = "user_preferences"
 private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES)
 
 object Ds {
+    @SuppressLint("StaticFieldLeak")
     var instance: UserDataStore? = null
     fun getDataStore(context: Context) : UserDataStore{
         if (instance == null)
@@ -24,7 +25,7 @@ object Ds {
     }
 }
 
-class UserDataStore(context: Context) {
+class UserDataStore(private val context: Context) {
     private val userIdPk = intPreferencesKey("id") // userIdPreferencesKey
     private val userFirstNamePk = stringPreferencesKey("name")
     private val userLastNamePk = stringPreferencesKey("family")
@@ -41,15 +42,14 @@ class UserDataStore(context: Context) {
     private val userRealEstatePk = stringPreferencesKey("real_estate")
     private val tokenPk = stringPreferencesKey("token")
 
-
-    suspend fun emptyPreferences(context: Context) {
-        context.dataStore.edit {
+    suspend fun emptyPreferences(): Preferences {
+        return context.dataStore.edit {
             it.clear()
         }
     }
 
     suspend fun saveUserToPreferencesStore(
-        user: LoginResponseModel, context: Context
+        user: LoginResponseModel
     ) {
         context.dataStore.edit { preferences ->
             user.data?.let { data ->
@@ -61,7 +61,7 @@ class UserDataStore(context: Context) {
                 // I use "" to check if user need to navigate to login or mainAct
                 preferences[userRoleIdPk] = data.roleId!!
                 preferences[userParentIdPk] =
-                    data.parentId ?: 0 // TODO: must be change every user must have a parent
+                    data.parentId ?: 0 // every user must have a parent
                 preferences[userIsFirstTimePk] = data.isFirstTime!!
                 preferences[userCityIdPk] = data.city!!.cityId!!
                 preferences[userCityTitlePk] = data.city.cityTitle!!
@@ -73,7 +73,7 @@ class UserDataStore(context: Context) {
         }
     }
 
-    suspend fun saveImage(context: Context, uploadResponseModel: PublicResponseModel) {
+    suspend fun saveImage(uploadResponseModel: PublicResponseModel) {
         context.dataStore.edit { preferences ->
             uploadResponseModel.message?.let {
                 preferences[userprofilePicPk] = it
@@ -114,16 +114,4 @@ class UserDataStore(context: Context) {
             token = preferences[tokenPk]
         )
     }
-
-    val preferencesFlow: Flow<String?> = context.dataStore.data.catch {
-        if (it is IOException) {
-            it.printStackTrace()
-            emit(emptyPreferences())
-        } else {
-            throw it
-        }
-    }.map { preferences ->
-        preferences[tokenPk]
-    }
 }
-

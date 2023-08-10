@@ -65,7 +65,7 @@ class ProfilePicFrag : Fragment() {
             viewModel.token = user.token
             viewModel.userFirstName = user.firstName
             viewModel.userLastName = user.lastName
-            // TODO    viewModel.txtNickname = user.nickname
+            //    viewModel.txtNickname = user.nickname
             checkIfHasProfilePicAndAllocate()
         }
         listenToUploadResponse()
@@ -89,12 +89,12 @@ class ProfilePicFrag : Fragment() {
                 viewModel.userFirstName,
                 viewModel.userLastName
             )
-            viewModel.txtNickname?.apply {
+/*            viewModel.txtNickname?.apply {
                 txtNickName.setText(this)
-            } // TODO: create nick name
+            } //  create nick name*/
             txtPlain.visibility = View.INVISIBLE
             txtFirstLastName.visibility = View.VISIBLE
-            txtNickName.visibility = View.VISIBLE // TODO: create nick name
+            /*txtNickName.visibility = View.VISIBLE //  create nick name*/
             btnCommit.text = resources.getString(R.string.commit_changes)
         }
     }
@@ -103,7 +103,7 @@ class ProfilePicFrag : Fragment() {
         binding.apply {
             imgAddEdit.setImageResource(R.drawable.ic_baseline_add_box_24)
             txtFirstLastName.visibility = View.INVISIBLE
-            txtNickName.visibility = View.INVISIBLE // TODO: create nick name
+            /*txtNickName.visibility = View.INVISIBLE //  create nick name*/
             txtPlain.visibility = View.VISIBLE
             btnCommit.text = resources.getString(R.string.commit)
         }
@@ -120,9 +120,7 @@ class ProfilePicFrag : Fragment() {
                 false -> {
                     showToast(requireContext(), concatenateText(response.errors))
                 }
-                else -> {
-                    Log.e("TAG", "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}", )
-                }
+                else -> {}
             }
         }
     }
@@ -130,7 +128,6 @@ class ProfilePicFrag : Fragment() {
     private fun saveImage (response: PublicResponseModel) {
         lifecycleScope.launch {
             userDataStore.saveImage(
-                requireContext(),
                 response
             )
         }
@@ -178,7 +175,6 @@ class ProfilePicFrag : Fragment() {
                 } else {
                     showToast(requireContext(), getString(R.string.somthing_goes_wrong))
                 }
-
             }
             else -> {
                 Log.e("TAG", "onActivityResult: else")
@@ -188,11 +184,12 @@ class ProfilePicFrag : Fragment() {
 
     /*************************** binding **********************************/
     fun back() {
+        Log.e("TAG", "back: test", ) // TODO: TEST BACK PRESSED
         findNavController().popBackStack()
     }
 
     fun onSend() {
-        if (viewModel.imgUser != null){ // TODO: after adding nick name, changing nickname may okay for saving
+        if (viewModel.imgUser != null){ //  after adding nick name, changing nickname may okay for saving
             binding.txtPlain.setTextColor(resources.getColor(R.color.normal_text_color))
             viewModel.uploadProfilePic(requireActivity())
         } else {

@@ -1,20 +1,16 @@
 package com.example.melkist.adapters
 
-import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
-import com.example.melkist.databinding.DialogLayoutInboxOutboxBinding
 import com.example.melkist.databinding.ItemListSendReceivedCooperationBinding
 import com.example.melkist.models.Status
-import com.example.melkist.utils.INBOX
 import com.example.melkist.utils.RECEIVED
 import com.example.melkist.views.profile.cooperations.ProfileReceivedCooperationFrag
 import com.example.melkist.views.profile.cooperations.ProfileSendCooperationFrag

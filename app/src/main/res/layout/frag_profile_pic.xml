@@ -141,7 +141,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_user_card" />
 
-        <EditText
+<!--        <EditText
             android:id="@+id/txt_nick_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_commit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_first_last_name" />
+            app:layout_constraintTop_toBottomOf="@id/txt_first_last_name" />-->
 
         <Button
             android:id="@+id/btn_commit"

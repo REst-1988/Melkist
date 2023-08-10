@@ -26,6 +26,7 @@ import com.example.melkist.utils.CR_KEY
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.EMPTY_CATEGORY_ID
 import com.example.melkist.utils.FILTER_RESULT_KEY
+import com.example.melkist.utils.IS_IN_FAV_LIST_KEY
 import com.example.melkist.utils.ITEM_TYPE_KEY
 import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.PRICE_FROM_TAG
@@ -55,6 +56,15 @@ class FilterFilesFrag : Fragment() {
 
     private lateinit var binding: FragFilterFilesBinding
     private val viewModel: MainViewModel by activityViewModels()
+    private var isInFavList = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val arrayBundle = arguments?.getBoolean(IS_IN_FAV_LIST_KEY)
+        arrayBundle?.let {
+            isInFavList = it
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -108,16 +118,28 @@ class FilterFilesFrag : Fragment() {
 
     private fun assignFilterDataToFields() {
         binding.apply {
-            viewModel.filterFileData?.let { data ->
-                if (data.age.from != 0L) etAgeFromChild.setText(data.age.from.toString())
-                if (data.age.to != 0L) etAgeToChild.setText(data.age.to.toString())
-                if (data.size.from != 0L) etSizeFromChild.setText(data.size.from.toString())
-                if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
-                if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
-                if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
-                if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!.toDouble()))
-                if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!.toDouble()))
-            }
+            if (isInFavList)
+                viewModel.filterFavData?.let { data ->
+                    if (data.age.from != 0L) etAgeFromChild.setText(data.age.from.toString())
+                    if (data.age.to != 0L) etAgeToChild.setText(data.age.to.toString())
+                    if (data.size.from != 0L) etSizeFromChild.setText(data.size.from.toString())
+                    if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
+                    if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
+                    if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
+                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!.toDouble()))
+                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!.toDouble()))
+                }
+            else
+                viewModel.filterFileData?.let { data ->
+                    if (data.age.from != 0L) etAgeFromChild.setText(data.age.from.toString())
+                    if (data.age.to != 0L) etAgeToChild.setText(data.age.to.toString())
+                    if (data.size.from != 0L) etSizeFromChild.setText(data.size.from.toString())
+                    if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
+                    if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
+                    if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
+                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!.toDouble()))
+                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!.toDouble()))
+                }
         }
     }
 
@@ -190,8 +212,10 @@ class FilterFilesFrag : Fragment() {
 
     fun onFilterClick() {
         if (hasFilterData(gatheringData())) {
-            viewModel.filterFileData = gatheringData()
-            //setFragmentResult(FILTER_RESULT_KEY, bundleOf(DATA to gatheringData()))
+            if (isInFavList)
+                viewModel.filterFavData = gatheringData()
+            else
+                viewModel.filterFileData = gatheringData()
             back()
         } else {
             showToast(
@@ -203,7 +227,10 @@ class FilterFilesFrag : Fragment() {
 
     fun onUnFilterClick() {
         viewModel.setItemType(ItemType.SHOW_ALL)
-        viewModel.filterFileData = null
+        if (isInFavList)
+            viewModel.filterFavData = null
+        else
+            viewModel.filterFileData = null
         viewModel.catId = null
         viewModel.subCatId = null
         viewModel.regionId = null
@@ -224,7 +251,7 @@ class FilterFilesFrag : Fragment() {
             etRoomNoFromChild.setText("")
             etRoomNoToChild.setText("")
         }
-        setFragmentResult(FILTER_RESULT_KEY, bundleOf(DATA to gatheringData()))
+        //setFragmentResult(FILTER_RESULT_KEY, bundleOf(DATA to gatheringData()))
         back()
     }
 

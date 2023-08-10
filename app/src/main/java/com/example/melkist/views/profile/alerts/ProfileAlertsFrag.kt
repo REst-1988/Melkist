@@ -10,7 +10,6 @@ import com.example.melkist.R
 import com.example.melkist.adapters.ProfileAlertsViewPagerAdapter
 import com.example.melkist.databinding.FragProfileAlertsBinding
 import com.example.melkist.utils.INBOX
-import com.example.melkist.utils.OUTBOX
 import com.google.android.material.tabs.TabLayoutMediator
 
 

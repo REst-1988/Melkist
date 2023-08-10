@@ -21,7 +21,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.InspectableProperty
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LifecycleOwner
@@ -63,17 +62,16 @@ fun isOnline(context: Context): Boolean {
                 return true
             }
         }
-    } else {
+    } else
         return try {
             (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)!!
-                .getState() == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(
+                .state == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(
                 ConnectivityManager.TYPE_WIFI
-            )!!.getState() == NetworkInfo.State.CONNECTED)
+            )!!.state == NetworkInfo.State.CONNECTED)
         } catch (e: Exception) {
             e.printStackTrace()
             false
         }
-    }
     return false
 }
 
@@ -138,11 +136,10 @@ fun getPropertyPeriodsText(
     @StringRes titleUnit: Int,
     @StringRes unit: Int
 ): String {
-    Log.e("TAG", "getPropertyPeriodsText: ${period.from}  ${period.to}")
     var text = ""
     if (period.from == null && period.to == null) {
         text = String.format(
-            "%s: %s",
+            "%s %s",
             context.resources.getString(titleUnit),
             context.resources.getString(R.string.all_items)
         )
@@ -173,7 +170,13 @@ fun calculatePricePerMeter(context: Context, price: Period, size: Period): Strin
         )
 }
 
-fun handleSystemException(scope: CoroutineScope,  from: String?, e: Exception? = null, t: Throwable? = null) {
+// TODO: add user id to this method
+fun handleSystemException(
+    scope: CoroutineScope,
+    from: String?,
+    e: Exception? = null,
+    t: Throwable? = null
+) {
     scope.launch {
         try {
             e?.apply {
@@ -194,19 +197,24 @@ fun handleSystemException(scope: CoroutineScope,  from: String?, e: Exception? =
     }
 }
 
-fun getPropertyPeriodsPriceText(context: Context, periodPrice: Period): String {
+fun getPropertyPeriodsPriceText(
+    context: Context,
+    periodPrice: Period,
+    @StringRes titleUnit: Int,
+    @StringRes unit: Int
+): String {
     var text = ""
     if (periodPrice.from == null && periodPrice.to == null) {
         text = String.format(
-            "%s: %s",
-            context.resources.getString(R.string.price),
+            "%s %s",
+            context.resources.getString(titleUnit),
             context.resources.getString(R.string.all_items)
         )
     } else if (periodPrice.from != null && periodPrice.from == periodPrice.to) {
         text = String.format(
             "%s %s",
             formatNumber(periodPrice.from.toDouble()),
-            context.resources.getString(R.string.tooman)
+            context.resources.getString(unit)
         )
     } else {
         var from = ""
@@ -223,7 +231,7 @@ fun getPropertyPeriodsPriceText(context: Context, periodPrice: Period): String {
                 context.resources.getString(R.string.to),
                 formatNumber(periodPrice.to.toDouble())
             )
-        text = String.format("%s %s %s", from, to, context.resources.getString(R.string.tooman))
+        text = String.format("%s %s %s", from, to, context.resources.getString(unit))
     }
     return text
 }
@@ -270,7 +278,9 @@ fun TextInputEditText.addLiveSeparatorListener() {
 fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextView, unit: String) {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            if (p0.isNullOrEmpty()) tv.text = ""
+        }
         override fun afterTextChanged(p0: Editable?) {
             this@addLiveSeparatorListenerWithNumToLetterCallback.removeTextChangedListener(this)
             val text: String = p0.toString()
@@ -287,7 +297,6 @@ fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextVi
         }
     })
 }
-
 
 fun showInputDialog(
     context: Context,
@@ -308,7 +317,9 @@ fun showInputDialog(
     binding.etInput.requestFocus()
     binding.etInput.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            if (p0.isNullOrEmpty()) binding.txtInLetters.text = ""
+        }
         override fun afterTextChanged(p0: Editable?) {
             binding.etInput.removeTextChangedListener(this)
             val text: String = p0.toString()
@@ -383,7 +394,7 @@ private fun isConditionsOk(input: String): Boolean =
 
 
 private fun isConditionsOkForFields(input: String): Boolean =
-    input.toInt() > 0
+    input.replace(",", "").toLong() > 0
 
 fun TextInputEditText.getRemovedSeparatorValue(): Long {
     if (!this.text.isNullOrBlank())

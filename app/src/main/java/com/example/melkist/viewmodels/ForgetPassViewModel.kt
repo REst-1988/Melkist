@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.melkist.MainActivity
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
@@ -91,6 +92,7 @@ class ForgetPassViewModel : ViewModel() {
                 try {
                     _verificationCodeResponse.value =
                         Api.retrofitService.getForgetPasswordVerificationCode(mobile, ncode)
+                    Log.e("TAG", "_verificationCodeResponse: $_verificationCodeResponse")
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
@@ -108,11 +110,9 @@ class ForgetPassViewModel : ViewModel() {
             viewModelScope.launch {
                 _status.value = ApiStatus.LOADING
                 try {
-                    Log.e("TAG", "sendMobileVerificationCode: 1")
                     _verifyResponse.value =
                         Api.retrofitService.verifyCode(mobile, code)
-
-                    Log.e("TAG", "sendMobileVerificationCode: 2")
+                    Log.e("TAG", "sendMobileVerificationCode: $_verifyResponse")
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
@@ -135,6 +135,7 @@ class ForgetPassViewModel : ViewModel() {
                             getMobileNo(),
                             newPassword = password
                         )
+                    Log.e("TAG", "requestChangePasswordByMobile: $_changePassResponse")
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
@@ -159,4 +160,8 @@ class ForgetPassViewModel : ViewModel() {
     fun isResponseNotOk(vr: LiveData<PublicResponseModel>): Boolean = vr.value != null
             && vr.value!!.result != null
             && vr.value!!.result == false
+
+    fun resetChangePassResponse() {
+        _changePassResponse.value = PublicResponseModel(null, null, listOf())
+    }
 }

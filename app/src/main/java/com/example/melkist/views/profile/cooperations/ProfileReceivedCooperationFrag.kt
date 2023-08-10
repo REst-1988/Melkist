@@ -136,7 +136,7 @@ class ProfileReceivedCooperationFrag(private val fragment: ProfileCooperationFra
                     )
 
                     price?.let {
-                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it)
+                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it ,R.string.price, R.string.tooman)
                         txtPricePerMeter.text = calculatePricePerMeter(
                             requireContext(), it, this
                         )
@@ -171,14 +171,11 @@ class ProfileReceivedCooperationFrag(private val fragment: ProfileCooperationFra
                 }
             }
             btnCallRequest.setOnClickListener {
-                // TODO: check this (amir should send mobile)
                 item.targetUser?.mobile?.apply {
                     val intent = Intent(Intent.ACTION_DIAL)
-                    intent.data = Uri.parse("tel:$this")
+                    intent.data = Uri.parse("tel:${this.mobile}")
                     startActivity(intent)
                 }
-                // TODO: delete this line after test
-                item.targetUser?.mobile?: showToast(requireContext(),"Amir please send mobile with your API :)")
             }
         }
     }

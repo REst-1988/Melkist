@@ -4,15 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.melkist.MainActivity
@@ -22,11 +21,9 @@ import com.example.melkist.databinding.FragFavListBinding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.Fav
 import com.example.melkist.models.FileDataResponse
-import com.example.melkist.models.FilterFileData
-import com.example.melkist.utils.DATA
-import com.example.melkist.utils.FILTER_RESULT_KEY
+import com.example.melkist.utils.CONDITION_FILTER_FAV_LIST
+import com.example.melkist.utils.IS_IN_FAV_LIST_KEY
 import com.example.melkist.utils.concatenateText
-import com.example.melkist.utils.hasFilterData
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.MainViewModel
 
@@ -79,20 +76,19 @@ class FavListFrag : Fragment() {
     override fun onResume() {
         super.onResume()
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
+        adapter.submitList(listOf())
         readyViewsOnFilter()
-        if (viewModel.filterFileData == null)
+        if (viewModel.filterFavData == null)
             getFavList()
         else {
-            viewModel.resetLocations()
+            viewModel.resetLocationResponse()
             (activity as MainActivity).user?.apply {
-                viewModel.filterFileData!!.userId = id
+                viewModel.filterFavData!!.userId = id
                 viewModel.getFilterFiles(
-                    requireActivity(), token!!, viewModel.filterFileData!!
+                    requireActivity(), token!!, viewModel.filterFavData!!
                 )
-
             }
         }
-
     }
 
     override fun onAttach(context: Context) {
@@ -165,7 +161,7 @@ class FavListFrag : Fragment() {
     }
 
     private fun readyViewsOnFilter() {
-        if (viewModel.filterFileData != null) {
+        if (viewModel.filterFavData != null) {
             binding.ibtnFilter.setBackgroundResource(R.drawable.background_rounded_btns_sharp)
         } else {
             binding.ibtnFilter.setBackgroundResource(R.drawable.background_rounded_btns)
@@ -228,7 +224,11 @@ class FavListFrag : Fragment() {
     }
 
     fun onFilterClick() {
-        findNavController().navigate(R.id.action_navigation_fav_to_FilterFilesFrag)
+        findNavController().navigate(
+            R.id.action_navigation_fav_to_FilterFilesFrag, bundleOf(
+                IS_IN_FAV_LIST_KEY to CONDITION_FILTER_FAV_LIST
+            )
+        )
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 }

@@ -281,7 +281,7 @@
     <string name="sent">ارسال شده</string>
     <string name="status_true">تایید شده</string>
     <string name="cooperation_with">همکاری با</string>
-    <string name="negative_values">مقدار رهن یا اجاره بیش از حد تبدیل می یاشد</string>
+    <string name="negative_values">مقدار رهن یا اجاره بیش از حد تبدیل بوده و نتیجه عدد منفی می باشد. مقدار جدید را تغییر دهید</string>
     <string name="empty_data">داده ای جهت نمایش وجود ندارد!</string>
     <string name="create_at_no_place_holder">تاریخ عضویت</string>
     <string name="empty"></string>
@@ -315,6 +315,10 @@
     <string name="un_filter">حذف فیلتر</string>
     <string name="empty_filter_items">برای اعمال فیلتر حداقل یکی از فیلد ها را پر کنید!</string>
     <string name="no_data">داده ای جهت نمایش وجود ندارد</string>
+    <string name="no_access_for_this">این بخش تنها برای مدیران و سرپرستان املاک قابل دسترسی می باشد</string>
+    <string name="delete_file">حذف فایل</string>
+    <string name="delete_user">حذف کاربر</string>
+    <string name="delete_user_alert">آیا از حذف کاربر اطمینان دارید؟ در صورت حذف, کلیه فایلهای ثبت شده توسط کاربر و همکاری های در حال انجام آن کاربر حذف می گردد.</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->

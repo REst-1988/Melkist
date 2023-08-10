@@ -1,7 +1,6 @@
 package com.example.melkist.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
                 txtSubCatSeeker.text = data.typeInfo!!.subCategory!!.title
                 txtCatSeeker.text = data.typeInfo.category!!.title
                 txtRegionSeeker.text = data.locations.getLocationTexts()
-                txtPriceSeeker.text = getPropertyPeriodsPriceText(context, data.price)
+                txtPriceSeeker.text = getPropertyPeriodsPriceText(context, data.price, R.string.price, R.string.tooman)
             }
         }
 

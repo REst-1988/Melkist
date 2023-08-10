@@ -11,22 +11,20 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.melkist.MainActivity
-import com.example.melkist.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlin.random.Random
+
 
 class FirebaseMessagingService: FirebaseMessagingService() {
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.w(ContentValues.TAG, "From: ${remoteMessage.from}")
-
-
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.w(ContentValues.TAG, "Message Notification Body: ${it.body}")
         }
-
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
         sendNotification(remoteMessage.from!!, remoteMessage.notification?.body!!)
@@ -40,13 +38,12 @@ class FirebaseMessagingService: FirebaseMessagingService() {
             this,
             requestCode,
             intent,
-            PendingIntent.FLAG_IMMUTABLE,
+            PendingIntent.FLAG_IMMUTABLE
         )
-
-        val channelId = resources.getString(R.string.app_name)
+        val channelId = "com.malkist.Melkist"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.logo_white)
+            .setSmallIcon(com.example.melkist.R.drawable.logo_white)
             .setContentTitle(messageHeader)
             .setContentText(messageBody)
             .setAutoCancel(true)
@@ -60,12 +57,11 @@ class FirebaseMessagingService: FirebaseMessagingService() {
             val channel = NotificationChannel(
                 channelId,
                 "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT,
+                NotificationManager.IMPORTANCE_HIGH,
             )
             notificationManager.createNotificationChannel(channel)
         }
-
-        val notificationId = 0
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        val random = Random.nextInt(9999 - 1000) + 1000
+        notificationManager.notify(random, notificationBuilder.build())
     }
 }

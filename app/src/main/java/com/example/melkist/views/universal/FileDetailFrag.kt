@@ -19,7 +19,6 @@ import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
-import com.example.melkist.utils.getTimeStampForLoadImages
 import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showFav
@@ -30,12 +29,6 @@ class FileDetailFrag : Fragment() {
 
     private lateinit var binding: FragFileDetailBinding
     private val viewModel: MainViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate test 1: ${viewModel.fileAllData.value}")
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +45,6 @@ class FileDetailFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("onViewCreated", "onViewCreated: test ${getTimeStampForLoadImages()}")
         initRequireViews()
         initListener()
         initObservers()
@@ -147,7 +139,6 @@ class FileDetailFrag : Fragment() {
         }
 
         viewModel.saveFavResponse.observe(viewLifecycleOwner) { response ->
-            Log.e("TAG", "saveFavResponse: test $response")
             when (response.result) {
                 true -> {
                     response.message?.let {
@@ -246,7 +237,7 @@ class FileDetailFrag : Fragment() {
     fun onSendCooperationRequest() {
         viewModel.fileAllData.value?.data?.id?.let { fileId ->
             (activity as MainActivity).user?.apply {
-                viewModel.sendCooperationRequest( // TODO: finish this part
+                viewModel.sendCooperationRequest(
                     requireActivity(),
                     token!!,
                     id!!,
@@ -276,7 +267,6 @@ class FileDetailFrag : Fragment() {
     }
 
     fun advertiserText(): String {
-        Log.e("initRequireViews", "advertiserText: advertiserText ${getTimeStampForLoadImages()} ")
         val a = viewModel.fileAllData.value?.data?.let {
             String.format("%s %s", it.user.firstName, it.user.lastName)
         }
@@ -334,8 +324,8 @@ class FileDetailFrag : Fragment() {
             return getPropertyPeriodsText(
                 requireContext(),
                 it.age,
-                R.string.age_title,
-                R.string.year
+                R.string.empty,
+                R.string.empty
             )
         }
         return a ?: ""
@@ -346,7 +336,7 @@ class FileDetailFrag : Fragment() {
             getPropertyPeriodsText(
                 requireContext(),
                 it.size,
-                R.string.meterage,
+                R.string.empty,
                 R.string.squere_meter
             )
         }
@@ -358,7 +348,7 @@ class FileDetailFrag : Fragment() {
             getPropertyPeriodsText(
                 requireContext(),
                 it.roomNo,
-                R.string.room,
+                R.string.empty,
                 R.string.room
             )
         }
@@ -367,24 +357,31 @@ class FileDetailFrag : Fragment() {
 
     fun priceText(): String {
         val a = viewModel.fileAllData.value?.data?.let {
-            return getPropertyPeriodsPriceText(requireContext(), it.price)
+            return getPropertyPeriodsPriceText(
+                requireContext(),
+                it.price,
+                R.string.empty,
+                R.string.tooman
+            )
         }
         return a ?: ""
     }
 
     fun pricePerMeterText(): String {
-        return if (isShowPricePerMeter())
-            String.format(
-                "%s %s",
-                calculatePricePerMeter(
-                    requireContext(),
-                    viewModel.fileAllData.value!!.data!!.price,
-                    viewModel.fileAllData.value!!.data!!.size
-                ),
-                resources.getString(R.string.tooman)
-            )
-        else
-            ""
+        return (viewModel.fileAllData.value?.data?.let {
+            if (isShowPricePerMeter())
+                String.format(
+                    "%s %s",
+                    calculatePricePerMeter(
+                        requireContext(),
+                        viewModel.fileAllData.value!!.data!!.price,
+                        viewModel.fileAllData.value!!.data!!.size
+                    ),
+                    resources.getString(R.string.tooman)
+                )
+            else
+                ""
+        }) ?: ""
     }
 
     fun isShowPricePerMeter(): Boolean {

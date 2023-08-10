@@ -1,10 +1,8 @@
 package com.example.melkist.utils
 
 import android.content.Context
-import com.example.melkist.models.Loc
 import com.example.melkist.models.LocationData
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterManager

@@ -2,10 +2,10 @@ package com.example.melkist.views.profile
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,6 +14,7 @@ import com.example.melkist.R
 import com.example.melkist.databinding.FragProfileUserProfileBinding
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ProfileTeamMemberViewModel
 
@@ -29,6 +30,7 @@ class ProfileUserProfileFrag : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             user = viewModel.teamMember
+            viewmodel = viewModel
             fragment = this@ProfileUserProfileFrag
         }
         return binding.root
@@ -36,12 +38,13 @@ class ProfileUserProfileFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.deleteTeamMemberResponse.observe(viewLifecycleOwner){ response ->
-            when (response.result){
+        viewModel.deleteTeamMemberResponse.observe(viewLifecycleOwner) { response ->
+            when (response.result) {
                 true -> {
-                    showToast(requireContext(), response.message?:"")
+                    showToast(requireContext(), response.message ?: "")
                     back()
                 }
+
                 false -> showToast(requireContext(), concatenateText(response.errors))
                 else -> Log.e("TAG", "onViewCreated: ${resources.getString(R.string.null_value)}")
             }
@@ -54,12 +57,27 @@ class ProfileUserProfileFrag : Fragment() {
     }
 
     fun onDeleteUserClick() {
-        (activity as MainActivity).user?.apply {
-            try {
-                viewModel.deleteTeamMembers(requireActivity(), token!!, viewModel.teamMember!!.id!!)
-            }catch (e: Exception){
-                handleSystemException(lifecycleScope, "ProfileUserProfileFrag, onDeleteUserClick, ", e)
-            }
+        try {
+            showDialogWith2Actions(
+                requireContext(),
+                requireContext().resources.getString(R.string.delete_user_alert),
+                { _, _ ->
+                    (activity as MainActivity).user?.apply {
+                        viewModel.deleteTeamMembers(
+                            requireActivity(),
+                            token!!,
+                            viewModel.teamMember!!.id!!
+                        )
+                    }
+                },
+                { d, _ -> d.dismiss() }
+            )
+        } catch (e: Exception) {
+            handleSystemException(
+                lifecycleScope,
+                "ProfileUserProfileFrag, onDeleteUserClick, ",
+                e
+            )
         }
     }
 }

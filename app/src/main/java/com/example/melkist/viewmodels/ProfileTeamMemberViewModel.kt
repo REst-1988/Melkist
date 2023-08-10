@@ -17,6 +17,7 @@ import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.launch
 
 class ProfileTeamMemberViewModel : ViewModel() {
+
     private val _teamMembers = MutableLiveData<Users>()
     val teamMembers: LiveData<Users> = _teamMembers
     private val _deleteTeamMemberResponse = MutableLiveData<PublicResponseModel>()
@@ -38,7 +39,6 @@ class ProfileTeamMemberViewModel : ViewModel() {
             }
         else
             viewModelScope.launch {
-                Log.e("TAG", "getTeamMembers: launch proceed")
                 _status.value = ApiStatus.LOADING
                 try {
                     _teamMembers.value = Api.retrofitService.getAllUserSubset(
@@ -73,6 +73,7 @@ class ProfileTeamMemberViewModel : ViewModel() {
                         token, userId
                     )
                     Log.e("TAG", "_deleteTeamMemberResponse: ${_deleteTeamMemberResponse.value.toString()} ")
+                    _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     handleSystemException(viewModelScope, "ProfileTeamMemberViewModel, deleteTeamMembers, ", e)
                     _status.value = ApiStatus.ERROR

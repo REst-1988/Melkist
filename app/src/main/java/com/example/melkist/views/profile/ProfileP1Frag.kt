@@ -19,8 +19,10 @@ import com.example.melkist.data.Ds
 import com.example.melkist.databinding.DialogContactUsBinding
 import com.example.melkist.databinding.FragProfileP1Binding
 import com.example.melkist.interfaces.Interaction
+import com.example.melkist.models.Roles
 import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -73,12 +75,12 @@ class ProfileP1Frag : Fragment() {
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
     }
 
-    private fun extiConfirm () {
+    private fun extiConfirm() {
         startActivity(
             Intent(requireActivity(), LoginActivity::class.java)
         )
         lifecycleScope.launch {
-            Ds.getDataStore(requireContext()).emptyPreferences(requireContext())
+            Ds.getDataStore(requireContext()).emptyPreferences()
         }
         requireActivity().finish()
     }
@@ -125,10 +127,19 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onManageTeamClick() {
-        findNavController().navigate(
-            R.id.action_navigation_profle_to_profileManageTeamFrag
-        )
-        interaction?.changBottomNavViewVisibility(View.GONE)
+        (activity as MainActivity).user?.apply {
+            if (roleId == Roles().manager.id || roleId == Roles().supervisor.id) {
+                findNavController().navigate(
+                    R.id.action_navigation_profle_to_profileManageTeamFrag
+                )
+                interaction?.changBottomNavViewVisibility(View.GONE)
+            } else {
+                showToast(
+                    requireContext(),
+                    resources.getString(R.string.no_access_for_this)
+                )
+            }
+        }
     }
 
     fun onAiClick() {
@@ -167,7 +178,7 @@ class ProfileP1Frag : Fragment() {
         dialog.show()
         binding.btnCallBackup.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:09173381951") // TODO: change this to client number
+            intent.data = Uri.parse("tel:09398208899")
             startActivity(intent)
         }
         binding.btnOurSite.setOnClickListener {
@@ -183,8 +194,8 @@ class ProfileP1Frag : Fragment() {
         showDialogWith2Actions(
             requireContext(),
             resources.getString(R.string.are_you_sure),
-            {_, _ -> extiConfirm()},
-            {d, _ -> d.dismiss()}
+            { _, _ -> extiConfirm() },
+            { d, _ -> d.dismiss() }
         )
     }
 }

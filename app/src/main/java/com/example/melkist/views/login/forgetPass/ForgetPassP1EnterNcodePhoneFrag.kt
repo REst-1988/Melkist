@@ -2,14 +2,15 @@ package com.example.melkist.views.login.forgetPass
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.LoginActivity
+import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP1EnterNcodePhoneBinding
 import com.example.melkist.utils.concatenateText
@@ -42,7 +43,15 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
             binding.txtTitle.text = resources.getString(R.string.change_password)
             listenToSendVerificationCode()
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "ForgetPassP1EnterNcodePhoneFrag, onViewCreated, ", e)
+            val a = if (requireActivity() is MainActivity)
+                (requireActivity() as MainActivity).user?.id.toString()
+            else
+                "LoginActivity"
+            handleSystemException(
+                lifecycleScope,
+                "$a, ForgetPassP1EnterNcodePhoneFrag, onViewCreated, ",
+                e
+            )
             showToast(requireContext(), requireContext().resources.getString(R.string.global_error))
         }
     }
@@ -80,18 +89,21 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
                         d.dismiss()
                     }
                 else
-                    Log.e("TAG", "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ", )
-                    /*showToast(
-                        requireContext(),
-                        resources.getString(R.string.somthing_goes_wrong)
-                    )*/
+                    Log.e(
+                        "TAG",
+                        "listenToSendVerificationCode: ${resources.getString(R.string.somthing_goes_wrong)} ",
+                    )
+            /*showToast(
+                requireContext(),
+                resources.getString(R.string.somthing_goes_wrong)
+            )*/
         }
     }
 
     private fun startNextFragAndResetResponse() {
-        Log.e("TAG", "startNextFragAndResetResponse 1: ${activity is LoginActivity}", )
-        Log.e("TAG", "startNextFragAndResetResponse 2: ${activity == LoginActivity::class}", )
-        Log.e("TAG", "startNextFragAndResetResponse 3: ${activity == LoginActivity::class.java}", )
+        Log.e("TAG", "startNextFragAndResetResponse 1: ${activity is LoginActivity}")
+        Log.e("TAG", "startNextFragAndResetResponse 2: ${activity == LoginActivity::class}")
+        Log.e("TAG", "startNextFragAndResetResponse 3: ${activity == LoginActivity::class.java}")
         if (activity is LoginActivity)
             findNavController()
                 .navigate(
@@ -106,7 +118,7 @@ class ForgetPassP1EnterNcodePhoneFrag : Fragment() {
         setViewModelFieldsIfVerificationCodeSent()
     }
 
-    private fun setViewModelFieldsIfVerificationCodeSent(){
+    private fun setViewModelFieldsIfVerificationCodeSent() {
         viewModel.setMobileNo(binding.etPhoneNo.editText!!.text.toString())
         viewModel.setNationalCode(binding.etNationalCode.editText!!.text.toString().toLong())
     }

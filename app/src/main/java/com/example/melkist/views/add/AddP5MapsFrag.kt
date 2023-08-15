@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.AddActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP5MapsBinding
 import com.example.melkist.utils.handleSystemException
@@ -65,7 +66,7 @@ class AddP5MapsFrag : Fragment() {
             val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
             mapFragment?.getMapAsync(callback)
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "AddP5MapsFrag, onViewCreated,", e)
+            handleSystemException(lifecycleScope, "${(activity as AddActivity).user?.id}, AddP5MapsFrag, onViewCreated,", e)
         }
     }
 

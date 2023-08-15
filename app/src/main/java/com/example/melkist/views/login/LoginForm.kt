@@ -31,6 +31,7 @@ class LoginForm : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        Log.e("TAG", "onCreateView: test??? " )
         binding = FragmentLoginFormBinding.inflate(inflater, container, false)
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -87,7 +88,7 @@ class LoginForm : Fragment() {
                 false -> onFalseResult(response)
                 else -> Log.e(
                     "TAG",
-                    "listenToCheckVerificationResult: " + "${resources.getString(R.string.somthing_goes_wrong)}",
+                    "listenToCheckVerificationResult: ${resources.getString(R.string.somthing_goes_wrong)}",
                 )
             }
         }

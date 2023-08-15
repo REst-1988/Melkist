@@ -50,7 +50,7 @@ class ProfileTeamMemberViewModel : ViewModel() {
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
-                    handleSystemException(viewModelScope, "ProfileTeamMemberViewModel, getTeamMembers, ", e)
+                    handleSystemException(viewModelScope, "$userId, ProfileTeamMemberViewModel, getTeamMembers, ", e)
                     _status.value = ApiStatus.ERROR
                 }
             }
@@ -75,7 +75,7 @@ class ProfileTeamMemberViewModel : ViewModel() {
                     Log.e("TAG", "_deleteTeamMemberResponse: ${_deleteTeamMemberResponse.value.toString()} ")
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
-                    handleSystemException(viewModelScope, "ProfileTeamMemberViewModel, deleteTeamMembers, ", e)
+                    handleSystemException(viewModelScope, "$userId, ProfileTeamMemberViewModel, deleteTeamMembers, ", e)
                     _status.value = ApiStatus.ERROR
                 }
             }

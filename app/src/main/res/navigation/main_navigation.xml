@@ -312,4 +312,8 @@
         android:name="com.example.melkist.views.calculator.dialog.CalculatorResultExpertDialogFrag"
         android:label="frag_calculator_result_expert_dialog"
         tools:layout="@layout/frag_calculator_result_expert_dialog" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.melkist.MainActivity"
+        android:label="MainActivity" />
 </navigation>

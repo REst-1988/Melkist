@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity(), Interaction {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         try {
-            super.onCreate(savedInstanceState)
             /*        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
                         handleSystemException(lifecycleScope, "MainActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
                         finish()
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), Interaction {
                     }
             }
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "MainActivity, onCreate, ", e)
+            handleSystemException(lifecycleScope, "${user?.id}, MainActivity, onCreate, ", e)
         }
     }
 
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), Interaction {
             }
             checkNotificationPermission()
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "MainActivity, onResume, ", e)
+            handleSystemException(lifecycleScope, "${user?.id}, MainActivity, onResume, ", e)
         }
     }
 

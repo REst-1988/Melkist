@@ -80,21 +80,21 @@ class AddP4LocationFrag : Fragment() {
                 }
             }
         } catch (e: Exception){
-            handleSystemException(lifecycleScope, "AddP4LocationFrag, onViewCreated,", e)
+            handleSystemException(lifecycleScope, "${(activity as AddActivity).user?.id}, AddP4LocationFrag, onViewCreated,", e)
         }
     }
 
     private fun readyProvinceAndCity() {
         if (viewModel.provinceId == 0)
-            viewModel.provinceId = (activity as AddActivity).user.provinceId ?: 17
+            viewModel.provinceId = (activity as AddActivity).user?.provinceId ?: 17
         if (viewModel.cityId == 0)
-            viewModel.cityId = (activity as AddActivity).user.cityId ?: 733
+            viewModel.cityId = (activity as AddActivity).user?.cityId ?: 733
         if (viewModel.provinceTitle == "")
             viewModel.provinceTitle =
-                (activity as AddActivity).user.provinceTitle ?: resources.getString(R.string.fars)
+                (activity as AddActivity).user?.provinceTitle ?: resources.getString(R.string.fars)
         if (viewModel.cityTitle == "")
             viewModel.cityTitle =
-                (activity as AddActivity).user.cityTitle ?: resources.getString(R.string.shiraz)
+                (activity as AddActivity).user?.cityTitle ?: resources.getString(R.string.shiraz)
     }
 
     private fun isReadyForNextFrag(): Boolean {

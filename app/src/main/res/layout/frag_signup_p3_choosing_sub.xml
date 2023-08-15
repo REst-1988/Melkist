@@ -88,37 +88,33 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
-                    android:id="@+id/rl_1"
+                    android:id="@+id/rl_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/short_margin"
                     android:background="@drawable/background_choosing_post"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_CONSOLTANT)}">
+                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_MANAGER)}">
 
                     <ImageView
-                        android:id="@+id/img_sub_choosing_1"
+                        android:id="@+id/img_sub_choosing_3"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_centerVertical="true"
                         android:layout_margin="@dimen/short_margin"
-                        android:layout_marginStart="@dimen/short_margin"
-                        android:layout_marginTop="@dimen/short_margin"
-                        android:layout_marginEnd="@dimen/short_margin"
-                        android:layout_marginBottom="@dimen/normal_margin"
                         android:scaleType="fitCenter"
-                        tools:src="@drawable/consultant" />
+                        tools:src="@drawable/manager" />
 
                     <TextView
-                        android:id="@+id/txt_sub_choosing_1"
+                        android:id="@+id/txt_sub_choosing_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
-                        tools:text="مشاور" />
+                        tools:text="مدیر" />
 
                 </RelativeLayout>
 
@@ -155,33 +151,37 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_3"
+                    android:id="@+id/rl_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/short_margin"
                     android:background="@drawable/background_choosing_post"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_MANAGER)}">
+                    android:onClick="@{() -> fragment.setSubCondition(viewmodel.SUB_STATE_CONSOLTANT)}">
 
                     <ImageView
-                        android:id="@+id/img_sub_choosing_3"
+                        android:id="@+id/img_sub_choosing_1"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_centerVertical="true"
                         android:layout_margin="@dimen/short_margin"
+                        android:layout_marginStart="@dimen/short_margin"
+                        android:layout_marginTop="@dimen/short_margin"
+                        android:layout_marginEnd="@dimen/short_margin"
+                        android:layout_marginBottom="@dimen/normal_margin"
                         android:scaleType="fitCenter"
-                        tools:src="@drawable/manager" />
+                        tools:src="@drawable/consultant" />
 
                     <TextView
-                        android:id="@+id/txt_sub_choosing_3"
+                        android:id="@+id/txt_sub_choosing_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/iransans"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
-                        tools:text="مدیر" />
+                        tools:text="مشاور" />
 
                 </RelativeLayout>
 

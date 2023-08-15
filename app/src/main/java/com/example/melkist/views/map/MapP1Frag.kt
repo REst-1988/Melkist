@@ -85,7 +85,7 @@ class MapP1Frag : Fragment() {
             ) as SupportMapFragment
             listenToFileList()
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "${this.javaClass.name}, onViewCreated, ", e)
+            handleSystemException(lifecycleScope, "${(requireActivity() as MainActivity).user?.id}, ${this.javaClass.name}, onViewCreated, ", e)
         }
     }
 

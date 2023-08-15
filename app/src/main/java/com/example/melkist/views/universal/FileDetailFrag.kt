@@ -293,7 +293,7 @@ class FileDetailFrag : Fragment() {
                     it.fileType!!.title
                 )
             } catch (e: Exception) {
-                handleSystemException(lifecycleScope, "${this.javaClass.name}, typeText, ", e)
+                handleSystemException(lifecycleScope, "${(requireActivity() as MainActivity).user?.id}, ${this.javaClass.name}, typeText, ", e)
                 null
             }
         }

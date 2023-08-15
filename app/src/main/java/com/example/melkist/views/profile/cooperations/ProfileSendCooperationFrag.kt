@@ -165,7 +165,7 @@ class ProfileSendCooperationFrag(
                         viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
                         listenToFileDetailData(alertDialog)
                     } catch (e: Exception) {
-                        handleSystemException(lifecycleScope, "ProfileSendCooperationFrag, initDialogClickListeners, ", e)
+                        handleSystemException(lifecycleScope, "$id, ProfileSendCooperationFrag, initDialogClickListeners, ", e)
                     }
                 }
             }

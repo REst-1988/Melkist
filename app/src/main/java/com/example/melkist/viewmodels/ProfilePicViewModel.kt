@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.melkist.MainActivity
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
@@ -61,7 +62,7 @@ class ProfilePicViewModel : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "ProfilePicViewModel, uploadProfilePic, ", e)
+                    handleSystemException(viewModelScope, "$userId, ProfilePicViewModel, uploadProfilePic, ", e)
                 }
             }
     }

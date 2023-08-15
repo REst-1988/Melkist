@@ -1,6 +1,7 @@
 package com.example.melkist
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
@@ -22,6 +23,7 @@ import com.example.melkist.models.User
 import com.example.melkist.utils.changeAppTheme
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.SplashViewModel
 import com.google.android.gms.tasks.OnCompleteListener
@@ -31,7 +33,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 200
+    private val splashTimeOut: Long = 3000
     private lateinit var binding: ActivitySplashScreenBinding
     private lateinit var userDataStore: UserDataStore
     private var appVersion: String = ""
@@ -61,7 +63,7 @@ class SplashActivity : AppCompatActivity() {
                 it?.let { theme -> changeAppTheme(theme) }
             }
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "SplashActivity, onCreate ", e)
+            handleSystemException(lifecycleScope, "${user?.id}, SplashActivity, onCreate ", e)
         }
     }
 
@@ -88,7 +90,11 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "SplashActivity, listenToAppVersionResponse ", e)
+            handleSystemException(
+                lifecycleScope,
+                "${user?.id}, SplashActivity, listenToAppVersionResponse ",
+                e
+            )
         }
     }
 
@@ -157,11 +163,29 @@ class SplashActivity : AppCompatActivity() {
 
     private fun downloadLastVersion() {
         try {
-            val browserIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(R.string.site_url)))
-            startActivity(browserIntent)
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(resources.getString(R.string.download_last_version))
+                .setCancelable(true)
+                .setPositiveButton(resources.getText(R.string.go_to_site)) { d, _ ->
+                    val browserIntent =
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(resources.getString(R.string.site_url_download))
+                        )
+                    startActivity(browserIntent)
+                }
+                .setNegativeButton(resources.getText(R.string.sometime_else)) { d, _ ->
+                    d.dismiss()
+                    finish()
+                }
+                .show()
+
         } catch (e: Exception) {
-            handleSystemException(lifecycleScope, "SplashActivity, downloadLastVersion ", e)
+            handleSystemException(
+                lifecycleScope,
+                "${user?.id}, SplashActivity, downloadLastVersion ",
+                e
+            )
         }
     }
 }

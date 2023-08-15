@@ -170,7 +170,6 @@ fun calculatePricePerMeter(context: Context, price: Period, size: Period): Strin
         )
 }
 
-// TODO: add user id to this method
 fun handleSystemException(
     scope: CoroutineScope,
     from: String?,

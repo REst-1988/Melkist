@@ -77,7 +77,7 @@ class ProfileOutboxFrag(
                     viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
-                    handleSystemException(lifecycleScope, "ProfileOutboxFrag, showOutboxDialog, ", e)
+                    handleSystemException(lifecycleScope, "$id, ProfileOutboxFrag, showOutboxDialog, ", e)
                 }
             }
         }

@@ -185,7 +185,7 @@ class AddItemViewModel : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "${this@AddItemViewModel.javaClass.name}, getRegion, ", e)
+                    handleSystemException(viewModelScope, "$userId, ${this@AddItemViewModel.javaClass.name}, getRegion, ", e)
                 }
             }
         }

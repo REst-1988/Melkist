@@ -4,13 +4,13 @@
     android:duration="1000"
     android:fillAfter="true">
 
-    <scale android:pivotX="50%"
+<!--    <scale android:pivotX="50%"
         android:pivotY="50%"
         android:fromXScale="100%"
         android:toXScale="120%"
         android:fromYScale="100%"
-        android:toYScale="120%"/>
+        android:toYScale="120%"/>-->
 
     <translate
-        android:toYDelta="-40%"/>
+        android:toYDelta="-140%"/>
 </set>

@@ -170,6 +170,7 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
             viewModel.cityId,
             viewModel.mobileNo,
             viewModel.nationalCode.toString(),
+            viewModel.birthdate,
             viewModel.email,
             viewModel.getSubCondition()
         )

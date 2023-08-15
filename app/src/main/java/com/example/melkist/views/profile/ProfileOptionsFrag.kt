@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.data.OptionsDs
 import com.example.melkist.databinding.FragProfileOptionsBinding
@@ -55,7 +56,7 @@ class ProfileOptionsFrag : Fragment() {
                     }
                 }
         } catch (e: Exception){
-            handleSystemException(lifecycleScope, "${this.javaClass.name}, getSavedOptions, ", e)
+            handleSystemException(lifecycleScope, "${(requireActivity() as MainActivity).user?.id}, ${this.javaClass.name}, getSavedOptions, ", e)
         }
     }
 
@@ -87,7 +88,7 @@ class ProfileOptionsFrag : Fragment() {
                 back()
             }
         }catch (e: Exception){
-            handleSystemException(lifecycleScope, "${this.javaClass.name}, onThemeClick, ", e)
+            handleSystemException(lifecycleScope, "${(requireActivity() as MainActivity).user?.id}, ${this.javaClass.name}, onThemeClick, ", e)
         }
     }
 

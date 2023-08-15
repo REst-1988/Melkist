@@ -23,7 +23,6 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background_splash_screen"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_splash" />
 
@@ -31,17 +30,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.95"
-            android:background="@drawable/background_splash_screen" />
+            android:background="@color/main_dark_color2" />
 
         <ImageView
             android:id="@+id/img_logo"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/logo_white" />
 
         <androidx.cardview.widget.CardView

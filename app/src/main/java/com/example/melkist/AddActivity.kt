@@ -12,7 +12,7 @@ import com.example.melkist.utils.handleSystemException
 
 class AddActivity : AppCompatActivity() {
     private lateinit var navController: NavController
-    lateinit var user: User
+    var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class AddActivity : AppCompatActivity() {
                 .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             navController = navHostFragment.navController
         } catch (e: Exception){
-            handleSystemException(lifecycleScope, "AddActivity, onCreate, ", e)
+            handleSystemException(lifecycleScope, "${user?.id}, AddActivity, onCreate, ", e)
         }
     }
 

@@ -77,7 +77,7 @@ class ProfileInboxFrag(
                     viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
-                    handleSystemException(lifecycleScope, "ProfileInboxFrag, showInboxDialog, ", e)
+                    handleSystemException(lifecycleScope, "$id, ProfileInboxFrag, showInboxDialog, ", e)
                 }
             }
         }

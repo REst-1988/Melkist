@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.melkist.LoginActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.network.Api
@@ -96,7 +97,10 @@ class ForgetPassViewModel : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "ForgetPassViewModel, getNcodeMobileVerificationCode, ", e)
+                    if (activity is MainActivity)
+                        handleSystemException(viewModelScope, "${activity.user?.id}, ForgetPassViewModel, getNcodeMobileVerificationCode, ", e)
+                    else
+                        handleSystemException(viewModelScope, "LoginActivity, ForgetPassViewModel, getNcodeMobileVerificationCode, ", e)
                 }
             }
     }
@@ -116,7 +120,10 @@ class ForgetPassViewModel : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "ForgetPassViewModel, sendMobileVerificationCode, ", e)
+                    if (activity is MainActivity)
+                        handleSystemException(viewModelScope, "${activity.user?.id}, ForgetPassViewModel, sendMobileVerificationCode, ", e)
+                    else
+                        handleSystemException(viewModelScope, "LoginActivity, ForgetPassViewModel, sendMobileVerificationCode, ", e)
                 }
             }
     }
@@ -139,7 +146,10 @@ class ForgetPassViewModel : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "ForgetPassViewModel, requestChangePasswordByMobile, ", e)
+                    if (activity is MainActivity)
+                        handleSystemException(viewModelScope, "${activity.user?.id}, ForgetPassViewModel, requestChangePasswordByMobile, ", e)
+                    else
+                        handleSystemException(viewModelScope, "LoginActivity, ForgetPassViewModel, requestChangePasswordByMobile, ", e)
                 }
             }
     }

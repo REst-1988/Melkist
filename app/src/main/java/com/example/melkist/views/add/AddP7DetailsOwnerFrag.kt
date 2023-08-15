@@ -81,7 +81,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
             }
             viewModel.resetImages()
         }catch (e: Exception){
-            handleSystemException(lifecycleScope, "AddP7DetailsOwnerFrag, onViewCreated", e)
+            handleSystemException(lifecycleScope, "${(activity as AddActivity).user?.id}, AddP7DetailsOwnerFrag, onViewCreated", e)
         }
     }
 
@@ -125,7 +125,9 @@ class AddP7DetailsOwnerFrag : Fragment() {
         ) viewModel.descriptions =
             binding.etDescriptions.editText!!.text.toString()
         if (isDataReady())
-            viewModel.saveFile(requireActivity(), (activity as AddActivity).user.id!!)
+            (activity as AddActivity).user?.apply {
+                viewModel.saveFile(requireActivity(), id!!)
+            }
         else
             showDialogWithMessage(
                 requireContext(),

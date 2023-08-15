@@ -27,6 +27,7 @@ class SplashViewModel : ViewModel() {
         firebaseToken: String?,
         appVersion: String
     ) {
+        Log.e("TAG", "callServerAppVersion: $userId, $firebaseToken, $appVersion", )
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 callServerAppVersion(
@@ -50,7 +51,7 @@ class SplashViewModel : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SplashViewModel, callServerAppVersion, ", e)
+                    handleSystemException(viewModelScope, "$userId, SplashViewModel, callServerAppVersion, ", e)
                 }
             }
     }

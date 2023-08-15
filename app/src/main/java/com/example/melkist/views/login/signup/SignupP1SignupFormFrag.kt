@@ -1,7 +1,8 @@
 package com.example.melkist.views.login.signup
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,10 @@ import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.showDialogWithMessage
-import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.SignupViewModel
+import ir.hamsaa.persiandatepicker.Listener
+import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
+import ir.hamsaa.persiandatepicker.util.PersianCalendar
 
 
 class SignupP1SignupFormFrag : Fragment() {
@@ -63,7 +66,7 @@ class SignupP1SignupFormFrag : Fragment() {
 
     private fun listenToCheckVerificationResult() {
         viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
-            when (it.result){
+            when (it.result) {
                 true -> onTrueVerificationCodeResponse()
                 false -> onFalseVerificationCodeResponse()
                 else -> {}
@@ -103,10 +106,11 @@ class SignupP1SignupFormFrag : Fragment() {
                 viewModel.firstName,
                 viewModel.lastName,
                 viewModel.realEstateNameForManager,
-                viewModel.cityId,
-                viewModel.mobileNo,
-                viewModel.nationalCode.toString(),
-                viewModel.email,
+                cityId = viewModel.cityId,
+                mobile = viewModel.mobileNo,
+                nationalCode = viewModel.nationalCode.toString(),
+                birthdate = viewModel.birthdate,
+                email = viewModel.email,
                 viewModel.getSubCondition()
             )
         }
@@ -118,6 +122,7 @@ class SignupP1SignupFormFrag : Fragment() {
         viewModel.realEstateNameForManager = binding.etRealEstateName.editText?.text.toString()
         viewModel.mobileNo = binding.etPhoneNo.editText!!.text.toString()
         viewModel.nationalCode = binding.etNationalCode.editText!!.text.toString().toLong()
+        viewModel.birthdate = binding.etBirthDate.editText!!.text.toString()
         viewModel.email = binding.etEmail.editText?.text.toString()
         viewModel.password = binding.etPassword.editText!!.text.toString()
     }
@@ -133,9 +138,10 @@ class SignupP1SignupFormFrag : Fragment() {
         val isLastName = isLastName()
         val isPhoneNo = isPhoneNo()
         val isNationalCode = isNationalCode()
+        val isBirthDate = isBirthDate()
         val isEmail = isEmail()
         val isPassword = isPassword()
-        if (isRealEstate && isFirstName && isLastName && isPhoneNo && isNationalCode && isEmail && isPassword) return true
+        if (isRealEstate && isFirstName && isLastName && isPhoneNo && isNationalCode && isBirthDate && isEmail && isPassword) return true
         return false
     }
 
@@ -213,6 +219,17 @@ class SignupP1SignupFormFrag : Fragment() {
         return true
     }
 
+    private fun isBirthDate(): Boolean {
+        // not empty field
+        if (binding.etBirthDate.editText == null || binding.etBirthDate.editText!!.text.isEmpty()) {
+            binding.etBirthDate.error =
+                requireContext().resources.getString(R.string.error_on_empty_birth_date)
+            return false
+        }
+        binding.etLastName.error = null
+        return true
+    }
+
     private fun isEmail(): Boolean {
         if (binding.etEmail.editText == null || binding.etEmail.editText!!.text.isEmpty()) {
             binding.etEmail.error = null
@@ -248,8 +265,10 @@ class SignupP1SignupFormFrag : Fragment() {
         return when (viewModel.getCondition()) {
             SignupViewModel.Condition.CHOOSE -> requireContext().resources.getText(R.string.choose)
                 .toString()
+
             SignupViewModel.Condition.STATE_USER -> requireContext().resources.getText(R.string.choosing_user_header)
                 .toString()
+
             else -> requireContext().resources.getText(R.string.choosing_real_estate_header)
                 .toString()
         }
@@ -267,6 +286,7 @@ class SignupP1SignupFormFrag : Fragment() {
         return when (viewModel.getSubCondition()) {
             viewModel.SUB_STATE_CHOOSE -> requireContext().resources.getText(R.string.choose)
                 .toString()
+
             viewModel.SUB_STATE_MANAGER -> viewModel.getRoles().manager.title
             viewModel.SUB_STATE_SUPERVISER -> viewModel.getRoles().supervisor.title
             viewModel.SUB_STATE_CONSOLTANT -> viewModel.getRoles().consultant.title
@@ -352,5 +372,40 @@ class SignupP1SignupFormFrag : Fragment() {
 
     private fun isDealer(): Boolean {
         return (viewModel.getSubCondition() == viewModel.SUB_STATE_DEALER && viewModel.cityId != 0)
+    }
+
+    fun onDateClick() {
+        val typeface = Typeface.createFromAsset(requireContext().assets, "iransans.ttf")
+        val persianDate = PersianCalendar()
+        val picker = PersianDatePickerDialog(requireContext())
+            .setPositiveButtonString(resources.getString(R.string.confirm))
+            .setNegativeButton(resources.getString(R.string.close))
+            .setMinYear(1300)
+            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
+            .setActionTextColor(Color.GRAY)
+            .setTypeFace(typeface)
+            .setInitDate(persianDate, true)
+            .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
+            .setShowInBottomSheet(true)
+            .setListener(object : Listener {
+                override fun onDateSelected(persianCalendar: PersianCalendar?) {
+                    persianCalendar?.apply {
+                        binding.etBirthDate.editText?.setText(
+                            resources.getString(
+                                R.string.date,
+                                persianYear.toString(),
+                                persianMonth.toString(),
+                                persianDay.toString()
+                            )
+                        )
+                    }
+                }
+
+                override fun onDismissed() {
+                }
+
+            })
+        picker.show()
+
     }
 }

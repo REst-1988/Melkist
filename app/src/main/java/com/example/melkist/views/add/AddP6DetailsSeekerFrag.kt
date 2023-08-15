@@ -132,7 +132,9 @@ class AddP6DetailsSeekerFrag : Fragment() {
 
     fun onCommit() {
         gatheringData()
-        viewModel.saveFile(requireActivity(), (activity as AddActivity).user.id!!)
+        (activity as AddActivity).user?.apply {
+            viewModel.saveFile(requireActivity(), id!!)
+        }
     }
 
     fun onAgeFromClick() {

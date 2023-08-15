@@ -166,7 +166,7 @@ class ProfileReceivedCooperationFrag(private val fragment: ProfileCooperationFra
                         viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
                         listenToFileDetailData(alertDialog)
                     } catch (e: Exception) {
-                        handleSystemException(lifecycleScope, "ProfileReceivedCooperationFrag, initDialogClickListeners, ", e)
+                        handleSystemException(lifecycleScope, "$id, ProfileReceivedCooperationFrag, initDialogClickListeners, ", e)
                     }
                 }
             }

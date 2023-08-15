@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.melkist.MainActivity
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.FavFileResponse
 import com.example.melkist.models.FileData
@@ -110,7 +111,7 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getFiles, ", e)
+                    handleSystemException(viewModelScope, "${(activity as MainActivity).user?.id}, MainViewModel, getFiles, ", e)
                 }
             }
     }
@@ -130,7 +131,7 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getFilterFiles, ", e)
+                    handleSystemException(viewModelScope, "${(activity as MainActivity).user?.id}, MainViewModel, getFilterFiles, ", e)
                 }
             }
     }
@@ -182,7 +183,7 @@ class MainViewModel :
                 } catch (e: Exception) {
                     resetFileAllData()
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getFileInfoById, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getFileInfoById, ", e)
                 }
             }
     }
@@ -205,7 +206,7 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, deleteFile, ", e)
+                    handleSystemException(viewModelScope, "${(activity as MainActivity).user?.id}, MainViewModel, deleteFile, ", e)
                 }
             }
     }
@@ -229,7 +230,7 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, saveFavFile, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, saveFavFile, ", e)
                 }
             }
     }
@@ -253,7 +254,7 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, deleteFavFile, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, deleteFavFile, ", e)
                 }
             }
     }
@@ -285,7 +286,7 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, sendCooperationRequest, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, sendCooperationRequest, ", e)
                 }
             }
     }
@@ -307,7 +308,7 @@ class MainViewModel :
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getFavoritesFile, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getFavoritesFile, ", e)
                 }
             }
     }
@@ -334,7 +335,7 @@ class MainViewModel :
                     }
                 } catch (e: java.lang.Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getInbox, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getInbox, ", e)
                 }
             }
     }
@@ -357,7 +358,7 @@ class MainViewModel :
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getOutbox, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getOutbox, ", e)
                 }
             }
     }
@@ -387,7 +388,7 @@ class MainViewModel :
                     }
                 } catch (e: java.lang.Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getReceivedCooperation, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getReceivedCooperation, ", e)
                 }
             }
     }
@@ -413,7 +414,7 @@ class MainViewModel :
                     }
                 } catch (e: java.lang.Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getSendCooperation, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getSendCooperation, ", e)
                 }
             }
     }
@@ -436,7 +437,7 @@ class MainViewModel :
                     }
                 } catch (e: java.lang.Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, getMyFiles, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, getMyFiles, ", e)
                 }
             }
     }
@@ -466,7 +467,7 @@ class MainViewModel :
                     Log.e("TAG", "_setStatusResponse: ${_setStatusResponse.value.toString()} ")
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "MainViewModel, setAlertStatus, ", e)
+                    handleSystemException(viewModelScope, "$userId, MainViewModel, setAlertStatus, ", e)
                 }
             }
     }

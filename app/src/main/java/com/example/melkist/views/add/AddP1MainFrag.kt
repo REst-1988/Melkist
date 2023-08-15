@@ -40,8 +40,8 @@ class AddP1MainFrag : Fragment() {
                 fragment = this@AddP1MainFrag
             }
             return binding.root
-        }catch (e: Exception){
-            handleSystemException(lifecycleScope, "AddP1MainFrag, onCreateView, ", e)
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "${(activity as AddActivity).user?.id}, AddP1MainFrag, onCreateView, ", e)
         }
         return null
     }
@@ -72,8 +72,8 @@ class AddP1MainFrag : Fragment() {
                     viewModel.subCatTitle = this[1]
                 }
             }
-        } catch (e: Exception){
-            handleSystemException(lifecycleScope, "AddP1MainFrag, onViewCreated,", e)
+        } catch (e: Exception) {
+            handleSystemException(lifecycleScope, "${(activity as AddActivity).user?.id}, AddP1MainFrag, onViewCreated,", e)
         }
     }
 
@@ -93,11 +93,13 @@ class AddP1MainFrag : Fragment() {
                     .resources
                     .getText(R.string.choosing_seeker_header)
                     .toString()
+
             AddItemViewModel.ItemType.OWNER ->
                 requireContext()
                     .resources
                     .getText(R.string.choosing_owner_header)
                     .toString()
+
             else ->
                 requireContext()
                     .resources
@@ -111,18 +113,23 @@ class AddP1MainFrag : Fragment() {
     }
 
     fun onChoosingCategory() {
-        viewModel.setReqSource(AddItemViewModel.ReqSource.CATEGORY)
-        val array = arrayListOf(
-            (activity as AddActivity).user.token,
-            viewModel.getTypeId().toString(),
-            EMPTY_CATEGORY_ID.toString()
-        )
-        val bundle = bundleOf(CAT_ID_KEY to array)
-        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag, bundle)
+        (activity as AddActivity).user?.apply {
+            viewModel.setReqSource(AddItemViewModel.ReqSource.CATEGORY)
+            val array = arrayListOf(
+                token,
+                viewModel.getTypeId().toString(),
+                EMPTY_CATEGORY_ID.toString()
+            )
+            val bundle = bundleOf(CAT_ID_KEY to array)
+            findNavController().navigate(
+                R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag,
+                bundle
+            )
+        }
     }
 
     fun showCategoryText(): String {
-        return if(viewModel.catId != 0 && viewModel.catTitle.isNotEmpty())
+        return if (viewModel.catId != 0 && viewModel.catTitle.isNotEmpty())
             viewModel.catTitle
         else resources.getString(R.string.choose)
     }
@@ -132,18 +139,23 @@ class AddP1MainFrag : Fragment() {
     }
 
     fun onChoosingSubCategory() {
-        viewModel.setReqSource(AddItemViewModel.ReqSource.SUB_CATEGORY)
-        val array = arrayListOf(
-            (activity as AddActivity).user.token,
-            viewModel.getTypeId().toString(),
-            viewModel.catId.toString()
-        )
-        val bundle = bundleOf(CAT_ID_KEY to array)
-        findNavController().navigate(R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag, bundle)
+        (activity as AddActivity).user?.apply {
+            viewModel.setReqSource(AddItemViewModel.ReqSource.SUB_CATEGORY)
+            val array = arrayListOf(
+                token,
+                viewModel.getTypeId().toString(),
+                viewModel.catId.toString()
+            )
+            val bundle = bundleOf(CAT_ID_KEY to array)
+            findNavController().navigate(
+                R.id.action_addP1MainFrag_to_addP3ChooseCatSubcatFrag,
+                bundle
+            )
+        }
     }
 
     fun showSubCategoryText(): String {
-        return if(viewModel.subCatId != 0 && viewModel.subCatTitle.isNotEmpty())
+        return if (viewModel.subCatId != 0 && viewModel.subCatTitle.isNotEmpty())
             viewModel.subCatTitle
         else resources.getString(R.string.choose)
     }

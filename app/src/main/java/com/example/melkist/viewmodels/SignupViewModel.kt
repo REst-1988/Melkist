@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.melkist.LoginActivity
 import com.example.melkist.models.PcrsData
 import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.models.Roles
@@ -47,6 +48,7 @@ class SignupViewModel() : ViewModel() {
     var lastName: String? = null
     var mobileNo: String = ""
     var nationalCode: Long = 0L
+    var birthdate: String = ""
     var email: String? = null
     var password: String = ""
 
@@ -134,7 +136,7 @@ class SignupViewModel() : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, sendMobileVerificationCode, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, sendMobileVerificationCode, ", e)
                 }
             }
     }
@@ -159,7 +161,7 @@ class SignupViewModel() : ViewModel() {
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, getProvinces, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, getProvinces, ", e)
                 }
             }
     }
@@ -184,7 +186,7 @@ class SignupViewModel() : ViewModel() {
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, getCities, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, getCities, ", e)
                 }
             }
     }
@@ -209,7 +211,7 @@ class SignupViewModel() : ViewModel() {
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, getRealEstate, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, getRealEstate, ", e)
                 }
             }
     }
@@ -234,7 +236,7 @@ class SignupViewModel() : ViewModel() {
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, getSuperVisor, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, getSuperVisor, ", e)
                 }
             }
     }
@@ -247,6 +249,7 @@ class SignupViewModel() : ViewModel() {
         cityId: Int?,
         mobile: String,
         nationalCode: String,
+        birthdate: String,
         email: String?,
         roleId: Int
     ) {
@@ -260,6 +263,7 @@ class SignupViewModel() : ViewModel() {
                     cityId,
                     mobile,
                     nationalCode,
+                    birthdate,
                     email,
                     roleId
                 )
@@ -269,7 +273,7 @@ class SignupViewModel() : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _verificationCodeResponse.value =
-                        Api.retrofitService.checkSignupData(
+                        Api.retrofitService.checkSignupData( // TODO: add birth date
                             name, lastName, title, cityId,
                             mobile, nationalCode, email, roleId
                         )
@@ -280,7 +284,7 @@ class SignupViewModel() : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, checkSignupData, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, checkSignupData, ", e)
                 }
             }
     }
@@ -330,7 +334,7 @@ class SignupViewModel() : ViewModel() {
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "SignupViewModel, registerUserRealEstate, ", e)
+                    handleSystemException(viewModelScope, "LoginActivity, SignupViewModel, registerUserRealEstate, ", e)
                 }
             }
     }

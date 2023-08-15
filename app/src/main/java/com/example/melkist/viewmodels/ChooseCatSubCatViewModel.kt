@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.melkist.MainActivity
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
@@ -54,7 +55,10 @@ class ChooseCatSubCatViewModel : ViewModel() {
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "${this@ChooseCatSubCatViewModel.javaClass.name}, getFileCategories, ", e)
+                    if (activity is MainActivity)
+                        handleSystemException(viewModelScope, "${activity.user?.id}, ChooseCatSubCatViewModel, getFileCategories, ", e)
+                    else
+                        handleSystemException(viewModelScope, "ChooseCatSubCatViewModel, getFileCategories, ", e)
                 }
             }
     }
@@ -82,7 +86,10 @@ class ChooseCatSubCatViewModel : ViewModel() {
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "${this@ChooseCatSubCatViewModel.javaClass.name}, getFileCategoryType, ", e)
+                    if (activity is MainActivity)
+                        handleSystemException(viewModelScope, "${activity.user?.id}, ChooseCatSubCatViewModel, getFileCategoryType, ", e)
+                    else
+                        handleSystemException(viewModelScope, "ChooseCatSubCatViewModel, getFileCategoryType, ", e)
                 }
             }
     }

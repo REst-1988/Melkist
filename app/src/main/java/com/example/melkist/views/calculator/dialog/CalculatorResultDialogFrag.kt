@@ -47,7 +47,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun realEstateCommissionFeeText(): String {
         return resources.getString(
             R.string.real_estate_commission_fee,
-            formatNumber(viewModel.realEstateCommissionFee.toDouble())
+            formatNumber(viewModel.realEstateCommissionFee)
         )
     }
 
@@ -65,7 +65,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun txtRealEstateCommissionFeeText(): String {
         return resources.getString(
-            R.string.tax_fee, formatNumber(viewModel.realEstateCommissionTaxFee.toDouble())
+            R.string.tax_fee, formatNumber(viewModel.realEstateCommissionTaxFee)
         )
     }
 
@@ -84,7 +84,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
     fun realEstateCommissionTotalText(): String {
         return resources.getString(
             R.string.real_estate_commission_total,
-            formatNumber(viewModel.realEstateCommissionTotalFee.toDouble())
+            formatNumber(viewModel.realEstateCommissionTotalFee)
         )
     }
 
@@ -102,7 +102,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun ownerQuotaFeeText(): String {
         return resources.getString(
-            R.string.owner_quota_fee, formatNumber(viewModel.ownerQuotaFee.toDouble())
+            R.string.owner_quota_fee, formatNumber(viewModel.ownerQuotaFee)
         )
     }
 
@@ -120,7 +120,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun ownerQuotaTaxFeeText(): String {
         return resources.getString(
-            R.string.tax_fee, formatNumber(viewModel.ownerQuotaTaxFee.toDouble())
+            R.string.tax_fee, formatNumber(viewModel.ownerQuotaTaxFee)
         )
     }
 
@@ -138,7 +138,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun ownerQuotaTotalText(): String {
         return resources.getString(
-            R.string.owner_quota_total, formatNumber(viewModel.ownerQuotaTotalFee.toDouble())
+            R.string.owner_quota_total, formatNumber(viewModel.ownerQuotaTotalFee)
         )
     }
 
@@ -156,7 +156,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun buyerQuotaFeeText(): String {
         return resources.getString(
-            R.string.buyer_quota_fee, formatNumber(viewModel.buyerQuotaFee.toDouble())
+            R.string.buyer_quota_fee, formatNumber(viewModel.buyerQuotaFee)
         )
     }
 
@@ -174,7 +174,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun buyerQuotaTaxFeeText(): String {
         return resources.getString(
-            R.string.tax_fee, formatNumber(viewModel.buyerQuotaTaxFee.toDouble())
+            R.string.tax_fee, formatNumber(viewModel.buyerQuotaTaxFee)
         )
     }
 
@@ -192,7 +192,7 @@ class CalculatorResultDialogFrag(@StyleRes private val style: Int) : DialogFragm
 
     fun buyerQuotaTotalText(): String {
         return resources.getString(
-            R.string.buyer_quota_total, formatNumber(viewModel.buyerQuotaTotalFee.toDouble())
+            R.string.buyer_quota_total, formatNumber(viewModel.buyerQuotaTotalFee)
         )
     }
 

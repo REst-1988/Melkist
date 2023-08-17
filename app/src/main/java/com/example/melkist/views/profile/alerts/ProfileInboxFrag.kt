@@ -74,17 +74,32 @@ class ProfileInboxFrag(
         binding.btnMoreDetailDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 try {
-                    viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
+                    viewModel.getFileInfoById(
+                        requireActivity(),
+                        token = token!!,
+                        item.file!!.id!!,
+                        id!!
+                    )
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
-                    handleSystemException(lifecycleScope, "$id, ProfileInboxFrag, showInboxDialog, ", e)
+                    handleSystemException(
+                        lifecycleScope,
+                        "$id, ProfileInboxFrag, showInboxDialog, ",
+                        e
+                    )
                 }
             }
         }
         binding.btnApproveDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 item.requestId?.let { requestId ->
-                    viewModel.setAlertStatus(requireActivity(), token!!, requestId, id!!, STATUS_APPROVED)
+                    viewModel.setAlertStatus(
+                        requireActivity(),
+                        token!!,
+                        requestId,
+                        id!!,
+                        STATUS_APPROVED
+                    )
                     alertDialog.dismiss()
                 }
             }
@@ -92,7 +107,13 @@ class ProfileInboxFrag(
         binding.btnDenyDialog.setOnClickListener {
             (activity as MainActivity).user?.apply {
                 item.requestId?.let { requestId ->
-                    viewModel.setAlertStatus(requireActivity(), token!!, requestId, id!!, STATUS_DENY)
+                    viewModel.setAlertStatus(
+                        requireActivity(),
+                        token!!,
+                        requestId,
+                        id!!,
+                        STATUS_DENY
+                    )
                     alertDialog.dismiss()
                 }
             }
@@ -132,7 +153,12 @@ class ProfileInboxFrag(
                     )
 
                     price?.let {
-                        txtPrice.text = getPropertyPeriodsPriceText(requireContext(), it, R.string.price, R.string.tooman)
+                        txtPrice.text = getPropertyPeriodsPriceText(
+                            requireContext(),
+                            it,
+                            R.string.price,
+                            R.string.tooman
+                        )
                         txtPricePerMeter.text = calculatePricePerMeter(
                             requireContext(), it, this
                         )
@@ -207,10 +233,7 @@ class ProfileInboxFrag(
         viewModel.inboxResponse.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> {
-                    adapter
-                        .submitList(
-                            response.data
-                        )
+                    adapter.submitList(response.data)
                 }
 
                 false -> {
@@ -218,9 +241,7 @@ class ProfileInboxFrag(
                     viewModel.resetInboxResponse()
                 }
 
-                else -> {
-                    Log.e("TAG", "setupOutbox: ${response.errors}")
-                }
+                else -> {}
             }
             binding.pullToRefreshMainList.isRefreshing = false
         }

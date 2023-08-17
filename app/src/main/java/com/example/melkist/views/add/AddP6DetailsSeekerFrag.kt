@@ -78,13 +78,26 @@ class AddP6DetailsSeekerFrag : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.descriptions?.apply {
+            binding.etDescriptions.editText?.setText(this)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (binding.etDescriptions.editText?.text.toString().isNotEmpty())
+            viewModel.descriptions = binding.etDescriptions.editText?.text.toString()
+    }
+
     private fun checkFieldsForNullabilitySeparatorAccepted(view: TextInputLayout): Long? {
         if (view.editText!!.text.toString()
                 .isNotEmpty() && view.editText!!.text.toString() != "" && view.editText!!.text.toString() != "0"
         ) {
             if (view.editText!!.text.toString()
                     .contains(",")
-            ) return BigDecimal(view.editText!!.text.toString().replace(",", "")).toLong()
+            ) return BigDecimal(view.editText!!.text.toString().replace(",", "").replace("٬", "")).toLong()
             return view.editText!!.text.toString().toLong()
         }
         return null
@@ -112,7 +125,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
                 et.removeTextChangedListener(this)
                 val text: String = p0.toString()
                 if (!TextUtils.isEmpty(text)) {
-                    val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
+                    val format: String = formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
                     et.setText(format)
                     et.setSelection(format.length)
                 }
@@ -226,7 +239,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
             } else {
                 binding.etPriceFromChild.setText(
                     formatNumber(
-                        resources.getStringArray(R.array.int_price_list)[position].toDouble()
+                        resources.getStringArray(R.array.int_price_list)[position].toLong()
                     )
                 )
             }
@@ -246,7 +259,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
             } else {
                 binding.etPriceToChild.setText(
                     formatNumber(
-                        resources.getStringArray(R.array.int_price_list)[position].toDouble()
+                        resources.getStringArray(R.array.int_price_list)[position].toLong()
                     )
                 )
             }

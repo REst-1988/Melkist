@@ -13,6 +13,7 @@ import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.isSystemDarkMode
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.SignupViewModel
 import ir.hamsaa.persiandatepicker.Listener
@@ -59,9 +60,30 @@ class SignupP1SignupFormFrag : Fragment() {
             binding.etPhoneNo.editText?.setText(viewModel.mobileNo)
         if (viewModel.nationalCode != 0L)
             binding.etNationalCode.editText?.setText(viewModel.nationalCode.toString())
+        viewModel.birthdate?.apply {
+            binding.etBirthDate.editText?.setText(this)
+        }
         viewModel.email?.apply {
             binding.etEmail.editText?.setText(this)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (binding.etRealEstateName.editText?.text.toString().isNotEmpty())
+            viewModel.realEstateNameForManager = binding.etRealEstateName.editText?.text.toString()
+        if (binding.etFirstName.editText?.text.toString().isNotEmpty())
+            viewModel.firstName = binding.etFirstName.editText?.text.toString()
+        if (binding.etLastName.editText?.text.toString().isNotEmpty())
+            viewModel.lastName = binding.etLastName.editText?.text.toString()
+        if (binding.etPhoneNo.editText?.text.toString().isNotEmpty())
+            viewModel.mobileNo = binding.etPhoneNo.editText?.text.toString()
+        if (binding.etNationalCode.editText?.text.toString().isNotEmpty())
+            viewModel.nationalCode = binding.etNationalCode.editText?.text.toString().toLong()
+        if (binding.etBirthDate.editText?.text.toString().isNotEmpty())
+            viewModel.birthdate = binding.etEmail.editText?.text.toString()
+        if (binding.etEmail.editText?.text.toString().isNotEmpty())
+            viewModel.email = binding.etEmail.editText?.text.toString()
     }
 
     private fun listenToCheckVerificationResult() {
@@ -376,13 +398,17 @@ class SignupP1SignupFormFrag : Fragment() {
 
     fun onDateClick() {
         val typeface = Typeface.createFromAsset(requireContext().assets, "iransans.ttf")
+
         val persianDate = PersianCalendar()
         val picker = PersianDatePickerDialog(requireContext())
             .setPositiveButtonString(resources.getString(R.string.confirm))
             .setNegativeButton(resources.getString(R.string.close))
+            .setPickerBackgroundColor(if (isSystemDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
+            .setBackgroundColor(if (isSystemDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
             .setMinYear(1300)
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-            .setActionTextColor(Color.GRAY)
+            .setTitleColor(if (isSystemDarkMode(requireContext())) Color.WHITE else Color.DKGRAY)
+            .setActionTextColor(if (isSystemDarkMode(requireContext())) Color.WHITE else Color.GRAY)
             .setTypeFace(typeface)
             .setInitDate(persianDate, true)
             .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
@@ -403,7 +429,6 @@ class SignupP1SignupFormFrag : Fragment() {
 
                 override fun onDismissed() {
                 }
-
             })
         picker.show()
 

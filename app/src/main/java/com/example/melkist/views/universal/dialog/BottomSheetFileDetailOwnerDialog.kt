@@ -165,7 +165,7 @@ class BottomSheetFileDetailOwnerDialog(
             price.from?.apply {
                 binding.txtPrice.text = String.format(
                     "%s %s",
-                    formatNumber(toDouble()),
+                    formatNumber(this),
                     resources.getString(R.string.tooman)
                 )
             }

@@ -69,7 +69,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
                     context.resources.getString(R.string.rooms, data.roomNo.from.toString())
                 txtPriceOwner.text = context.resources.getString(
                     R.string.price_with_variable,
-                    formatNumber(data.price.from!!.toDouble())
+                    formatNumber(data.price.from!!.toLong())
                 )
                 data.images?.let {
                     if (it.isNotEmpty())
@@ -89,7 +89,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
 
         private fun Long?.getPriceText(): String {
             return if (this != null)
-                formatNumber(this.toDouble())
+                formatNumber(this.toLong())
             else
                 context.resources.getString(R.string.dots)
 

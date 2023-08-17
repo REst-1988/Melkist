@@ -154,6 +154,7 @@ class ProfileOutboxFrag(
             }
             val a = arrayOf(txtStatus1, txtStatus2, txtStatus3)
             val b = statusList.filter { it.requestId == item.requestId }
+            Log.e("TAG", "bindOutboxDialogItemViews: $b", )
             a.forEach {
                 it.visibility = View.GONE
             }
@@ -228,6 +229,7 @@ class ProfileOutboxFrag(
             when (response.result) {
                 true -> {
                     response.data?.apply {
+                        statusList.clear()
                         statusList.addAll(response.data)
                     }
                     adapter.submitList(response.data?.filter { it.isManReceiver == true })

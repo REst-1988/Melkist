@@ -167,7 +167,9 @@ class AddP7DetailsOwnerFrag : Fragment() {
         showInputDialog(
             requireContext(),
             viewLifecycleOwner,
-            resources.getString(R.string.measurement), resources.getString(R.string.meter_squere)
+            resources.getString(R.string.measurement),
+            resources.getString(R.string.meter_squere),
+            6
         ) {
             if (!it.isNullOrEmpty()) {
                 viewModel.sizeFrom = it.toInt()
@@ -188,7 +190,9 @@ class AddP7DetailsOwnerFrag : Fragment() {
         showInputDialog(
             requireContext(),
             viewLifecycleOwner,
-            resources.getString(R.string.room_no), resources.getString(R.string.number)
+            resources.getString(R.string.room_no),
+            resources.getString(R.string.number),
+            1
         ) {
             if (!it.isNullOrEmpty()) {
                 viewModel.roomFrom = it.toInt()
@@ -210,10 +214,11 @@ class AddP7DetailsOwnerFrag : Fragment() {
             requireContext(),
             viewLifecycleOwner,
             resources.getString(R.string.price),
-            resources.getString(R.string.tooman)) {
+            resources.getString(R.string.tooman),
+        null) {
             if (!it.isNullOrEmpty()) {
                 viewModel.priceFrom =  it.toLong()
-                binding.txtChoosePrice.text = formatNumber(it.toDouble())
+                binding.txtChoosePrice.text = formatNumber(it.toLong())
             }
         }
     }
@@ -222,7 +227,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
         return if (viewModel.priceFrom == null) {
             resources.getString(R.string.enter)
         } else {
-            formatNumber(viewModel.priceFrom!!.toDouble())
+            formatNumber(viewModel.priceFrom!!)
         }
     }
 

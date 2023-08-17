@@ -234,7 +234,8 @@ class CalculatorExpertsFrag : Fragment() {
             requireContext(),
             viewLifecycleOwner,
             resources.getString(R.string.measurement),
-            resources.getString(R.string.meter_squere)
+            resources.getString(R.string.meter_squere),
+            6
         ) {
             if (!it.isNullOrEmpty()) {
                 viewModel.size = it.toInt()

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.melkist.MainActivity
@@ -25,7 +24,6 @@ import com.example.melkist.utils.CAT_RESULT_KEY
 import com.example.melkist.utils.CR_KEY
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.EMPTY_CATEGORY_ID
-import com.example.melkist.utils.FILTER_RESULT_KEY
 import com.example.melkist.utils.IS_IN_FAV_LIST_KEY
 import com.example.melkist.utils.ITEM_TYPE_KEY
 import com.example.melkist.utils.OWNER_ITEM_TYPE
@@ -126,8 +124,8 @@ class FilterFilesFrag : Fragment() {
                     if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
                     if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
                     if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
-                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!.toDouble()))
-                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!.toDouble()))
+                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!))
+                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!))
                 }
             else
                 viewModel.filterFileData?.let { data ->
@@ -137,8 +135,8 @@ class FilterFilesFrag : Fragment() {
                     if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
                     if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
                     if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
-                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!.toDouble()))
-                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!.toDouble()))
+                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!))
+                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!))
                 }
         }
     }
@@ -147,7 +145,9 @@ class FilterFilesFrag : Fragment() {
         if (view.editText!!.text.toString().isNotEmpty() && view.editText!!.text.toString() != "") {
             if (view.editText!!.text.toString()
                     .contains(",")
-            ) return BigDecimal(view.editText!!.text.toString().replace(",", "")).toLong()
+            ) return BigDecimal(
+                view.editText!!.text.toString().replace(",", "").replace("٬", "")
+            ).toLong()
             return view.editText!!.text.toString().toLong()
         }
         return 0  // Amir needs 0 not null
@@ -196,7 +196,8 @@ class FilterFilesFrag : Fragment() {
                 et.removeTextChangedListener(this)
                 val text: String = p0.toString()
                 if (!TextUtils.isEmpty(text)) {
-                    val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
+                    val format: String =
+                        formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
                     et.setText(format)
                     et.setSelection(format.length)
                 }
@@ -425,7 +426,7 @@ class FilterFilesFrag : Fragment() {
             } else {
                 binding.etPriceFromChild.setText(
                     formatNumber(
-                        resources.getStringArray(R.array.int_price_list)[position].toDouble()
+                        resources.getStringArray(R.array.int_price_list)[position].toLong()
                     )
                 )
             }
@@ -445,7 +446,7 @@ class FilterFilesFrag : Fragment() {
             } else {
                 binding.etPriceToChild.setText(
                     formatNumber(
-                        resources.getStringArray(R.array.int_price_list)[position].toDouble()
+                        resources.getStringArray(R.array.int_price_list)[position].toLong()
                     )
                 )
             }

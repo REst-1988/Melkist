@@ -77,7 +77,7 @@ class CalculatorResultExpertDialogFrag(
             layoutViews.visibility = View.VISIBLE
             txtHousePrice.text = String.format(
                 "%s %s",
-                formatNumber(housePrice.toDouble()),
+                formatNumber(housePrice),
                 resources.getString(R.string.tooman)
             )
             txtHousePriceToLetter.text = String.format(
@@ -87,7 +87,7 @@ class CalculatorResultExpertDialogFrag(
             )
             txtHousePerMeterPrice.text = String.format(
                 "%s %s",
-                formatNumber(housePricePerMeter.toDouble()),
+                formatNumber(housePricePerMeter),
                 resources.getString(R.string.tooman)
             )
             txtHousePricePerMeterToLetter.text = String.format(

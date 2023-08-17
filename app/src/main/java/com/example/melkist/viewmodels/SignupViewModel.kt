@@ -48,7 +48,7 @@ class SignupViewModel() : ViewModel() {
     var lastName: String? = null
     var mobileNo: String = ""
     var nationalCode: Long = 0L
-    var birthdate: String = ""
+    var birthdate: String? = null
     var email: String? = null
     var password: String = ""
 
@@ -249,7 +249,7 @@ class SignupViewModel() : ViewModel() {
         cityId: Int?,
         mobile: String,
         nationalCode: String,
-        birthdate: String,
+        birthdate: String?,
         email: String?,
         roleId: Int
     ) {

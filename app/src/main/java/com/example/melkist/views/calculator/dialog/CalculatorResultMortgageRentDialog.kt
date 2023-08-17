@@ -60,7 +60,7 @@ class CalculatorResultMortgageRentDialog(
 
     private fun setMortgageNewNumberSeekbar(progress: Int) {
         binding.txtMortgageNumber.text = String.format(
-            "%s %s", formatNumber((progress * HUNDRED_THOUSAND).toDouble()), resources.getString(
+            "%s %s", formatNumber((progress * HUNDRED_THOUSAND).toLong()), resources.getString(
                 R.string.tooman
             )
         )
@@ -69,7 +69,7 @@ class CalculatorResultMortgageRentDialog(
     private fun setRentNewNumberSeekbar(progress: Int) {
         binding.txtRentNumber.text = String.format(
             "%s %s",
-            formatNumber(viewModel.calculateNewRentResult(progress.toLong() * HUNDRED_THOUSAND).toDouble()),
+            formatNumber(viewModel.calculateNewRentResult(progress.toLong() * HUNDRED_THOUSAND)),
             resources.getString(
                 R.string.tooman
             )
@@ -87,14 +87,14 @@ class CalculatorResultMortgageRentDialog(
         binding.apply {
             txtMortgageNumber.text = String.format(
                 "%s %s", formatNumber(
-                    viewModel.newMortgageValue.toDouble()
+                    viewModel.newMortgageValue
                 ), resources.getString(
                     R.string.tooman
                 )
             )
             txtRentNumber.text = String.format(
                 "%s %s", formatNumber(
-                    viewModel.newRentValue.toDouble()
+                    viewModel.newRentValue
                 ), resources.getString(
                     R.string.tooman
                 )
@@ -126,7 +126,7 @@ class CalculatorResultMortgageRentDialog(
             else -> 0
         }
         return String.format(
-            "%s %s", formatNumber(result.toDouble()), resources.getString(R.string.tooman)
+            "%s %s", formatNumber(result), resources.getString(R.string.tooman)
         )
     }
 
@@ -143,7 +143,7 @@ class CalculatorResultMortgageRentDialog(
     fun inputText(): String {
         return String.format(
             "%s %s",
-            formatNumber(viewModel.newInputAmount.toDouble()),
+            formatNumber(viewModel.newInputAmount),
             resources.getString(R.string.tooman)
         )
     }

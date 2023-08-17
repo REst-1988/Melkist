@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.example.melkist.R
 import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
 import com.example.melkist.models.FilterFileData
@@ -163,10 +164,10 @@ fun calculatePricePerMeter(context: Context, price: Period, size: Period): Strin
     val sizeTo = (size.to ?: 1).toDouble()
     val sizeFrom = (size.from ?: 1).toDouble()
     return if (price.to == price.from)
-        formatNumber(priceFrom / sizeFrom)
+        formatNumber((priceFrom / sizeFrom).toLong())
     else
-        formatNumber(priceFrom / sizeFrom) + " " + context.resources.getString(R.string.to) + " " + formatNumber(
-            priceTo / sizeTo
+        formatNumber((priceFrom / sizeFrom).toLong()) + " " + context.resources.getString(R.string.to) + " " + formatNumber(
+            (priceTo / sizeTo).toLong()
         )
 }
 
@@ -212,7 +213,7 @@ fun getPropertyPeriodsPriceText(
     } else if (periodPrice.from != null && periodPrice.from == periodPrice.to) {
         text = String.format(
             "%s %s",
-            formatNumber(periodPrice.from.toDouble()),
+            formatNumber(periodPrice.from),
             context.resources.getString(unit)
         )
     } else {
@@ -222,13 +223,13 @@ fun getPropertyPeriodsPriceText(
             from = String.format(
                 "%s %s",
                 context.resources.getString(R.string.from),
-                formatNumber(periodPrice.from.toDouble())
+                formatNumber(periodPrice.from.toLong())
             )
         if (periodPrice.to != null)
             to = String.format(
                 "%s %s",
                 context.resources.getString(R.string.to),
-                formatNumber(periodPrice.to.toDouble())
+                formatNumber(periodPrice.to.toLong())
             )
         text = String.format("%s %s %s", from, to, context.resources.getString(unit))
     }
@@ -251,10 +252,18 @@ fun isSystemDarkMode(context: Context): Boolean {
     return darkModeFlag == Configuration.UI_MODE_NIGHT_YES
 }
 
+/*
 // adding separator to numbers
 fun formatNumber(numberDouble: Double): String {
     val decimalFormat = DecimalFormat("#,###")
     return decimalFormat.format(numberDouble)
+}
+*/
+
+// adding separator to numbers
+fun formatNumber(numberLong: Long): String {
+    val decimalFormat = DecimalFormat("#,###")
+    return decimalFormat.format(numberLong)
 }
 
 fun TextInputEditText.addLiveSeparatorListener() {
@@ -265,7 +274,7 @@ fun TextInputEditText.addLiveSeparatorListener() {
             this@addLiveSeparatorListener.removeTextChangedListener(this)
             val text: String = p0.toString()
             if (!TextUtils.isEmpty(text)) {
-                val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
+                val format: String = formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
                 this@addLiveSeparatorListener.setText(format)
                 this@addLiveSeparatorListener.setSelection(format.length)
             }
@@ -275,24 +284,33 @@ fun TextInputEditText.addLiveSeparatorListener() {
 }
 
 fun TextInputEditText.addLiveSeparatorListenerWithNumToLetterCallback(tv: TextView, unit: String) {
+
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             if (p0.isNullOrEmpty()) tv.text = ""
         }
+
         override fun afterTextChanged(p0: Editable?) {
-            this@addLiveSeparatorListenerWithNumToLetterCallback.removeTextChangedListener(this)
-            val text: String = p0.toString()
-            if (!TextUtils.isEmpty(text)) {
-                val value: Long = BigDecimal(text.replace(",", "")).toLong()
-                val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
-                this@addLiveSeparatorListenerWithNumToLetterCallback.setText(format)
-                this@addLiveSeparatorListenerWithNumToLetterCallback.setSelection(format.length)
-                tv.text = String.format(
-                    "%s %s", numInLetter(context, value), unit
+            try {
+                this@addLiveSeparatorListenerWithNumToLetterCallback.removeTextChangedListener(
+                    this
                 )
+                val text: String = p0.toString()
+                if (!TextUtils.isEmpty(text)) {
+                    val value = BigDecimal(text.replace(",", "").replace("٬", "")).toLong()
+                    var format =
+                        formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
+                    this@addLiveSeparatorListenerWithNumToLetterCallback.setText(format)
+                    this@addLiveSeparatorListenerWithNumToLetterCallback.setSelection(format.length)
+                    tv.text = String.format(
+                        "%s %s", numInLetter(context, value), unit
+                    )
+                }
+                this@addLiveSeparatorListenerWithNumToLetterCallback.addTextChangedListener(this)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
             }
-            this@addLiveSeparatorListenerWithNumToLetterCallback.addTextChangedListener(this)
         }
     })
 }
@@ -302,55 +320,69 @@ fun showInputDialog(
     viewLifecycleOwner: LifecycleOwner,
     title: String,
     unit: String?,
+    maxLength: Int?,
     observer: Observer<in String?>
 ) {
-    val result = MutableLiveData("")
-    val binding =
-        DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
-    val alertDialog = AlertDialog.Builder(context).create()
-    alertDialog.setView(binding.root)
-    alertDialog.setCancelable(true)
-    alertDialog.show()
-    binding.txtTitle.text = String.format("%s (%s)", title, unit)
-    binding.etInput.showSoftInputOnFocus
-    binding.etInput.requestFocus()
-    binding.etInput.addTextChangedListener(object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            if (p0.isNullOrEmpty()) binding.txtInLetters.text = ""
-        }
-        override fun afterTextChanged(p0: Editable?) {
-            binding.etInput.removeTextChangedListener(this)
-            val text: String = p0.toString()
-            if (!TextUtils.isEmpty(text)) {
-                val value: Long = BigDecimal(text.replace(",", "")).toLong()
-                val format: String = formatNumber(BigDecimal(text.replace(",", "")).toDouble())
-                binding.etInput.setText(format)
-                binding.etInput.setSelection(format.length)
-                binding.txtInLetters.text = String.format(
-                    "%s %s", numInLetter(context, value), unit
-                )
+    try {
+        val result = MutableLiveData("")
+        val binding =
+            DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
+        val alertDialog = AlertDialog.Builder(context).create()
+        alertDialog.setView(binding.root)
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+        binding.txtTitle.text = String.format("%s (%s)", title, unit)
+        binding.etInput.showSoftInputOnFocus
+        maxLength?.apply { binding.etInput.filters = arrayOf(InputFilter.LengthFilter(maxLength)) }
+        binding.etInput.requestFocus()
+        binding.etInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0.isNullOrEmpty()) binding.txtInLetters.text = ""
             }
-            binding.etInput.addTextChangedListener(this)
-        }
-    })
-    binding.btnConfirm.setOnClickListener {
-        if (binding.etInput.text.isNotEmpty()) {
-            if (isConditionsOkForFields(binding.etInput.text.toString())) {
-                result.value = binding.etInput.text.toString().replace(",", "")
-                alertDialog.dismiss()
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.etInput.removeTextChangedListener(this)
+                val text: String = p0.toString()
+
+                if (!TextUtils.isEmpty(text)) {
+                    val value: Long = BigDecimal(text.replace(",", "").replace("٬", "")).toLong()
+                    val format: String =
+                        formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
+                    binding.etInput.setText(format)
+                    binding.etInput.setSelection(format.length)
+                    binding.txtInLetters.text = String.format(
+                        "%s %s", numInLetter(context, value), unit
+                    )
+                }
+                binding.etInput.addTextChangedListener(this)
+            }
+        })
+        binding.btnConfirm.setOnClickListener {
+            if (binding.etInput.text.isNotEmpty()) {
+                if (isConditionsOkForFields(binding.etInput.text.toString())) {
+                    result.value = binding.etInput.text.toString().replace(",", "").replace("٬", "")
+                    alertDialog.dismiss()
+                } else {
+                    showToast(
+                        context, context.resources.getString(R.string.input_right_number)
+                    )
+                }
             } else {
                 showToast(
-                    context, context.resources.getString(R.string.input_right_number)
+                    context,
+                    context.resources.getString(R.string.on_empty_dialog_edittext_feild)
                 )
             }
-        } else {
-            showToast(
-                context, context.resources.getString(R.string.on_empty_dialog_edittext_feild)
-            )
         }
+        result.observe(viewLifecycleOwner, observer)
+    } catch (e: java.lang.Exception) {
+        handleSystemException(
+            viewLifecycleOwner.lifecycleScope,
+            "utils, showInputDialog",
+            e
+        )
     }
-    result.observe(viewLifecycleOwner, observer)
 }
 
 fun showAgeDialog(
@@ -359,33 +391,38 @@ fun showAgeDialog(
     title: String,
     observer: Observer<in String?>
 ) {
-    val result = MutableLiveData("")
-    val binding =
-        DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
-    val alertDialog = AlertDialog.Builder(context).create()
-    alertDialog.setView(binding.root)
-    alertDialog.setCancelable(true)
-    alertDialog.show()
-    binding.txtTitle.text = title
-    binding.etInput.filters = arrayOf(InputFilter.LengthFilter(4))
-    binding.txtInLetters.visibility = View.GONE
-    binding.btnConfirm.setOnClickListener {
-        if (binding.etInput.text.isNotEmpty()) {
-            if (isConditionsOk(binding.etInput.text.toString())) {
-                result.value = binding.etInput.text.toString()
-                alertDialog.cancel()
+    try {
+        val result = MutableLiveData("")
+        val binding =
+            DialogLayoutGetAddDetailsBinding.inflate(LayoutInflater.from(context))
+        val alertDialog = AlertDialog.Builder(context).create()
+        alertDialog.setView(binding.root)
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+        binding.txtTitle.text = title
+        binding.etInput.filters = arrayOf(InputFilter.LengthFilter(4))
+        binding.txtInLetters.visibility = View.GONE
+        binding.btnConfirm.setOnClickListener {
+            if (binding.etInput.text.isNotEmpty()) {
+                if (isConditionsOk(binding.etInput.text.toString())) {
+                    result.value = binding.etInput.text.toString()
+                    alertDialog.cancel()
+                } else {
+                    showToast(
+                        context, context.resources.getString(R.string.input_right_number)
+                    )
+                }
             } else {
                 showToast(
-                    context, context.resources.getString(R.string.input_right_number)
+                    context,
+                    context.resources.getString(R.string.on_empty_dialog_edittext_feild)
                 )
             }
-        } else {
-            showToast(
-                context, context.resources.getString(R.string.on_empty_dialog_edittext_feild)
-            )
         }
+        result.observe(viewLifecycleOwner, observer)
+    } catch (e: java.lang.Exception) {
+        handleSystemException(viewLifecycleOwner.lifecycleScope, "utils, showAgeDialog", e)
     }
-    result.observe(viewLifecycleOwner, observer)
 }
 
 private fun isConditionsOk(input: String): Boolean =
@@ -393,11 +430,11 @@ private fun isConditionsOk(input: String): Boolean =
 
 
 private fun isConditionsOkForFields(input: String): Boolean =
-    input.replace(",", "").toLong() > 0
+    input.replace(",", "").replace("٬", "").toLong() > 0
 
 fun TextInputEditText.getRemovedSeparatorValue(): Long {
     if (!this.text.isNullOrBlank())
-        return this.text.toString().replace(",", "").toLong()
+        return this.text.toString().replace(",", "").replace("٬", "").toLong()
     return 0L
 }
 

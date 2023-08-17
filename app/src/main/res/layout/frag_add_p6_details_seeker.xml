@@ -495,7 +495,9 @@
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:errorEnabled="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_min="wrap"
+                    app:layout_constraintHeight_default="spread"
+                    app:layout_constraintBottom_toTopOf="@id/btn_commit"
                     app:layout_constraintTop_toBottomOf="@id/layout_fields">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -511,33 +513,31 @@
                         android:textSize="@dimen/normal_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/btn_commit"
+                    style="@style/Theme.Melkist.Buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/normal_margin"
+                    android:fontFamily="@font/iransans"
+                    android:onClick="@{() -> fragment.onCommit()}"
+                    android:text="@string/commit"
+                    android:textDirection="rtl"
+                    app:bindLoading="@{viewmodel.status}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/normal_margin"
+                    app:bindProgressLoading="@{viewmodel.status}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <Button
-            android:id="@+id/btn_commit"
-            style="@style/Theme.Melkist.Buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/normal_margin"
-            android:fontFamily="@font/iransans"
-            android:onClick="@{() -> fragment.onCommit()}"
-            android:text="@string/commit"
-            android:textDirection="rtl"
-            app:bindLoading="@{viewmodel.status}"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:layout_marginBottom="@dimen/normal_margin"
-            app:bindProgressLoading="@{viewmodel.status}"
-            app:layout_constraintBottom_toBottomOf="parent" />
     </RelativeLayout>
 </layout>

@@ -93,7 +93,6 @@ class ProfileReceivedCooperationFrag(private val fragment: ProfileCooperationFra
     }
 
     fun showReceivedDialog(item: Status) {
-        val result = MutableLiveData("")
         val binding =
             DialogLayoutInboxOutboxBinding.inflate(LayoutInflater.from(context))
         bindReceivedDialogItemViews(binding, item)
@@ -184,6 +183,7 @@ class ProfileReceivedCooperationFrag(private val fragment: ProfileCooperationFra
         viewModel.fileAllData.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> {
+                    Log.e(TAG, "listenToFileDetailData: AAA", )
                     alertDialog.dismiss()
                     (fragment as ProfileCooperationFrag).navigateToDetail()
                 }

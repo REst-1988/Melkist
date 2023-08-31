@@ -326,6 +326,11 @@
     <string name="download_last_version">ورژن جدید برنامه در سایت اضافه شده و قابل بروزرسانی است</string>
     <string name="go_to_site">به سایت برو</string>
     <string name="sometime_else">زمانی دیگر</string>
+    <string name="commission_calculator_sub">میزان کمیسیون قراردادهای شما رو محاسبه می کند</string>
+    <string name="mortgage_rent_calculator_sub">تبدیل رهن به اجاره و برعکس را برای شما انجام می دهد</string>
+    <string name="expert_calculator_sub">قیمت کل آپارتمان و رهن کامل آن را محاسبه می کند</string>
+    <string name="expert_evaluation_rent_price">مبلغ رهن کامل ملک</string>
+    <string name="ai_header">هوش مصنوعی</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->
@@ -538,4 +543,10 @@
         <item>حالت شب</item>
         <item>حالت روز</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ai_property_introduction">معرفی هوشمند ملک</string>
+    <string name="ai_simolar_properties">معرفی هوشمند تشابهات</string>
+    <string name="ai_co_worker">معرفی هوشمند همکاران شما</string>
+    <string name="relative_files_title">فایل های مرتبط</string>
 </resources>

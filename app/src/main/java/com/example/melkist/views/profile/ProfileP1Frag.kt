@@ -143,12 +143,16 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onAiClick() {
-        showDialogWithMessage(
+        /*showDialogWithMessage(
             requireContext(),
             resources.getString(R.string.invalid_permission)
         ) { d, _ ->
             d.dismiss()
-        }
+        }*/
+        findNavController().navigate(
+            R.id.action_navigation_profle_to_profileAiP1
+        )
+        interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onStatisticsClick() {

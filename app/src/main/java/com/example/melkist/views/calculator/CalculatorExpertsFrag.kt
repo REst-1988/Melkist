@@ -104,7 +104,8 @@ class CalculatorExpertsFrag : Fragment() {
             CalculatorResultExpertDialogFrag(
                 R.style.dialog_theme,
                 viewModel.housePrice,
-                viewModel.housePricePerMeter
+                viewModel.housePricePerMeter,
+                viewModel.rentPrice
             ).show(
                 childFragmentManager,
                 "expert_calculator"

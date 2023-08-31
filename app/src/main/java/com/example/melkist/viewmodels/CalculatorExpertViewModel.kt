@@ -29,6 +29,7 @@ class CalculatorExpertViewModel : ViewModel() {
     // Expert values //
     var housePrice = 0L
     var housePricePerMeter = 0L
+    var rentPrice = 0L
 
     var maxNewPropertyValue = 0L
     var minNewPropertyValue = 0L
@@ -193,9 +194,11 @@ class CalculatorExpertViewModel : ViewModel() {
             "((housePrice / ONE_MILLION).toInt() * ONE_MILLION).toLong()" +
                     " ${(((housePrice / ONE_MILLION).toInt()).toLong() * ONE_MILLION)} ",
         )
+        val rentPrice = housePrice / getRentDivideValueByBuildYear(buildYear)
         this.housePrice = ((housePrice / ONE_MILLION).toInt().toLong() * ONE_MILLION)
         this.housePricePerMeter =
             ((housePricePerMeter / HUNDRED_THOUSAND).toInt().toLong() * HUNDRED_THOUSAND)
+        this.rentPrice = ((rentPrice / ONE_MILLION).toInt().toLong() * ONE_MILLION)
     }
 
     private fun moreThan180MeterUnit(size: Int): Double {
@@ -283,4 +286,11 @@ class CalculatorExpertViewModel : ViewModel() {
             0.0
     }
 
+    private fun getRentDivideValueByBuildYear(buildYear: Int): Double {
+        return when (getPersianYear() - buildYear) {
+            in 0 until 7 -> 6.0
+            in 7 until 12 -> 6.5
+            else -> 7.0
+        }
+    }
 }

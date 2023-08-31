@@ -12,8 +12,8 @@
     <dimen name="txt_size_h2">15sp</dimen>
     <dimen name="normal_text_size">14sp</dimen>
     <dimen name="short_text_size">13sp</dimen>
-    <dimen name="super_short_text_size">10sp</dimen>
     <dimen name="very_short_text_size">12sp</dimen>
+    <dimen name="super_short_text_size">10sp</dimen>
     <dimen name="text_view_padding">16dp</dimen>
     <dimen name="text_view_padding_2">12dp</dimen>
     <dimen name="short_text_view_padding">8dp</dimen>
@@ -22,6 +22,7 @@
     <dimen name="edit_text_padding">16dp</dimen>
 
     <dimen name="short_margin">8dp</dimen>
+    <dimen name="very_short_margin">4dp</dimen>
     <dimen name="item_margins">50dp</dimen>
     <dimen name="sub_choosing_buttons_height">300dp</dimen>
     <dimen name="sub_choosing_buttons_width">90dp</dimen>
@@ -39,6 +40,6 @@
     <dimen name="melkist_card_corner">8dp</dimen>
     <dimen name="icons">24dp</dimen>
     <dimen name="indicator_size">8dp</dimen>
-    <dimen name="calculator_option_size">120dp</dimen>
+    <dimen name="calculator_option_size">160dp</dimen>
 
 </resources>

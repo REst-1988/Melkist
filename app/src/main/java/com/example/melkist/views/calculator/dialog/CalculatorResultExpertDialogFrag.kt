@@ -18,7 +18,8 @@ import com.example.melkist.utils.showToast
 class CalculatorResultExpertDialogFrag(
     @StyleRes private val style: Int,
     private val housePrice: Long,
-    private val housePricePerMeter: Long
+    private val housePricePerMeter: Long,
+    private val rentPrice: Long
 ) : DialogFragment() {
 
     private lateinit var binding: FragCalculatorResultExpertDialogBinding
@@ -67,6 +68,16 @@ class CalculatorResultExpertDialogFrag(
                     requireContext(), resources.getString(R.string.added_to_clipboard)
                 )
             }
+            ibtnResultCopyRent.setOnClickListener {
+                copyToClipboard(
+                    requireContext(),
+                    resources.getString(R.string.expert_evaluation_rent_price),
+                    rentPrice.toString()
+                )
+                showToast(
+                    requireContext(), resources.getString(R.string.added_to_clipboard)
+                )
+            }
         }
     }
 
@@ -93,6 +104,16 @@ class CalculatorResultExpertDialogFrag(
             txtHousePricePerMeterToLetter.text = String.format(
                 "%s %s",
                 numInLetter(requireContext(), housePricePerMeter),
+                resources.getString(R.string.tooman)
+            )
+            txtRentPrice.text = String.format(
+                "%s %s",
+                formatNumber(rentPrice),
+                resources.getString(R.string.tooman)
+            )
+            txtRentPriceToLetter.text = String.format(
+                "%s %s",
+                numInLetter(requireContext(), rentPrice),
                 resources.getString(R.string.tooman)
             )
         }

@@ -1,7 +1,6 @@
 package com.example.melkist.models
 
 import com.squareup.moshi.Json
-import java.io.File
 
 data class InboxOutboxModel(
     @Json val result: Boolean?,

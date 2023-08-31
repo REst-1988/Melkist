@@ -23,7 +23,6 @@ import com.example.melkist.models.User
 import com.example.melkist.utils.changeAppTheme
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.handleSystemException
-import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.SplashViewModel
 import com.google.android.gms.tasks.OnCompleteListener

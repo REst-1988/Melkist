@@ -13,8 +13,10 @@ import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.LayoutBottomSheetFileDetailOwnerBinding
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
@@ -33,8 +35,8 @@ class BottomSheetFileDetailOwnerDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // TODO: check if what happened with any deleted file
-        (activity as MainActivity).user?.apply {
-            viewModel.getFileInfoById(requireActivity(), token!!, fileId, id!!)
+        (activity as MainActivity).user.apply {
+            viewModel.getFileInfoById(requireActivity(), this?.token, fileId, this?.id)
         }
     }
 
@@ -56,12 +58,12 @@ class BottomSheetFileDetailOwnerDialog(
         binding.ibtnBookmark.setOnClickListener {
             response.data?.isFav?.apply {
                 if (this) {
-                    (activity as MainActivity).user?.apply {
-                        viewModel.deleteFavFile(requireActivity(), token!!, id!!, fileId)
+                    (activity as MainActivity).user.apply {
+                        viewModel.deleteFavFile(requireActivity(), this?.token, this?.id, fileId)
                     }
                 } else {
-                    (activity as MainActivity).user?.apply {
-                        viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
+                    (activity as MainActivity).user.apply {
+                        viewModel.saveFavFile(requireActivity(), this?.token, this?.id, fileId)
                     }
                 }
             }
@@ -84,7 +86,13 @@ class BottomSheetFileDetailOwnerDialog(
         viewModel.fileAllData.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> onOkGettingFileAllDataResponse(response)
-                false -> onFalseResultGettingFileData(response)
+                false -> {
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ){}
+                    this.dismiss()
+                }
                 else -> {}
             }
         }
@@ -104,9 +112,10 @@ class BottomSheetFileDetailOwnerDialog(
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ){}
                     this.dismiss()
                     viewModel.resetSaveResponse()
                 }
@@ -128,9 +137,10 @@ class BottomSheetFileDetailOwnerDialog(
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ){}
                     viewModel.resetDeleteFavResponse()
                 }
 
@@ -148,9 +158,8 @@ class BottomSheetFileDetailOwnerDialog(
                 ImagePagerAdapter(fragment, this@BottomSheetFileDetailOwnerDialog, this)
             binding.indicator.setViewPager(binding.viewPager)
         }
-
         response.data?.apply {
-            user.profilePic?.apply {
+            user?.profilePic?.apply {
                 bindImage(binding.imgUser, this)
             }
             binding.txtRoomNo.text = String.format(
@@ -173,14 +182,6 @@ class BottomSheetFileDetailOwnerDialog(
                 binding.ibtnBookmark.showFav(isFav!!)
             }
         }
-
         initListeners(response)
-    }
-
-    private fun onFalseResultGettingFileData(response: FileDataResponse) {
-        showDialogWithMessage(
-            requireContext(), concatenateText(response.errors)
-        ) { d, _ -> d.dismiss() }
-        this.dismiss()
     }
 }

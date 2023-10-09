@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit
 
 
 private const val BASE_URL =
-    "https://panel.melkist.net/api/"
-
+    "https://test.melkist.net/api/"
+    /*"https://panel.melkist.net/api/"*/ // TODO: uncomment for main version
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())

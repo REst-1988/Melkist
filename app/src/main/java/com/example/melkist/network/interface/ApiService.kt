@@ -1,5 +1,6 @@
 package com.example.melkist.network.`interface`
 
+import android.util.Log
 import com.example.melkist.models.*
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -18,7 +19,11 @@ interface ApiService {
         @Query("user_id") userId: Int?,
         @Query("firebase_token") firebaseToken: String?,
         @Query("app_version") appVersion: String
-    ): AppVersionResponse
+    ): AppVersionResponse {
+        Log.e("TAG", "versionControl: test for body of suspend method", )
+
+        return AppVersionResponse(null, null, null, null)
+    }
 
     @POST("login")
     suspend fun login(
@@ -30,8 +35,8 @@ interface ApiService {
 
     @POST("dashboard/admin/profile/uploadProfilePic")
     suspend fun uploadProfilePic(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
         @Body profilePic: String
     ): PublicResponseModel
 
@@ -106,13 +111,13 @@ interface ApiService {
 
     @POST("dashboard/admin/file/getFileCategories")
     suspend fun getFileCategories(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Query("fileType_id") typeId: Int
     ): CatSubCatResponse
 
     @POST("dashboard/admin/file/getFileCategoryTypes")
     suspend fun getFileCategoryTypes(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Query("fileType_id") typeId: Int,
         @Query("fileCategory_id") catId: Int,
     ): CatSubCatResponse
@@ -123,101 +128,108 @@ interface ApiService {
     ): RegionResponseModel
 
     @POST("dashboard/admin/file/save")
-    suspend fun saveFile( // TODO: need token?
+    suspend fun saveFile(
+        @Header("Authorization") token: String?,
         @Body img: FileSave
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/getAllFilesByCity")
     suspend fun getAllFilesByCity(
-        @Header("Authorization") token: String,
-        @Query ("city_id") cityId: Int
+        @Header("Authorization") token: String?,
+        @Query ("city_id") cityId: Int?
     ): LocationResponse
 
     @POST("dashboard/admin/file/getFileInfoById")
     suspend fun getFileInfoById(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Query("file_id") fileId: Int,
-        @Query("user_id") userId: Int
+        @Query("user_id") userId: Int?
     ): FileDataResponse
 
     @POST("dashboard/admin/file/delete")
     suspend fun deleteFile(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Query("id") fileId: Int
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/saveFavoriteFile")
     suspend fun saveFavoriteFile(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
         @Query("file_id") fileId: Int
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/deleteFavoriteFile")
     suspend fun deleteFavoriteFiles(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
         @Query("file_id") fileId: Int
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/getFavoriteFiles")
     suspend fun getFavoriteFiles(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?
     ): FavFileResponse
 
 
     @POST("dashboard/admin/file/filterFiles")
     suspend fun filterFiles(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Body filerFileData: FilterFileData
     ): LocationResponse
 
     @POST("dashboard/admin/file/inboxRequestByStatus")
     suspend fun inboxByStatus(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
         @Query("status") status: Int?
     ): InboxOutboxModel
 
     @POST("dashboard/admin/file/outboxRequestByStatus")
     suspend fun outboxByStatus(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
         @Query("status") status: Int?
     ): InboxOutboxModel
 
     @POST("dashboard/admin/file/sendCooperationRequest")
     suspend fun sendCooperationRequest(
-        @Header("Authorization") token: String,
-        @Query("applicant_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("applicant_id") userId: Int?,
         @Query("file_id") fileId: Int
     ): PublicResponseModel
 
     @POST("dashboard/admin/getAllUserSubset")
     suspend fun getAllUserSubset(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
-        @Query("role_id") roleId: Int
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
+        @Query("role_id") roleId: Int?
     ): Users
 
     @POST("dashboard/admin/deleteUser")
     suspend fun deleteUser(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int,
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
     ): PublicResponseModel
 
     @POST("dashboard/admin/file/getFileInfoByUserId")
     suspend fun getFileInfoByUserId(
-        @Header("Authorization") token: String,
-        @Query("user_id") userId: Int
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?
     ): MyFilesResponse
 
     @POST("dashboard/admin/file/setAlertStatus")
     suspend fun setAlertStatus(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String?,
         @Query("filerequest_id") fileRequestId: Int,
-        @Query("user_id") userId: Int,
+        @Query("user_id") userId: Int?,
         @Query("status") status: Int
     ): PublicResponseModel?
+
+    @POST("dashboard/admin/file/AI/getSuggestFiles")
+    suspend fun getSuggestedFile(
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
+    ): SuggestionModel
 }

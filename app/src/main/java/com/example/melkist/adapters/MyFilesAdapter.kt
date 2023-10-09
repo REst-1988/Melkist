@@ -17,6 +17,7 @@ import com.example.melkist.models.Location
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.views.profile.ProfileMyFilesFrag
+import com.example.melkist.views.profile.ai.ProfileAiSuggestionFilterFrag
 
 class MyFilesAdapter(private val fragment: Fragment) :
     ListAdapter<FileData, MyFilesAdapter.MyFilesViewHolder>(DiffUtilCallBack) {
@@ -45,6 +46,22 @@ class MyFilesAdapter(private val fragment: Fragment) :
             }
         }
 
+        fun isNeedToAddToFilterFileList(): Boolean {
+            if (binding.chooseCurtain.visibility == View.GONE) {
+                binding.chooseCurtain.visibility = View.VISIBLE
+                return true
+            }
+            binding.chooseCurtain.visibility = View.GONE
+            return false
+        }
+
+        fun checkFilterItems(list: MutableList<Int>, id: Int) {
+            if (list.contains(id))
+                binding.chooseCurtain.visibility = View.VISIBLE
+            else
+                binding.chooseCurtain.visibility = View.GONE
+        }
+
         private fun bindSeeker(data: FileData) {
             binding.apply {
                 layoutSeeker.visibility = View.VISIBLE
@@ -53,7 +70,12 @@ class MyFilesAdapter(private val fragment: Fragment) :
                 txtSubCatSeeker.text = data.typeInfo!!.subCategory!!.title
                 txtCatSeeker.text = data.typeInfo.category!!.title
                 txtRegionSeeker.text = data.locations.getLocationTexts()
-                txtPriceSeeker.text = getPropertyPeriodsPriceText(context, data.price, R.string.price, R.string.tooman)
+                txtPriceSeeker.text = getPropertyPeriodsPriceText(
+                    context,
+                    data.price,
+                    R.string.price,
+                    R.string.tooman
+                )
             }
         }
 
@@ -69,7 +91,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
                     context.resources.getString(R.string.rooms, data.roomNo.from.toString())
                 txtPriceOwner.text = context.resources.getString(
                     R.string.price_with_variable,
-                    formatNumber(data.price.from!!.toLong())
+                    formatNumber((data.price.from?:0L))// TODO: change this data might be different after changing in database
                 )
                 data.images?.let {
                     if (it.isNotEmpty())
@@ -106,8 +128,15 @@ class MyFilesAdapter(private val fragment: Fragment) :
     override fun onBindViewHolder(holder: MyFilesViewHolder, position: Int) {
         val file = getItem(position)
         holder.bind(file)
+        if (fragment is ProfileAiSuggestionFilterFrag && fragment.getFilterList().isNotEmpty())
+            holder.checkFilterItems(fragment.getFilterList(), file.id)
         holder.itemView.setOnClickListener {
-            (fragment as ProfileMyFilesFrag).choosingItemAction(file)
+            when (fragment) {
+                is ProfileMyFilesFrag -> fragment.choosingItemAction(file)
+                is ProfileAiSuggestionFilterFrag -> {
+                    fragment.choosingItem(file, holder.isNeedToAddToFilterFileList())
+                }
+            }
         }
     }
 }

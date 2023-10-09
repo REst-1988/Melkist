@@ -25,8 +25,8 @@ class ChooseCatSubCatViewModel : ViewModel() {
     var catTitle: String = ""
     var subCatId: Int = EMPTY_CATEGORY_ID
     var subCatTitle: String = ""
-    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
-    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
+    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>?>()
+    val itemOptionList: LiveData<List<CatSubCatModel>?> = _itemOptionList
 
     fun getCatArray(): Array<String> {
         return arrayOf(catId.toString(), catTitle)
@@ -36,7 +36,7 @@ class ChooseCatSubCatViewModel : ViewModel() {
         return arrayOf(subCatId.toString(), subCatTitle)
     }
 
-    fun getFileCategories(activity: Activity, token: String, typeId: Int) {
+    fun getFileCategories(activity: Activity, token: String?, typeId: Int) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getFileCategories(activity, token, typeId)
@@ -47,10 +47,10 @@ class ChooseCatSubCatViewModel : ViewModel() {
                 try {
                     Log.e("TAG", "getFileCategoryType: $typeId")
                     _itemOptionList.value =
-                        Api.retrofitService.getFileCategories(token, typeId).data!!
+                        Api.retrofitService.getFileCategories(token, typeId).data
                     Log.e("TAG", "getFileCategories: ${_itemOptionList.value.toString()} ")
                     _itemOptionList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -63,7 +63,7 @@ class ChooseCatSubCatViewModel : ViewModel() {
             }
     }
 
-    fun getFileCategoryType(activity: Activity, token: String, typeId: Int, catId: Int) {
+    fun getFileCategoryType(activity: Activity, token: String?, typeId: Int, catId: Int) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getFileCategoryType(activity, token, typeId, catId)
@@ -77,11 +77,11 @@ class ChooseCatSubCatViewModel : ViewModel() {
                         Api.retrofitService.getFileCategoryTypes(
                             token,
                             typeId,
-                            catId = catId!!
-                        ).data!!
+                            catId = catId
+                        ).data
                     Log.e("TAG", "getFileCategoryType: ${_itemOptionList.value.toString()} ")
                     _itemOptionList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {

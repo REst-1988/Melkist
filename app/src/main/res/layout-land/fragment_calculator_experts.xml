@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.calculator.CalculatorExpertsFrag">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.CalculatorExpertViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.calculator.CalculatorExpertsFrag" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_tool_bar">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center_vertical"
+                        android:text="@string/expert_calculator"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txt_size_h1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/app_bar"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/normal_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/expert_calculator_text"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_min_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:hint="@string/min_new_house_price"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_min_price_child"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_edit_text"
+                        android:fontFamily="@font/iransans"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="19"
+                        android:textColor="@color/edit_text_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_min_price_to_letter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/very_short_text_view_padding"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/short_text_size" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_max_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:hint="@string/max_new_house_price"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_max_price_child"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_edit_text"
+                        android:fontFamily="@font/iransans"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="19"
+                        android:textColor="@color/edit_text_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txt_max_price_to_letter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/very_short_text_view_padding"
+                    android:textColor="@color/sub_item_text_color"
+                    android:textSize="@dimen/short_text_size" />
+
+                <!-- unlocked -->
+                <LinearLayout
+                    android:id="@+id/layout_unlocked"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_unlocked_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/unlocked_title_question"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_unlocked_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onTxtUnlockYesClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/yes"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_unlocked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layoutDirection="ltr"
+                        android:onCheckedChanged="@{(switch, check) -> fragment.onUnlockSwitchSelect(check)}" />
+
+                    <TextView
+                        android:id="@+id/txt_unlocked_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onTxtUnlockNoClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/no"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                </LinearLayout>
+                <!-- elevator -->
+                <LinearLayout
+                    android:id="@+id/layout_elevator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_elevator_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/elevator_title_question"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_elevator_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:onClick="@{() -> fragment.onTxtElevatorYesClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/yes"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_elevator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layoutDirection="ltr"
+                        android:onCheckedChanged="@{(switch, check) -> fragment.onElevatorSwitchSelect(check)}" />
+
+                    <TextView
+                        android:id="@+id/txt_elevator_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:onClick="@{() -> fragment.onTxtElevatorNoClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/no"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                </LinearLayout>
+                <!-- parking -->
+                <LinearLayout
+                    android:id="@+id/layout_parking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_parking_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/parking_title_question"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_parking_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onTxtParkingYesClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/yes"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_parking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layoutDirection="ltr"
+                        android:onCheckedChanged="@{(switch, check) -> fragment.onParkingSwitchSelect(check)}" />
+
+                    <TextView
+                        android:id="@+id/txt_parking_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onTxtParkingNoClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/no"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+
+                </LinearLayout>
+                <!-- commercial -->
+                <LinearLayout
+                    android:id="@+id/layout_commercial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_commercial_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/commercial_title_question"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_commercial_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onTxtCommercialYesClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/yes"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_commercial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layoutDirection="ltr"
+                        android:onCheckedChanged="@{(switch, check) -> fragment.onCommercialSwitchSelect(check)}" />
+
+                    <TextView
+                        android:id="@+id/txt_commercial_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:onClick="@{() -> fragment.onTxtCommercialNoClick()}"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/no"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+
+                </LinearLayout>
+                <!-- age -->
+                <LinearLayout
+                    android:id="@+id/layout_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingAge()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_choose_age_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/age_title"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showAgeText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/enter" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- size -->
+                <LinearLayout
+                    android:id="@+id/layout_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingSize()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_choose_size_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/meterage"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showSizeText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/enter" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- room -->
+                <LinearLayout
+                    android:id="@+id/layout_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingRoom()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_choose_room_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/room_title"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showRoomText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- floor -->
+                <LinearLayout
+                    android:id="@+id/layout_floor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingFloor()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_floor_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/floor_title"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_floor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showFloorText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- units in one floor -->
+                <LinearLayout
+                    android:id="@+id/layout_units_in_floor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingUnitsInFloor()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_units_in_floor_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/units_in_floor_title"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_units_in_floor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showUnitsInFloorText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- units of all -->
+                <LinearLayout
+                    android:id="@+id/layout_units"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingUnits()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_units_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/units_title"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_units"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showUnitsText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- allay -->
+                <LinearLayout
+                    android:id="@+id/layout_allay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingAllay()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_allay_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/allay_title"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_allay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showAllayText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                </LinearLayout>
+                <!-- northern -->
+                <LinearLayout
+                    android:id="@+id/layout_northern"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingNorthern()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_northern_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/northern_title_question"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_northern"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showNorthernText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+
+                </LinearLayout>
+                <!-- light -->
+                <LinearLayout
+                    android:id="@+id/layout_lights"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> fragment.onChoosingLights()}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_lights_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="start|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/lights_title_question"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_choose_lights"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="end|center"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@{fragment.showLightsText()}"
+                        android:textColor="@color/sub_item_text_color_fade"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="@string/choose" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/et_postal_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:hint="@string/optional_postal_code"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_postal_code_child"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_edit_text"
+                        android:fontFamily="@font/iransans"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="19"
+                        android:textColor="@color/edit_text_text_color"
+                        android:textSize="@dimen/normal_text_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_calculate"
+                    style="@style/Theme.Melkist.Buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/normal_margin"
+                    android:fontFamily="@font/iransans"
+                    android:onClick="@{() -> fragment.onBtnCalculateClick()}"
+                    android:text="@string/calculate" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/negative_normal_margin"
+                    android:fontFamily="@font/iransans"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/expert_calculator_text_2"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/short_text_size" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+</layout>

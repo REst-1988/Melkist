@@ -6,6 +6,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -27,6 +28,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.DialogLayoutGetAddDetailsBinding
 import com.example.melkist.models.FilterFileData
@@ -113,17 +115,55 @@ fun showDialogWithMessage(
         .setPositiveButton(context.resources.getText(R.string.confirm), action).show()
 }
 
+fun onRequestFalseResult(activity: Activity, e: List<String>, action: (() -> Any?)) {
+    if (e.contains("402")) {
+        Log.e("TAG", "onRequestFalseResult: ${activity.localClassName}", )
+        loginRequiredDialog(activity)
+    } else
+        showDialogWithMessage(
+            activity,
+            concatenateText(e)
+        ) { d, _ ->
+            d.dismiss()
+            action()
+        }
+}
+
+fun loginRequiredDialog(activity: Activity){
+    showDialogWith2Actions(
+        activity,
+        activity.resources.getString(R.string.login_required_massege),
+        { d, _ ->
+            d.dismiss()
+            activity.startActivity(
+                Intent(
+                    activity,
+                    LoginActivity::class.java
+                )
+            )
+            activity.finish()
+        },
+        { d, _ ->
+            d.dismiss()
+        },
+        activity.resources.getString(R.string.login),
+        activity.resources.getString(R.string.sometime_else)
+    )
+}
+
 fun showDialogWith2Actions(
     context: Context,
     message: String,
     action: (DialogInterface, Int) -> Unit,
-    action2: (DialogInterface, Int) -> Unit
+    action2: (DialogInterface, Int) -> Unit,
+    onPosOptString: String? = null,
+    onNegOptString: String? = null,
 ) {
     val builder = AlertDialog.Builder(context)
     builder.setMessage(message)
         .setCancelable(true)
-        .setPositiveButton(context.resources.getText(R.string.yes), action)
-        .setNegativeButton(context.resources.getText(R.string.no), action2)
+        .setPositiveButton(onPosOptString ?: context.resources.getText(R.string.yes), action)
+        .setNegativeButton(onNegOptString ?: context.resources.getText(R.string.no), action2)
         .show()
 }
 
@@ -180,10 +220,10 @@ fun handleSystemException(
     scope.launch {
         try {
             e?.apply {
-                Api.retrofitService.reportBugToSlack(from + " " + stackTraceToString())
+                //TODO: Uncomment Api.retrofitService.reportBugToSlack(from + " " + stackTraceToString())
             }
             t?.apply {
-                Api.retrofitService.reportBugToSlack(from + " " + stackTraceToString())
+                //TODO: Uncomment Api.retrofitService.reportBugToSlack(from + " " + stackTraceToString())
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -247,7 +287,7 @@ fun concatenateText(texts: List<String>?): String {
     return allErrors
 }
 
-fun isSystemDarkMode(context: Context): Boolean {
+fun isSystemThemeDarkMode(context: Context): Boolean {
     val darkModeFlag = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     return darkModeFlag == Configuration.UI_MODE_NIGHT_YES
 }
@@ -274,7 +314,8 @@ fun TextInputEditText.addLiveSeparatorListener() {
             this@addLiveSeparatorListener.removeTextChangedListener(this)
             val text: String = p0.toString()
             if (!TextUtils.isEmpty(text)) {
-                val format: String = formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
+                val format: String =
+                    formatNumber(BigDecimal(text.replace(",", "").replace("٬", "")).toLong())
                 this@addLiveSeparatorListener.setText(format)
                 this@addLiveSeparatorListener.setSelection(format.length)
             }
@@ -503,6 +544,235 @@ fun hasFilterData(filerFileData: FilterFileData): Boolean {
                 filterFile.subCatId != null ||
                 filterFile.regionId != null
     }
+}
+
+fun isShowAgeField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowSizeField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        4 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        4 -> true
+        5 -> true
+        6 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowRoomsField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowTotalPriceField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        4 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowMortgageField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowRentField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowSuitableForField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowFloorField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowParkingField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowStoreRoomField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowBalconyField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        2 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowElevatorField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        3 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowAdminDeedField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        3 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        2 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
+}
+
+fun isShowDeedTypeField(catId: Int, subCatId: Int, typeId: Int? = null): Boolean {
+    val typeStat = true
+    val catStat = when (catId) {
+        1 -> true
+        2 -> true
+        4 -> true
+        else -> false
+    }
+    val subCatStat = when (subCatId) {
+        1 -> true
+        2 -> true
+        4 -> true
+        5 -> true
+        6 -> true
+        else -> false
+    }
+    return typeStat && catStat && subCatStat
 }
 
 

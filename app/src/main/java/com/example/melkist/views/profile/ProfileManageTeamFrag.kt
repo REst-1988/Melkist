@@ -12,6 +12,8 @@ import com.example.melkist.R
 import com.example.melkist.adapters.TeamMemberAdapter
 import com.example.melkist.databinding.FragProfileManageTeamBinding
 import com.example.melkist.models.User
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.viewmodels.ProfileTeamMemberViewModel
 
 
@@ -29,18 +31,35 @@ class ProfileManageTeamFrag : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
             fragment = this@ProfileManageTeamFrag
-            binding.rvTeamMembers.adapter = TeamMemberAdapter(this@ProfileManageTeamFrag)
+            rvTeamMembers.adapter = TeamMemberAdapter(this@ProfileManageTeamFrag)
         }
         val user = (activity as MainActivity).user
-        user?.apply {
+        user.apply {
             viewModel.getTeamMembers(
                 requireActivity(),
-                token = user.token!!,
-                userId = user.id!!,
-                roleId = user.roleId!!
+                token = this?.token,
+                userId = this?.id,
+                roleId = this?.roleId
             )
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.teamMembers.observe(viewLifecycleOwner){ response ->
+            when (response.result){
+                true -> {/*handled on data binding*/}
+                false -> {
+                    viewModel.setNoDataStatus()
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
+                }
+                else -> {}
+            }
+        }
     }
 
 
@@ -55,10 +74,4 @@ class ProfileManageTeamFrag : Fragment() {
     fun back() {
         findNavController().popBackStack()
     }
-
-/*    fun onAddUserClick() {
-        findNavController().navigate(
-            R.id.action_profileManageTeamFrag_to_signupP1SignupFormFrag2
-        )
-    }*/
 }

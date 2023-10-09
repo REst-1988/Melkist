@@ -153,10 +153,10 @@ class SignupViewModel() : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _pcrsList.value =
-                        Api.retrofitService.getGetProvinces().data!!
+                        Api.retrofitService.getGetProvinces().data?: listOf()
                     Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
                     _pcrsList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -178,10 +178,10 @@ class SignupViewModel() : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _pcrsList.value =
-                        Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
+                        Api.retrofitService.getCitiesByProvinceId(provinceId).data?: listOf()
                     Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
                     _pcrsList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -203,7 +203,7 @@ class SignupViewModel() : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _pcrsList.value =
-                        Api.retrofitService.getRealEstateByCityId(cityId).data!!
+                        Api.retrofitService.getRealEstateByCityId(cityId).data?: listOf()
                     Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
                     _pcrsList.value?.apply {
                         if (isEmpty()) _status.value = ApiStatus.NO_DATA
@@ -228,7 +228,7 @@ class SignupViewModel() : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _pcrsList.value =
-                        Api.retrofitService.getSuperVisorByManagerId(parentId!!).data!!
+                        Api.retrofitService.getSuperVisorByManagerId(parentId!!).data?: listOf()
                     Log.e("TAG", "callServerAppVersion: ${_pcrsList.value.toString()}")
                     _pcrsList.value?.apply {
                         if (isEmpty()) _status.value = ApiStatus.NO_DATA

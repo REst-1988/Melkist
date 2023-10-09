@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
     app:startDestination="@id/navigation_map">
 
     <fragment
@@ -148,9 +147,6 @@
         android:label="frag_profile_manage_team"
         tools:layout="@layout/frag_profile_manage_team" >
         <action
-            android:id="@+id/action_profileManageTeamFrag_to_signupP1SignupFormFrag2"
-            app:destination="@id/navigation4" />
-        <action
             android:id="@+id/action_profileManageTeamFrag_to_profileUserProfileFrag"
             app:destination="@id/profileUserProfileFrag" />
     </fragment>
@@ -210,45 +206,14 @@
         android:name="com.example.melkist.views.profile.alerts.ProfileInboxFrag"
         android:label="frag_profile_send_recieved_cooperation"
         tools:layout="@layout/frag_profile_send_recieved_cooperation" />
-    <dialog
-        android:id="@+id/bottomSheetUniversalList"
-        android:name="com.example.melkist.views.universal.dialog.BottomSheetUniversalList"
-        android:label="layout_bottom_sheet_universal_list"
-        tools:layout="@layout/layout_bottom_sheet_universal_list" />
-    <dialog
-        android:id="@+id/bottomSheetFileDetailSeekerDialog"
-        android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailSeekerDialog"
-        android:label="BottomSheetFileDetailSeekerDialog" />
-    <dialog
-        android:id="@+id/bottomSheetFileDetailOwnerDialog"
-        android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailOwnerDialog"
-        android:label="BottomSheetFileDetailOwnerDialog" />
-    <dialog
-        android:id="@+id/calculatorResultDialogFrag"
-        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultDialogFrag"
-        android:label="CalculatorResultDialogFrag" />
-    <dialog
-        android:id="@+id/calculatorResultMortgageRentDialog"
-        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultMortgageRentDialog"
-        android:label="dialog_calculator_result_mortgage_rent"
-        tools:layout="@layout/dialog_calculator_result_mortgage_rent" />
-    <dialog
-        android:id="@+id/calculatorResultExpertDialogFrag"
-        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultExpertDialogFrag"
-        android:label="frag_calculator_result_expert_dialog"
-        tools:layout="@layout/frag_calculator_result_expert_dialog" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.melkist.MainActivity"
-        android:label="MainActivity" />
     <fragment
         android:id="@+id/profileAiP1"
         android:name="com.example.melkist.views.profile.ai.ProfileAiP1"
         android:label="frag_profile_ai_p1"
         tools:layout="@layout/frag_profile_ai_p1" >
         <action
-            android:id="@+id/action_profileAiP1_to_profileAiIntroFrag"
-            app:destination="@id/profileAiIntroFrag" />
+            android:id="@+id/action_profileAiP1_to_profileAiSuggestionsFrag"
+            app:destination="@id/profileAiSuggestionsFrag" />
     </fragment>
     <navigation android:id="@+id/navigation3"
         app:startDestination="@id/forgetPassP1EnterNcodePhoneFrag2">
@@ -282,61 +247,48 @@
                 app:popUpToInclusive="true" />
         </fragment>
     </navigation>
-    <navigation android:id="@+id/navigation4"
-        app:startDestination="@id/signupP1SignupFormFrag2">
-        <fragment
-            android:id="@+id/signupP5ReceiveVerificationSmsFrag2"
-            android:name="com.example.melkist.views.login.signup.SignupP5ReceiveVerificationSmsFrag"
-            android:label="frag_signup_p5_recieve_verification_sms"
-            tools:layout="@layout/frag_signup_p5_recieve_verification_sms">
-            <action
-                android:id="@+id/action_signupP5ReceiveVerificationSmsFrag2_to_profileManageTeamFrag"
-                app:destination="@id/profileManageTeamFrag"
-                app:popUpTo="@id/profileManageTeamFrag"
-                app:popUpToInclusive="true" />
-        </fragment>
-        <fragment
-            android:id="@+id/signupP1SignupFormFrag2"
-            android:name="com.example.melkist.views.login.signup.SignupP1SignupFormFrag"
-            android:label="frag_signup_p1_signup_form"
-            tools:layout="@layout/frag_signup_p1_signup_form">
-            <action
-                android:id="@+id/action_signupP1SignupFormFrag2_to_signupP2ChoosingRealEstateOrUserFrag2"
-                app:destination="@id/signupP2ChoosingRealEstateOrUserFrag2" />
-            <action
-                android:id="@+id/action_signupP1SignupFormFrag2_to_signupP3ChoosingSubFrag2"
-                app:destination="@id/signupP3ChoosingSubFrag2" />
-            <action
-                android:id="@+id/action_signupP1SignupFormFrag2_to_signupP4ChoosingPcrsFrag2"
-                app:destination="@id/signupP4ChoosingPcrsFrag2" />
-            <action
-                android:id="@+id/action_signupP1SignupFormFrag2_to_signupP5ReceiveVerificationSmsFrag2"
-                app:destination="@id/signupP5ReceiveVerificationSmsFrag2" />
-            <action
-                android:id="@+id/action_signupP1SignupFormFrag2_to_profileManageTeamFrag"
-                app:destination="@id/profileManageTeamFrag"
-                app:popUpTo="@id/profileManageTeamFrag"
-                app:popUpToInclusive="true" />
-        </fragment>
-        <fragment
-            android:id="@+id/signupP2ChoosingRealEstateOrUserFrag2"
-            android:name="com.example.melkist.views.login.signup.SignupP2ChoosingRealEstateOrUserFrag"
-            android:label="frag_signup_p2_choosing_real_estate_or_user"
-            tools:layout="@layout/frag_signup_p2_choosing_real_estate_or_user" />
-        <fragment
-            android:id="@+id/signupP4ChoosingPcrsFrag2"
-            android:name="com.example.melkist.views.login.signup.SignupP4ChoosingPcrsFrag"
-            android:label="frag_signup_p4_choosing_pcrs"
-            tools:layout="@layout/frag_signup_p4_choosing_pcrs" />
-        <fragment
-            android:id="@+id/signupP3ChoosingSubFrag2"
-            android:name="com.example.melkist.views.login.signup.SignupP3ChoosingSubFrag"
-            android:label="frag_signup_p3_choosing_sub"
-            tools:layout="@layout/frag_signup_p3_choosing_sub" />
-    </navigation>
     <fragment
-        android:id="@+id/profileAiIntroFrag"
-        android:name="com.example.melkist.views.profile.ai.ProfileAiIntroFrag"
+        android:id="@+id/profileAiSuggestionsFrag"
+        android:name="com.example.melkist.views.profile.ai.ProfileAiSuggestionsFrag"
         android:label="fragment_profile_ai_intro"
-        tools:layout="@layout/fragment_profile_ai_intro" />
+        tools:layout="@layout/frag_profile_ai_suggestions" >
+        <action
+            android:id="@+id/action_profileAiSuggestionsFrag_to_profileAiSuggestionFilterFrag"
+            app:destination="@id/profileAiSuggestionFilterFrag" />
+        <action
+            android:id="@+id/action_profileAiSuggestionsFrag_to_fileDetailFrag"
+            app:destination="@id/fileDetailFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileAiSuggestionFilterFrag"
+        android:name="com.example.melkist.views.profile.ai.ProfileAiSuggestionFilterFrag"
+        android:label="frag_profile_ai_suggestion_filter"
+        tools:layout="@layout/frag_profile_ai_suggestion_filter" />
+    <dialog
+        android:id="@+id/calculatorResultMortgageRentDialog"
+        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultMortgageRentDialog"
+        android:label="dialog_calculator_result_mortgage_rent"
+        tools:layout="@layout/dialog_calculator_result_mortgage_rent" />
+    <dialog
+        android:id="@+id/bottomSheetFileDetailOwnerDialog"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailOwnerDialog"
+        android:label="BottomSheetFileDetailOwnerDialog" />
+    <dialog
+        android:id="@+id/calculatorResultDialogFrag"
+        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultDialogFrag"
+        android:label="CalculatorResultDialogFrag" />
+    <dialog
+        android:id="@+id/calculatorResultExpertDialogFrag"
+        android:name="com.example.melkist.views.calculator.dialog.CalculatorResultExpertDialogFrag"
+        android:label="frag_calculator_result_expert_dialog"
+        tools:layout="@layout/frag_calculator_result_expert_dialog" />
+    <dialog
+        android:id="@+id/bottomSheetUniversalList"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetUniversalList"
+        android:label="layout_bottom_sheet_universal_list"
+        tools:layout="@layout/layout_bottom_sheet_universal_list" />
+    <dialog
+        android:id="@+id/bottomSheetFileDetailSeekerDialog"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailSeekerDialog"
+        android:label="BottomSheetFileDetailSeekerDialog" />
 </navigation>

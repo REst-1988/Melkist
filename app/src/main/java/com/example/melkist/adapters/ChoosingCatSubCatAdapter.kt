@@ -1,7 +1,6 @@
 package com.example.melkist.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -12,7 +11,7 @@ import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.ItemListCatSubCatBinding
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.utils.EMPTY_CATEGORY_ID
-import com.example.melkist.utils.isSystemDarkMode
+import com.example.melkist.utils.isSystemThemeDarkMode
 import com.example.melkist.viewmodels.ChooseCatSubCatViewModel
 import com.example.melkist.views.universal.ChooseCatSubcatFrag
 
@@ -40,7 +39,7 @@ class ChoosingCatSubCatAdapter(val viewModel: ChooseCatSubCatViewModel, val frag
         }
 
         private fun loadImg(data: CatSubCatModel) {
-            val imgUrl = if (isSystemDarkMode(context)) data.nightIconUrl else data.dayIconUrl
+            val imgUrl = if (isSystemThemeDarkMode(context)) data.nightIconUrl else data.dayIconUrl
             bindImage(binding.img, imgUrl)
         }
     }

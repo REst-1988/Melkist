@@ -4,7 +4,8 @@ import com.squareup.moshi.Json
 
 data class CatSubCatResponse(
     @Json val result: Boolean?,
-    @Json val data: List<CatSubCatModel>?
+    @Json val data: List<CatSubCatModel>?,
+    @Json val errors: List<String>?,
 )
 
 data class CatSubCatModel(

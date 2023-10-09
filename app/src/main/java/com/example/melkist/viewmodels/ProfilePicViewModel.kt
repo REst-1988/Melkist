@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
 import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -55,8 +56,8 @@ class ProfilePicViewModel : ViewModel() {
                 try {
                     _uploadResponse.value =
                         Api.retrofitService.uploadProfilePic(
-                            token!!,
-                            userId!!,
+                            token,
+                            userId,
                             getEncodedImage(imgUser!!)!!
                         )
                     _status.value = ApiStatus.DONE

@@ -20,11 +20,10 @@ import com.example.melkist.adapters.FavListAdapter
 import com.example.melkist.databinding.FragFavListBinding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.Fav
-import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.CONDITION_FILTER_FAV_LIST
 import com.example.melkist.utils.IS_IN_FAV_LIST_KEY
-import com.example.melkist.utils.concatenateText
-import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.viewmodels.MainViewModel
 
 class FavListFrag : Fragment() {
@@ -56,12 +55,25 @@ class FavListFrag : Fragment() {
         binding.rvFavList.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
-        getFavList()
         binding.pullToRefreshMainList.setOnRefreshListener {
             getFavList()
         }
-        viewModel.favList.observe(viewLifecycleOwner) {
+        viewModel.favList.observe(viewLifecycleOwner) { response ->
             binding.pullToRefreshMainList.isRefreshing = false
+            when (response.result) {
+                true -> {/*handled on data binding*/
+                }
+
+                false -> {
+                    viewModel.setNoDataStatus()
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
+                }
+
+                else -> {}
+            }
         }
         activeSearchableFav()
         viewModel.fileAllData.removeObservers(viewLifecycleOwner)
@@ -82,10 +94,10 @@ class FavListFrag : Fragment() {
             getFavList()
         else {
             viewModel.resetLocationResponse()
-            (activity as MainActivity).user?.apply {
-                viewModel.filterFavData!!.userId = id
+            (activity as MainActivity).user.apply {
+                viewModel.filterFavData!!.userId = this?.id
                 viewModel.getFilterFiles(
-                    requireActivity(), token!!, viewModel.filterFavData!!
+                    requireActivity(), this?.token, viewModel.filterFavData!!
                 )
             }
         }
@@ -94,7 +106,7 @@ class FavListFrag : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Interaction) {
-            interaction = context as Interaction
+            interaction = context
         } else {
             throw RuntimeException(
                 context.toString() + " must implement OnFragmentInteractionListener"
@@ -108,11 +120,11 @@ class FavListFrag : Fragment() {
         interaction = null
     }
 
-    private fun getFavList() = (activity as MainActivity).user?.apply {
+    private fun getFavList() = (activity as MainActivity).user.apply {
         viewModel.getFavoritesFile(
             requireActivity(),
-            token!!,
-            id!!
+            this?.token,
+            this?.id
         )
     }
 
@@ -130,12 +142,12 @@ class FavListFrag : Fragment() {
     fun choosingItemAction(fav: Fav) {
         viewModel.resetFileAllData()
         listenToFileDetailData()
-        (activity as MainActivity).user?.apply {
+        (activity as MainActivity).user.apply {
             viewModel.getFileInfoById(
                 requireActivity(),
-                token!!,
+                this?.token,
                 fileId = fav.id,
-                id!!
+                this?.id
             )
         }
     }
@@ -148,16 +160,14 @@ class FavListFrag : Fragment() {
                     interaction?.changBottomNavViewVisibility(View.GONE)
                 }
 
-                false -> onFalseResultGettingFileData(response)
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+
                 else -> {}
             }
         }
-    }
-
-    private fun onFalseResultGettingFileData(response: FileDataResponse) {
-        showDialogWithMessage(
-            requireContext(), concatenateText(response.errors)
-        ) { d, _ -> d.dismiss() }
     }
 
     private fun readyViewsOnFilter() {

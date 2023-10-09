@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.profile.ai.ProfileAiSuggestionFilterFrag">
+
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.melkist.viewmodels.MainViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.profile.ai.ProfileAiSuggestionFilterFrag" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layoutDirection="rtl"
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_tool_bar">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center_vertical"
+                        android:text="@string/filter_my_files"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txt_size_h1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/filter_my_files" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:id="@+id/txt_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransans"
+            android:gravity="center_vertical"
+            android:padding="@dimen/text_view_padding"
+            android:text="@string/ai_suggestion_filter_header"
+            android:textColor="@color/normal_text_color"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:fontFamily="@font/iransans"
+            android:hint="@string/search_in_region"
+            android:textSize="@dimen/txt_size_h2"
+            app:layout_constraintTop_toBottomOf="@id/txt_header" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_my_files"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:padding="@dimen/short_padding"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/layout_btns"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            app:myFilesData="@{viewmodel.myFiles.data}" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/btn_filter"
+                style="@style/Theme.Melkist.Buttons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:fontFamily="@font/iransans"
+                android:onClick="@{() -> fragment.onFilterClick()}"
+                android:text="@string/filter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_unfilter"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_unfilter"
+                style="@style/Theme.Melkist.Buttons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:drawableEnd="@drawable/baseline_filter_alt_off_24"
+                android:fontFamily="@font/iransans"
+                android:onClick="@{() -> fragment.onUnFilterClick()}"
+                android:text="@string/un_filter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_filter" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/img_empty_no_data"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:bindingCrashEmptyData="@{viewmodel.status}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_empty_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/iransans"
+            android:textColor="@color/sub_item_text_color"
+            android:textSize="@dimen/txt_size_h2"
+            app:bindingCrashEmptyData="@{viewmodel.status}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_empty_no_data" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:bindProgressLoading="@{viewmodel.status}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

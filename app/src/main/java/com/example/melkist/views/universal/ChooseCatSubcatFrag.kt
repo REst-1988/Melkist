@@ -26,7 +26,7 @@ class ChooseCatSubcatFrag : Fragment() {
     private val viewModel: ChooseCatSubCatViewModel by viewModels()
     lateinit var adapter: ChoosingCatSubCatAdapter
     private var arrayBundle: ArrayList<String>? = arrayListOf()
-    private lateinit var token: String
+    private var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

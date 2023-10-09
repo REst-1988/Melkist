@@ -3,7 +3,7 @@ package com.example.melkist.models
 import com.squareup.moshi.Json
 
 data class FavFileResponse(
-    @Json val result: Boolean,
+    @Json val result: Boolean?,
     @Json (name = "favorite_files") val data: List<Fav>?,
     @Json val errors: List<String>?
 )

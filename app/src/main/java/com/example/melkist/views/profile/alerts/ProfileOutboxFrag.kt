@@ -21,11 +21,13 @@ import com.example.melkist.databinding.FragProfileInBoxOutBoxBinding
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Status
 import com.example.melkist.utils.OUTBOX
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
@@ -72,9 +74,9 @@ class ProfileOutboxFrag(
             alertDialog.dismiss()
         }
         binding.btnMoreDetailDialog.setOnClickListener {
-            (activity as MainActivity).user?.apply {
+            (activity as MainActivity).user.apply {
                 try {
-                    viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
+                    viewModel.getFileInfoById(requireActivity(), token = this?.token, item.file!!.id!!, this?.id)
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
                     handleSystemException(lifecycleScope, "$id, ProfileOutboxFrag, showOutboxDialog, ", e)
@@ -91,9 +93,10 @@ class ProfileOutboxFrag(
                     (fragment as ProfileAlertsFrag).navigateToDetail()
                 }
 
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(response.errors)
-                ) { d, _ -> d.dismiss() }
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
 
                 else -> {}
             }
@@ -217,9 +220,9 @@ class ProfileOutboxFrag(
     }
 
     fun getList() {
-        (activity as MainActivity).user?.apply {
+        (activity as MainActivity).user.apply {
             viewModel.getOutbox(
-                requireActivity(), id!!, token!!
+                requireActivity(), this?.id, this?.token
             )
         }
     }
@@ -236,7 +239,10 @@ class ProfileOutboxFrag(
                 }
 
                 false -> {
-                    showToast(requireContext(), concatenateText(response.errors))
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ){}
                     viewModel.resetOutboxResponse()
                 }
 

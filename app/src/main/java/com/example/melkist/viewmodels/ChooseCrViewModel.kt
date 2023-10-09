@@ -38,10 +38,10 @@ class ChooseCrViewModel : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _regionList.value =
-                        Api.retrofitService.getRegionsByCity(cityId).data!!
+                        Api.retrofitService.getRegionsByCity(cityId).data
                     Log.e("TAG", "_regionList: ${_regionList.value.toString()} ")
                     _regionList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -61,10 +61,10 @@ class ChooseCrViewModel : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _pcrsList.value =
-                        Api.retrofitService.getGetProvinces().data!!
+                        Api.retrofitService.getGetProvinces().data?: listOf()
                     Log.e("TAG", "_pcrsList: ${_pcrsList.value.toString()} ")
                     _pcrsList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -84,10 +84,10 @@ class ChooseCrViewModel : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _pcrsList.value =
-                        Api.retrofitService.getCitiesByProvinceId(provinceId).data!!
+                        Api.retrofitService.getCitiesByProvinceId(provinceId).data?: listOf()
                     Log.e("TAG", "_pcrsList: ${_pcrsList.value.toString()} ")
                     _pcrsList.value?.apply {
-                        if (isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {

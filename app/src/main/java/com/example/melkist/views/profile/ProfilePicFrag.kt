@@ -24,7 +24,9 @@ import com.example.melkist.data.Ds
 import com.example.melkist.data.UserDataStore
 import com.example.melkist.databinding.FragProfilePicBinding
 import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ProfilePicViewModel
 import com.theartofdev.edmodo.cropper.CropImage
@@ -117,9 +119,10 @@ class ProfilePicFrag : Fragment() {
                     saveImage(response)
                     startNextMovement()
                 }
-                false -> {
-                    showToast(requireContext(), concatenateText(response.errors))
-                }
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
                 else -> {}
             }
         }

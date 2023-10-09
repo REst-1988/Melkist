@@ -1,6 +1,7 @@
 package com.example.melkist.models
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class RegionResponseModel(
     @Json val result: Boolean,
@@ -13,4 +14,4 @@ data class RegionResponseData(
     @Json val tags: List<String>? = listOf(),
     @Json val lat: Double?,
     @Json val lng: Double?
-)
+): Serializable

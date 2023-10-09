@@ -14,13 +14,16 @@ import com.example.melkist.adapters.ChoosingCatSubCatAdapter
 import com.example.melkist.adapters.ChoosingPcrsAdapter
 import com.example.melkist.adapters.FavListAdapter
 import com.example.melkist.adapters.MyFilesAdapter
+import com.example.melkist.adapters.SuggestionAdapter
 import com.example.melkist.adapters.TeamMemberAdapter
 import com.example.melkist.models.CatSubCatModel
 import com.example.melkist.models.Fav
 import com.example.melkist.models.FileData
 import com.example.melkist.models.PcrsData
+import com.example.melkist.models.SuggestionItemListModel
 import com.example.melkist.models.User
 import com.example.melkist.utils.ApiStatus
+import com.example.melkist.utils.USER_AVATAR
 import com.example.melkist.utils.getTimeStampForLoadImages
 
 @BindingAdapter("imgUrl")
@@ -30,7 +33,10 @@ fun bindImage(imageView: ImageView, url: String?) {
         val imgUri = a.toUri().buildUpon().scheme("https").build()
         imageView.load(imgUri) {
             placeholder(R.drawable.loading_animation)
-            error(R.drawable.ic_broken_image)
+            if (url == USER_AVATAR)
+                error(R.drawable.ic_circled_user)
+            else
+                error(R.drawable.ic_broken_image)
         }
     }
 }
@@ -76,8 +82,16 @@ fun bindRecyclerViewCatSubCat(
     recyclerView: RecyclerView,
     data: List<CatSubCatModel>?
 ) {
-    Log.e("TAG", "bindRecyclerViewCatSubCat: TEST ${data?.size} ")
     val adapter = recyclerView.adapter as ChoosingCatSubCatAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listDataAiSuggestion")
+fun bindListDataAiSuggestion(
+    recyclerView: RecyclerView,
+    data: List<SuggestionItemListModel>?
+){
+    val adapter = recyclerView.adapter as SuggestionAdapter
     adapter.submitList(data)
 }
 

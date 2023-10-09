@@ -22,11 +22,13 @@ import com.example.melkist.databinding.FragProfileSendRecievedCooperationBinding
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Status
 import com.example.melkist.utils.SENT
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
@@ -71,17 +73,20 @@ class ProfileSendCooperationFrag(
     private fun setupSendCooperation() {
         val adapter2 = SendReceivedCooperationAdapter(fragReceived = null, fragSend = this, SENT)
         binding.rvSendReceived.adapter = adapter2
-        (activity as MainActivity).user?.apply {
+        (activity as MainActivity).user.apply {
             viewModel.getSendCooperation(
                 requireActivity(),
-                id!!,
-                token!!
+                this?.id,
+                this?.token
             )
         }
         viewModel.cooperationResponseListSend.observe(viewLifecycleOwner) { response ->
             when (response.result) {
                 true -> adapter2.submitList(response.data?.filter { it.isManReceiver == true })
-                false -> showToast(requireContext(), concatenateText(response.errors))
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
                 else -> Log.e(
                     "TAG",
                     "setupSendCooperation: ${resources.getString(R.string.null_value)}"
@@ -160,9 +165,9 @@ class ProfileSendCooperationFrag(
                 alertDialog.dismiss()
             }
             btnMoreDetailDialog.setOnClickListener {
-                (activity as MainActivity).user?.apply {
+                (activity as MainActivity).user.apply {
                     try {
-                        viewModel.getFileInfoById(requireActivity(), token = token!!, item.file!!.id!!, id!!)
+                        viewModel.getFileInfoById(requireActivity(), token = this?.token, item.file!!.id!!, this?.id)
                         listenToFileDetailData(alertDialog)
                     } catch (e: Exception) {
                         handleSystemException(lifecycleScope, "$id, ProfileSendCooperationFrag, initDialogClickListeners, ", e)
@@ -188,9 +193,10 @@ class ProfileSendCooperationFrag(
                     (fragment as ProfileCooperationFrag).navigateToDetail()
                 }
 
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(response.errors)
-                ) { d, _ -> d.dismiss() }
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
 
                 else -> {}
             }

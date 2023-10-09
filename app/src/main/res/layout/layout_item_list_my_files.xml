@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/short_padding">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txt_type_owner"
                     android:layout_width="50dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/negative_normal_margin"
@@ -133,8 +132,7 @@
         android:id="@+id/layout_seeker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="rtl"
-        android:visibility="gone">
+        android:layoutDirection="rtl">
 
 
         <androidx.cardview.widget.CardView
@@ -161,7 +159,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/img_main_seeker"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@color/empty_background_color"
@@ -174,7 +171,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txt_type_seeker"
                     android:layout_width="50dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/negative_normal_margin"
@@ -243,5 +239,12 @@
             tools:text="3,000,000,000" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/choose_curtain"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        android:background="@color/sub_item_text_color_fade"/>
 
 </RelativeLayout>

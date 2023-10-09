@@ -11,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragForgetPassP3ChangePassBinding
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ForgetPassViewModel
@@ -44,7 +46,14 @@ class ForgetPassP3ChangePassFrag : Fragment() {
         viewModel.changePassResponse.observe(viewLifecycleOwner) {
             when (it.result) {
                 true -> onTrueResultListenToChangePassResponse()
-                false -> onFalseResultListenToChangePassResponse()
+                false -> {
+                    onRequestFalseResult(
+                        requireActivity(),
+                        it.errors?: UNKNOWN_ERRORS_LIST
+                    ){
+                        viewModel.resetChangePassResponse()
+                    }
+                }
                 else -> {}
             }
         }
@@ -54,16 +63,6 @@ class ForgetPassP3ChangePassFrag : Fragment() {
         showToast(requireContext(), viewModel.changePassResponse.value!!.message!!)
         viewModel.resetChangePassResponse()
         readyForStartNextSetion()
-    }
-
-    private fun onFalseResultListenToChangePassResponse() {
-        showDialogWithMessage(
-            requireContext(),
-            concatenateText(viewModel.verificationCodeResponse.value!!.errors)
-        ) { d, _ ->
-            d.dismiss()
-            viewModel.resetChangePassResponse()
-        }
     }
 
     private fun readyForStartNextSetion() {

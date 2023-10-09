@@ -265,15 +265,7 @@
                     android:layout_marginTop="@dimen/normal_margin"
                     android:layout_marginEnd="@dimen/normal_margin"
                     android:layout_marginBottom="@dimen/normal_margin">
-
-                    <!--            منطقه
-                                سایر مناطق
-                                سال ساخت
-                                متراژ
-                                تعداد خواب
-                                قیمت
-                                قیمت هر متر-->
-
+                    <!--type-->
                     <TextView
                         android:id="@+id/txt_type_title"
                         android:layout_width="wrap_content"
@@ -300,7 +292,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="فروش آپارتمان" />
-
+                    <!--regions-->
                     <TextView
                         android:id="@+id/txt_region_title"
                         android:layout_width="wrap_content"
@@ -341,7 +333,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_region"
                         tools:text="معالی آباد" />
-
+                    <!--other regions-->
                     <TextView
                         android:id="@+id/txt_region_other_title"
                         android:layout_width="wrap_content"
@@ -366,7 +358,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_region_tags"
                         tools:text="فرهنگ شهر، کوی وحدت" />
-
+                    <!--age-->
                     <TextView
                         android:id="@+id/txt_age_title"
                         android:layout_width="wrap_content"
@@ -376,6 +368,7 @@
                         android:text="@string/age_title"
                         android:textColor="@color/sub_item_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowAge()}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_region_other_title" />
 
@@ -388,10 +381,11 @@
                         android:text="@{fragment.ageText()}"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowAge()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_region_other"
                         tools:text="1402" />
-
+                    <!--size-->
                     <TextView
                         android:id="@+id/txt_size_title"
                         android:layout_width="wrap_content"
@@ -401,6 +395,7 @@
                         android:text="@string/meterage"
                         android:textColor="@color/sub_item_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowSize()}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_age_title" />
 
@@ -413,10 +408,11 @@
                         android:text="@{fragment.sizeText()}"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowSize()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_age"
                         tools:text="127 متر مربع" />
-
+                    <!--room-->
                     <TextView
                         android:id="@+id/txt_room_no_title"
                         android:layout_width="wrap_content"
@@ -426,6 +422,7 @@
                         android:text="@string/room_no"
                         android:textColor="@color/sub_item_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowRooms()}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_size_title" />
 
@@ -438,11 +435,11 @@
                         android:text="@{fragment.roomNoText()}"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowRooms()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_size"
                         tools:text="2" />
-
-
+                    <!--price-->
                     <TextView
                         android:id="@+id/txt_price_title"
                         android:layout_width="wrap_content"
@@ -452,6 +449,7 @@
                         android:text="@string/price"
                         android:textColor="@color/sub_item_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowPrice()}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_room_no_title" />
 
@@ -464,10 +462,11 @@
                         android:text="@{fragment.priceText()}"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowPrice()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_room_no"
                         tools:text="5،000،000،000 تومان" />
-
+                    <!--price per meter-->
                     <TextView
                         android:id="@+id/txt_price_per_meter_title"
                         android:layout_width="wrap_content"
@@ -477,9 +476,9 @@
                         android:text="@string/price_per_meter"
                         android:textColor="@color/sub_item_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowPrice()}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txt_price_title"
-                        app:setVisibility="@{fragment.isShowPricePerMeter()}" />
+                        app:layout_constraintTop_toBottomOf="@id/txt_price_title" />
 
                     <TextView
                         android:id="@+id/txt_price_per_meter"
@@ -490,31 +489,321 @@
                         android:text="@{fragment.pricePerMeterText()}"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowPrice()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_price"
-                        app:setVisibility="@{fragment.isShowPricePerMeter()}"
                         tools:text="39،370،000 تومان" />
-
+                    <!--mortgage-->
                     <TextView
-                        android:id="@+id/separator_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/color_boarder"
-                        app:layout_constraintTop_toBottomOf="@id/txt_price_per_meter" />
-
-                    <TextView
-                        android:id="@+id/txt_descriptions"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txt_mortgage_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/iransans"
-                        android:lineSpacingExtra="8dp"
                         android:padding="@dimen/short_text_view_padding"
-                        android:text="@{fragment.descriptionsText()}"
+                        android:text="@string/mortgage_amount"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowMortgage()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_price_per_meter_title" />
+
+                    <TextView
+                        android:id="@+id/txt_mortgage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.mortgageText()}"
                         android:textColor="@color/normal_text_color"
                         android:textSize="@dimen/normal_text_size"
-                        app:layout_constraintTop_toBottomOf="@id/separator_2" />
+                        android:visibility="@{fragment.isShowMortgage()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_price_per_meter"
+                        tools:text="500,000,000 تومان" />
+                    <!--rent-->
+                    <TextView
+                        android:id="@+id/txt_rent_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/rent_amount"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowRent()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_mortgage_title" />
+
+                    <TextView
+                        android:id="@+id/txt_rent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.rentText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowRent()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_mortgage"
+                        tools:text="5،000،000 تومان" />
+                    <!--suitable for-->
+                    <TextView
+                        android:id="@+id/txt_suitable_for_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/suitable_for"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowSuitableFor()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_rent_title" />
+
+                    <TextView
+                        android:id="@+id/txt_suitable_for"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.suitableForText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowSuitableFor()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_rent"
+                        tools:text="خانواده" />
+                    <!--floor-->
+                    <TextView
+                        android:id="@+id/txt_floor_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/floor"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowFloor()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_suitable_for_title" />
+
+                    <TextView
+                        android:id="@+id/txt_floor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.floorText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowFloor()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_suitable_for"
+                        tools:text="اول" />
+                    <!--parking-->
+                    <TextView
+                        android:id="@+id/txt_parking_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/parking"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowParking()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_floor_title" />
+
+                    <TextView
+                        android:id="@+id/txt_parking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.parkingText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowParking()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_floor"
+                        tools:text="دارد" />
+                    <!--store room-->
+                    <TextView
+                        android:id="@+id/txt_store_room_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/store_room"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowStoreRoom()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_parking_title" />
+
+                    <TextView
+                        android:id="@+id/txt_store_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.storeRoomText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowStoreRoom()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_parking"
+                        tools:text="دارد" />
+                    <!--balcony-->
+                    <TextView
+                        android:id="@+id/txt_balcony_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/balcony"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowBalcony()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_store_room_title" />
+
+                    <TextView
+                        android:id="@+id/txt_balcony"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.balconyText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowBalcony()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_store_room"
+                        tools:text="دارد" />
+                    <!--elevator-->
+                    <TextView
+                        android:id="@+id/txt_elevator_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/elevator"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowElevator()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_balcony_title" />
+
+                    <TextView
+                        android:id="@+id/txt_elevator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.elevatorText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowElevator()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_balcony"
+                        tools:text="دارد" />
+                    <!--admin deed-->
+                    <TextView
+                        android:id="@+id/txt_admin_deed_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/administrative_deed"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowAdminDeed()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_elevator_title" />
+
+                    <TextView
+                        android:id="@+id/txt_admin_deed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.adminDeedText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowAdminDeed()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_elevator"
+                        tools:text="دارد" />
+                    <!--deed type-->
+                    <TextView
+                        android:id="@+id/txt_deed_type_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@string/deed_type"
+                        android:textColor="@color/sub_item_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowDeedType()}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_admin_deed_title" />
+
+                    <TextView
+                        android:id="@+id/txt_deed_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iransans"
+                        android:padding="@dimen/short_text_view_padding"
+                        android:text="@{fragment.deedTypeText()}"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="@dimen/normal_text_size"
+                        android:visibility="@{fragment.isShowDeedType()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txt_admin_deed"
+                        tools:text="ملکی" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--  ______  -->
+                <TextView
+                    android:id="@+id/separator_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/layout_file_detail"
+                    android:background="@color/color_boarder" />
+                <!--descriptions-->
+                <TextView
+                    android:id="@+id/txt_descriptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/separator_2"
+                    android:fontFamily="@font/iransans"
+                    android:lineSpacingExtra="8dp"
+                    android:padding="@dimen/short_text_view_padding"
+                    android:text="@{fragment.descriptionsText()}"
+                    android:textColor="@color/normal_text_color"
+                    android:textSize="@dimen/normal_text_size"
+                    app:setVisibility="@{fragment.isShowDescriptions()}" />
+                <!--  ______  -->
+                <TextView
+                    android:id="@+id/separator_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/txt_descriptions"
+                    android:background="@color/color_boarder"
+                    app:setVisibility="@{fragment.isShowDescriptions()}" />
+
+                <LinearLayout
+                    android:id="@+id/ll_time_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/separator_3"
+                    android:layout_margin="@dimen/normal_margin"
+                    android:orientation="vertical"></LinearLayout>
             </RelativeLayout>
+
         </androidx.core.widget.NestedScrollView>
 
         <RelativeLayout
@@ -577,20 +866,46 @@
 
         </RelativeLayout>-->
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/layout_btn_delete_file"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/ibtn_delete_file"
-                android:layout_width="wrap_content"
+                android:id="@+id/ibtn_edit_file"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="@dimen/short_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
+                android:layout_weight="0.5"
+                android:background="@drawable/background_cylinder_btns_green"
+                android:clickable="true"
+                android:drawableEnd="@drawable/baseline_edit_note_24"
+                android:drawablePadding="@dimen/short_padding"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:onClick="@{() -> fragment.onEditFileClick()}"
+                android:padding="@dimen/short_text_view_padding"
+                android:text="@string/edit_file"
+                android:textColor="@color/white"
+                android:textSize="@dimen/normal_text_size"
+                app:bindLoading="@{viewmodel.status}" />
+
+            <TextView
+                android:id="@+id/ibtn_delete_file"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginBottom="@dimen/normal_margin"
+                android:layout_toEndOf="@id/ibtn_edit_file"
+                android:layout_weight="0.5"
                 android:background="@drawable/background_cylinder_btns_red"
                 android:clickable="true"
                 android:drawableEnd="@drawable/baseline_delete_forever_24"
@@ -598,17 +913,16 @@
                 android:elevation="4dp"
                 android:focusable="true"
                 android:fontFamily="@font/iransans"
-                android:onClick="@{() -> fragment.funOnDeleteFileClick()}"
+                android:gravity="center"
+                android:onClick="@{() -> fragment.onDeleteFileClick()}"
                 android:padding="@dimen/short_text_view_padding"
                 android:text="@string/delete_file"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_text_size"
-                app:bindLoading="@{viewmodel.status}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:bindLoading="@{viewmodel.status}" />
 
-        </RelativeLayout>
+
+        </LinearLayout>
 
         <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_btn_approve_request"

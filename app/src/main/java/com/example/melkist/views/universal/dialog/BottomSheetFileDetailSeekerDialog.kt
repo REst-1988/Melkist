@@ -12,10 +12,10 @@ import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.LayoutBottomSheetFileDetailSeekerBinding
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.ApiStatus
-import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
-import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
@@ -30,8 +30,8 @@ class BottomSheetFileDetailSeekerDialog(
     private val viewModel: MainViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity).user?.apply {
-            viewModel.getFileInfoById(requireActivity(), token!!, fileId, id!!)
+        (activity as MainActivity).user.apply {
+            viewModel.getFileInfoById(requireActivity(), this?.token, fileId, this?.id)
         }
     }
 
@@ -57,19 +57,14 @@ class BottomSheetFileDetailSeekerDialog(
             fragment.onMoreDetailFileClick()
         }
         binding.ibtnBookmark.setOnClickListener {
-            (activity as MainActivity).user?.apply {
-                viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
-            }
-            binding.ibtnBookmark.setOnClickListener {
-                response.data?.isFav?.apply {
-                    if (this) {
-                        (activity as MainActivity).user?.apply {
-                            viewModel.deleteFavFile(requireActivity(), token!!, id!!, fileId)
-                        }
-                    } else {
-                        (activity as MainActivity).user?.apply {
-                            viewModel.saveFavFile(requireActivity(), token!!, id!!, fileId)
-                        }
+            response.data?.isFav?.apply {
+                if (this) {
+                    (activity as MainActivity).user.apply {
+                        viewModel.deleteFavFile(requireActivity(), this?.token, this?.id, fileId)
+                    }
+                } else {
+                    (activity as MainActivity).user.apply {
+                        viewModel.saveFavFile(requireActivity(), this?.token, this?.id, fileId)
                     }
                 }
             }
@@ -93,9 +88,10 @@ class BottomSheetFileDetailSeekerDialog(
             when (response.result) {
                 true -> onOkGettingFileAllDataResponse(response)
                 false -> {
-                    showDialogWithMessage(
-                        requireContext(), concatenateText(response.errors)
-                    ) { d, _ -> d.dismiss() }
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                     this.dismiss()
                 }
 
@@ -118,9 +114,10 @@ class BottomSheetFileDetailSeekerDialog(
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                     viewModel.resetSaveResponse()
                 }
 
@@ -141,9 +138,10 @@ class BottomSheetFileDetailSeekerDialog(
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                     viewModel.resetDeleteFavResponse()
                 }
 
@@ -157,7 +155,7 @@ class BottomSheetFileDetailSeekerDialog(
 
     private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
         response.data?.apply {
-            user.profilePic?.apply {
+            user?.profilePic?.apply {
                 bindImage(binding.imgUser, this)
             }
             binding.txtRoomNo.text =
@@ -169,7 +167,12 @@ class BottomSheetFileDetailSeekerDialog(
                 R.string.squere_meter
             )
             binding.txtRegion.text = locations[0].region.title
-            binding.txtPrice.text = getPropertyPeriodsPriceText(requireContext(), price, R.string.price, R.string.tooman)
+            binding.txtPrice.text = getPropertyPeriodsPriceText(
+                requireContext(),
+                price,
+                R.string.price,
+                R.string.tooman
+            )
             isFav?.apply {
                 binding.ibtnBookmark.showFav(this)
             }

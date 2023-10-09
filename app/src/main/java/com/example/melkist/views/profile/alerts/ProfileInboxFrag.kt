@@ -22,11 +22,13 @@ import com.example.melkist.models.Status
 import com.example.melkist.utils.INBOX
 import com.example.melkist.utils.STATUS_APPROVED
 import com.example.melkist.utils.STATUS_DENY
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
@@ -72,13 +74,13 @@ class ProfileInboxFrag(
             alertDialog.dismiss()
         }
         binding.btnMoreDetailDialog.setOnClickListener {
-            (activity as MainActivity).user?.apply {
+            (activity as MainActivity).user.apply {
                 try {
                     viewModel.getFileInfoById(
                         requireActivity(),
-                        token = token!!,
+                        token = this?.token,
                         item.file!!.id!!,
-                        id!!
+                        this?.id
                     )
                     listenToFileDetailData(alertDialog)
                 } catch (e: Exception) {
@@ -91,13 +93,13 @@ class ProfileInboxFrag(
             }
         }
         binding.btnApproveDialog.setOnClickListener {
-            (activity as MainActivity).user?.apply {
+            (activity as MainActivity).user.apply {
                 item.requestId?.let { requestId ->
                     viewModel.setAlertStatus(
                         requireActivity(),
-                        token!!,
+                        this?.token,
                         requestId,
-                        id!!,
+                        this?.id,
                         STATUS_APPROVED
                     )
                     alertDialog.dismiss()
@@ -105,13 +107,13 @@ class ProfileInboxFrag(
             }
         }
         binding.btnDenyDialog.setOnClickListener {
-            (activity as MainActivity).user?.apply {
+            (activity as MainActivity).user.apply {
                 item.requestId?.let { requestId ->
                     viewModel.setAlertStatus(
                         requireActivity(),
-                        token!!,
+                        this?.token,
                         requestId,
-                        id!!,
+                        this?.id,
                         STATUS_DENY
                     )
                     alertDialog.dismiss()
@@ -186,9 +188,10 @@ class ProfileInboxFrag(
                     (fragment as ProfileAlertsFrag).navigateToDetail()
                 }
 
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(response.errors)
-                ) { d, _ -> d.dismiss() }
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
 
                 else -> {}
             }
@@ -204,9 +207,10 @@ class ProfileInboxFrag(
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ){}
                     viewModel.resetStatusResponse()
                 }
 
@@ -237,7 +241,10 @@ class ProfileInboxFrag(
                 }
 
                 false -> {
-                    showToast(requireContext(), concatenateText(response.errors))
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ){}
                     viewModel.resetInboxResponse()
                 }
 
@@ -248,9 +255,9 @@ class ProfileInboxFrag(
     }
 
     private fun getList() {
-        (activity as MainActivity).user?.apply {
+        (activity as MainActivity).user.apply {
             viewModel.getInbox(
-                requireActivity(), id!!, token!!
+                requireActivity(), this?.id, this?.token
             )
         }
     }

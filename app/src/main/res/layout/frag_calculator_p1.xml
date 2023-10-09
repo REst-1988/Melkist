@@ -32,7 +32,6 @@
             android:focusable="true">
 
             <ImageView
-                android:id="@+id/img_calc_2"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerVertical="true"
@@ -41,7 +40,6 @@
                 android:src="@drawable/calc2" />
 
             <ImageView
-                android:id="@+id/img_calc_2_fade"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -50,7 +48,6 @@
                 android:src="@drawable/calc2_gray" />
 
             <TextView
-                android:id="@+id/txt_calc_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -60,7 +57,6 @@
                 android:textSize="@dimen/normal_text_size" />
 
             <TextView
-                android:id="@+id/txt_calc_2_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -84,7 +80,6 @@
             android:focusable="true">
 
             <ImageView
-                android:id="@+id/img_calc_3"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerVertical="true"
@@ -93,7 +88,6 @@
                 android:src="@drawable/calc3" />
 
             <ImageView
-                android:id="@+id/img_calc_3_fade"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -102,7 +96,6 @@
                 android:src="@drawable/calc3_gray" />
 
             <TextView
-                android:id="@+id/txt_calc_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -113,7 +106,6 @@
 
 
             <TextView
-                android:id="@+id/txt_calc_3_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -137,7 +129,6 @@
             android:focusable="true">
 
             <ImageView
-                android:id="@+id/img_calc_1"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerVertical="true"
@@ -149,7 +140,6 @@
                 android:src="@drawable/calc1" />
 
             <ImageView
-                android:id="@+id/img_calc_1_fade"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -158,7 +148,6 @@
                 android:src="@drawable/calc1_gray" />
 
             <TextView
-                android:id="@+id/txt_calc_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -169,7 +158,6 @@
 
 
             <TextView
-                android:id="@+id/txt_calc_1_sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

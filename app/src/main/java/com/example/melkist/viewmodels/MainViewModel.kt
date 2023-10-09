@@ -16,6 +16,8 @@ import com.example.melkist.models.InboxOutboxModel
 import com.example.melkist.models.LocationResponse
 import com.example.melkist.models.MyFilesResponse
 import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.models.SuggestionItemListModel
+import com.example.melkist.models.SuggestionModel
 import com.example.melkist.models.User
 import com.example.melkist.network.Api
 import com.example.melkist.utils.ApiStatus
@@ -29,6 +31,10 @@ class MainViewModel :
 
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
+    fun setNoDataStatus() {
+        _status.value = ApiStatus.NO_DATA
+    }
+
     private val _fileAllData = MutableLiveData<FileDataResponse>()
     val fileAllData: LiveData<FileDataResponse> = _fileAllData
     private val _deleteFileResponse = MutableLiveData<PublicResponseModel>()
@@ -54,28 +60,15 @@ class MainViewModel :
     val myFiles: LiveData<MyFilesResponse> = _myFiles
     private val _setStatusResponse = MutableLiveData<PublicResponseModel>()
     val setStatusResponse: LiveData<PublicResponseModel> = _setStatusResponse
+    private val _aiSuggestedResponse = MutableLiveData<SuggestionModel>()
+    val aiSuggestedResponse: LiveData<SuggestionModel> = _aiSuggestedResponse
+    private val _aiSuggestionList = MutableLiveData<List<SuggestionItemListModel>>()
+    val aiSuggestionList: LiveData<List<SuggestionItemListModel>> = _aiSuggestionList
 
     enum class ItemType { SHOW_ALL, SHOW_SEEKER, SHOW_OWNER }
-/*    enum class ReqSource { CATEGORY, SUB_CATEGORY }*/
 
-/*    private var reqSource: AddItemViewModel.ReqSource = AddItemViewModel.ReqSource.CATEGORY
-    fun getReqSource() = reqSource
-    fun setReqSource(reqSource: AddItemViewModel.ReqSource) {
-        this.reqSource = reqSource
-    }*/
     private val _locationResponse = MutableLiveData<LocationResponse>()
     val locationResponse: LiveData<LocationResponse> = _locationResponse
-
-
-//    private val _itemOptionList = MutableLiveData<List<CatSubCatModel>>()
-//    val itemOptionList: LiveData<List<CatSubCatModel>> = _itemOptionList
-//    private val _pcrsList = MutableLiveData<List<PcrsData>>()
-//    val pcrsList: LiveData<List<PcrsData>> = _pcrsList
-//    private val _regionList = MutableLiveData<List<RegionResponseData>>()
-//    val regionList: LiveData<List<RegionResponseData>> = _regionList
-//
-//    private val _filesResponse = MutableLiveData<FileResponse>()
-//    val filesResponse: LiveData<FileResponse> = _filesResponse
 
     var filterFileData: FilterFileData? = null
     var filterFavData: FilterFileData? = null
@@ -91,7 +84,9 @@ class MainViewModel :
         itemType = type
     }
 
-    fun getFiles(activity: Activity, token: String, cityId: Int) {
+    val filterItemsForSuggestions: MutableList<Int> = mutableListOf()
+
+    fun getFiles(activity: Activity, token: String?, cityId: Int?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getFiles(activity, token, cityId)
@@ -106,12 +101,16 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "${(activity as MainActivity).user?.id}, MainViewModel, getFiles, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "${(activity as MainActivity).user?.id}, MainViewModel, getFiles, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun getFilterFiles(activity: Activity, token: String, filterFileData: FilterFileData) {
+    fun getFilterFiles(activity: Activity, token: String?, filterFileData: FilterFileData) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getFilterFiles(activity, token, filterFileData)
@@ -126,15 +125,13 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "${(activity as MainActivity).user?.id}, MainViewModel, getFilterFiles, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "${(activity as MainActivity).user?.id}, MainViewModel, getFilterFiles, ",
+                    )
                 }
             }
     }
-/*
-    fun resetLocations() {
-        locationResponse.value!!.data = listOf()
-    }
-*/
 
     fun getTypeId(requestCode: ItemType): Int {
         val fileTypes = FileTypes()
@@ -157,11 +154,7 @@ class MainViewModel :
         subCatTitle = null
     }
 
-/*    fun getReqSourceNumber(): Int {
-        return REGION_1
-    }*/
-
-    fun getFileInfoById(activity: Activity, token: String, fileId: Int, userId: Int) {
+    fun getFileInfoById(activity: Activity, token: String?, fileId: Int, userId: Int?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getFileInfoById(activity, token, fileId, userId)
@@ -178,12 +171,16 @@ class MainViewModel :
                 } catch (e: Exception) {
                     resetFileAllData()
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, getFileInfoById, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, getFileInfoById, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun deleteFile(activity: Activity, token: String, fileId: Int) {
+    fun deleteFile(activity: Activity, token: String?, fileId: Int) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 deleteFile(activity, token, fileId)
@@ -201,12 +198,16 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "${(activity as MainActivity).user?.id}, MainViewModel, deleteFile, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "${(activity as MainActivity).user?.id}, MainViewModel, deleteFile, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun saveFavFile(activity: Activity, token: String, userId: Int, fileId: Int) {
+    fun saveFavFile(activity: Activity, token: String?, userId: Int?, fileId: Int) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 saveFavFile(activity, token, userId, fileId)
@@ -225,12 +226,16 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, saveFavFile, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, saveFavFile, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun deleteFavFile(activity: Activity, token: String, userId: Int, fileId: Int) {
+    fun deleteFavFile(activity: Activity, token: String?, userId: Int?, fileId: Int) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 deleteFavFile(activity, token, userId, fileId)
@@ -249,15 +254,19 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, deleteFavFile, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, deleteFavFile, ",
+                        e
+                    )
                 }
             }
     }
 
     fun sendCooperationRequest(
         activity: Activity,
-        token: String,
-        userId: Int,
+        token: String?,
+        userId: Int?,
         fileId: Int
     ) {
         if (!isOnline(activity))
@@ -281,12 +290,16 @@ class MainViewModel :
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, sendCooperationRequest, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, sendCooperationRequest, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun getFavoritesFile(activity: Activity, token: String, userId: Int) {
+    fun getFavoritesFile(activity: Activity, token: String?, userId: Int?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getFavoritesFile(activity, token, userId)
@@ -298,17 +311,21 @@ class MainViewModel :
                     _favList.value = Api.retrofitService.getFavoriteFiles(token, userId)
                     Log.e("TAG", "getFavoritesFile: ${_favList.value.toString()} ")
                     _favList.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, getFavoritesFile, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, getFavoritesFile, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun getInbox(activity: Activity, userId: Int, token: String) {
+    fun getInbox(activity: Activity, userId: Int?, token: String?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getInbox(activity, userId, token)
@@ -325,7 +342,7 @@ class MainViewModel :
                         )
                     Log.e("TAG", "getInbox: ${_inboxResponse.value.toString()} ")
                     _inboxResponse.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: java.lang.Exception) {
@@ -335,7 +352,7 @@ class MainViewModel :
             }
     }
 
-    fun getOutbox(activity: Activity, userId: Int, token: String) {
+    fun getOutbox(activity: Activity, userId: Int?, token: String?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getOutbox(activity, userId, token)
@@ -348,7 +365,7 @@ class MainViewModel :
                         Api.retrofitService.outboxByStatus(token = token, userId = userId, null)
                     Log.e("TAG", "getOutbox: ${_outboxResponse.value.toString()} ")
                     _outboxResponse.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -358,7 +375,7 @@ class MainViewModel :
             }
     }
 
-    fun getReceivedCooperation(activity: Activity, userId: Int, token: String) {
+    fun getReceivedCooperation(activity: Activity, userId: Int?, token: String?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getReceivedCooperation(activity, userId, token)
@@ -378,17 +395,21 @@ class MainViewModel :
                         "_cooperationResponseListReceived: ${_cooperationResponseListReceived.value.toString()} ",
                     )
                     cooperationResponseListReceived.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: java.lang.Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, getReceivedCooperation, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, getReceivedCooperation, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun getSendCooperation(activity: Activity, userId: Int, token: String) {
+    fun getSendCooperation(activity: Activity, userId: Int?, token: String?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getSendCooperation(activity, userId, token)
@@ -404,17 +425,21 @@ class MainViewModel :
                         "_cooperationResponseListSend: ${_cooperationResponseListSend.value.toString()} ",
                     )
                     cooperationResponseListSend.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: java.lang.Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, getSendCooperation, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, getSendCooperation, ",
+                        e
+                    )
                 }
             }
     }
 
-    fun getMyFiles(activity: Activity, userId: Int, token: String) {
+    fun getMyFiles(activity: Activity, userId: Int?, token: String?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getMyFiles(activity, userId, token)
@@ -427,7 +452,7 @@ class MainViewModel :
                         Api.retrofitService.getFileInfoByUserId(token = token, userId = userId)
                     Log.e("TAG", "getMyFiles: ${_myFiles.value.toString()} ")
                     _myFiles.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: java.lang.Exception) {
@@ -439,9 +464,9 @@ class MainViewModel :
 
     fun setAlertStatus(
         activity: Activity,
-        token: String,
+        token: String?,
         fileRequestId: Int,
-        userId: Int,
+        userId: Int?,
         status: Int
     ) {
         if (!isOnline(activity))
@@ -462,7 +487,53 @@ class MainViewModel :
                     Log.e("TAG", "_setStatusResponse: ${_setStatusResponse.value.toString()} ")
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, MainViewModel, setAlertStatus, ", e)
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, setAlertStatus, ",
+                        e
+                    )
+                }
+            }
+    }
+
+    fun getAiSuggestedFiles(
+        activity: Activity,
+        token: String?,
+        userId: Int?
+    ) {
+        if (!isOnline(activity))
+            internetProblemDialog(activity) { _, _ ->
+                getAiSuggestedFiles(activity, token, userId)
+            }
+        else
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _aiSuggestedResponse.value =
+                        Api.retrofitService.getSuggestedFile(
+                            token = token,
+                            userId = userId
+                        )
+                    Log.e("TAG", "_aiSuggestedResponse: ${_aiSuggestedResponse.value.toString()} ")
+                    _aiSuggestedResponse.value?.apply {
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
+                        else _status.value = ApiStatus.DONE
+                    }
+
+                    val list: MutableList<SuggestionItemListModel> = mutableListOf()
+                    _aiSuggestedResponse.value?.data?.forEach { item ->
+                        item.similarFiles?.forEach { fileData ->
+                            list.add(SuggestionItemListModel(item.myFile, fileData))
+                        }
+                        _aiSuggestionList.value = list
+                    }
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(
+                        viewModelScope,
+                        "$userId, MainViewModel, getAiSuggestedFiles, ",
+                        e
+                    )
                 }
             }
     }
@@ -479,7 +550,7 @@ class MainViewModel :
         _deleteFavResponse.value = PublicResponseModel(null, null, listOf())
     }
 
-    fun setFileAllDataForMyFiles(user: User, file: FileData) {
+    fun setFileAllDataForMyFiles(user: User?, file: FileData) {
         file.user = user
         _fileAllData.value = FileDataResponse(result = true, data = file, null)
     }

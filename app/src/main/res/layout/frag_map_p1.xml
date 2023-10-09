@@ -29,8 +29,16 @@
                 android:id="@+id/map_fragment"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:clickable="false"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:clickable="false" />
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_header"
@@ -110,7 +118,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+<!--            <TextView
                 android:id="@+id/ibtn_select_draw"
                 android:layout_width="100dp"
                 android:layout_height="@dimen/rounded_btns"
@@ -128,7 +136,7 @@
                 android:textSize="@dimen/normal_text_size"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

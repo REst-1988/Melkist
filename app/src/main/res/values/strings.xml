@@ -14,12 +14,6 @@
     <string name="choosing_user_header">کاربرد عادی</string>
     <string name="choosing_user_header2">(بدون قرارداد همکاری با ملکیست)</string>
     <string name="choosing_user_body">درصورتی که کاربر عادی هستید و با ملکیست قرارداد ندارید می‌توانید از طریق ثبت نام به سیستم وارد شوید. برخی از امکانات نرم‌افزار برای شما قابل استفاده نمی‌باشد</string>
-    <string name="choosing_real_estate_user_header">انتخاب نمایید.</string>
-    <string name="choosing_sub_header">انتخاب نمایید.</string>
-    <string name="choosing_province">انتخاب استانی که در آن مشغول به کار هستید</string>
-    <string name="choosing_city">انتخاب شهری که در آن مشغول به کار هستید</string>
-    <string name="choosing_real_estate">انتخاب مشاور املاکی که در آن مشغول به کار هستید</string>
-    <string name="choosing_supervisor">انتخاب سرپرستی که با آن همکاری می کنید</string>
     <string name="search">جستجو</string>
     <string name="hint_real_estate">نام املاک خود را وارد نمایید</string>
     <string name="hint_first_name">نام خود را وارد نمایید</string>
@@ -47,7 +41,6 @@
     <string name="verify_code">کد تایید</string>
     <string name="verify">بررسی</string>
     <string name="check_phone_no_title">تایید تلفن همراه</string>
-    <string name="write_mobile_to_verify">لطفا شماره همراه خود را جهت ارسال کد تایید وارد نمایید</string>
     <string name="send_verification_again_in_some_second">امکان ارسال مجدد کد در %s ثانیه</string>
     <string name="send_verification_again">ارسال مجدد کد</string>
     <string name="error_on_empty_verification_code">کد تایید را وارد نمایید</string>
@@ -58,18 +51,16 @@
     <string name="confirm">تایید</string>
     <string name="choose_realestate_user_title">انتخاب نوع کاربری</string>
     <string name="choose">انتخاب کنید</string>
-    <string name="choose_raw">انتخاب</string>
-    <string name="choose_category_title">انتخاب دسته بندی</string>
-    <string name="choose_province_title">انتخاب استان</string>
-    <string name="choose_city_title">انتخاب شهر</string>
-    <string name="choose_real_estate_title">انتخاب مشاور املاک</string>
-    <string name="choose_supervisor_title">انتخاب سرپرست</string>
+    <string name="choose_category_title">دسته بندی</string>
+    <string name="choose_province_title">استان</string>
+    <string name="choose_city_title">شهر</string>
+    <string name="choose_real_estate_title">مشاور املاک</string>
+    <string name="choose_supervisor_title">سرپرست</string>
     <string name="error_on_wrong_email">ایمیل خود را به درستی وارد نمایید</string>
     <string name="add">افزودن</string>
-    <string name="choose_type_title">انتخاب نوع آگهی</string>
-    <string name="choose_sub_category_title">انتخاب زیر دسته</string>
-    <string name="choose_location_title">انتخاب آدرس</string>
-    <string name="your_location">آدرس شما</string>
+    <string name="choose_type_title">نوع آگهی</string>
+    <string name="choose_sub_category_title">زیر دسته</string>
+    <string name="choose_location_title">آدرس</string>
     <string name="proceed">ادامه</string>
     <string name="choosing_seeker_header">خواهان</string>
     <string name="choosing_seeker_header2">(به دنبال مورد مناسب میگردم)</string>
@@ -83,18 +74,20 @@
     <string name="choosing_owner_body_filter">فیلتر فایل های مالکین که به دنبال مشتری مناسب برای ملک خود می گردند</string>
     <string name="location_frag_header">انتخاب شهر و محله</string>
     <string name="location_frag_sub_header">شهر و محله را انتخاب نمایید و اگر در فهرست وجود ندارد نزدیکترین را انتخاب نمایید</string>
-    <string name="choose_region_title">انتخاب محله</string>
+    <string name="choose_region_title">محله</string>
     <string name="choose_location_on_map">افزودن محدوده بر روی نقشه</string>
     <string name="other_location_frag_header">انتخاب سایر مناطق</string>
     <string name="other_location_frag_sub_header">اگر در منطقه اول مورد نظر شما، موردی یافت نشد، در چه منطقه دیگری می خواهید جستجو انجام گیرد. با انتخاب نکرد گزینه های زیر فقط در منطقه اول جستجو انجام می شود</string>
-    <string name="choose_region_2_title">انتخاب محله (سایر1)</string>
-    <string name="choose_region_3_title">انتخاب محله (سایر2)</string>
+    <string name="choose_region_2_title">محله (سایر1)</string>
+    <string name="choose_region_3_title">محله (سایر2)</string>
     <string name="add_detail_page_title">افزودن (اطلاعات تکمیلی)</string>
+    <string name="edit_detail_page_title">ویرایش (اطلاعات تکمیلی)</string>
     <string name="meterage">متراژ</string>
     <string name="measurement">متراژ</string>
     <string name="room_no">تعداد خواب</string>
     <string name="room">خواب</string>
     <string name="price">قیمت</string>
+    <string name="total_price">قیمت کل</string>
     <string name="descriptions">توضیحات تکمیلی</string>
     <string name="from">از</string>
     <string name="to">تا</string>
@@ -109,23 +102,18 @@
     <string name="need_permission">"برای ادامه به نیاز است به دریافت اجازه دسترسی به "</string>
     <string name="confirm_permission">اجازه می دهم</string>
     <string name="deny_permission">اجازه نمی دهم</string>
-    <string name="camera">دوربین</string>
-    <string name="galery">گالری تصاویر</string>
     <string name="somthing_goes_wrong">خطایی رخ داده لطفا مجددا اقدام نمایید</string>
     <string name="tooman">تومان</string>
-    <string name="thousand">هزار</string>
     <string name="billion">میلیارد</string>
     <string name="and">و</string>
     <string name="million">میلیون</string>
     <string name="thousend">هزار</string>
     <string name="meter_squere">متر مربع</string>
     <string name="number">عدد</string>
-    <string name="is_show_exact_address">آیا آدرس دقیق برای مخاطبان نمایش داده شود؟</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="wrong_username_password">نام کاربری یا کلمه عبور اشتباه است</string>
     <string name="choose_profile_pic">برای پروفایل خود عکس مناسب انتخاب نمایید</string>
     <string name="choose_profile_pic_title">عکس پروفایل</string>
-    <string name="select">انتخاب</string>
     <string name="show_all_files_title">نمایش همه موارد</string>
     <string name="show_owner_files">نمایش فایل های مالک</string>
     <string name="show_seeker_files">نمایش فایل های خواهان</string>
@@ -133,7 +121,6 @@
     <string name="filter">فیلتر</string>
     <string name="advertiser_title">آگهی دهنده</string>
     <string name="real_estate_title">مشاور املاک</string>
-    <string name="post_title">سمت</string>
     <string name="region">منطقه</string>
     <string name="region_other">سایر مناطق مد نظر</string>
     <string name="age_title">سال ساخت</string>
@@ -151,7 +138,6 @@
     <string name="calculator">ماشین حساب</string>
     <string name="favorite">علاقه مندی</string>
     <string name="map">نقشه</string>
-    <string name="create_more_marker_to_proceed">تعداد نقاط انتخاب شده بر روی نقشه باید بیش از سه عدد باشد. لطفا با ضربه زدن بر روی نقشه محدوده مد نظر خود را انتخاب نمایید</string>
     <string name="my_name">رضا استعجاب</string>
     <string name="ai_title">سیستم هوش مصنوعی</string>
     <string name="manage_team_title">مدیریت تیم زیر مجموعه</string>
@@ -171,7 +157,6 @@
     <string name="in_box">دریافتی</string>
     <string name="out_box">ارسالی</string>
     <string name="next_phase">در حال بروزرسانی</string>
-    <string name="save_accepted">با موفقیت ذخیره شد\n</string>
     <string name="more">بیشتر</string>
     <string name="file_details">جزئیات فایل</string>
 
@@ -198,7 +183,6 @@
     <string name="calculate">محاسبه</string>
     <string name="real_estate_commission_title">کمیسیون مشاور املاک</string>
     <string name="real_estate_commission_fee">مبلغ کمیسیون %s تومان</string>
-    <string name="copy">کپی</string>
     <string name="tax_fee">مالیات بر ارزش افزوده %s تومان</string>
     <string name="real_estate_commission_total">مجموع حق کمیسیون %s تومان</string>
     <string name="owner_quota_title">سهم مالک</string>
@@ -207,9 +191,6 @@
     <string name="buyer_quota_title">سهم خریدار</string>
     <string name="buyer_quota_fee">مبلغ سهم خریدار %s تومان</string>
     <string name="buyer_quota_total">مجموع سهم خریدار %s تومان</string>
-    <string name="tenant_quota_title">سهم مستاجر</string>
-    <string name="tenant_quota_fee">مبلغ سهم مستاجر %s تومان</string>
-    <string name="tenant_quota_total">مجموع سهم مستاجر %s تومان</string>
     <string name="close">بستن</string>
     <string name="added_to_clipboard">در کلیپ برد کپی شد</string>
     <string name="calculate_rent_commission">محاسبه کمیسیون رهن و اجاره</string>
@@ -218,8 +199,8 @@
     <string name="calculate_mortgage_commission">محاسبه کمیسیون رهن کامل</string>
     <string name="enter_mortgage_amount">مبلغ رهن کامل را وارد نمایید</string>
     <string name="write_right_amount">مقدار صحیح وارد نمایید</string>
-    <string name="mortgage_amount">مقدار رهن</string>
-    <string name="rent_amount">مقدار اجاره</string>
+    <string name="mortgage_amount">مبلغ رهن</string>
+    <string name="rent_amount">مبلغ اجاره</string>
     <string name="drag_right_left">به راست یا چپ بکشید</string>
     <string name="rent_to_mortgage">تبدیل اجاره به رهن</string>
     <string name="mortgage_to_rent_onversion">تبدیل رهن به اجاره</string>
@@ -231,9 +212,7 @@
     <string name="call_backup">تماس با پشتیبانی</string>
     <string name="our_site">سایت ما</string>
     <string name="change_password">تغییر رمزعبور</string>
-    <string name="notifications_title">مدیریت اعلان ها</string>
     <string name="according_to_the_system_settings">متناسب با تنظیمات سیستم</string>
-    <string name="show_all">نمایش همه</string>
     <string name="invalid_permission">در حال حاضر سطح کاربری شما مجاز به انجام این عملیات نمی باشد</string>
     <string name="add_team_member">عضو جدید اضافه کنید</string>
     <string name="profile_info">اطلاعات حساب کاربری</string>
@@ -253,7 +232,6 @@
     <string name="yes">بله</string>
     <string name="no">خیر</string>
     <string name="are_you_sure">آیا اطمینان دارید؟</string>
-    <string name="two_place_holder_text">%s %s</string>
     <string name="all_items">همه موارد</string>
     <string name="max_new_house_price">حداکثر قیمت هر متر نوساز در منطقه</string>
     <string name="expert_calculator_text">جهت تعیین قیمت کارشناسی ملک مورد نظر، اطلاعات زیر را با دقت تکمیل نمایید.</string>
@@ -280,17 +258,12 @@
     <string name="cooperation_title">تعاون</string>
     <string name="recieved">دریافت شده</string>
     <string name="sent">ارسال شده</string>
-    <string name="status_true">تایید شده</string>
     <string name="cooperation_with">همکاری با</string>
     <string name="negative_values">مقدار رهن یا اجاره بیش از حد تبدیل بوده و نتیجه عدد منفی می باشد. مقدار جدید را تغییر دهید</string>
     <string name="empty_data">داده ای جهت نمایش وجود ندارد!</string>
     <string name="create_at_no_place_holder">تاریخ عضویت</string>
     <string name="empty"></string>
-    <string name="more_detail">اطلاعات بیشتر</string>
     <string name="decline">رد شده</string>
-    <string name="request_notification_permission">ملکیست برای دریافت نوتیفیکیشن مربوط به درخواست های همکاری، هشدار ها، سیستم هوش مصنوعی نیازمند دریافت اجازه دسترسی به نوتیفیکیشن دارد</string>
-    <string name="allow">اجازه می دهم</string>
-    <string name="not_allow">اجازه نمی دهم</string>
     <string name="permission_no_garent">اجازه دسترسی داده نشد!</string>
     <string name="search_in_region">جستجو در محله</string>
     <string name="deny">رد درخواست</string>
@@ -301,7 +274,6 @@
     <string name="calculator_expert_dialog_title">در حال محاسبه توسط هوش مصنوعی ملکیست</string>
     <string name="lights_title_question">تعداد جهت های نورگیری</string>
     <string name="make_sure_choose_profile_pic">لطفا برای پروفایل خود عکسی مناسب انتخاب نمایید</string>
-    <string name="nickname">نام مستعار</string>
     <string name="first_name_last_name_title">نام و نام خانوادگی</string>
     <string name="commit_changes">ثبت تغییرات</string>
     <string name="choose_region_first">ابتدا در محله را در قسمت قبل انتخاب نمایید</string>
@@ -315,6 +287,8 @@
     <string name="try_again_later">در زمانی دیگر مجددا تلاش نمایید</string>
     <string name="un_filter">حذف فیلتر</string>
     <string name="empty_filter_items">برای اعمال فیلتر حداقل یکی از فیلد ها را پر کنید!</string>
+
+    <string name="empty_filter_items_suggestion">برای اعمال فیلتر حداقل یکی از آیتم ها را انتخاب نمایید!</string>
     <string name="no_data">داده ای جهت نمایش وجود ندارد</string>
     <string name="no_access_for_this">این بخش تنها برای مدیران و سرپرستان املاک قابل دسترسی می باشد</string>
     <string name="delete_file">حذف فایل</string>
@@ -331,6 +305,8 @@
     <string name="expert_calculator_sub">قیمت کل آپارتمان و رهن کامل آن را محاسبه می کند</string>
     <string name="expert_evaluation_rent_price">مبلغ رهن کامل ملک</string>
     <string name="ai_header">هوش مصنوعی</string>
+    <string name="family_bachelor">خانواده و مجرد</string>
+    <string name="family">خانواده</string>
 
     <string-array name="age_list">
         <!-- NOTE! -->
@@ -422,7 +398,32 @@
         <item>دوم</item>
         <item>سوم</item>
         <item>چهارم</item>
-        <item>پنجم به بالا</item>
+        <item>پنجم</item>
+        <item>ششم</item>
+        <item>هفتم</item>
+        <item>هشتم</item>
+        <item>نهم</item>
+        <item>دهم</item>
+        <item>یازدهم</item>
+        <item>دوازدهم</item>
+        <item>سیزدهم</item>
+        <item>چهاردهم</item>
+        <item>پانزدهم</item>
+        <item>شانزدهم</item>
+        <item>هفدهم</item>
+        <item>هجدهم</item>
+        <item>نوزدهم</item>
+        <item>بیستم</item>
+        <item>بیست و یکم</item>
+        <item>بیست و دوم</item>
+        <item>بیست و سوم</item>
+        <item>بیست و چهارم</item>
+        <item>بیست و پنجم</item>
+        <item>بیست و ششم</item>
+        <item>بیست و هفتم</item>
+        <item>بیست و هشتم</item>
+        <item>بیست و نهم</item>
+        <item>سی ام به بالا</item>
     </string-array>
 
     <string-array name="units_in_floor_list">
@@ -464,19 +465,6 @@
         <item>دو بر نورگیر</item>
         <item>سه بر نورگیر</item>
         <item>چهار بر نورگیر</item>
-    </string-array>
-
-    <string-array name="int_direction_list">
-        <!-- NOTE! -->
-        <!-- this should be change with "direction_list"-->
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
     </string-array>
 
     <string-array name="price_list">
@@ -532,6 +520,136 @@
         <item></item>
     </string-array>
 
+    <string-array name="price_list_mortgage">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_price_list"-->
+        <item>- وارد کردن مقدار دلخواه -</item>
+        <item>20 میلیون</item>
+        <item>30 میلیون</item>
+        <item>50 میلیون</item>
+        <item>75 میلیون</item>
+        <item>100 میلیون</item>
+        <item>150 میلیون</item>
+        <item>200 میلیون</item>
+        <item>300 میلیون</item>
+        <item>500 میلیون</item>
+        <item>750 میلیون</item>
+        <item>1 میلیارد</item>
+        <item>1 میلیارد و 200 میلیون</item>
+        <item>1 میلیارد و 500 میلیون</item>
+        <item>1 میلیارد و 800 میلیون</item>
+        <item>2 میلیارد</item>
+        <item>2 میلیارد و 500 میلیون</item>
+        <item>3 میلیارد</item>
+        <item>4 میلیارد</item>
+        <item>5 میلیارد</item>
+        <item>6 میلیارد</item>
+        <item>8 میلیارد</item>
+        <item>12 میلیارد</item>
+        <item>15 میلیارد</item>
+    </string-array>
+
+    <string-array name="int_price_list_mortgage">
+        <!-- NOTE! -->
+        <!-- this should be change with "price_list"-->
+        <item></item><!-- for choose random number (first item of text array) -->
+        <item>20000000</item>
+        <item>30000000</item>
+        <item>50000000</item>
+        <item>75000000</item>
+        <item>100000000</item>
+        <item>150000000</item>
+        <item>200000000</item>
+        <item>300000000</item>
+        <item>500000000</item>
+        <item>750000000</item>
+        <item>1000000000</item>
+        <item>1200000000</item>
+        <item>1500000000</item>
+        <item>1800000000</item>
+        <item>2000000000</item>
+        <item>2500000000</item>
+        <item>3000000000</item>
+        <item>4000000000</item>
+        <item>5000000000</item>
+        <item>6000000000</item>
+        <item>8000000000</item>
+        <item>12000000000</item>
+        <item>15000000000</item>
+        <item></item>
+    </string-array>
+
+    <string-array name="price_list_rent">
+        <!-- NOTE! -->
+        <!-- this should be change with "int_price_list"-->
+        <item>- وارد کردن مقدار دلخواه -</item>
+        <item>1 میلیون</item>
+        <item>2 میلیون</item>
+        <item>3 میلیون</item>
+        <item>4 میلیون</item>
+        <item>5 میلیون</item>
+        <item>8 میلیون</item>
+        <item>10 میلیون</item>
+        <item>12 میلیون</item>
+        <item>15 میلیون</item>
+        <item>20 میلیون</item>
+        <item>30 میلیون</item>
+        <item>50 میلیون</item>
+        <item>75 میلیون</item>
+        <item>100 میلیون</item>
+        <item>150 میلیون</item>
+        <item>200 میلیون</item>
+        <item>300 میلیون</item>
+        <item>500 میلیون</item>
+        <item>750 میلیون</item>
+        <item>1 میلیارد</item>
+        <item>1 میلیارد و 200 میلیون</item>
+        <item>1 میلیارد و 500 میلیون</item>
+        <item>1 میلیارد و 800 میلیون</item>
+        <item>2 میلیارد</item>
+        <item>2 میلیارد و 500 میلیون</item>
+        <item>3 میلیارد</item>
+        <item>4 میلیارد</item>
+        <item>5 میلیارد</item>
+        <item>6 میلیارد</item>
+    </string-array>
+
+    <string-array name="int_price_list_rent">
+        <!-- NOTE! -->
+        <!-- this should be change with "price_list"-->
+        <item></item>
+        <item>1000000</item>
+        <item>2000000</item>
+        <item>3000000</item>
+        <item>4000000</item>
+        <item>5000000</item>
+        <item>8000000</item>
+        <item>10000000</item>
+        <item>12000000</item>
+        <item>15000000</item>
+        <item>20000000</item>
+        <item>30000000</item>
+        <item>50000000</item>
+        <item>75000000</item>
+        <item>100000000</item>
+        <item>150000000</item>
+        <item>200000000</item>
+        <item>300000000</item>
+        <item>500000000</item>
+        <item>750000000</item>
+        <item>1000000000</item>
+        <item>1200000000</item>
+        <item>1500000000</item>
+        <item>1800000000</item>
+        <item>2000000000</item>
+        <item>2500000000</item>
+        <item>3000000000</item>
+        <item>4000000000</item>
+        <item>5000000000</item>
+        <item>6000000000</item>
+        <item></item>
+    </string-array>
+
     <string-array name="type_options">
         <item>نمایش همه فایل ها</item>
         <item>نمایش فایل های خواهان</item>
@@ -543,10 +661,44 @@
         <item>حالت شب</item>
         <item>حالت روز</item>
     </string-array>
+
+    <string-array name="suitable_for_options">
+        <item>@string/family_bachelor</item>
+        <item>@string/family</item>
+    </string-array>
+
+    <string-array name="have_dont_have_options">
+        <item>@string/dont_have</item>
+        <item>@string/have</item>
+    </string-array>
+
+    <string-array name="deed_type_options">
+        <item>ملکی</item>
+        <item>اوقافی</item>
+        <item>سایر</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ai_property_introduction">معرفی هوشمند ملک</string>
     <string name="ai_simolar_properties">معرفی هوشمند تشابهات</string>
     <string name="ai_co_worker">معرفی هوشمند همکاران شما</string>
     <string name="relative_files_title">فایل های مرتبط</string>
+    <string name="filter_my_files">فیلتر فایل های من</string>
+    <string name="ai_suggestion_filter_header">از لیست فایل های خود، فایهایی را که در نظر دارید موارد مرتبط با آن معرفی شود انتخاب نمایید. همزمان امکان انتخاب چندین فایل وجود دارد.</string>
+    <string name="login_required_massege">برای ورود به این قسمت نیاز است ابتدا به سیستم وارد شود</string>
+    <string name="name">نام</string>
+    <string name="user">کاربر</string>
+    <string name="drawPolygon">می توانید با کشیدن روی نقشه محدوده مورد نظر خود را انتخاب نمایید</string>
+    <string name="draw_longer_line">محدوده بزرگتری انتخاب نمایید</string>
+    <string name="suitable_for">مناسب برای</string>
+    <string name="floor">طبقه</string>
+    <string name="parking">پارکینگ</string>
+    <string name="store_room">انباری</string>
+    <string name="balcony">بالکن</string>
+    <string name="elevator">آسانسور</string>
+    <string name="have">دارد</string>
+    <string name="dont_have">ندارد</string>
+    <string name="administrative_deed">سند اداری</string>
+    <string name="deed_type">نوع سند</string>
+    <string name="edit_file">ویرایش فایل</string>
 </resources>

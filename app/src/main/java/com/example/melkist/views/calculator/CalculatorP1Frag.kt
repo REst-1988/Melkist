@@ -12,6 +12,7 @@ import com.example.melkist.R
 import com.example.melkist.databinding.FragCalculatorP1Binding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.Roles
+import com.example.melkist.utils.loginRequiredDialog
 import com.example.melkist.utils.showDialogWithMessage
 
 class CalculatorP1Frag : Fragment() {
@@ -27,33 +28,7 @@ class CalculatorP1Frag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rl1.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_navigation_calculator_to_calculatorMortgageRentFrag
-            )
-            interaction?.changBottomNavViewVisibility(View.GONE)
-        }
-        binding.rl2.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_navigation_calculator_to_calculatorCommissionFrag
-            )
-            interaction?.changBottomNavViewVisibility(View.GONE)
-        }
-        binding.rl3.setOnClickListener {
-            val roles = Roles()
-            (activity as MainActivity).user?.apply {
-                if (this.roleId == roles.manager.id || this.roleId == roles.supervisor.id || this.roleId == roles.consultant.id) {
-                    findNavController().navigate(
-                        R.id.action_navigation_calculator_to_calculatorExpertsFrag
-                    )
-                    interaction?.changBottomNavViewVisibility(View.GONE)
-                } else {
-                    showDialogWithMessage(
-                        requireContext(), resources.getString(R.string.access_only_for_real_estates)
-                    ) { d, _ -> d.dismiss() }
-                }
-            }
-        }
+        initListeners()
     }
 
     override fun onResume() {
@@ -77,5 +52,59 @@ class CalculatorP1Frag : Fragment() {
     override fun onDetach() {
         super.onDetach()
         interaction = null
+    }
+
+    private fun initListeners() {
+        binding.rl1.setOnClickListener {
+            if ((activity as MainActivity).user?.id == null) {
+                loginRequiredDialog(requireActivity())
+                return@setOnClickListener
+            }
+            onRl1calculatorMortgageRentFragClicked()
+        }
+        binding.rl2.setOnClickListener {
+            if ((activity as MainActivity).user?.id == null) {
+                loginRequiredDialog(requireActivity())
+                return@setOnClickListener
+            }
+            onRl2calculatorCommissionFragClicked()
+        }
+        binding.rl3.setOnClickListener {
+            if ((activity as MainActivity).user?.id == null) {
+                loginRequiredDialog(requireActivity())
+                return@setOnClickListener
+            }
+            onRl3calculatorExpertsFragClicked()
+        }
+    }
+
+    private fun onRl1calculatorMortgageRentFragClicked(){
+        findNavController().navigate(
+            R.id.action_navigation_calculator_to_calculatorMortgageRentFrag
+        )
+        interaction?.changBottomNavViewVisibility(View.GONE)
+    }
+
+    private fun onRl2calculatorCommissionFragClicked(){
+        findNavController().navigate(
+            R.id.action_navigation_calculator_to_calculatorCommissionFrag
+        )
+        interaction?.changBottomNavViewVisibility(View.GONE)
+    }
+
+    private fun onRl3calculatorExpertsFragClicked(){
+        val roles = Roles()
+        (activity as MainActivity).user?.apply {
+            if (this.roleId == roles.manager.id || this.roleId == roles.supervisor.id || this.roleId == roles.consultant.id) {
+                findNavController().navigate(
+                    R.id.action_navigation_calculator_to_calculatorExpertsFrag
+                )
+                interaction?.changBottomNavViewVisibility(View.GONE)
+            } else {
+                showDialogWithMessage(
+                    requireContext(), resources.getString(R.string.access_only_for_real_estates)
+                ) { d, _ -> d.dismiss() }
+            }
+        }
     }
 }

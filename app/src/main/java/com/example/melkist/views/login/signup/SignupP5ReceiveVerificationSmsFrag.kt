@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP5RecieveVerificationSmsBinding
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.SignupViewModel
@@ -60,7 +62,11 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         viewModel.verifyResponse.observe(viewLifecycleOwner) {
             when (it.result){
                 true -> onTrueVerifyResponse()
-                false -> onFalseVerifyResponse(it.errors)
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    it.errors ?: UNKNOWN_ERRORS_LIST
+                ){viewModel.restVerificationResponse(viewModel.verifyResponse)}
+
                 else -> {}
             }
         }
@@ -72,21 +78,14 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         viewModel.registerUserRealEstate(requireActivity())
     }
 
-    private fun onFalseVerifyResponse(errors: List<String>) {
-        showDialogWithMessage(
-            requireContext(),
-            concatenateText(errors)
-        ) { d, _ ->
-            d.dismiss()
-            viewModel.restVerificationResponse(viewModel.verifyResponse)
-        }
-    }
-
     private fun listenToRegisterResult() {
         viewModel.registerResponse.observe(viewLifecycleOwner) {
             when (it.result){
                 true -> onTrueRegisterResult(it.message?:"")
-                false -> onFalseRegisterResult(it.errors)
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    it.errors ?: UNKNOWN_ERRORS_LIST
+                ){viewModel.restVerificationResponse(viewModel.registerResponse)}
                 else -> {}
             }
         }
@@ -99,21 +98,11 @@ class SignupP5ReceiveVerificationSmsFrag : Fragment() {
         startNextStep()
     }
 
-    private fun onFalseRegisterResult(errors: List<String>) {
-        showDialogWithMessage(
-            requireContext(),
-            concatenateText(errors)
-        ) { d, _ ->
-            d.dismiss()
-            viewModel.restVerificationResponse(viewModel.registerResponse)
-        }
-    }
-
     private fun startNextStep() {
-        if (activity is LoginActivity)
+//        if (activity is LoginActivity)
             findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag_to_LoginForm)
-        else
-            findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag2_to_profileManageTeamFrag)
+//        else
+//            findNavController().navigate(R.id.action_signupP5ReceiveVerificationSmsFrag2_to_profileManageTeamFrag)
         viewModel.restVerificationResponse(viewModel.verifyResponse)
     }
 

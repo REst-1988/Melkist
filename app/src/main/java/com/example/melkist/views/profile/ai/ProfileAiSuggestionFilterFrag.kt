@@ -1,6 +1,5 @@
-package com.example.melkist.views.profile
+package com.example.melkist.views.profile.ai
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,31 +8,30 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.melkist.AddActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.MyFilesAdapter
-import com.example.melkist.databinding.FragProfileMyfilesBinding
+import com.example.melkist.databinding.FragProfileAiSuggestionFilterBinding
 import com.example.melkist.models.FileData
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
-import com.example.melkist.utils.loginRequiredDialog
 import com.example.melkist.utils.onRequestFalseResult
+import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 
-class ProfileMyFilesFrag : Fragment() {
+class ProfileAiSuggestionFilterFrag : Fragment() {
 
-    private lateinit var binding: FragProfileMyfilesBinding
+    private lateinit var binding: FragProfileAiSuggestionFilterBinding
     private val viewModel: MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragProfileMyfilesBinding.inflate(inflater)
+        binding = FragProfileAiSuggestionFilterBinding.inflate(inflater)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = viewModel
-            fragment = this@ProfileMyFilesFrag
-            rvMyFiles.adapter = MyFilesAdapter(this@ProfileMyFilesFrag)
+            fragment = this@ProfileAiSuggestionFilterFrag
+            rvMyFiles.adapter = MyFilesAdapter(this@ProfileAiSuggestionFilterFrag)
         }
         val user = (activity as MainActivity).user
         user.apply {
@@ -53,8 +51,7 @@ class ProfileMyFilesFrag : Fragment() {
         )
         viewModel.myFiles.observe(viewLifecycleOwner) { response ->
             when (response.result) {
-                true -> {/*handled on databinding*/
-                }
+                true -> {/*handled on binding data*/}
 
                 false -> {
                     viewModel.setNoDataStatus()
@@ -69,27 +66,32 @@ class ProfileMyFilesFrag : Fragment() {
         }
     }
 
-    fun choosingItemAction(file: FileData) {
-        (activity as MainActivity).user.apply {
-            viewModel.setFileAllDataForMyFiles(this, file)
-            findNavController().navigate(
-                R.id.action_profileMyFilesFrag_to_fileDetailFrag
-            )
-        }
+    fun choosingItem(file: FileData, isAdd: Boolean) {
+        if (isAdd)
+            viewModel.filterItemsForSuggestions.add(file.id)
+        else
+            viewModel.filterItemsForSuggestions.remove(file.id)
     }
 
-    /******************** binding methods ***************************/
+    fun getFilterList(): MutableList<Int> {
+        return viewModel.filterItemsForSuggestions
+    }
+
+    /******************** binding methods **********************/
     fun back() {
         findNavController().popBackStack()
     }
 
-    fun onAddFileClick() {
-        if ((activity as MainActivity).user?.id == null) {
-            loginRequiredDialog(requireActivity())
-            return
-        }
-        startActivity(
-            Intent(requireActivity(), AddActivity::class.java)
-        )
+    fun onFilterClick() {
+        if (viewModel.filterItemsForSuggestions.isNotEmpty())
+            findNavController().popBackStack()
+        else
+            showToast(requireContext(), resources.getString(R.string.empty_filter_items_suggestion))
     }
+
+    fun onUnFilterClick() {
+        viewModel.filterItemsForSuggestions.clear()
+        findNavController().popBackStack()
+    }
+
 }

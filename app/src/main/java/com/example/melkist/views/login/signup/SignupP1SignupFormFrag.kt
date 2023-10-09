@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
-import com.example.melkist.utils.concatenateText
-import com.example.melkist.utils.isSystemDarkMode
-import com.example.melkist.utils.showDialogWithMessage
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
+import com.example.melkist.utils.isSystemThemeDarkMode
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.viewmodels.SignupViewModel
 import ir.hamsaa.persiandatepicker.Listener
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
@@ -90,7 +90,14 @@ class SignupP1SignupFormFrag : Fragment() {
         viewModel.verificationCodeResponse.observe(viewLifecycleOwner) {
             when (it.result) {
                 true -> onTrueVerificationCodeResponse()
-                false -> onFalseVerificationCodeResponse()
+                false -> {
+                    onRequestFalseResult(
+                        requireActivity(),
+                        it.errors ?: UNKNOWN_ERRORS_LIST
+                    ){
+                        viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
+                    }
+                }
                 else -> {}
             }
         }
@@ -101,23 +108,12 @@ class SignupP1SignupFormFrag : Fragment() {
         findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_signupP5ReceiveVerificationSmsFrag)
     }
 
-    private fun onFalseVerificationCodeResponse() {
-        if (viewModel.verificationCodeResponse.value!!.errors[0].isNotEmpty())
-            showDialogWithMessage(
-                requireContext(),
-                concatenateText(viewModel.verificationCodeResponse.value!!.errors)
-            ) { d, _ ->
-                d.dismiss()
-                viewModel.restVerificationResponse(viewModel.verificationCodeResponse)
-            }
-    }
-
     fun cancel() {
         viewModel.resetSignupFieldsByChoosingMainField()
-        if (activity is LoginActivity)
+//        if (activity is LoginActivity)
             findNavController().navigate(R.id.action_signupP1SignupFormFrag_to_loginForm)
-        else
-            findNavController().navigate(R.id.action_signupP1SignupFormFrag2_to_profileManageTeamFrag)
+//        else
+//            findNavController().navigate(R.id.action_signupP1SignupFormFrag2_to_profileManageTeamFrag)
     }
 
     fun onCommit() {
@@ -403,12 +399,12 @@ class SignupP1SignupFormFrag : Fragment() {
         val picker = PersianDatePickerDialog(requireContext())
             .setPositiveButtonString(resources.getString(R.string.confirm))
             .setNegativeButton(resources.getString(R.string.close))
-            .setPickerBackgroundColor(if (isSystemDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
-            .setBackgroundColor(if (isSystemDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
+            .setPickerBackgroundColor(if (isSystemThemeDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
+            .setBackgroundColor(if (isSystemThemeDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
             .setMinYear(1300)
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-            .setTitleColor(if (isSystemDarkMode(requireContext())) Color.WHITE else Color.DKGRAY)
-            .setActionTextColor(if (isSystemDarkMode(requireContext())) Color.WHITE else Color.GRAY)
+            .setTitleColor(if (isSystemThemeDarkMode(requireContext())) Color.WHITE else Color.DKGRAY)
+            .setActionTextColor(if (isSystemThemeDarkMode(requireContext())) Color.WHITE else Color.GRAY)
             .setTypeFace(typeface)
             .setInitDate(persianDate, true)
             .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)

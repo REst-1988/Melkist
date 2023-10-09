@@ -148,66 +148,182 @@
                                 android:padding="@dimen/large_padding"
                                 android:src="@drawable/ic_baseline_add_a_photo_24" />
 
-                            <ImageView
-                                android:id="@+id/img_1"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                            <RelativeLayout
+                                android:id="@+id/layout_img_1"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
                                 android:layout_row="0"
                                 android:layout_column="0"
-                                android:layout_margin="@dimen/short_margin"
-                                android:scaleType="centerCrop" />
+                                android:visibility="invisible">
 
-                            <ImageView
-                                android:id="@+id/img_2"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+
+                                <ImageView
+                                    android:id="@+id/img_1"
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/short_margin"
+                                    android:scaleType="centerCrop" />
+
+                                <ImageButton
+                                    android:id="@+id/btn_delete_img_1"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:onClick="@{() -> fragment.onImg1DeleteClick()}"
+                                    android:src="@drawable/baseline_delete_forever_24_red"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/layout_img_2"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
                                 android:layout_row="0"
-                                android:layout_column="1"
-                                android:layout_margin="@dimen/short_margin"
-                                android:background="@color/empty_background_color"
-                                android:scaleType="centerCrop" />
+                                android:layout_column="1">
 
-                            <ImageView
-                                android:id="@+id/img_3"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                                <ImageView
+                                    android:id="@+id/img_2"
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/short_margin"
+                                    android:background="@color/empty_background_color"
+                                    android:scaleType="centerCrop" />
+
+                                <ImageButton
+                                    android:id="@+id/btn_delete_img_2"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:onClick="@{() -> fragment.onImg2DeleteClick()}"
+                                    android:src="@drawable/baseline_delete_forever_24_red"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/layout_img_3"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
                                 android:layout_row="0"
-                                android:layout_column="2"
-                                android:layout_margin="@dimen/short_margin"
-                                android:background="@color/empty_background_color"
-                                android:scaleType="centerCrop" />
+                                android:layout_column="2">
 
-                            <ImageView
-                                android:id="@+id/img_4"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_row="1"
-                                android:layout_column="0"
-                                android:layout_margin="@dimen/short_margin"
-                                android:background="@color/empty_background_color"
-                                android:scaleType="centerCrop" />
+                                <ImageView
+                                    android:id="@+id/img_3"
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/short_margin"
+                                    android:background="@color/empty_background_color"
+                                    android:scaleType="centerCrop" />
 
-                            <ImageView
-                                android:id="@+id/img_5"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_row="1"
-                                android:layout_column="1"
-                                android:layout_margin="@dimen/short_margin"
-                                android:background="@color/empty_background_color"
-                                android:scaleType="centerCrop" />
+                                <ImageButton
+                                    android:id="@+id/btn_delete_img_3"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:onClick="@{() -> fragment.onImg3DeleteClick()}"
+                                    android:src="@drawable/baseline_delete_forever_24_red"
+                                    android:visibility="gone" />
 
-                            <ImageView
-                                android:id="@+id/img_6"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/layout_img_4"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
                                 android:layout_row="1"
-                                android:layout_column="2"
-                                android:layout_margin="@dimen/short_margin"
-                                android:background="@color/empty_background_color"
-                                android:scaleType="centerCrop" />
+                                android:layout_column="0">
+
+                                <ImageView
+                                    android:id="@+id/img_4"
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/short_margin"
+                                    android:background="@color/empty_background_color"
+                                    android:scaleType="centerCrop" />
+
+                                <ImageButton
+                                    android:id="@+id/btn_delete_img_4"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:onClick="@{() -> fragment.onImg4DeleteClick()}"
+                                    android:src="@drawable/baseline_delete_forever_24_red"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/layout_img_5"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:layout_row="1"
+                                android:layout_column="1">
+
+                                <ImageView
+                                    android:id="@+id/img_5"
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/short_margin"
+                                    android:background="@color/empty_background_color"
+                                    android:scaleType="centerCrop" />
+
+                                <ImageButton
+                                    android:id="@+id/btn_delete_img_5"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:onClick="@{() -> fragment.onImg5DeleteClick()}"
+                                    android:src="@drawable/baseline_delete_forever_24_red"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/layout_img_6"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:layout_row="1"
+                                android:layout_column="2">
+
+                                <ImageView
+                                    android:id="@+id/img_6"
+                                    android:layout_width="80dp"
+                                    android:layout_height="80dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="@dimen/short_margin"
+                                    android:background="@color/empty_background_color"
+                                    android:scaleType="centerCrop" />
+
+                                <ImageButton
+                                    android:id="@+id/btn_delete_img_6"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:onClick="@{() -> fragment.onImg6DeleteClick()}"
+                                    android:src="@drawable/baseline_delete_forever_24_red"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
                         </GridLayout>
-
 
                     </RelativeLayout>
                     <!-- age -->
@@ -219,7 +335,8 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:onClick="@{() -> fragment.onChoosingAge()}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowAge()}">
 
                         <TextView
                             android:id="@+id/txt_choose_age_title"
@@ -263,8 +380,9 @@
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="@{() -> fragment.onChoosingMeasure()}"
-                        android:orientation="horizontal">
+                        android:onClick="@{() -> fragment.onChoosingSize()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowSize()}">
 
                         <TextView
                             android:id="@+id/txt_choose_measurement_title"
@@ -309,7 +427,8 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:onClick="@{() -> fragment.onChoosingRoomCount()}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowRooms()}">
 
                         <TextView
                             android:id="@+id/txt_choose_room_co_title"
@@ -354,7 +473,8 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:onClick="@{() -> fragment.onChoosingPrice()}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowTotalPrice()}">
 
                         <TextView
                             android:id="@+id/txt_choose_price_title"
@@ -363,7 +483,7 @@
                             android:fontFamily="@font/iransans"
                             android:gravity="start|center"
                             android:padding="@dimen/text_view_padding"
-                            android:text="@string/price"
+                            android:text="@string/total_price"
                             android:textColor="@color/negative_empty_background_color"
                             android:textSize="@dimen/normal_text_size" />
 
@@ -383,6 +503,466 @@
                             android:textColor="@color/negative_empty_background_color_sub_item"
                             android:textSize="@dimen/normal_text_size"
                             tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- mortgage -->
+                    <LinearLayout
+                        android:id="@+id/layout_mortgage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingMortgage()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowMortgage()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_mortgage_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/mortgage_amount"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_mortgage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showMortgageText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- rent -->
+                    <LinearLayout
+                        android:id="@+id/layout_rent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingRent()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowRent()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_rent_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/rent_amount"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_rent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showRentText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- suitable for -->
+                    <LinearLayout
+                        android:id="@+id/layout_suitable_for"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingSuitableFor()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowSuitableFor()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_suitable_for_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/suitable_for"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_suitable_for"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showSuitableForText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- floor -->
+                    <LinearLayout
+                        android:id="@+id/layout_floor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingFloor()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowFloor()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_floor_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/floor"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_floor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showFloorText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- parking -->
+                    <LinearLayout
+                        android:id="@+id/layout_parking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingParking()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowParking()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_parking_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/parking"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_parking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showParkingText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- store room -->
+                    <LinearLayout
+                        android:id="@+id/layout_store_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingStoreRoom()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowStoreRoom()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_store_room_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/store_room"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_store_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showStoreRoomText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/enter" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- balcony -->
+                    <LinearLayout
+                        android:id="@+id/layout_balcony"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingBalcony()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowBalcony()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_balcony_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/balcony"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_balcony"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showBalconyText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/choose" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- elevator -->
+                    <LinearLayout
+                        android:id="@+id/layout_elevator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingElevator()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowElevator()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_elevator_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/elevator"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_elevator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showElevatorText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/choose" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- administrative deed -->
+                    <LinearLayout
+                        android:id="@+id/layout_administrative_deed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingAdministrativeDeed()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowAdminDeed()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_administrative_deed_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/administrative_deed"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_administrative_deed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showAdministrativeDeedText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/choose" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+                    </LinearLayout>
+                    <!-- deed type -->
+                    <LinearLayout
+                        android:id="@+id/layout_deed_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{() -> fragment.onChoosingDeedType()}"
+                        android:orientation="horizontal"
+                        android:visibility="@{fragment.isShowDeedType()}">
+
+                        <TextView
+                            android:id="@+id/txt_choose_deed_type_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="start|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/deed_type"
+                            android:textColor="@color/negative_empty_background_color"
+                            android:textSize="@dimen/normal_text_size" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_choose_deed_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/iransans"
+                            android:gravity="end|center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@{fragment.showDeedTypeText()}"
+                            android:textColor="@color/negative_empty_background_color_sub_item"
+                            android:textSize="@dimen/normal_text_size"
+                            tools:text="@string/choose" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -419,7 +999,6 @@
                         android:textDirection="rtl"
                         android:textSize="@dimen/normal_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>
-
 
                 <Button
                     android:id="@+id/btn_commit"

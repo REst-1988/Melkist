@@ -22,9 +22,14 @@ class ProfileAiP1 : Fragment() {
         return binding.root
     }
 
+    /***************** binding methods **********************/
+    fun back() {
+        findNavController().popBackStack()
+    }
+
     fun aiIntro() {
         findNavController().navigate(
-            R.id.action_profileAiP1_to_profileAiIntroFrag
+            R.id.action_profileAiP1_to_profileAiSuggestionsFrag
         )
     }
 

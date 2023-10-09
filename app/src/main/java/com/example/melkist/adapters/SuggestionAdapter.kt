@@ -1,60 +1,92 @@
 package com.example.melkist.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.melkist.databinding.ItemListPropertyIntroBinding
-import com.example.melkist.databinding.ItemListTeamMembersBinding
-import com.example.melkist.models.SuggestionModel
-import com.example.melkist.models.User
-import com.example.melkist.views.profile.ProfileManageTeamFrag
+import com.example.melkist.R
+import com.example.melkist.databinding.ItemListPropertySuggestionBinding
+import com.example.melkist.databinding.ItemListSingleTextBinding
+import com.example.melkist.models.FileTypes
+import com.example.melkist.models.PcrsData
+import com.example.melkist.models.SuggestionItemListModel
+import com.example.melkist.utils.getPropertyPeriodsPriceText
+import com.example.melkist.views.profile.ai.ProfileAiSuggestionsFrag
 
 class SuggestionAdapter(private val fragment: Fragment) :
-    ListAdapter<SuggestionModel, SuggestionAdapter.SuggestionViewHolder>(DiffUtilCallBack)/*, Filterable*/ {
+    ListAdapter<SuggestionItemListModel, SuggestionAdapter.SuggestionViewHolder>(DiffUtilCallBack) {
 
-/*    var mListRef: List<User>? = null
-    var mFilteredList: List<User>? = null
-    private var isFilter = false
-
-    init {
-        isFilter = false
-    }*/
-
-    companion object DiffUtilCallBack : DiffUtil.ItemCallback<SuggestionModel>() {
-        override fun areItemsTheSame(oldItem: SuggestionModel, newItem: SuggestionModel): Boolean {
-            return TODO()//.id == newItem.id
+    companion object DiffUtilCallBack : DiffUtil.ItemCallback<SuggestionItemListModel>() {
+        override fun areItemsTheSame(
+            oldItem: SuggestionItemListModel, newItem: SuggestionItemListModel
+        ): Boolean {
+            return oldItem.myFile!!.id == newItem.myFile!!.id
         }
 
-        override fun areContentsTheSame(oldItem: SuggestionModel, newItem: SuggestionModel): Boolean {
-            return TODO()//.mobile == newItem.mobile
+        override fun areContentsTheSame(
+            oldItem: SuggestionItemListModel, newItem: SuggestionItemListModel
+        ): Boolean {
+            return oldItem.myFile!!.created_at == newItem.myFile!!.created_at
         }
     }
 
-/*    override fun submitList(list: List<User>?) {
-        super.submitList(list)
-        if (!isFilter) mListRef = list
-    }*/
-
-    class SuggestionViewHolder(private val binding: ItemListPropertyIntroBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: SuggestionModel) {
-            //binding.user = data
-            //binding.executePendingBindings()
+    class SuggestionViewHolder(
+        private val fragment: Fragment, private val binding: ItemListPropertySuggestionBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: SuggestionItemListModel) {
+            binding.apply {
+                data.myFile?.let { myFile ->
+                    txtTypeMyFile.text = myFile.typeInfo?.fileType?.title ?: ""
+                    if (myFile.typeInfo?.fileType?.id == FileTypes().seeker.id) curtainMyFile.setBackgroundColor(
+                        fragment.resources.getColor(R.color.main_seeker_color)
+                    )
+                    else curtainMyFile.setBackgroundColor(fragment.resources.getColor(R.color.main_owner_color))
+                    txtSubCatMyFile.text = myFile.typeInfo?.subCategory?.title ?: ""
+                    txtCatMyFile.text = myFile.typeInfo?.category?.title ?: ""
+                    txtRegionMyFile.text = myFile.locations[0].region.title
+                    txtPriceMyFile.text = getPropertyPeriodsPriceText(
+                        fragment.requireContext(), myFile.price, R.string.empty, R.string.empty
+                    )
+                    cardTypeMyFile.setOnClickListener {
+                        (fragment as ProfileAiSuggestionsFrag).onCardMyFileClick(myFile.id)
+                    }
+                }
+                data.similarFile?.let { similarFile ->
+                    similarFile.typeInfo?.apply {
+                        txtTypeSimilarFile.text = fileType?.title ?: ""
+                        if (this.fileType!!.id == FileTypes().seeker.id) curtainSimilarFile.setBackgroundColor(
+                            fragment.resources.getColor(R.color.main_seeker_color)
+                        )
+                        else curtainSimilarFile.setBackgroundColor(fragment.resources.getColor(R.color.main_owner_color))
+                        txtSubCatSimilarFile.text = subCategory?.title ?: ""
+                        txtCatSimilarFile.text = category?.title ?: ""
+                    }
+                    txtRegionSimilarFile.text = similarFile.locations[0].region.title
+                    txtPriceSimilarFile.text = getPropertyPeriodsPriceText(
+                        fragment.requireContext(), similarFile.price, R.string.empty, R.string.empty
+                    )
+                    cardTypeSimilarFile.setOnClickListener {
+                        (fragment as ProfileAiSuggestionsFrag).inCardSimilarFileClick(similarFile.id)
+                    }
+                }
+                executePendingBindings()
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuggestionViewHolder {
-        return SuggestionViewHolder(ItemListPropertyIntroBinding.inflate(LayoutInflater.from(parent.context)))
+        return SuggestionViewHolder(
+            fragment, ItemListPropertySuggestionBinding.inflate(LayoutInflater.from(parent.context))
+        )
     }
 
     override fun onBindViewHolder(holder: SuggestionViewHolder, position: Int) {
         val suggestion = getItem(position)
         holder.bind(suggestion)
-/*        holder.itemView.setOnClickListener{
-            (fragment as ProfileManageTeamFrag).choosingItemAction(user)
-        }*/
     }
 }

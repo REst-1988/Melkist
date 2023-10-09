@@ -1,25 +1,46 @@
 package com.example.melkist.views.universal
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.melkist.AddActivity
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.ImagePagerAdapter
 import com.example.melkist.databinding.FragFileDetailBinding
+import com.example.melkist.models.FileSave
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
+import com.example.melkist.utils.EXTRA_FILE_DETAIL
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.isShowAdminDeedField
+import com.example.melkist.utils.isShowAgeField
+import com.example.melkist.utils.isShowBalconyField
+import com.example.melkist.utils.isShowDeedTypeField
+import com.example.melkist.utils.isShowElevatorField
+import com.example.melkist.utils.isShowFloorField
+import com.example.melkist.utils.isShowMortgageField
+import com.example.melkist.utils.isShowParkingField
+import com.example.melkist.utils.isShowRentField
+import com.example.melkist.utils.isShowRoomsField
+import com.example.melkist.utils.isShowSizeField
+import com.example.melkist.utils.isShowStoreRoomField
+import com.example.melkist.utils.isShowSuitableForField
+import com.example.melkist.utils.isShowTotalPriceField
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
@@ -41,6 +62,28 @@ class FileDetailFrag : Fragment() {
             fragment = this@FileDetailFrag
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val a = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(a)
+        val b = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(b)
+        val v = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(v)
+        val c = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(c)
+        val x = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(x)
+        val z = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(z)
+        val q = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(q)
+        val w = layoutInflater.inflate(R.layout.layout_items_time_line, null)
+        binding.llTimeLine.addView(w)
+
+
     }
 
     override fun onResume() {
@@ -67,15 +110,17 @@ class FileDetailFrag : Fragment() {
                 }
             }
             (activity as MainActivity).user?.let { user ->
-                if (this.user.id == user.id) {
-                    binding.apply {
-                        layoutBtnCooperationRequest.visibility = View.GONE
-                        layoutBtnDeleteFile.visibility = View.VISIBLE
-                    }
-                } else {
-                    binding.apply {
-                        layoutBtnCooperationRequest.visibility = View.VISIBLE
-                        layoutBtnDeleteFile.visibility = View.GONE
+                this.user?.let { fileCreatorUser ->
+                    if (fileCreatorUser.id == user.id) {
+                        binding.apply {
+                            layoutBtnCooperationRequest.visibility = View.GONE
+                            layoutBtnDeleteFile.visibility = View.VISIBLE
+                        }
+                    } else {
+                        binding.apply {
+                            layoutBtnCooperationRequest.visibility = View.VISIBLE
+                            layoutBtnDeleteFile.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -89,20 +134,20 @@ class FileDetailFrag : Fragment() {
         binding.ibtnBookmark.setOnClickListener {
             viewModel.fileAllData.value?.data?.isFav?.apply {
                 if (this) {
-                    (activity as MainActivity).user?.apply {
+                    (activity as MainActivity).user.apply {
                         viewModel.deleteFavFile(
                             requireActivity(),
-                            token!!,
-                            id!!,
+                            this?.token,
+                            this?.id,
                             viewModel.fileAllData.value!!.data!!.id
                         )
                     }
                 } else {
-                    (activity as MainActivity).user?.apply {
+                    (activity as MainActivity).user.apply {
                         viewModel.saveFavFile(
                             requireActivity(),
-                            token!!,
-                            id!!,
+                            this?.token,
+                            this?.id,
                             viewModel.fileAllData.value!!.data!!.id
                         )
                     }
@@ -128,9 +173,10 @@ class FileDetailFrag : Fragment() {
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                     viewModel.resetCooperationResponse()
                 }
 
@@ -152,9 +198,10 @@ class FileDetailFrag : Fragment() {
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                     viewModel.resetSaveResponse()
                 }
 
@@ -178,9 +225,10 @@ class FileDetailFrag : Fragment() {
                 }
 
                 false -> {
-                    showToast(
-                        requireContext(), concatenateText(response.errors)
-                    )
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                     viewModel.resetDeleteFavResponse()
                 }
 
@@ -200,7 +248,10 @@ class FileDetailFrag : Fragment() {
 
                 false -> {
                     viewModel.resetDeleteFileResponse()
-                    showToast(requireContext(), concatenateText(response.errors))
+                    onRequestFalseResult(
+                        requireActivity(),
+                        response.errors ?: UNKNOWN_ERRORS_LIST
+                    ) {}
                 }
 
                 null -> Log.e(
@@ -236,18 +287,27 @@ class FileDetailFrag : Fragment() {
 
     fun onSendCooperationRequest() {
         viewModel.fileAllData.value?.data?.id?.let { fileId ->
-            (activity as MainActivity).user?.apply {
+            (activity as MainActivity).user.apply {
                 viewModel.sendCooperationRequest(
                     requireActivity(),
-                    token!!,
-                    id!!,
+                    this?.token,
+                    this?.id,
                     fileId
                 )
             }
         }
     }
 
-    fun funOnDeleteFileClick() {
+    fun onEditFileClick() {
+
+        viewModel.fileAllData.value?.data?.apply {
+            val intent = Intent(requireActivity(), AddActivity::class.java)
+            intent.putExtra(EXTRA_FILE_DETAIL, this)
+            startActivity(intent)
+        }
+    }
+
+    fun onDeleteFileClick() {
         showDialogWith2Actions(
             requireContext(),
             resources.getString(R.string.are_you_sure_about_delete_file),
@@ -267,8 +327,10 @@ class FileDetailFrag : Fragment() {
     }
 
     fun advertiserText(): String {
-        val a = viewModel.fileAllData.value?.data?.let {
-            String.format("%s %s", it.user.firstName, it.user.lastName)
+        val a = viewModel.fileAllData.value?.data?.let { fileDate ->
+            fileDate.user?.let { user ->
+                String.format("%s %s", user.firstName, user.lastName)
+            }
         }
         return a ?: ""
     }
@@ -293,7 +355,11 @@ class FileDetailFrag : Fragment() {
                     it.fileType!!.title
                 )
             } catch (e: Exception) {
-                handleSystemException(lifecycleScope, "${(requireActivity() as MainActivity).user?.id}, ${this.javaClass.name}, typeText, ", e)
+                handleSystemException(
+                    lifecycleScope,
+                    "${(requireActivity() as MainActivity).user?.id}, ${this.javaClass.name}, typeText, ",
+                    e
+                )
                 null
             }
         }
@@ -319,6 +385,15 @@ class FileDetailFrag : Fragment() {
     }
 
     ////////////////////////////////////////
+    fun isShowAge(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowAgeField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
     fun ageText(): String {
         val a = viewModel.fileAllData.value?.data?.let {
             return getPropertyPeriodsText(
@@ -329,6 +404,15 @@ class FileDetailFrag : Fragment() {
             )
         }
         return a ?: ""
+    }
+
+    fun isShowSize(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowSizeField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
     }
 
     fun sizeText(): String {
@@ -343,6 +427,15 @@ class FileDetailFrag : Fragment() {
         return a ?: ""
     }
 
+    fun isShowRooms(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowRoomsField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
     fun roomNoText(): String {
         val a = viewModel.fileAllData.value?.data?.let {
             getPropertyPeriodsText(
@@ -353,6 +446,15 @@ class FileDetailFrag : Fragment() {
             )
         }
         return a ?: ""
+    }
+
+    fun isShowPrice(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowTotalPriceField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
     }
 
     fun priceText(): String {
@@ -369,7 +471,7 @@ class FileDetailFrag : Fragment() {
 
     fun pricePerMeterText(): String {
         return (viewModel.fileAllData.value?.data?.let {
-            if (isShowPricePerMeter())
+            if (isShowPrice() == View.VISIBLE)
                 String.format(
                     "%s %s",
                     calculatePricePerMeter(
@@ -384,11 +486,138 @@ class FileDetailFrag : Fragment() {
         }) ?: ""
     }
 
-    fun isShowPricePerMeter(): Boolean {
-        val a = viewModel.fileAllData.value?.data?.let {
-            it.typeInfo!!.subCategory!!.id == 1 || it.typeInfo.subCategory!!.id == 2
-        }
-        return a ?: false
+    fun isShowMortgage(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowMortgageField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun mortgageText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowRent(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowRentField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun rentText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowSuitableFor(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowSuitableForField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun suitableForText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowFloor(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowFloorField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun floorText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowParking(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowParkingField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun parkingText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowStoreRoom(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowStoreRoomField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun storeRoomText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowBalcony(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowBalconyField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun balconyText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowElevator(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowElevatorField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun elevatorText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowAdminDeed(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowAdminDeedField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun adminDeedText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowDeedType(): Int {
+        return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
+            if (isShowDeedTypeField(data.category!!.id!!, data.subCategory!!.id!!))
+                View.VISIBLE
+            else
+                View.GONE
+        } ?: View.GONE
+    }
+
+    fun deedTypeText(): String {
+        return "جهت تکمیل backend"  // TODO
+    }
+
+    fun isShowDescriptions(): Boolean {
+        return !viewModel.fileAllData.value?.data?.description.isNullOrEmpty()
     }
 
     fun descriptionsText(): String {

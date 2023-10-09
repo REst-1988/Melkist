@@ -39,6 +39,7 @@
                         android:layout_height="?attr/actionBarSize"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_baseline_arrow_back_24"
+                        android:onClick="@{() -> fragment.back()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

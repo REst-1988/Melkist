@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
-    private val splashTimeOut: Long = 3000
+    private val splashTimeOut: Long = 2000
     private lateinit var binding: ActivitySplashScreenBinding
     private lateinit var userDataStore: UserDataStore
     private var appVersion: String = ""
@@ -50,17 +50,29 @@ class SplashActivity : AppCompatActivity() {
             }
             setContentView(binding.root)
             checkAppVersion()
-            userDataStore = Ds.getDataStore(this)
+            //userDataStore = Ds.getDataStore(this)
             listenToAppVersionResponse()
-            userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
+            /*userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
                 user = value
                 Log.e("SplashActivity", "onCreate: userDataStore = $value")
                 checkFirebaseTokenAndProceed()
-            }
+            }*/
+
             OptionsDs.getDataStore(this).themePreferenceFlow.asLiveData().observe(this) {
                 Log.e("TAG", "onCreate: OptionsDs theme = $it")
                 it?.let { theme -> changeAppTheme(theme) }
             }
+            Handler(Looper.getMainLooper())
+                .postDelayed(
+                    {
+                        viewModel.callServerAppVersion(
+                            this,
+                            userId = user?.id,
+                            firebaseToken,
+                            appVersion
+                        )
+                    }, splashTimeOut
+                )
         } catch (e: Exception) {
             handleSystemException(lifecycleScope, "${user?.id}, SplashActivity, onCreate ", e)
         }
@@ -101,10 +113,10 @@ class SplashActivity : AppCompatActivity() {
         if (response.versionResult == false) {
             downloadLastVersion()
         } else {
-            if (response.firebaseTokenResult == true && response.isFirstTime == false)
+            /*if (response.firebaseTokenResult == true && response.isFirstTime == false)*/
                 startMainActivityOnTrueResult()
-            else
-                startLoginActivityOnFalseResult()
+/*            else
+                startLoginActivityOnFalseResult()*/
         }
     }
 
@@ -114,10 +126,10 @@ class SplashActivity : AppCompatActivity() {
             concatenateText(errors)
         ) { d, _ ->
             d.dismiss()
-            lifecycleScope.launch {
+            /*lifecycleScope.launch {
                 Ds.getDataStore(this@SplashActivity).emptyPreferences()
-            }
-            startLoginActivityOnFalseResult()
+            }*/
+            this@SplashActivity.finish()
         }
     }
 
@@ -126,13 +138,13 @@ class SplashActivity : AppCompatActivity() {
         this@SplashActivity.finish()
     }
 
-    private fun startLoginActivityOnFalseResult() {
+/*    private fun startLoginActivityOnFalseResult() {
         startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
         this@SplashActivity.finish()
         overridePendingTransition(0, 0)
-    }
+    }*/
 
-    private fun checkFirebaseTokenAndProceed() {
+/*    private fun checkFirebaseTokenAndProceed() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.e(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
@@ -140,19 +152,9 @@ class SplashActivity : AppCompatActivity() {
             }
             firebaseToken = task.result // Get new FCM registration token
             Log.e(ContentValues.TAG, firebaseToken ?: "")
-            Handler(Looper.getMainLooper())
-                .postDelayed(
-                    {
-                        viewModel.callServerAppVersion(
-                            this,
-                            userId = user?.id,
-                            firebaseToken,
-                            appVersion
-                        )
-                    }, splashTimeOut
-                )
+
         })
-    }
+    }*/
 
     private fun checkAppVersion() {
         val pInfo = this.packageManager.getPackageInfo(packageName, 0)

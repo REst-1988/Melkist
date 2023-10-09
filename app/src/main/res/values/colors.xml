@@ -2,7 +2,7 @@
 <resources>
     <color name="purple_200">#385FFF</color> <!--default : FFBB86FC-->
     <color name="purple_500">#0025BE</color> <!--default : FF6200EE-->
-    <color name="purple_700">#0d1740</color> <!--default : FF3700B3-->
+    <!--default : FF3700B3-->
     <color name="teal_200">#EAC68C</color> <!--default : FF03DAC5-->
     <color name="teal_700">#cbac7b</color> <!--default : FF018786-->
     <color name="black">#FF000000</color>
@@ -20,9 +20,6 @@
     <color name="edit_text_text_color">#0d1740</color>FF233B88
     <color name="hint_color">#FF808080</color>
 
-    <color name="main_dark_color">#0d1740</color>
-    <color name="main_light_color">#cbac7b</color>
-
     <color name="main_dark_color2">#FF0d1740</color>
     <color name="main_light_color2">#FFcbac7b</color>
     <color name="main_green_color2">#4CAF50</color>
@@ -31,16 +28,13 @@
     <color name="deep_blue">#061EFC</color>
     <color name="deep_red">#AC1005</color>
     <color name="negative_empty_background_color_sub_item">#404040</color>
-    <color name="light_border">#858585</color>
     <color name="choose_background_color">#BDBDBD</color>
     <color name="color_icon">#0d1740</color>#233b88
     <color name="tool_bar_color_2">#0d1740</color><!--7991E1-->
-    <color name="splash_color_light">#7991E1</color>
     <color name="yellow">#FFEB3B</color>
     <color name="add_btn_main_act_color">#0d1740</color>FF233B88
     <color name="badge_color">#FF8400</color>
     <color name="custom_dialog_button_color">@color/purple_500</color>
     <color name="custom_button_color">@color/purple_500</color>
     <color name="custom_button_color_selected">#FFBF00</color>
-    <color name="fav_background">#D5EBFF</color>
 </resources>

@@ -12,8 +12,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragProfileUserProfileBinding
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.ProfileTeamMemberViewModel
@@ -45,7 +47,10 @@ class ProfileUserProfileFrag : Fragment() {
                     back()
                 }
 
-                false -> showToast(requireContext(), concatenateText(response.errors))
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    response.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
                 else -> Log.e("TAG", "onViewCreated: ${resources.getString(R.string.null_value)}")
             }
         }
@@ -62,10 +67,10 @@ class ProfileUserProfileFrag : Fragment() {
                 requireContext(),
                 requireContext().resources.getString(R.string.delete_user_alert),
                 { _, _ ->
-                    (activity as MainActivity).user?.apply {
+                    (activity as MainActivity).user.apply {
                         viewModel.deleteTeamMembers(
                             requireActivity(),
-                            token!!,
+                            this?.token,
                             viewModel.teamMember!!.id!!
                         )
                     }

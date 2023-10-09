@@ -19,6 +19,7 @@ import com.example.melkist.utils.DATA
 import com.example.melkist.utils.TYPE_OPTIONS_TAG
 import com.example.melkist.utils.changeAppTheme
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.loginRequiredDialog
 import com.example.melkist.viewmodels.OptionsViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
 import kotlinx.coroutines.launch
@@ -66,6 +67,10 @@ class ProfileOptionsFrag : Fragment() {
     }
 
     fun onChangePasswordClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         findNavController().navigate(
             R.id.action_profileOptionsFrag_to_forgetPassP1EnterNcodePhoneFrag2
         )

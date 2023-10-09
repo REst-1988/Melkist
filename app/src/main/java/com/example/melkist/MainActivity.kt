@@ -5,6 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.LayoutInflater
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,8 +23,11 @@ import com.example.melkist.databinding.ActivityMainBinding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.User
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.loginRequiredDialog
+import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.zip.Inflater
 
 class MainActivity : AppCompatActivity(), Interaction {
 
@@ -32,30 +39,30 @@ class MainActivity : AppCompatActivity(), Interaction {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            /*        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-                        handleSystemException(lifecycleScope, "MainActivity, setDefaultUncaughtExceptionHandler, ", null, paramThrowable)
-                        finish()
-            }*/
-            binding = ActivityMainBinding.inflate(layoutInflater)
+            binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
             setContentView(binding.root)
             navView = binding.navView
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
-            val appBarConfiguration = AppBarConfiguration(
+/*            val appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.navigation_map, R.id.navigation_profle, R.id.navigation_fav
                 )
-            )
+            )*/
             navView.itemIconTintList = null
             // setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
             navView.selectedItemId = R.id.navigation_add
             binding.ibtnAdd.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this,
-                        AddActivity::class.java
+                if (user?.id != null)
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            AddActivity::class.java
+                        )
                     )
-                )
+                else {
+                    loginRequiredDialog(this@MainActivity)
+                }
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -80,6 +87,7 @@ class MainActivity : AppCompatActivity(), Interaction {
                 val userDataStore = Ds.getDataStore(this)
                 userDataStore.preferenceFlow.asLiveData().observe(this) {
                     user = it
+                    Log.e("TAG", "onResume: $user", )
                 }
             }
             checkNotificationPermission()
@@ -111,7 +119,7 @@ class MainActivity : AppCompatActivity(), Interaction {
                 .setNegativeButton(resources.getText(R.string.not_allow), action2)
                 .show()
             )
-        }*/
+    }     */
 
     override fun changBottomNavViewVisibility(visibility: Int) {
         navView.visibility = visibility

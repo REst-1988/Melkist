@@ -1,6 +1,7 @@
 package com.example.melkist.views.add
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,21 +14,34 @@ import androidx.navigation.fragment.findNavController
 import com.example.melkist.AddActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragAddP1MainBinding
+import com.example.melkist.models.FileData
+import com.example.melkist.models.FileSave
 import com.example.melkist.utils.CAT_ID_KEY
 import com.example.melkist.utils.CAT_RESULT_KEY
 import com.example.melkist.utils.DATA
 import com.example.melkist.utils.EMPTY_CATEGORY_ID
+import com.example.melkist.utils.EXTRA_FILE_DETAIL
 import com.example.melkist.utils.ITEM_TYPE_KEY
 import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.SEEKER_ITEM_TYPE
 import com.example.melkist.utils.SUB_CAT_RESULT_KEY
 import com.example.melkist.utils.handleSystemException
 import com.example.melkist.viewmodels.AddItemViewModel
+import com.squareup.moshi.Moshi
+import java.io.Serializable
 
 
 class AddP1MainFrag : Fragment() {
     private lateinit var binding: FragAddP1MainBinding
     private val viewModel: AddItemViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.extra = requireActivity().intent.getSerializableExtra(EXTRA_FILE_DETAIL)
+        viewModel.extra?.apply {
+            viewModel.splitData(viewModel.extra as FileData)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,12 +63,15 @@ class AddP1MainFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
+            viewModel.extra?.apply {
+                binding.txtTitle.text = resources.getString(R.string.edit_file)
+            }
             setFragmentResultListener(ITEM_TYPE_KEY) { _, bundle ->
                 when (bundle.getInt(DATA)) {
                     OWNER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.OWNER)
                     SEEKER_ITEM_TYPE -> viewModel.setItemType(AddItemViewModel.ItemType.SEEKER)
                 }
-                binding!!.txtChooseType.text = showTypeText()
+                binding.txtChooseType.text = showTypeText()
                 viewModel.resetAddItemFieldsByChoosingType()
             }
             setFragmentResultListener(CAT_RESULT_KEY) { _, bundle ->
@@ -114,7 +131,7 @@ class AddP1MainFrag : Fragment() {
 
     fun onChoosingCategory() {
         (activity as AddActivity).user?.apply {
-            viewModel.setReqSource(AddItemViewModel.ReqSource.CATEGORY)
+            //viewModel.setReqSource(AddItemViewModel.ReqSource.CATEGORY)
             val array = arrayListOf(
                 token,
                 viewModel.getTypeId().toString(),
@@ -140,7 +157,7 @@ class AddP1MainFrag : Fragment() {
 
     fun onChoosingSubCategory() {
         (activity as AddActivity).user?.apply {
-            viewModel.setReqSource(AddItemViewModel.ReqSource.SUB_CATEGORY)
+            //viewModel.setReqSource(AddItemViewModel.ReqSource.SUB_CATEGORY)
             val array = arrayListOf(
                 token,
                 viewModel.getTypeId().toString(),

@@ -38,11 +38,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="@dimen/short_padding"
-            app:layout_constraintDimensionRatio="1:1"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@drawable/icons8_google_maps_old_80_color" />
 
         <TextView
@@ -52,14 +52,14 @@
             android:layout_marginStart="@dimen/short_margin"
             android:layout_marginEnd="@dimen/short_margin"
             android:fontFamily="@font/iransans"
-            android:padding="@dimen/very_very_short_text_view_padding"
             android:gravity="center"
+            android:padding="@dimen/very_very_short_text_view_padding"
+            android:text="@string/cooperation_with"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/short_text_size"
             app:layout_constraintEnd_toStartOf="@id/img_main"
             app:layout_constraintStart_toEndOf="@id/card_img_profile"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/cooperation_with" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txt_applicant"
@@ -68,8 +68,8 @@
             android:layout_marginStart="@dimen/short_margin"
             android:layout_marginEnd="@dimen/short_margin"
             android:fontFamily="@font/iransans"
-            android:padding="@dimen/very_very_short_text_view_padding"
             android:gravity="center"
+            android:padding="@dimen/very_very_short_text_view_padding"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/short_text_size"
             app:layout_constraintEnd_toStartOf="@id/img_main"
@@ -84,8 +84,8 @@
             android:layout_marginStart="@dimen/short_margin"
             android:layout_marginEnd="@dimen/short_margin"
             android:fontFamily="@font/iransans"
-            android:padding="@dimen/very_very_short_text_view_padding"
             android:gravity="center"
+            android:padding="@dimen/very_very_short_text_view_padding"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/short_text_size"
             app:layout_constraintEnd_toStartOf="@id/img_main"

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl">
+
+    <TextView
+        android:id="@+id/txt_date_time_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:fontFamily="@font/iransans"
+        android:padding="@dimen/very_short_text_view_padding"
+        android:textColor="@color/sub_item_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="1402/06/25" />
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_dash_line_time_line"
+        app:layout_constraintBottom_toTopOf="@id/time_line_point"
+        app:layout_constraintEnd_toEndOf="@id/time_line_point"
+        app:layout_constraintStart_toStartOf="@id/time_line_point"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:visibility="gone"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="@color/main_light_color2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/time_line_point"
+        app:layout_constraintEnd_toEndOf="@id/time_line_point"
+        app:layout_constraintBottom_toTopOf="@id/time_line_point"/>
+
+    <TextView
+        android:id="@+id/time_line_point"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="@dimen/short_margin"
+        android:layout_marginEnd="@dimen/short_margin"
+        android:background="@drawable/background_points_time_line"
+        app:layout_constraintBottom_toBottomOf="@id/txt_date_time_line"
+        app:layout_constraintStart_toEndOf="@id/txt_date_time_line"
+        app:layout_constraintTop_toTopOf="@id/txt_date_time_line" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_img_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/normal_margin"
+        app:cardCornerRadius="26dp"
+        app:layout_constraintBottom_toBottomOf="@id/txt_date_time_line"
+        app:layout_constraintStart_toEndOf="@id/time_line_point"
+        app:layout_constraintTop_toTopOf="@id/txt_date_time_line">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_img_profile_1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerInParent="true"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar_user" />
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="@color/main_light_color2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/time_line_point"
+        app:layout_constraintStart_toStartOf="@id/time_line_point"
+        app:layout_constraintTop_toBottomOf="@id/time_line_point" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/card_img_profile"
+        app:layout_constraintStart_toEndOf="@id/card_img_profile"
+        app:layout_constraintTop_toTopOf="@id/card_img_profile">
+
+        <TextView
+            android:id="@+id/txt_action_time_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/short_margin"
+            android:fontFamily="@font/iransans"
+            android:padding="@dimen/very_very_short_text_view_padding"
+            android:textColor="@color/main_dark_color2"
+            android:textSize="@dimen/short_text_size"
+            android:text="بازدید" />
+
+        <TextView
+            android:id="@+id/txt_agent_time_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/short_margin"
+            android:fontFamily="@font/iransans"
+            android:padding="@dimen/very_very_short_text_view_padding"
+            android:textColor="@color/main_dark_color2"
+            android:textSize="@dimen/short_text_size"
+            android:text="رضا استعجاب، املاک جهانی" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

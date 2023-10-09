@@ -24,10 +24,13 @@ class ProfileTeamMemberViewModel : ViewModel() {
     val deleteTeamMemberResponse: LiveData<PublicResponseModel> = _deleteTeamMemberResponse
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
+    fun setNoDataStatus() {
+        _status.value = ApiStatus.NO_DATA
+    }
 
     var teamMember: User? = null
 
-    fun getTeamMembers(activity: Activity, token: String, userId: Int, roleId: Int) {
+    fun getTeamMembers(activity: Activity, token: String?, userId: Int?, roleId: Int?) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 getTeamMembers(
@@ -46,7 +49,7 @@ class ProfileTeamMemberViewModel : ViewModel() {
                     )
                     Log.e("TAG", "_teamMembers: ${_teamMembers.value.toString()} ")
                     _teamMembers.value?.apply {
-                        if (data!!.isEmpty()) _status.value = ApiStatus.NO_DATA
+                        if (data.isNullOrEmpty()) _status.value = ApiStatus.NO_DATA
                         else _status.value = ApiStatus.DONE
                     }
                 } catch (e: Exception) {
@@ -56,7 +59,7 @@ class ProfileTeamMemberViewModel : ViewModel() {
             }
     }
 
-    fun deleteTeamMembers(activity: Activity, token: String, userId: Int) {
+    fun deleteTeamMembers(activity: Activity, token: String?, userId: Int) {
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 deleteTeamMembers(

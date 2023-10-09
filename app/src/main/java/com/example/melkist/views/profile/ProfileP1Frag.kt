@@ -20,6 +20,8 @@ import com.example.melkist.databinding.DialogContactUsBinding
 import com.example.melkist.databinding.FragProfileP1Binding
 import com.example.melkist.interfaces.Interaction
 import com.example.melkist.models.Roles
+import com.example.melkist.utils.USER_AVATAR
+import com.example.melkist.utils.loginRequiredDialog
 import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
@@ -76,6 +78,10 @@ class ProfileP1Frag : Fragment() {
     }
 
     private fun extiConfirm() {
+        if ((activity as MainActivity).user?.id == null) {
+            requireActivity().finish()
+            return
+        }
         startActivity(
             Intent(requireActivity(), LoginActivity::class.java)
         )
@@ -89,44 +95,68 @@ class ProfileP1Frag : Fragment() {
 
     fun getUserImage(): String {
         var url = ""
-        (activity as MainActivity).user?.apply {
-            url = profilePic ?: ""
+        (activity as MainActivity).user.apply {
+            url = this?.profilePic ?: USER_AVATAR
         }
         return url
     }
 
     fun userNameText(): String {
         var user = ""
-        (activity as MainActivity).user?.apply {
-            user = String.format("%s %s", firstName, lastName)
+        (activity as MainActivity).user.apply {
+            user = String.format(
+                "%s %s",
+                this?.firstName ?: resources.getString(R.string.name),
+                this?.lastName ?: resources.getString(R.string.user)
+            )
         }
         return user
     }
 
     fun onEditUserClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         findNavController().navigate(R.id.action_navigation_profle_to_profilePicFrag2)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onAlertsClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         findNavController()
             .navigate(R.id.action_navigation_profle_to_profileAlertsFrag)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onMyFilesClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         findNavController()
             .navigate(R.id.action_navigation_profle_to_profileMyFilesFrag)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onCooperationClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         findNavController()
             .navigate(R.id.action_navigation_profle_to_profileCooperationFrag)
         interaction?.changBottomNavViewVisibility(View.GONE)
     }
 
     fun onManageTeamClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         (activity as MainActivity).user?.apply {
             if (roleId == Roles().manager.id || roleId == Roles().supervisor.id) {
                 findNavController().navigate(
@@ -143,12 +173,10 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onAiClick() {
-        /*showDialogWithMessage(
-            requireContext(),
-            resources.getString(R.string.invalid_permission)
-        ) { d, _ ->
-            d.dismiss()
-        }*/
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         findNavController().navigate(
             R.id.action_navigation_profle_to_profileAiP1
         )
@@ -156,6 +184,10 @@ class ProfileP1Frag : Fragment() {
     }
 
     fun onStatisticsClick() {
+        if ((activity as MainActivity).user?.id == null) {
+            loginRequiredDialog(requireActivity())
+            return
+        }
         showDialogWithMessage(
             requireContext(),
             resources.getString(R.string.invalid_permission)

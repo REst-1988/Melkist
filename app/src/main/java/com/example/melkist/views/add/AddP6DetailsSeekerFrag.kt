@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,15 +17,22 @@ import com.example.melkist.databinding.FragAddP6DetailsSeekerBinding
 import com.example.melkist.utils.AGE_FROM_TAG
 import com.example.melkist.utils.AGE_TO_TAG
 import com.example.melkist.utils.DATA
+import com.example.melkist.utils.FLOOR_FROM_TAG
+import com.example.melkist.utils.FLOOR_TO_TAG
+import com.example.melkist.utils.MORTGAGE_FROM_TAG
+import com.example.melkist.utils.MORTGAGE_TO_TAG
 import com.example.melkist.utils.PRICE_FROM_TAG
 import com.example.melkist.utils.PRICE_TO_TAG
+import com.example.melkist.utils.RENT_FROM_TAG
 import com.example.melkist.utils.ROOM_FROM_TAG
 import com.example.melkist.utils.ROOM_TO_TAG
 import com.example.melkist.utils.SIZE_FROM_TAG
 import com.example.melkist.utils.SIZE_TO_TAG
-import com.example.melkist.utils.concatenateText
+import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
+import com.example.melkist.utils.addLiveSeparatorListener
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPersianYear
+import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
@@ -52,9 +58,6 @@ class AddP6DetailsSeekerFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.saveResponse.observe(viewLifecycleOwner) {
-            Log.e("TAG", "onViewCreated: ${it.result}")
-            Log.e("TAG", "onViewCreated: ${it.message}")
-            Log.e("TAG", "onViewCreated: ${concatenateText(it.errors)}")
             when (it.result) {
                 true -> showDialogWithMessage(
                     requireContext(), it.message ?: ""
@@ -63,11 +66,10 @@ class AddP6DetailsSeekerFrag : Fragment() {
                     cancel()
                 }
 
-                false -> showDialogWithMessage(
-                    requireContext(), concatenateText(it.errors)
-                ) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
+                false -> onRequestFalseResult(
+                    requireActivity(),
+                    it.errors ?: UNKNOWN_ERRORS_LIST
+                ){}
 
                 else -> showDialogWithMessage(
                     requireContext(), resources.getString(R.string.global_error)
@@ -109,15 +111,15 @@ class AddP6DetailsSeekerFrag : Fragment() {
             viewModel.roomTo = checkFieldsForNullabilitySeparatorAccepted(etRoomNoTo)?.toInt()
             viewModel.ageFrom = checkFieldsForNullabilitySeparatorAccepted(etAgeFrom)?.toInt()
             viewModel.ageTo = checkFieldsForNullabilitySeparatorAccepted(etAgeTo)?.toInt()
-            viewModel.priceFrom = checkFieldsForNullabilitySeparatorAccepted(etPriceFrom)
-            viewModel.priceTo = checkFieldsForNullabilitySeparatorAccepted(etPriceTo)
+            viewModel.totalPriceFrom = checkFieldsForNullabilitySeparatorAccepted(etPriceFrom)
+            viewModel.totalPriceTo = checkFieldsForNullabilitySeparatorAccepted(etPriceTo)
             viewModel.sizeFrom = checkFieldsForNullabilitySeparatorAccepted(etSizeFrom)?.toInt()
             viewModel.sizeTo = checkFieldsForNullabilitySeparatorAccepted(etSizeTo)?.toInt()
             viewmodel?.descriptions = etDescriptions.editText?.text?.toString()
         }
     }
 
-    private fun addLiveSeparator(et: TextInputEditText) {
+/*    private fun addLiveSeparator(et: TextInputEditText) {
         et.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -132,7 +134,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
                 et.addTextChangedListener(this)
             }
         })
-    }
+    }*/
 
     /************** binding commands **********************/
     fun back() {
@@ -145,9 +147,16 @@ class AddP6DetailsSeekerFrag : Fragment() {
 
     fun onCommit() {
         gatheringData()
-        (activity as AddActivity).user?.apply {
-            viewModel.saveFile(requireActivity(), id!!)
+        (activity as AddActivity).user.apply {
+            viewModel.saveFile(requireActivity(), this)
         }
+    }
+
+    fun isShowAge(): Int {
+        return if (viewModel.isShowAgeField())
+            View.VISIBLE
+        else
+            View.GONE
     }
 
     fun onAgeFromClick() {
@@ -204,6 +213,13 @@ class AddP6DetailsSeekerFrag : Fragment() {
         }
     }
 
+    fun isShowRooms(): Int {
+        return if (viewModel.isShowRoomsField())
+            View.VISIBLE
+        else
+            View.GONE
+    }
+
     fun onRoomNoFromClick() {
         val bottomFrag =
             BottomSheetUniversalList(resources.getStringArray(R.array.room_no_list).toList())
@@ -226,6 +242,13 @@ class AddP6DetailsSeekerFrag : Fragment() {
         }
     }
 
+    fun isShowTotalPrice(): Int {
+        return if (viewModel.isShowTotalPriceField())
+            View.VISIBLE
+        else
+            View.GONE
+    }
+
     fun onPriceFromClick() {
         val bottomFrag =
             BottomSheetUniversalList(resources.getStringArray(R.array.price_list).toList())
@@ -235,7 +258,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
             if (position == 0) {
                 binding.curtainPriceFrom.visibility = View.GONE
                 binding.etPriceFromChild.requestFocus()
-                addLiveSeparator(binding.etPriceFromChild)
+                binding.etPriceFromChild.addLiveSeparatorListener()
             } else {
                 binding.etPriceFromChild.setText(
                     formatNumber(
@@ -255,7 +278,7 @@ class AddP6DetailsSeekerFrag : Fragment() {
             if (position == 0) {
                 binding.curtainPriceTo.visibility = View.GONE
                 binding.etPriceToChild.requestFocus()
-                addLiveSeparator(binding!!.etPriceToChild)
+                binding.etPriceToChild.addLiveSeparatorListener()
             } else {
                 binding.etPriceToChild.setText(
                     formatNumber(
@@ -263,6 +286,141 @@ class AddP6DetailsSeekerFrag : Fragment() {
                     )
                 )
             }
+        }
+    }
+
+    fun isShowMortgage(): Int {
+        return if (viewModel.isShowMortgageField())
+            View.VISIBLE
+        else
+            View.GONE
+    }
+
+    fun onMortgageFromClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_mortgage).toList())
+        bottomFrag.show(childFragmentManager, MORTGAGE_FROM_TAG)
+        bottomFrag.setFragmentResultListener(MORTGAGE_FROM_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainMortgageFrom.visibility = View.GONE
+                binding.etMortagageFromChild.requestFocus()
+                binding.etMortagageFromChild.addLiveSeparatorListener()
+            } else {
+                binding.etMortagageFromChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_mortgage)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun onMortgageToClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_mortgage).toList())
+        bottomFrag.show(childFragmentManager, MORTGAGE_TO_TAG)
+        bottomFrag.setFragmentResultListener(MORTGAGE_TO_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainMortgageTo.visibility = View.GONE
+                binding.etMortgageToChild.requestFocus()
+                binding.etMortgageToChild.addLiveSeparatorListener()
+            } else {
+                binding.etMortgageToChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_mortgage)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun isShowRent(): Int {
+        return if (viewModel.isShowRentField())
+            View.VISIBLE
+        else
+            View.GONE
+    }
+
+    fun onRentFromClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_rent).toList())
+        bottomFrag.show(childFragmentManager, RENT_FROM_TAG)
+        bottomFrag.setFragmentResultListener(RENT_FROM_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainRentFrom.visibility = View.GONE
+                binding.etRentFromChild.requestFocus()
+                binding.etRentFromChild.addLiveSeparatorListener()
+            } else {
+                binding.etRentFromChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_rent)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun onRentToClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_rent).toList())
+        bottomFrag.show(childFragmentManager, RENT_FROM_TAG)
+        bottomFrag.setFragmentResultListener(RENT_FROM_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainRentTo.visibility = View.GONE
+                binding.etRentToChild.requestFocus()
+                binding.etRentToChild.addLiveSeparatorListener()
+            } else {
+                binding.etRentToChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_rent)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+/*    fun onTxtSuitableForAllClick() {
+        // TODO
+    }
+
+    fun onSuitableForSwitchSelect() {
+        // TODO
+    }
+
+    fun onTxtSuitableForFamilyClick() {
+        // TODO
+    }*/
+
+    fun isShowFloor(): Int {
+        return if (viewModel.isShowFloorField())
+            View.VISIBLE
+        else
+            View.GONE
+    }
+
+    fun onFloorFromClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.floor_list).toList())
+        bottomFrag.show(childFragmentManager, FLOOR_FROM_TAG)
+        bottomFrag.setFragmentResultListener(FLOOR_FROM_TAG) { _, positionBundle ->
+            binding.etFloorFromChild.setText(
+                positionBundle.getInt(DATA)
+            )
+        }
+    }
+
+    fun onFloorToClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.floor_list).toList())
+        bottomFrag.show(childFragmentManager, FLOOR_TO_TAG)
+        bottomFrag.setFragmentResultListener(FLOOR_TO_TAG) { _, positionBundle ->
+            binding.etFloorToChild.setText(
+                positionBundle.getInt(DATA)
+            )
         }
     }
 }

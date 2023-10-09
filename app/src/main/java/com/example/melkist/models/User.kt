@@ -1,6 +1,7 @@
 package com.example.melkist.models
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class User(
     @Json val id: Int?,
@@ -24,7 +25,7 @@ data class User(
     @Json val provinceTitle: String?,
     @Json(name = "realstate") val realEstate: String?,
     @Json val token: String?
-)
+): Serializable
 
 data class Users(
     @Json val result: Boolean?, @Json val data: List<User>?, @Json val errors: List<String>?
@@ -32,4 +33,4 @@ data class Users(
 
 data class Mobile(
     @Json val id: Int?, @Json val mobile: String?
-)
+): Serializable

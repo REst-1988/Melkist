@@ -1,7 +1,10 @@
 package com.example.melkist.utils
 
-enum class ApiStatus { LOADING, ERROR, NO_DATA ,DONE }
-enum class ItemType {CHOOSE, SEEKER, OWNER, ALL}
+enum class ApiStatus { LOADING, ERROR, NO_DATA, DONE }
+enum class ItemType { CHOOSE, SEEKER, OWNER, ALL }
+
+const val SHIRAZ_CITY_ID = 733
+const val USER_AVATAR = "USER_AVATAR"
 
 const val ONE_QUADRILLION = 1_000_000_000_000_000
 const val HUNDRED_TRILLION = 100_000_000_000_000
@@ -47,6 +50,13 @@ const val ROOM_TO_TAG = "room_to1"
 const val PRICE_FROM_TAG = "price_from"
 const val PRICE_TO_TAG = "price_to"
 
+const val MORTGAGE_FROM_TAG = "mortgage_from"
+const val MORTGAGE_TO_TAG = "mortgage_to"
+const val RENT_FROM_TAG = "rent_from"
+const val RENT_TO_TAG = "rent_to"
+const val FLOOR_FROM_TAG = "floor_from"
+const val FLOOR_TO_TAG = "floor_to"
+
 const val AGE_TAG = "age"
 const val SIZE_TAG = "size"
 const val ROOM_TAG = "room"
@@ -57,9 +67,18 @@ const val ALLAY_TAG = "allay"
 const val DIRECTION_TAG = "direction"
 const val LIGHTS_TAG = "lights"
 const val PRICE_TAG = "price"
+const val SUITABLE_FOR_TAG = "suitable_for"
+const val PARKING_TAG = "parking"
+const val STORE_ROOM_TAG = "store_room"
+const val BALCONY_TAG = "balcony"
+const val ELEVATOR_TAG = "elevator"
+const val ADMIN_DEED_TAG = "administrative_deed"
+const val DEED_TYPE_TAG = "deed_type"
 
 const val TYPE_OPTIONS_TAG = "type_options"
-enum class Cr {PROVINCE, CITY, REGION_1, REGION_2, REGION_3}
+
+enum class Cr { PROVINCE, CITY, REGION_1, REGION_2, REGION_3 }
+
 const val PROVINCE = 101
 const val CITY = 102
 const val REGION_1 = 103
@@ -74,3 +93,11 @@ const val SENT = 1
 const val STATUS_APPROVED = 1
 const val STATUS_DENY = 0
 const val STATUS_NO_ACTION = -1
+
+val UNKNOWN_ERRORS_LIST = mutableListOf("خطای نامشخص")
+const val EXTRA_FILE_DETAIL = "extra_file_detail"
+const val MAX_IMAGE_NUMBER_FOR_SAVING_FIVE = 5
+
+
+
+

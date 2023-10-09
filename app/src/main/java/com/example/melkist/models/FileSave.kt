@@ -8,6 +8,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.squareup.moshi.Json
+import java.io.Serializable
+
 data class LocationResponse(
     @Json var result: Boolean?,
     @Json var data: List<LocationData>,
@@ -57,4 +59,4 @@ data class FileSave(
     @Json val price: Period,
     @Json val description: String?,
     @Json val images: List<String?>?
-)
+): Serializable

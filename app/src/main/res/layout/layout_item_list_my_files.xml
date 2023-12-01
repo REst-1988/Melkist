@@ -13,6 +13,7 @@
         android:layoutDirection="rtl">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_img_main"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_margin="@dimen/short_margin"
@@ -86,8 +87,8 @@
             android:padding="@dimen/very_very_short_text_view_padding"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/short_text_size"
-            app:layout_constraintStart_toEndOf="@id/txt_sub_cat_owner"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_sub_cat_owner"
             tools:text="آپارتمان" />
 
         <TextView
@@ -102,7 +103,7 @@
             app:layout_constraintTop_toBottomOf="@id/txt_cat_owner"
             tools:text="معالی آباد" />
 
-        <TextView
+<!--        <TextView
             android:id="@+id/txt_room_no_owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -112,9 +113,9 @@
             android:textSize="@dimen/short_text_size"
             app:layout_constraintStart_toEndOf="@id/txt_region_owner"
             app:layout_constraintTop_toBottomOf="@id/txt_cat_owner"
-            tools:text="3 خواب" />
+            tools:text="3 خواب" />-->
 
-        <TextView
+<!--        <TextView
             android:id="@+id/txt_price_owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +125,29 @@
             android:textSize="@dimen/short_text_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_region_owner"
-            tools:text="12,000,000,000 تومان" />
+            tools:text="12,000,000,000 تومان" />-->
+
+        <TextView
+            android:id="@+id/ibtn_create_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_cylinder_create_action"
+            android:clickable="true"
+
+            android:layout_marginEnd="@dimen/very_short_margin"
+            android:elevation="4dp"
+            android:focusable="true"
+            android:fontFamily="@font/iransans"
+            android:gravity="center"
+            android:paddingStart="@dimen/short_text_view_padding"
+            android:paddingTop="@dimen/very_very_short_text_view_padding"
+            android:paddingEnd="@dimen/short_text_view_padding"
+            android:paddingBottom="@dimen/very_very_short_text_view_padding"
+            android:textColor="@color/negative_normal_text_color"
+            android:textSize="@dimen/very_short_text_size"
+            app:drawableEndCompat="@drawable/baseline_pending_actions_24"
+            app:layout_constraintBottom_toBottomOf="@id/card_img_main"
+            app:layout_constraintEnd_toStartOf="@id/card_img_main" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -210,8 +233,8 @@
             android:padding="@dimen/very_very_short_text_view_padding"
             android:textColor="@color/normal_text_color"
             android:textSize="@dimen/short_text_size"
-            app:layout_constraintStart_toEndOf="@id/txt_sub_cat_seeker"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_sub_cat_seeker"
             tools:text="آپارتمان" />
 
         <TextView
@@ -226,7 +249,7 @@
             app:layout_constraintTop_toBottomOf="@id/txt_cat_seeker"
             tools:text="معالی آباد" />
 
-        <TextView
+<!--        <TextView
             android:id="@+id/txt_price_seeker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -236,7 +259,7 @@
             android:textSize="@dimen/short_text_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_region_seeker"
-            tools:text="3,000,000,000" />
+            tools:text="3,000,000,000" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -244,7 +267,7 @@
         android:id="@+id/choose_curtain"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:visibility="gone"
-        android:background="@color/sub_item_text_color_fade"/>
+        android:background="@color/sub_item_text_color_fade"
+        android:visibility="gone" />
 
 </RelativeLayout>

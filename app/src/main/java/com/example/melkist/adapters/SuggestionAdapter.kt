@@ -1,21 +1,20 @@
 package com.example.melkist.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.melkist.R
 import com.example.melkist.databinding.ItemListPropertySuggestionBinding
-import com.example.melkist.databinding.ItemListSingleTextBinding
 import com.example.melkist.models.FileTypes
-import com.example.melkist.models.PcrsData
+import com.example.melkist.models.Period
 import com.example.melkist.models.SuggestionItemListModel
 import com.example.melkist.utils.getPropertyPeriodsPriceText
+import com.example.melkist.utils.isShowMortgageField
+import com.example.melkist.utils.isShowTotalPriceField
 import com.example.melkist.views.profile.ai.ProfileAiSuggestionsFrag
 
 class SuggestionAdapter(private val fragment: Fragment) :
@@ -49,9 +48,41 @@ class SuggestionAdapter(private val fragment: Fragment) :
                     txtSubCatMyFile.text = myFile.typeInfo?.subCategory?.title ?: ""
                     txtCatMyFile.text = myFile.typeInfo?.category?.title ?: ""
                     txtRegionMyFile.text = myFile.locations[0].region.title
-                    txtPriceMyFile.text = getPropertyPeriodsPriceText(
-                        fragment.requireContext(), myFile.price, R.string.empty, R.string.empty
-                    )
+
+                    if (isShowTotalPriceField(
+                            myFile.typeInfo?.category?.id ?: 0,
+                            myFile.typeInfo?.subCategory?.id ?: 0
+                        )
+                    ) {
+                        txtPriceMyFile.text = getPropertyPeriodsPriceText(
+                            fragment.requireContext(),
+                            myFile.price ?: Period(null, null),
+                            R.string.price,
+                            R.string.empty
+                        )
+                        txtRentMyFile.visibility = View.GONE
+                    }
+                    if (isShowMortgageField(
+                            myFile.typeInfo?.category?.id ?: 0,
+                            myFile.typeInfo?.subCategory?.id ?: 0
+                        )
+                    ) {
+
+                        txtRentMyFile.visibility = View.VISIBLE
+                        txtPriceMyFile.text = getPropertyPeriodsPriceText(
+                            fragment.requireContext(),
+                            myFile.mortgage ?: Period(null, null),
+                            R.string.mortgage_amount,
+                            R.string.empty
+                        )
+                        txtRentMyFile.text = getPropertyPeriodsPriceText(
+                            fragment.requireContext(),
+                            myFile.rent ?: Period(null, null),
+                            R.string.rent_amount,
+                            R.string.empty
+                        )
+
+                    }
                     cardTypeMyFile.setOnClickListener {
                         (fragment as ProfileAiSuggestionsFrag).onCardMyFileClick(myFile.id)
                     }
@@ -67,9 +98,40 @@ class SuggestionAdapter(private val fragment: Fragment) :
                         txtCatSimilarFile.text = category?.title ?: ""
                     }
                     txtRegionSimilarFile.text = similarFile.locations[0].region.title
-                    txtPriceSimilarFile.text = getPropertyPeriodsPriceText(
-                        fragment.requireContext(), similarFile.price, R.string.empty, R.string.empty
-                    )
+                    if (isShowTotalPriceField(
+                            similarFile.typeInfo?.category?.id ?: 0,
+                            similarFile.typeInfo?.subCategory?.id ?: 0
+                        )
+                    ) {
+                        txtPriceSimilarFile.text = getPropertyPeriodsPriceText(
+                            fragment.requireContext(),
+                            similarFile.price ?: Period(null, null),
+                            R.string.price,
+                            R.string.empty
+                        )
+                        txtRentSimilarFile.visibility = View.GONE
+                    }
+                    if (isShowMortgageField(
+                            similarFile.typeInfo?.category?.id ?: 0,
+                            similarFile.typeInfo?.subCategory?.id ?: 0
+                        )
+                    ) {
+
+                        txtRentSimilarFile.visibility = View.VISIBLE
+                        txtPriceSimilarFile.text = getPropertyPeriodsPriceText(
+                            fragment.requireContext(),
+                            similarFile.mortgage ?: Period(null, null),
+                            R.string.mortgage_amount,
+                            R.string.empty
+                        )
+                        txtRentSimilarFile.text = getPropertyPeriodsPriceText(
+                            fragment.requireContext(),
+                            similarFile.rent ?: Period(null, null),
+                            R.string.rent_amount,
+                            R.string.empty
+                        )
+
+                    }
                     cardTypeSimilarFile.setOnClickListener {
                         (fragment as ProfileAiSuggestionsFrag).inCardSimilarFileClick(similarFile.id)
                     }

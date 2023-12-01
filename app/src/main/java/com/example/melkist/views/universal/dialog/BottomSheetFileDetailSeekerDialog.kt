@@ -11,10 +11,16 @@ import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.LayoutBottomSheetFileDetailSeekerBinding
 import com.example.melkist.models.FileDataResponse
+import com.example.melkist.models.Period
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
+import com.example.melkist.utils.isShowMortgageField
+import com.example.melkist.utils.isShowRentField
+import com.example.melkist.utils.isShowRoomsField
+import com.example.melkist.utils.isShowSizeField
+import com.example.melkist.utils.isShowTotalPriceField
 import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
@@ -154,27 +160,105 @@ class BottomSheetFileDetailSeekerDialog(
     }
 
     private fun onOkGettingFileAllDataResponse(response: FileDataResponse) {
-        response.data?.apply {
-            user?.profilePic?.apply {
-                bindImage(binding.imgUser, this)
-            }
-            binding.txtRoomNo.text =
-                getPropertyPeriodsText(requireContext(), roomNo, R.string.room, R.string.room)
-            binding.txtSize.text = getPropertyPeriodsText(
-                requireContext(),
-                size,
-                R.string.meterage,
-                R.string.squere_meter
-            )
-            binding.txtRegion.text = locations[0].region.title
-            binding.txtPrice.text = getPropertyPeriodsPriceText(
-                requireContext(),
-                price,
-                R.string.price,
-                R.string.tooman
-            )
-            isFav?.apply {
-                binding.ibtnBookmark.showFav(this)
+        response.data?.let { data ->
+            binding.apply {
+                data.user?.profilePic?.apply {
+                    bindImage(imgUser, this)
+                }
+
+                txtType.text = data.typeInfo?.fileType?.title
+                txtSubCat.text = data.typeInfo?.subCategory?.title
+                txtCat.text = data.typeInfo?.category?.title
+
+                if (isShowRoomsField(
+                        data.typeInfo?.category?.id ?: 0,
+                        data.typeInfo?.subCategory?.id ?: 0,
+                        data.typeInfo?.fileType?.id
+                    )
+                ) {
+                    txtRoomNo.text = getPropertyPeriodsText(
+                        requireContext(),
+                        data.roomNo ?: Period(null, null),
+                        R.string.empty,
+                        R.string.room
+                    )
+                } else {
+                    txtRoomNo.text = ""
+                    txtRoomNo.visibility = View.GONE
+                }
+
+                if (isShowSizeField(
+                        data.typeInfo?.category?.id ?: 0,
+                        data.typeInfo?.subCategory?.id ?: 0,
+                        data.typeInfo?.fileType?.id
+                    )
+                ) {
+                    txtSize.text = getPropertyPeriodsText(
+                        requireContext(),
+                        data.size ?: Period(null, null),
+                        R.string.meterage,
+                        R.string.squere_meter
+                    )
+                } else {
+                    txtSize.text = ""
+                    txtSize.visibility = View.GONE
+                }
+                txtRegion.text = data.locations[0].region.title
+
+                if (isShowTotalPriceField(
+                        data.typeInfo?.category?.id ?: 0,
+                        data.typeInfo?.subCategory?.id ?: 0,
+                        data.typeInfo?.fileType?.id
+                    )
+                ) {
+                    txtPrice.text = getPropertyPeriodsPriceText(
+                        requireContext(),
+                        data.price ?: Period(null, null),
+                        R.string.price,
+                        R.string.tooman
+                    )
+                } else {
+                    txtPrice.text = ""
+                    txtPrice.visibility = View.GONE
+                }
+
+                if (isShowMortgageField(
+                        data.typeInfo?.category?.id ?: 0,
+                        data.typeInfo?.subCategory?.id ?: 0,
+                        data.typeInfo?.fileType?.id
+                    )
+                ) {
+                    txtMortgage.text = getPropertyPeriodsPriceText(
+                        requireContext(),
+                        data.mortgage ?: Period(null, null),
+                        R.string.mortgage_amount,
+                        R.string.tooman
+                    )
+                } else {
+                    txtMortgage.text = ""
+                    txtMortgage.visibility = View.GONE
+                }
+
+                if (isShowRentField(
+                        data.typeInfo?.category?.id ?: 0,
+                        data.typeInfo?.subCategory?.id ?: 0,
+                        data.typeInfo?.fileType?.id
+                    )
+                ) {
+                    txtRent.text = getPropertyPeriodsPriceText(
+                        requireContext(),
+                        data.price ?: Period(null, null),
+                        R.string.rent_amount,
+                        R.string.tooman
+                    )
+                } else {
+                    txtRent.text = ""
+                    txtRent.visibility = View.GONE
+                }
+
+                data.isFav?.apply {
+                    ibtnBookmark.showFav(this)
+                }
             }
         }
         initListeners(response)

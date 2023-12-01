@@ -15,5 +15,6 @@ data class Fav(
     @Json (name = "sleepsnumber") val roomNo: Period,
     @Json val price: Period,
     @Json (name = "images") val image: String?,
-    @Json val user: User
+    @Json val user: User,
+    @Json(name = "filetypefilecategoryfilecategorytype") val typeInfo: TypeInfo?
 )

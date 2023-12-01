@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.Melkist"
+    android:layoutDirection="rtl">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/toggle"
+        android:layout_width="40dp"
+        android:layout_height="7dp"
+        app:cardCornerRadius="100dp"
+        android:layout_marginTop="@dimen/short_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/negative_empty_background_color_sub_item"/>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_action_owner_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        android:layout_marginTop="@dimen/normal_margin"
+        app:layout_constraintTop_toBottomOf="@id/toggle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_action_owner_name_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text"
+            android:fontFamily="@font/iransans"
+            android:hint="@string/hint_action_owner_name"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textColor="@color/edit_text_text_color"
+            android:textDirection="rtl"
+            android:textSize="@dimen/normal_text_size" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_action_owner_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        app:boxStrokeWidth="0dp"
+        app:layout_constraintTop_toBottomOf="@id/et_action_owner_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:boxStrokeWidthFocused="0dp"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_action_owner_mobile_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text"
+            android:fontFamily="@font/iransans"
+            android:hint="@string/hint_action_owner_mobile"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:textColor="@color/edit_text_text_color"
+            android:textDirection="rtl"
+            android:textSize="@dimen/normal_text_size" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txt_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/iransans"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:padding="@dimen/short_text_view_padding"
+        android:text="@string/action_type_title"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        android:layout_marginTop="@dimen/short_margin"
+        app:layout_constraintTop_toBottomOf="@id/et_action_owner_mobile" />
+
+    <TextView
+        android:id="@+id/choice_visit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/short_margin"
+        android:background="@drawable/background_cylinder_btns_theme_boarder"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/iransans"
+        android:gravity="center"
+        android:padding="@dimen/text_view_padding"
+        android:text="@string/visit"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintEnd_toStartOf="@id/choice_meeting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_header" />
+
+    <TextView
+        android:id="@+id/choice_meeting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/short_margin"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/background_cylinder_btns_theme_boarder"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/iransans"
+        android:gravity="center"
+        android:padding="@dimen/text_view_padding"
+        android:text="@string/meeting"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/choice_visit"
+        app:layout_constraintTop_toBottomOf="@id/txt_header" />
+
+    <TextView
+        android:id="@+id/choice_contract"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/short_margin"
+        android:background="@drawable/background_cylinder_btns_theme_boarder"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/iransans"
+        android:gravity="center"
+        android:padding="@dimen/text_view_padding"
+        android:text="@string/contract"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintEnd_toStartOf="@id/choice_conclusion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choice_visit" />
+
+    <TextView
+        android:id="@+id/choice_conclusion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/short_margin"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/background_cylinder_btns_theme_boarder"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/iransans"
+        android:gravity="center"
+        android:padding="@dimen/text_view_padding"
+        android:text="@string/conclusion"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/choice_contract"
+        app:layout_constraintTop_toBottomOf="@id/choice_meeting" />
+
+
+    <TextView
+        android:id="@+id/txt_header_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/iransans"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:padding="@dimen/short_text_view_padding"
+        android:text="@string/action_date_title"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintTop_toBottomOf="@id/choice_contract" />
+
+    <TextView
+        android:id="@+id/txt_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_margin"
+        android:background="@drawable/background_cylinder_btns_theme_boarder"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/iransans"
+        android:gravity="center"
+        android:padding="@dimen/text_view_padding"
+        tools:text="1402/08/07"
+        android:textColor="@color/normal_text_color"
+        android:textSize="@dimen/short_text_size"
+        app:layout_constraintTop_toBottomOf="@id/txt_header_2" />
+
+    <Button
+        android:id="@+id/btn_commit_action"
+        android:theme="@style/Theme.Melkist.Buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:layout_marginBottom="@dimen/normal_margin"
+        android:fontFamily="@font/iransans"
+        android:text="@string/commit"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_date"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

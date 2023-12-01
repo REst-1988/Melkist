@@ -1,7 +1,5 @@
 package com.example.melkist.views.login.signup
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.melkist.LoginActivity
 import com.example.melkist.R
 import com.example.melkist.databinding.FragSignupP1SignupFormBinding
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
-import com.example.melkist.utils.isSystemThemeDarkMode
+import com.example.melkist.utils.getStringDateByTimestamp
+import com.example.melkist.utils.isPhoneNo
+import com.example.melkist.utils.isText
 import com.example.melkist.utils.onRequestFalseResult
+import com.example.melkist.utils.pickDateDialogForResult
 import com.example.melkist.viewmodels.SignupViewModel
-import ir.hamsaa.persiandatepicker.Listener
-import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
-import ir.hamsaa.persiandatepicker.util.PersianCalendar
 
 
 class SignupP1SignupFormFrag : Fragment() {
@@ -152,9 +149,9 @@ class SignupP1SignupFormFrag : Fragment() {
 
     private fun isAllFieldIsOkay(): Boolean {
         val isRealEstate = if (getRealEstateIfManager() != null) isRealState() else true
-        val isFirstName = isFirstName()
-        val isLastName = isLastName()
-        val isPhoneNo = isPhoneNo()
+        val isFirstName = isText(requireContext(), binding.etFirstName)
+        val isLastName = isText(requireContext(), binding.etLastName)
+        val isPhoneNo = isPhoneNo(requireContext(), binding.etPhoneNo)
         val isNationalCode = isNationalCode()
         val isBirthDate = isBirthDate()
         val isEmail = isEmail()
@@ -177,46 +174,6 @@ class SignupP1SignupFormFrag : Fragment() {
             return false
         }
         binding.etRealEstateName.error = null
-        return true
-    }
-
-    private fun isFirstName(): Boolean {
-        if (binding.etFirstName.editText == null || binding.etFirstName.editText!!.text.isEmpty()) {
-            binding.etFirstName.error =
-                requireContext().resources.getString(R.string.error_on_empty_first_name)
-            return false
-        }
-        binding.etFirstName.error = null
-        return true
-    }
-
-    private fun isLastName(): Boolean {
-        if (binding.etLastName.editText == null || binding.etLastName.editText!!.text.isEmpty()) {
-            binding.etLastName.error =
-                requireContext().resources.getString(R.string.error_on_empty_last_name)
-            return false
-        }
-        binding.etLastName.error = null
-        return true
-    }
-
-    private fun isPhoneNo(): Boolean {
-        // not empty field
-        if (binding.etPhoneNo.editText == null || binding.etPhoneNo.editText!!.text.isEmpty()) {
-            binding.etPhoneNo.error =
-                requireContext().resources.getString(R.string.error_on_empty_mobile_no)
-            return false
-        }
-        // not wrong field
-        else if (binding.etPhoneNo.editText!!.text.substring(
-                0, 2
-            ) != "09" || binding.etPhoneNo.editText!!.text.length != 11
-        ) {
-            binding.etPhoneNo.error =
-                requireContext().resources.getString(R.string.error_on_wrong_mobile_no)
-            return false
-        }
-        binding.etPhoneNo.error = null
         return true
     }
 
@@ -393,40 +350,8 @@ class SignupP1SignupFormFrag : Fragment() {
     }
 
     fun onDateClick() {
-        val typeface = Typeface.createFromAsset(requireContext().assets, "iransans.ttf")
-
-        val persianDate = PersianCalendar()
-        val picker = PersianDatePickerDialog(requireContext())
-            .setPositiveButtonString(resources.getString(R.string.confirm))
-            .setNegativeButton(resources.getString(R.string.close))
-            .setPickerBackgroundColor(if (isSystemThemeDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
-            .setBackgroundColor(if (isSystemThemeDarkMode(requireContext())) Color.DKGRAY else Color.WHITE)
-            .setMinYear(1300)
-            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-            .setTitleColor(if (isSystemThemeDarkMode(requireContext())) Color.WHITE else Color.DKGRAY)
-            .setActionTextColor(if (isSystemThemeDarkMode(requireContext())) Color.WHITE else Color.GRAY)
-            .setTypeFace(typeface)
-            .setInitDate(persianDate, true)
-            .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
-            .setShowInBottomSheet(true)
-            .setListener(object : Listener {
-                override fun onDateSelected(persianCalendar: PersianCalendar?) {
-                    persianCalendar?.apply {
-                        binding.etBirthDate.editText?.setText(
-                            resources.getString(
-                                R.string.date,
-                                persianYear.toString(),
-                                persianMonth.toString(),
-                                persianDay.toString()
-                            )
-                        )
-                    }
-                }
-
-                override fun onDismissed() {
-                }
-            })
-        picker.show()
-
+        pickDateDialogForResult(requireContext()).observe(viewLifecycleOwner){
+            binding.etBirthDate.editText?.setText(getStringDateByTimestamp(it))
+        }
     }
 }

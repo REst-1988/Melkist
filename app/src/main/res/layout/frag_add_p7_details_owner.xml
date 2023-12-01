@@ -326,6 +326,58 @@
                         </GridLayout>
 
                     </RelativeLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_owner_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        android:layout_marginTop="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_owner_name_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/iransans"
+                            android:hint="@string/et_owner_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/et_owner_phone_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_owner_phone_no_child"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_edit_text"
+                            android:fontFamily="@font/iransans"
+                            android:hint="@string/hint_owner_phone_no"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLength="11"
+                            android:textColor="@color/edit_text_text_color"
+                            android:textDirection="rtl"
+                            android:textSize="@dimen/normal_text_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <!-- age -->
                     <LinearLayout
                         android:id="@+id/layout_age"
@@ -987,6 +1039,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layout_main">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_descriptions_child"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/background_edit_text"
@@ -1002,7 +1055,7 @@
 
                 <Button
                     android:id="@+id/btn_commit"
-                    style="@style/Theme.Melkist.Buttons"
+                    android:theme="@style/Theme.Melkist.Buttons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_margin"

@@ -1,12 +1,12 @@
 package com.example.melkist.views.universal
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,15 +16,24 @@ import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.ImagePagerAdapter
 import com.example.melkist.databinding.FragFileDetailBinding
-import com.example.melkist.models.FileSave
+import com.example.melkist.databinding.LayoutItemsTimeLineBinding
+import com.example.melkist.models.Action
+import com.example.melkist.models.FileActions
+import com.example.melkist.models.FileActionsData
+import com.example.melkist.models.FileData
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
+import com.example.melkist.models.Period
+import com.example.melkist.models.PublicResponseModel
+import com.example.melkist.models.User
+import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.EXTRA_FILE_DETAIL
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.calculatePricePerMeter
 import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.utils.getPropertyPeriodsText
+import com.example.melkist.utils.getStringDateByTimestamp
 import com.example.melkist.utils.handleSystemException
 import com.example.melkist.utils.isShowAdminDeedField
 import com.example.melkist.utils.isShowAgeField
@@ -45,6 +54,7 @@ import com.example.melkist.utils.showDialogWith2Actions
 import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
+import com.example.melkist.views.universal.dialog.BottomSheetCreateAction
 
 class FileDetailFrag : Fragment() {
 
@@ -52,8 +62,7 @@ class FileDetailFrag : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragFileDetailBinding.inflate(inflater)
         binding.apply {
@@ -64,201 +73,288 @@ class FileDetailFrag : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val a = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(a)
-        val b = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(b)
-        val v = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(v)
-        val c = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(c)
-        val x = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(x)
-        val z = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(z)
-        val q = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(q)
-        val w = layoutInflater.inflate(R.layout.layout_items_time_line, null)
-        binding.llTimeLine.addView(w)
-
-
-    }
-
     override fun onResume() {
         super.onResume()
-        initRequireViews()
+        initRequireComponnets()
         initListener()
         initObservers()
+
+        // TODO: delete this
+        Log.e("TAG", "onResume: " +
+                "${viewModel.fileAllData.value?.data?.id}\n" +
+                "${viewModel.fileAllData.value?.data?.locations?.get(0)?.region?.title}", )
     }
 
-    private fun initRequireViews() {
+    private fun initRequireComponnets() {
         viewModel.fileAllData.value?.data?.apply {
-            typeInfo?.fileType?.let { idTitle ->
-                if (idTitle.id == FileTypes().owner.id) {
-                    binding.viewPager.visibility = View.VISIBLE
-                    binding.indicator.visibility = View.VISIBLE
-                    viewModel.fileAllData.value?.data?.images?.apply {
-                        binding.viewPager.adapter =
-                            ImagePagerAdapter(null, null, this)
-                        binding.indicator.setViewPager(binding.viewPager)
-                    }
-                } else {
-                    binding.viewPager.visibility = View.GONE
-                    binding.indicator.visibility = View.GONE
-                }
-            }
-            (activity as MainActivity).user?.let { user ->
-                this.user?.let { fileCreatorUser ->
-                    if (fileCreatorUser.id == user.id) {
-                        binding.apply {
-                            layoutBtnCooperationRequest.visibility = View.GONE
-                            layoutBtnDeleteFile.visibility = View.VISIBLE
-                        }
-                    } else {
-                        binding.apply {
-                            layoutBtnCooperationRequest.visibility = View.VISIBLE
-                            layoutBtnDeleteFile.visibility = View.GONE
-                        }
-                    }
-                }
-            }
+            showProperViews(this)
             isFav?.apply {
                 binding.ibtnBookmark.showFav(this)
             }
         }
     }
 
-    private fun initListener() {
-        binding.ibtnBookmark.setOnClickListener {
-            viewModel.fileAllData.value?.data?.isFav?.apply {
-                if (this) {
-                    (activity as MainActivity).user.apply {
-                        viewModel.deleteFavFile(
-                            requireActivity(),
-                            this?.token,
-                            this?.id,
-                            viewModel.fileAllData.value!!.data!!.id
-                        )
+    private fun showProperViews(fileData: FileData) {
+        fileData.typeInfo?.fileType?.let { idTitle ->
+            if (idTitle.id == FileTypes().owner.id) {
+                binding.viewPager.visibility = View.VISIBLE
+                binding.indicator.visibility = View.VISIBLE
+                showImagesForOwnerFile()
+                viewModel.getActionsOfFile(requireActivity(), fileData.id)
+            } else {
+                binding.viewPager.visibility = View.GONE
+                binding.indicator.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showProperActionButtons(fileUser: User?) {
+        (activity as MainActivity).user?.let { user ->
+            fileUser?.let { fileCreatorUser ->
+                if (fileCreatorUser.id == user.id) {
+                    binding.apply {
+                        btnSendCooperationRequest.visibility = View.GONE
+                        layoutBtnDeleteFile.visibility = View.VISIBLE
+                        ibtnCreateAction.visibility = View.VISIBLE
                     }
                 } else {
-                    (activity as MainActivity).user.apply {
-                        viewModel.saveFavFile(
-                            requireActivity(),
-                            this?.token,
-                            this?.id,
-                            viewModel.fileAllData.value!!.data!!.id
-                        )
+                    binding.apply {
+                        btnSendCooperationRequest.visibility = View.VISIBLE
+                        layoutBtnDeleteFile.visibility = View.GONE
+                        ibtnCreateAction.visibility = View.GONE
                     }
                 }
             }
+        }
+    }
+
+    private fun showImagesForOwnerFile() {
+        viewModel.fileAllData.value?.data?.images?.apply {
+            binding.viewPager.adapter = ImagePagerAdapter(null, null, this)
+            binding.indicator.setViewPager(binding.viewPager)
+        }
+    }
+
+    private fun showTimeLine(fileActionsData: List<FileActionsData>?) {
+        binding.llTimeLine.removeAllViewsInLayout()
+        fileActionsData?.forEach { fileActions ->
+            val actionLayout =
+                LayoutItemsTimeLineBinding.inflate(LayoutInflater.from(requireContext()))
+            actionLayout.txtActionTimeLine.text = fileActions.action?.actionTitle ?: ""
+            actionLayout.txtDateTimeLine.text =
+                getStringDateByTimestamp((fileActions.action?.actionDate ?: 0) * 10)
+            actionLayout.txtAgentTimeLine.text =
+                resources.getString(
+                    R.string.applicant,
+                    fileActions.performerUser?.firstName ?: "",
+                    fileActions.performerUser?.lastName ?: "",
+                    fileActions.performerUser?.realEstate ?: ""
+                )
+            binding.llTimeLine.addView(actionLayout.root)
+        }
+    }
+
+    private fun initListener() {
+        binding.ibtnBookmark.setOnClickListener {
+            onBtnBookmarkClicked()
         }
         binding.ibtnShare.setOnClickListener {
             showToast(requireContext(), resources.getString(R.string.next_phase))
         }
     }
 
-    private fun initObservers() {
-        viewModel.cooperationResponse.observe(viewLifecycleOwner) { response ->
-            when (response.result) {
-                true -> {
-                    response.message?.let {
-                        showToast(
-                            requireContext(), it
-                        )
-                    }
-                    viewModel.resetCooperationResponse()
-                    back()
-                }
-
-                false -> {
-                    onRequestFalseResult(
+    private fun onBtnBookmarkClicked() {
+        viewModel.fileAllData.value?.data?.isFav?.apply {
+            if (this) {
+                (activity as MainActivity).user.apply {
+                    viewModel.deleteFavFile(
                         requireActivity(),
-                        response.errors ?: UNKNOWN_ERRORS_LIST
-                    ) {}
-                    viewModel.resetCooperationResponse()
+                        this?.token,
+                        this?.id,
+                        viewModel.fileAllData.value!!.data!!.id
+                    )
                 }
-
-                else -> {}
+            } else {
+                (activity as MainActivity).user.apply {
+                    viewModel.saveFavFile(
+                        requireActivity(),
+                        this?.token,
+                        this?.id,
+                        viewModel.fileAllData.value!!.data!!.id
+                    )
+                }
             }
+        }
+    }
+
+
+    private fun initObservers() {
+        viewModel.status.observe(viewLifecycleOwner) {
+            when (it) {
+                ApiStatus.DONE -> showProperActionButtons(viewModel.fileAllData.value?.data?.user)
+                else -> {
+                    binding.apply {
+                        layoutBtnDeleteFile.visibility = View.GONE
+                        btnSendCooperationRequest.visibility = View.GONE
+                    }
+                }
+            }
+        }
+        viewModel.cooperationResponse.observe(viewLifecycleOwner) { response ->
+            handleCooperationResponse(response)
         }
 
         viewModel.saveFavResponse.observe(viewLifecycleOwner) { response ->
-            when (response.result) {
-                true -> {
-                    response.message?.let {
-                        showToast(
-                            requireContext(), it
-                        )
-                        binding.ibtnBookmark.setImageResource(R.drawable.baseline_bookmark_added_24)
-                        viewModel.resetSaveResponse()
-                        viewModel.fileAllData.value?.data?.isFav = true
-                    }
-                }
-
-                false -> {
-                    onRequestFalseResult(
-                        requireActivity(),
-                        response.errors ?: UNKNOWN_ERRORS_LIST
-                    ) {}
-                    viewModel.resetSaveResponse()
-                }
-
-                else -> Log.e(
-                    "TAG",
-                    "saveFavResponse: ${resources.getString(R.string.null_value)}"
-                )
-            }
+            handleSaveResponse(response)
         }
 
         viewModel.deleteFavResponse.observe(viewLifecycleOwner) { response ->
-            Log.e("TAG", "deleteFavResponse: test $response")
-            when (response.result) {
-                true -> {
-                    showToast(
-                        requireContext(), response.message!!
-                    )
-                    binding.ibtnBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
-                    viewModel.resetDeleteFavResponse()
-                    viewModel.fileAllData.value?.data?.isFav = false
-                }
-
-                false -> {
-                    onRequestFalseResult(
-                        requireActivity(),
-                        response.errors ?: UNKNOWN_ERRORS_LIST
-                    ) {}
-                    viewModel.resetDeleteFavResponse()
-                }
-
-                else -> Log.e(
-                    "TAG",
-                    "deleteFavResponse: ${resources.getString(R.string.null_value)}"
-                )
-            }
+            handleDeleteFavResponse(response)
         }
 
         viewModel.deleteFileResponse.observe(viewLifecycleOwner) { response ->
-            when (response.result) {
-                true -> {
-                    viewModel.resetDeleteFileResponse()
-                    back()
-                }
+            handleDeleteFileResponse(response)
+        }
 
-                false -> {
-                    viewModel.resetDeleteFileResponse()
-                    onRequestFalseResult(
-                        requireActivity(),
-                        response.errors ?: UNKNOWN_ERRORS_LIST
-                    ) {}
-                }
+        viewModel.saveActionResponse.observe(viewLifecycleOwner) { response ->
+            handleSaveActionResponse(response)
+        }
 
-                null -> Log.e(
-                    "TAG",
-                    "initObservers: ${resources.getString(R.string.null_value)}"
-                )
+        viewModel.fileActionsResponse.observe(viewLifecycleOwner) { response ->
+            handleFileActionsResponse(response)
+        }
+    }
+
+    private fun handleCooperationResponse(response: PublicResponseModel) {
+        when (response.result) {
+            true -> {
+                response.message?.let {
+                    showToast(
+                        requireContext(), it
+                    )
+                }
+                back()
+                viewModel.resetCooperationResponse()
             }
+
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetCooperationResponse()
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun handleSaveResponse(response: PublicResponseModel) {
+        when (response.result) {
+            true -> {
+                response.message?.let {
+                    showToast(
+                        requireContext(), it
+                    )
+                    binding.ibtnBookmark.setImageResource(R.drawable.baseline_bookmark_added_24)
+                    viewModel.resetSaveResponse()
+                    viewModel.fileAllData.value?.data?.isFav = true
+                }
+            }
+
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetSaveResponse()
+            }
+
+            else -> Log.e(
+                "TAG", "saveFavResponse: ${resources.getString(R.string.null_value)}"
+            )
+        }
+    }
+
+    private fun handleDeleteFavResponse(response: PublicResponseModel) {
+        when (response.result) {
+            true -> {
+                showToast(
+                    requireContext(), response.message!!
+                )
+                binding.ibtnBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
+                viewModel.resetDeleteFavResponse()
+                viewModel.fileAllData.value?.data?.isFav = false
+            }
+
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetDeleteFavResponse()
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun handleDeleteFileResponse(response: PublicResponseModel) {
+        when (response.result) {
+            true -> {
+                back()
+                viewModel.resetDeleteFileResponse()
+            }
+
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetDeleteFileResponse()
+            }
+
+            null -> Log.e(
+                "TAG", "initObservers: ${resources.getString(R.string.null_value)}"
+            )
+        }
+    }
+
+    private fun handleSaveActionResponse(response: PublicResponseModel) {
+        when (response.result) {
+            true -> {
+                showToast(requireContext(), response.message?:"")
+                viewModel.getActionsOfFile(
+                    requireActivity(),
+                    viewModel.fileAllData.value?.data?.id ?: 0
+                )
+                viewModel.resetSaveActionResponse()
+            }
+
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetSaveActionResponse()
+            }
+
+            null -> Log.e(
+                "TAG", "initObservers: ${resources.getString(R.string.null_value)}"
+            )
+        }
+    }
+
+    private fun handleFileActionsResponse(response: FileActions) {
+        when (response.result) {
+            true -> {
+                showTimeLine(response.data)
+                binding.scrollView.smoothScrollTo(0, binding.scrollView.bottom)
+                // viewModel.resetFileActionsResponse() TODO: uncomment this
+            }
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetFileActionsResponse()
+            }
+
+            else -> {}
         }
     }
 
@@ -269,8 +365,7 @@ class FileDetailFrag : Fragment() {
                 binding.txtRegionOther.visibility = View.VISIBLE
                 binding.txtRegionOtherTitle.visibility = View.VISIBLE
                 val a = mutableListOf<String>()
-                for (i in 1 until size)
-                    a.add(this[i].region.title)
+                for (i in 1 until size) a.add(this[i].region.title)
                 text = concatenateText(a)
             } else {
                 binding.txtRegionOther.visibility = View.GONE
@@ -280,26 +375,44 @@ class FileDetailFrag : Fragment() {
         return text
     }
 
+    fun saveAction(action: Action, fileId: Int) {
+        val user = (requireActivity() as MainActivity).user
+        viewModel.saveAction(
+            requireActivity(),
+            user?.token,
+            fileId,
+            user?.id,
+            action.id,
+            action.actionDate,
+            action.actionOwnerName,
+            action.actionOwnerMobile
+        )
+    }
+
     /************** binding methods ************************/
     fun back() {
         findNavController().popBackStack()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun onCreateActionClick() {
+        viewModel.fileAllData.value?.data?.id?.apply {
+            val bottomSheetDialog = BottomSheetCreateAction(this@FileDetailFrag, this)
+            bottomSheetDialog.show(childFragmentManager, bottomSheetDialog.tag)
+        }
     }
 
     fun onSendCooperationRequest() {
         viewModel.fileAllData.value?.data?.id?.let { fileId ->
             (activity as MainActivity).user.apply {
                 viewModel.sendCooperationRequest(
-                    requireActivity(),
-                    this?.token,
-                    this?.id,
-                    fileId
+                    requireActivity(), this?.token, this?.id, fileId
                 )
             }
         }
     }
 
     fun onEditFileClick() {
-
         viewModel.fileAllData.value?.data?.apply {
             val intent = Intent(requireActivity(), AddActivity::class.java)
             intent.putExtra(EXTRA_FILE_DETAIL, this)
@@ -308,8 +421,7 @@ class FileDetailFrag : Fragment() {
     }
 
     fun onDeleteFileClick() {
-        showDialogWith2Actions(
-            requireContext(),
+        showDialogWith2Actions(requireContext(),
             resources.getString(R.string.are_you_sure_about_delete_file),
             { _, _ ->
                 (activity as MainActivity).user?.token?.apply {
@@ -318,8 +430,7 @@ class FileDetailFrag : Fragment() {
                     }
                 }
             },
-            { d, _ -> d.dismiss() }
-        )
+            { d, _ -> d.dismiss() })
     }
 
     fun getUserImage(): String? {
@@ -341,8 +452,7 @@ class FileDetailFrag : Fragment() {
     }
 
     fun createAtText(): String {
-        return viewModel.fileAllData.value?.data?.created_at
-            ?: ""
+        return viewModel.fileAllData.value?.data?.created_at ?: ""
     }
 
     fun typeText(): String {
@@ -387,20 +497,15 @@ class FileDetailFrag : Fragment() {
     ////////////////////////////////////////
     fun isShowAge(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowAgeField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowAgeField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun ageText(): String {
-        val a = viewModel.fileAllData.value?.data?.let {
+        val a = viewModel.fileAllData.value?.data?.age?.let {
             return getPropertyPeriodsText(
-                requireContext(),
-                it.age,
-                R.string.empty,
-                R.string.empty
+                requireContext(), it, R.string.empty, R.string.empty
             )
         }
         return a ?: ""
@@ -408,20 +513,15 @@ class FileDetailFrag : Fragment() {
 
     fun isShowSize(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowSizeField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowSizeField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun sizeText(): String {
-        val a = viewModel.fileAllData.value?.data?.let {
+        val a = viewModel.fileAllData.value?.data?.size?.let {
             getPropertyPeriodsText(
-                requireContext(),
-                it.size,
-                R.string.empty,
-                R.string.squere_meter
+                requireContext(), it, R.string.empty, R.string.squere_meter
             )
         }
         return a ?: ""
@@ -429,20 +529,15 @@ class FileDetailFrag : Fragment() {
 
     fun isShowRooms(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowRoomsField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowRoomsField(data.category?.id ?: 0, data.subCategory?.id ?: 0)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun roomNoText(): String {
-        val a = viewModel.fileAllData.value?.data?.let {
+        val a = viewModel.fileAllData.value?.data?.roomNo?.let {
             getPropertyPeriodsText(
-                requireContext(),
-                it.roomNo,
-                R.string.empty,
-                R.string.room
+                requireContext(), it, R.string.empty, R.string.room
             )
         }
         return a ?: ""
@@ -450,170 +545,200 @@ class FileDetailFrag : Fragment() {
 
     fun isShowPrice(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowTotalPriceField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowTotalPriceField(
+                    data.category?.id ?: 0,
+                    data.subCategory?.id ?: 0
+                )
+            ) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun priceText(): String {
         val a = viewModel.fileAllData.value?.data?.let {
-            return getPropertyPeriodsPriceText(
-                requireContext(),
-                it.price,
-                R.string.empty,
-                R.string.tooman
+            getPropertyPeriodsPriceText(
+                requireContext(), it.price ?: Period(0, 0), R.string.empty, R.string.tooman
             )
         }
         return a ?: ""
     }
 
     fun pricePerMeterText(): String {
-        return (viewModel.fileAllData.value?.data?.let {
-            if (isShowPrice() == View.VISIBLE)
+        if (isShowPrice() == View.VISIBLE) {
+            binding.txtPricePerMeter.visibility = View.VISIBLE
+            binding.txtPricePerMeterTitle.visibility = View.VISIBLE
+            return viewModel.fileAllData.value?.data?.let { data ->
                 String.format(
-                    "%s %s",
-                    calculatePricePerMeter(
+                    "%s %s", calculatePricePerMeter(
                         requireContext(),
-                        viewModel.fileAllData.value!!.data!!.price,
-                        viewModel.fileAllData.value!!.data!!.size
-                    ),
-                    resources.getString(R.string.tooman)
+                        data.price ?: Period(0, 0),
+                        viewModel.fileAllData.value?.data?.size ?: Period(0, 0)
+                    ), resources.getString(R.string.tooman)
                 )
-            else
-                ""
-        }) ?: ""
+            } ?: ""
+        } else {
+            binding.txtPricePerMeter.visibility = View.GONE
+            binding.txtPricePerMeterTitle.visibility = View.GONE
+            return ""
+        }
     }
 
     fun isShowMortgage(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowMortgageField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowMortgageField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun mortgageText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return viewModel.fileAllData.value?.data?.mortgage?.let { data ->
+            getPropertyPeriodsPriceText(
+                requireContext(),
+                data,
+                R.string.empty,
+                R.string.tooman
+            )
+        } ?: ""
     }
 
     fun isShowRent(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowRentField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowRentField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun rentText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return viewModel.fileAllData.value?.data?.rent?.let { data ->
+            getPropertyPeriodsPriceText(
+                requireContext(),
+                data,
+                R.string.empty,
+                R.string.tooman
+            )
+        } ?: ""
     }
 
     fun isShowSuitableFor(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowSuitableForField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowSuitableForField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun suitableForText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return resources
+            .getStringArray(
+                R.array.suitable_for_options
+            )[viewModel.fileAllData.value?.data?.suitablefor ?: 0]
     }
 
     fun isShowFloor(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowFloorField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowFloorField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun floorText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return resources
+            .getStringArray(
+                R.array.floor_list
+            )[viewModel.fileAllData.value?.data?.floor ?: 0]
     }
 
     fun isShowParking(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowParkingField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowParkingField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun parkingText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return viewModel.fileAllData.value?.data?.parking?.let {
+            when (it) {
+                true -> resources.getString(R.string.have)
+                false -> resources.getString(R.string.dont_have)
+            }
+        } ?: ""
     }
 
     fun isShowStoreRoom(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowStoreRoomField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowStoreRoomField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun storeRoomText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return viewModel.fileAllData.value?.data?.storeRoom?.let {
+            when (it) {
+                true -> resources.getString(R.string.have)
+                false -> resources.getString(R.string.dont_have)
+            }
+        } ?: ""
     }
 
     fun isShowBalcony(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowBalconyField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowBalconyField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun balconyText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return viewModel.fileAllData.value?.data?.balcony?.let {
+            when (it) {
+                true -> resources.getString(R.string.have)
+                false -> resources.getString(R.string.dont_have)
+            }
+        } ?: ""
     }
 
     fun isShowElevator(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowElevatorField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowElevatorField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun elevatorText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return return viewModel.fileAllData.value?.data?.elevator?.let {
+            when (it) {
+                true -> resources.getString(R.string.have)
+                false -> resources.getString(R.string.dont_have)
+            }
+        } ?: ""
     }
 
     fun isShowAdminDeed(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowAdminDeedField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowAdminDeedField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun adminDeedText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return return viewModel.fileAllData.value?.data?.adminDeed?.let {
+            when (it) {
+                true -> resources.getString(R.string.have)
+                false -> resources.getString(R.string.dont_have)
+            }
+        } ?: ""
     }
 
     fun isShowDeedType(): Int {
         return viewModel.fileAllData.value?.data?.typeInfo?.let { data ->
-            if (isShowDeedTypeField(data.category!!.id!!, data.subCategory!!.id!!))
-                View.VISIBLE
-            else
-                View.GONE
+            if (isShowDeedTypeField(data.category!!.id!!, data.subCategory!!.id!!)) View.VISIBLE
+            else View.GONE
         } ?: View.GONE
     }
 
     fun deedTypeText(): String {
-        return "جهت تکمیل backend"  // TODO
+        return resources
+            .getStringArray(
+                R.array.deed_type_options
+            )[viewModel.fileAllData.value?.data?.deedType ?: 0]
     }
 
     fun isShowDescriptions(): Boolean {

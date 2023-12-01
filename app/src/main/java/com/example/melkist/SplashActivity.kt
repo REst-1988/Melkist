@@ -34,7 +34,6 @@ class SplashActivity : AppCompatActivity() {
 
     private val splashTimeOut: Long = 2000
     private lateinit var binding: ActivitySplashScreenBinding
-    private lateinit var userDataStore: UserDataStore
     private var appVersion: String = ""
     private val viewModel: SplashViewModel by viewModels()
     private var user: User? = null
@@ -50,14 +49,7 @@ class SplashActivity : AppCompatActivity() {
             }
             setContentView(binding.root)
             checkAppVersion()
-            //userDataStore = Ds.getDataStore(this)
             listenToAppVersionResponse()
-            /*userDataStore.preferenceFlow.asLiveData().observe(this) { value ->
-                user = value
-                Log.e("SplashActivity", "onCreate: userDataStore = $value")
-                checkFirebaseTokenAndProceed()
-            }*/
-
             OptionsDs.getDataStore(this).themePreferenceFlow.asLiveData().observe(this) {
                 Log.e("TAG", "onCreate: OptionsDs theme = $it")
                 it?.let { theme -> changeAppTheme(theme) }
@@ -67,8 +59,6 @@ class SplashActivity : AppCompatActivity() {
                     {
                         viewModel.callServerAppVersion(
                             this,
-                            userId = user?.id,
-                            firebaseToken,
                             appVersion
                         )
                     }, splashTimeOut
@@ -92,8 +82,6 @@ class SplashActivity : AppCompatActivity() {
                             d.dismiss()
                             viewModel.callServerAppVersion(
                                 this@SplashActivity,
-                                userId = user?.id,
-                                firebaseToken,
                                 appVersion
                             )
                         }
@@ -137,24 +125,6 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         this@SplashActivity.finish()
     }
-
-/*    private fun startLoginActivityOnFalseResult() {
-        startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-        this@SplashActivity.finish()
-        overridePendingTransition(0, 0)
-    }*/
-
-/*    private fun checkFirebaseTokenAndProceed() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.e(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-            firebaseToken = task.result // Get new FCM registration token
-            Log.e(ContentValues.TAG, firebaseToken ?: "")
-
-        })
-    }*/
 
     private fun checkAppVersion() {
         val pInfo = this.packageManager.getPackageInfo(packageName, 0)

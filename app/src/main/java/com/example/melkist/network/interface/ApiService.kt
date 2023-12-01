@@ -2,6 +2,8 @@ package com.example.melkist.network.`interface`
 
 import android.util.Log
 import com.example.melkist.models.*
+import org.json.JSONObject
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -16,12 +18,11 @@ interface ApiService {
 
     @POST("checkAppVersion")
     suspend fun versionControl(
-        @Query("user_id") userId: Int?,
-        @Query("firebase_token") firebaseToken: String?,
+       /* @Query("user_id") userId: Int?,
+        @Query("firebase_token") firebaseToken: String?,*/
         @Query("app_version") appVersion: String
     ): AppVersionResponse {
         Log.e("TAG", "versionControl: test for body of suspend method", )
-
         return AppVersionResponse(null, null, null, null)
     }
 
@@ -133,6 +134,12 @@ interface ApiService {
         @Body img: FileSave
     ): PublicResponseModel
 
+    @POST("dashboard/admin/file/edit")
+    suspend fun editFile(
+        @Header("Authorization") token: String?,
+        @Body img: FileSave
+    ): PublicResponseModel
+
     @POST("dashboard/admin/file/getAllFilesByCity")
     suspend fun getAllFilesByCity(
         @Header("Authorization") token: String?,
@@ -232,4 +239,34 @@ interface ApiService {
         @Header("Authorization") token: String?,
         @Query("user_id") userId: Int?,
     ): SuggestionModel
+
+    @POST("dashboard/admin/file/action/save")
+    suspend fun saveAction(
+        @Header("Authorization") token: String?,
+        @Query("file_id") fileId: Int?,
+        @Query("user_id") userId: Int?,
+        @Query("fileAction_id") fileActionId: Int?,
+        @Query("actionDate") actionDate: Long?,
+        @Query("actionOwnerName") ownerName: String?,
+        @Query("actionOwnerMobile") ownerMobile: String?
+    ): PublicResponseModel
+
+    @POST("dashboard/admin/file/action/getActionsOfFile")
+    suspend fun getActionsOfFile(
+        @Header("Authorization") token: String?,
+        @Query("file_id") fileId: Int?
+    ): FileActions
+
+    @POST("dashboard/admin/file/action/getSubsetUsersActions")
+    suspend fun getSubsetUsersActions(
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?
+    ): FileActions
+
+    @POST("dashboard/admin/file/action/getSumOfSubsetUsersActionsPeriodically")
+    suspend fun getSumOfSubsetUsersActionsPeriodically(
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int?,
+        @Query("period") period: Int?
+    ): Charts
 }

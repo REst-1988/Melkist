@@ -124,6 +124,42 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
+                android:id="@+id/txt_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="خواهان" />
+
+            <TextView
+                android:id="@+id/txt_sub_cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/txt_type"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="خرید و فروش" />
+
+            <TextView
+                android:id="@+id/txt_cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintStart_toEndOf="@id/txt_sub_cat"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="آپارتمان" />
+
+            <TextView
                 android:id="@+id/txt_room_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,7 +168,7 @@
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_type"
                 tools:text="2 خواب" />
 
             <TextView
@@ -158,9 +194,8 @@
                 android:padding="@dimen/very_very_short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_price"
                 tools:text="معالی آباد" />
 
             <TextView
@@ -173,8 +208,34 @@
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/short_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_region"
                 tools:text="5،000،000،000 تومان" />
+
+            <TextView
+                android:id="@+id/txt_mortgage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_region"
+                tools:text="300،000،000 تومان" />
+
+            <TextView
+                android:id="@+id/txt_rent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/short_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_mortgage"
+                tools:text="5،000،000 تومان" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

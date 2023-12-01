@@ -35,7 +35,7 @@ import com.example.melkist.utils.SHIRAZ_CITY_ID
 import com.example.melkist.utils.TYPE_OPTIONS_TAG
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.handleSystemException
-import com.example.melkist.utils.isSystemThemeDarkMode
+import com.example.melkist.utils.isSystemThemeInDarkMode
 import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
@@ -157,7 +157,7 @@ class MapP1Frag : Fragment() {
             googleMap = mapFragment.awaitMap()
         }
         googleMap.awaitMapLoad()
-        if (isSystemThemeDarkMode(requireContext())) googleMap.setMapStyle(
+        if (isSystemThemeInDarkMode(requireContext())) googleMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
                 requireContext(), R.raw.map_style
             )
@@ -367,7 +367,7 @@ class MapP1Frag : Fragment() {
             bitmap =
                 Bitmap.createBitmap(binding.img.width, binding.img.height, Bitmap.Config.ARGB_8888)
             canvas = Canvas(bitmap!!)
-            paint.color = if (isSystemThemeDarkMode(requireContext())) Color.WHITE else Color.BLUE
+            paint.color = if (isSystemThemeInDarkMode(requireContext())) Color.WHITE else Color.BLUE
             paint.isAntiAlias = true
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = 4f

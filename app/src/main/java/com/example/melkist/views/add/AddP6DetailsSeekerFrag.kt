@@ -1,9 +1,6 @@
 package com.example.melkist.views.add
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +14,6 @@ import com.example.melkist.databinding.FragAddP6DetailsSeekerBinding
 import com.example.melkist.utils.AGE_FROM_TAG
 import com.example.melkist.utils.AGE_TO_TAG
 import com.example.melkist.utils.DATA
-import com.example.melkist.utils.FLOOR_FROM_TAG
-import com.example.melkist.utils.FLOOR_TO_TAG
 import com.example.melkist.utils.MORTGAGE_FROM_TAG
 import com.example.melkist.utils.MORTGAGE_TO_TAG
 import com.example.melkist.utils.PRICE_FROM_TAG
@@ -36,7 +31,6 @@ import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.viewmodels.AddItemViewModel
 import com.example.melkist.views.universal.dialog.BottomSheetUniversalList
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.math.BigDecimal
 
@@ -57,7 +51,12 @@ class AddP6DetailsSeekerFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.saveResponse.observe(viewLifecycleOwner) {
+        viewModel.extra?.apply {
+            binding.txtTitle.text = resources.getString(R.string.edit_detail_page_title)
+            // according to the meeting no need to add owner for seeker
+            setExtraFieldsForEditing()
+        }
+        viewModel.saveEditResponse.observe(viewLifecycleOwner) {
             when (it.result) {
                 true -> showDialogWithMessage(
                     requireContext(), it.message ?: ""
@@ -93,6 +92,40 @@ class AddP6DetailsSeekerFrag : Fragment() {
             viewModel.descriptions = binding.etDescriptions.editText?.text.toString()
     }
 
+    private fun setExtraFieldsForEditing(){
+        binding.apply {
+            viewModel.ageFrom?.apply { etAgeFrom.editText?.setText(this.toString()) }
+            viewModel.ageTo?.apply { etAgeTo.editText?.setText(this.toString()) }
+            viewModel.sizeFrom?.apply { etSizeFrom.editText?.setText(this.toString()) }
+            viewModel.sizeTo?.apply { etSizeTo.editText?.setText(this.toString()) }
+            viewModel.roomFrom?.apply { etRoomNoFrom.editText?.setText(this.toString()) }
+            viewModel.roomTo?.apply { etRoomNoTo.editText?.setText(this.toString()) }
+            viewModel.totalPriceFrom?.apply {
+                etPriceFromChild.addLiveSeparatorListener()
+                etPriceFrom.editText?.setText(this.toString()) }
+            viewModel.totalPriceTo?.apply {
+                etPriceToChild.addLiveSeparatorListener()
+                etPriceTo.editText?.setText(this.toString())
+            }
+            viewModel.mortgageFrom?.apply {
+                etMortgageFromChild.addLiveSeparatorListener()
+                etMortgageFrom.editText?.setText(this.toString())
+            }
+            viewModel.mortgageTo?.apply {
+                etMortgageToChild.addLiveSeparatorListener()
+                etMortgageTo.editText?.setText(this.toString())
+            }
+            viewModel.rentFrom?.apply {
+                etRentFromChild.addLiveSeparatorListener()
+                etRentFrom.editText?.setText(this.toString())
+            }
+            viewModel.rentTo?.apply {
+                etRentToChild.addLiveSeparatorListener()
+                etRentTo.editText?.setText(this.toString())
+            }
+        }
+    }
+
     private fun checkFieldsForNullabilitySeparatorAccepted(view: TextInputLayout): Long? {
         if (view.editText!!.text.toString()
                 .isNotEmpty() && view.editText!!.text.toString() != "" && view.editText!!.text.toString() != "0"
@@ -115,7 +148,11 @@ class AddP6DetailsSeekerFrag : Fragment() {
             viewModel.totalPriceTo = checkFieldsForNullabilitySeparatorAccepted(etPriceTo)
             viewModel.sizeFrom = checkFieldsForNullabilitySeparatorAccepted(etSizeFrom)?.toInt()
             viewModel.sizeTo = checkFieldsForNullabilitySeparatorAccepted(etSizeTo)?.toInt()
-            viewmodel?.descriptions = etDescriptions.editText?.text?.toString()
+            viewModel.mortgageFrom = checkFieldsForNullabilitySeparatorAccepted(etMortgageFrom)
+            viewModel.mortgageTo = checkFieldsForNullabilitySeparatorAccepted(etMortgageTo)
+            viewModel.rentFrom = checkFieldsForNullabilitySeparatorAccepted(etRentFrom)
+            viewModel.rentTo = checkFieldsForNullabilitySeparatorAccepted(etRentTo)
+            viewModel.descriptions = etDescriptions.editText?.text?.toString()
         }
     }
 
@@ -148,8 +185,11 @@ class AddP6DetailsSeekerFrag : Fragment() {
     fun onCommit() {
         gatheringData()
         (activity as AddActivity).user.apply {
-            viewModel.saveFile(requireActivity(), this)
+            viewModel.extra?.let {
+                viewModel.editFile(requireActivity(), this)
+            }?: viewModel.saveFile(requireActivity(), this)
         }
+
     }
 
     fun isShowAge(): Int {
@@ -304,10 +344,10 @@ class AddP6DetailsSeekerFrag : Fragment() {
             val position = positionBundle.getInt(DATA)
             if (position == 0) {
                 binding.curtainMortgageFrom.visibility = View.GONE
-                binding.etMortagageFromChild.requestFocus()
-                binding.etMortagageFromChild.addLiveSeparatorListener()
+                binding.etMortgageFromChild.requestFocus()
+                binding.etMortgageFromChild.addLiveSeparatorListener()
             } else {
-                binding.etMortagageFromChild.setText(
+                binding.etMortgageFromChild.setText(
                     formatNumber(
                         resources.getStringArray(R.array.int_price_list_mortgage)[position].toLong()
                     )
@@ -396,13 +436,14 @@ class AddP6DetailsSeekerFrag : Fragment() {
     }*/
 
     fun isShowFloor(): Int {
-        return if (viewModel.isShowFloorField())
-            View.VISIBLE
-        else
-            View.GONE
+        return View.GONE
+        //if (viewModel.isShowFloorField())
+            // View.VISIBLE
+        // else
+            //View.GONE
     }
 
-    fun onFloorFromClick() {
+/*    fun onFloorFromClick() {
         val bottomFrag =
             BottomSheetUniversalList(resources.getStringArray(R.array.floor_list).toList())
         bottomFrag.show(childFragmentManager, FLOOR_FROM_TAG)
@@ -422,5 +463,5 @@ class AddP6DetailsSeekerFrag : Fragment() {
                 positionBundle.getInt(DATA)
             )
         }
-    }
+    }*/
 }

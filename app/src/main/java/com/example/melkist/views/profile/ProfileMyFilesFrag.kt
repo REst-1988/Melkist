@@ -14,10 +14,13 @@ import com.example.melkist.MainActivity
 import com.example.melkist.R
 import com.example.melkist.adapters.MyFilesAdapter
 import com.example.melkist.databinding.FragProfileMyfilesBinding
+import com.example.melkist.models.Action
 import com.example.melkist.models.FileData
+import com.example.melkist.models.PublicResponseModel
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.loginRequiredDialog
 import com.example.melkist.utils.onRequestFalseResult
+import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 
 class ProfileMyFilesFrag : Fragment() {
@@ -67,6 +70,9 @@ class ProfileMyFilesFrag : Fragment() {
                 else -> {}
             }
         }
+        viewModel.saveActionResponse.observe(viewLifecycleOwner) { response ->
+            handleSaveActionResponse(response)
+        }
     }
 
     fun choosingItemAction(file: FileData) {
@@ -75,6 +81,38 @@ class ProfileMyFilesFrag : Fragment() {
             findNavController().navigate(
                 R.id.action_profileMyFilesFrag_to_fileDetailFrag
             )
+        }
+    }
+
+    fun saveAction(action: Action, fileId: Int) {
+        val user = (requireActivity() as MainActivity).user
+        viewModel.saveAction(
+            requireActivity(),
+            user?.token,
+            fileId,
+            user?.id,
+            action.id,
+            action.actionDate,
+            action.actionOwnerName,
+            action.actionOwnerMobile
+        )
+    }
+
+    private fun handleSaveActionResponse(response: PublicResponseModel) {
+        when (response.result) {
+            true -> {
+                showToast(requireContext(), response.message ?: "")
+                viewModel.resetSaveActionResponse()
+            }
+
+            false -> {
+                onRequestFalseResult(
+                    requireActivity(), response.errors ?: UNKNOWN_ERRORS_LIST
+                ) {}
+                viewModel.resetSaveActionResponse()
+            }
+
+            null -> {}
         }
     }
 

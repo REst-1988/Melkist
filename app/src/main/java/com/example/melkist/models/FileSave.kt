@@ -46,17 +46,30 @@ data class FileResponse(
 )
 
 data class FileSave(
-    @Json(name = "fileType_id") val typeId: Int,
-    @Json(name = "fileCategory_id") val catId: Int,
-    @Json(name = "fileCategoryType_id") val subCatId: Int,
-    @Json(name = "user_id") val userId: Int,
-    @Json(name = "city_id") val cityId: Int,
-    @Json(name = "locations") val locations: List<Loc>, // list because user can choose multi places
+    @Json (name = "file_id")  val id: Int? = null,
+    @Json (name = "fileType_id") val typeId: Int,
+    @Json (name = "fileCategory_id") val catId: Int,
+    @Json (name = "fileCategoryType_id") val subCatId: Int,
+    @Json (name = "user_id") val userId: Int,
+    @Json (name = "city_id") val cityId: Int,
+    @Json (name = "locations") val locations: List<Loc>, // list because user can choose multi places
     @Json val isShowExactAddress: Boolean,
+    @Json (name = "actionOwnerName") val ownerName: String?,
+    @Json (name = "actionOwnerMobile") val ownerPhone: String?,
     @Json (name = "meterage") val size: Period,
     @Json (name = "sleepsNumber") val rooms: Period,
     @Json val age: Period,
     @Json val price: Period,
+    @Json val mortgage: Period,
+    @Json val rent: Period,
+    @Json val suitableFor: Int?,
+    @Json val floor: Int?,
+    @Json val parking: Boolean?,
+    @Json val storeRoom: Boolean?,
+    @Json (name = "balacon") val balcony: Boolean?,
+    @Json val elevator: Boolean?,
+    @Json (name = "administrativeDeed") val adminDeed: Boolean?,
+    @Json val deedType: Int?,
     @Json val description: String?,
     @Json val images: List<String?>?
 ): Serializable

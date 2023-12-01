@@ -14,10 +14,8 @@ import com.example.melkist.databinding.LayoutBottomSheetFileDetailOwnerBinding
 import com.example.melkist.models.FileDataResponse
 import com.example.melkist.utils.ApiStatus
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
-import com.example.melkist.utils.concatenateText
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.onRequestFalseResult
-import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showFav
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
@@ -34,7 +32,6 @@ class BottomSheetFileDetailOwnerDialog(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO: check if what happened with any deleted file
         (activity as MainActivity).user.apply {
             viewModel.getFileInfoById(requireActivity(), this?.token, fileId, this?.id)
         }
@@ -90,9 +87,10 @@ class BottomSheetFileDetailOwnerDialog(
                     onRequestFalseResult(
                         requireActivity(),
                         response.errors ?: UNKNOWN_ERRORS_LIST
-                    ){}
+                    ) {}
                     this.dismiss()
                 }
+
                 else -> {}
             }
         }
@@ -115,7 +113,7 @@ class BottomSheetFileDetailOwnerDialog(
                     onRequestFalseResult(
                         requireActivity(),
                         response.errors ?: UNKNOWN_ERRORS_LIST
-                    ){}
+                    ) {}
                     this.dismiss()
                     viewModel.resetSaveResponse()
                 }
@@ -140,7 +138,7 @@ class BottomSheetFileDetailOwnerDialog(
                     onRequestFalseResult(
                         requireActivity(),
                         response.errors ?: UNKNOWN_ERRORS_LIST
-                    ){}
+                    ) {}
                     viewModel.resetDeleteFavResponse()
                 }
 
@@ -162,22 +160,52 @@ class BottomSheetFileDetailOwnerDialog(
             user?.profilePic?.apply {
                 bindImage(binding.imgUser, this)
             }
-            binding.txtRoomNo.text = String.format(
-                "%s %s", roomNo.from ?: "", resources.getString(R.string.room)
-            )
-            binding.txtSize.text = String.format(
-                "%s %s",
-                size.from ?: "",
-                resources.getString(R.string.squere_meter)
-            )
-            binding.txtRegion.text = locations[0].region.title
-            price.from?.apply {
-                binding.txtPrice.text = String.format(
-                    "%s %s",
-                    formatNumber(this),
-                    resources.getString(R.string.tooman)
+            binding.txtType.text = typeInfo?.fileType?.title
+            binding.txtSubCat.text = typeInfo?.subCategory?.title
+            binding.txtCat.text = typeInfo?.category?.title
+            roomNo?.from?.apply {
+                binding.txtRoomNo.text = String.format(
+                    "%s %s", this, resources.getString(R.string.room)
                 )
             }
+            binding.txtSize.text = size?.from?.let { size ->
+                String.format(
+                    "%s %s",
+                    size,
+                    resources.getString(R.string.squere_meter)
+                )
+            }?:""
+            binding.txtRegion.text = locations[0].region.title
+            binding.apply {
+                txtPrice.visibility = View.GONE
+                txtMortgage.visibility = View.GONE
+                txtRent.visibility = View.GONE
+            }
+            binding.txtPrice.text = price?.from?.let { priceFrom ->
+                binding.txtPrice.visibility = View.VISIBLE
+                String.format(
+                    "%s %s",
+                    formatNumber(priceFrom),
+                    resources.getString(R.string.tooman)
+                )
+            } ?: ""
+
+            binding.txtMortgage.text = mortgage?.from?.let { mortgageFrom ->
+                binding.txtMortgage.visibility = View.VISIBLE
+                resources.getString(
+                    R.string.mortgage_amount_place_holder,
+                    formatNumber(mortgageFrom)
+                )
+            } ?: ""
+
+            binding.txtRent.text = rent?.from?.let { rentFrom ->
+                binding.txtRent.visibility = View.VISIBLE
+                resources.getString(
+                    R.string.rent_amount_place_holder,
+                    formatNumber(rentFrom)
+                )
+            } ?: ""
+
             isFav?.apply {
                 binding.ibtnBookmark.showFav(isFav!!)
             }

@@ -26,10 +26,14 @@ import com.example.melkist.utils.DATA
 import com.example.melkist.utils.EMPTY_CATEGORY_ID
 import com.example.melkist.utils.IS_IN_FAV_LIST_KEY
 import com.example.melkist.utils.ITEM_TYPE_KEY
+import com.example.melkist.utils.MORTGAGE_FROM_TAG
+import com.example.melkist.utils.MORTGAGE_TO_TAG
 import com.example.melkist.utils.OWNER_ITEM_TYPE
 import com.example.melkist.utils.PRICE_FROM_TAG
 import com.example.melkist.utils.PRICE_TO_TAG
 import com.example.melkist.utils.REGION_1
+import com.example.melkist.utils.RENT_FROM_TAG
+import com.example.melkist.utils.RENT_TO_TAG
 import com.example.melkist.utils.ROOM_FROM_TAG
 import com.example.melkist.utils.ROOM_TO_TAG
 import com.example.melkist.utils.SEEKER_ITEM_TYPE
@@ -39,6 +43,12 @@ import com.example.melkist.utils.SUB_CAT_RESULT_KEY
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.getPersianYear
 import com.example.melkist.utils.hasFilterData
+import com.example.melkist.utils.isShowAgeField
+import com.example.melkist.utils.isShowMortgageField
+import com.example.melkist.utils.isShowRentField
+import com.example.melkist.utils.isShowRoomsField
+import com.example.melkist.utils.isShowSizeField
+import com.example.melkist.utils.isShowTotalPriceField
 import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
@@ -55,6 +65,7 @@ class FilterFilesFrag : Fragment() {
     private lateinit var binding: FragFilterFilesBinding
     private val viewModel: MainViewModel by activityViewModels()
     private var isInFavList = false
+    private val zeroNumber = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,8 +135,32 @@ class FilterFilesFrag : Fragment() {
                     if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
                     if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
                     if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
-                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!))
-                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!))
+                    if (data.price.from != 0L) etPriceFromChild.setText(
+                        formatNumber(
+                            data.price.from ?: 0
+                        )
+                    )
+                    if (data.price.to != 0L) etPriceToChild.setText(
+                        formatNumber(
+                            data.price.to ?: 0
+                        )
+                    )
+                    if (data.mortgage.from != 0L) etMortgageFromChild.setText(
+                        formatNumber(
+                            data.mortgage.from ?: 0
+                        )
+                    )
+                    if (data.mortgage.to != 0L) etMortgageToChild.setText(
+                        formatNumber(
+                            data.mortgage.to ?: 0
+                        )
+                    )
+                    if (data.rent.from != 0L) etRentFromChild.setText(
+                        formatNumber(
+                            data.rent.from ?: 0
+                        )
+                    )
+                    if (data.rent.to != 0L) etRentToChild.setText(formatNumber(data.rent.to ?: 0))
                 }
             else
                 viewModel.filterFileData?.let { data ->
@@ -135,8 +170,32 @@ class FilterFilesFrag : Fragment() {
                     if (data.size.to != 0L) etSizeToChild.setText(data.size.to.toString())
                     if (data.rooms.from != 0L) etRoomNoFromChild.setText(data.rooms.from.toString())
                     if (data.rooms.to != 0L) etRoomNoToChild.setText(data.rooms.to.toString())
-                    if (data.price.from != 0L) etPriceFromChild.setText(formatNumber(data.price.from!!))
-                    if (data.price.to != 0L) etPriceToChild.setText(formatNumber(data.price.to!!))
+                    if (data.price.from != 0L) etPriceFromChild.setText(
+                        formatNumber(
+                            data.price.from ?: 0
+                        )
+                    )
+                    if (data.price.to != 0L) etPriceToChild.setText(
+                        formatNumber(
+                            data.price.to ?: 0
+                        )
+                    )
+                    if (data.mortgage.from != 0L) etMortgageFromChild.setText(
+                        formatNumber(
+                            data.mortgage.from ?: 0
+                        )
+                    )
+                    if (data.mortgage.to != 0L) etMortgageToChild.setText(
+                        formatNumber(
+                            data.mortgage.to ?: 0
+                        )
+                    )
+                    if (data.rent.from != 0L) etRentFromChild.setText(
+                        formatNumber(
+                            data.rent.from ?: 0
+                        )
+                    )
+                    if (data.rent.to != 0L) etRentToChild.setText(formatNumber(data.rent.to ?: 0))
                 }
         }
     }
@@ -150,37 +209,62 @@ class FilterFilesFrag : Fragment() {
             ).toLong()
             return view.editText!!.text.toString().toLong()
         }
-        return 0  // Amir needs 0 not null
+        return zeroNumber  // Amir needs 0 not null
     }
 
     private fun gatheringData(): FilterFileData {
         binding.apply {
-            val rooms = Period(
-                from = checkFieldsForNullability(etRoomNoFrom),
-                to = checkFieldsForNullability(etRoomNoTo)
-            )
-            val price = Period(
-                from = checkFieldsForNullability(etPriceFrom),
-                to = checkFieldsForNullability(etPriceTo)
-            )
-            val age = Period(
-                from = checkFieldsForNullability(etAgeFrom),
-                to = checkFieldsForNullability(etAgeTo)
-            )
-            val size = Period(
-                from = checkFieldsForNullability(etSizeFrom),
-                to = checkFieldsForNullability(etSizeTo)
-            )
+            val rooms = if (isShowRooms())
+                Period(
+                    from = checkFieldsForNullability(etRoomNoFrom),
+                    to = checkFieldsForNullability(etRoomNoTo)
+                )
+            else
+                Period(zeroNumber, zeroNumber)
+            val price = if (isShowPrice())
+                Period(
+                    from = checkFieldsForNullability(etPriceFrom),
+                    to = checkFieldsForNullability(etPriceTo)
+                )
+            else
+                Period(zeroNumber, zeroNumber)
+            val age = if (isShowAge())
+                Period(
+                    from = checkFieldsForNullability(etAgeFrom),
+                    to = checkFieldsForNullability(etAgeTo)
+                )
+            else
+                Period(zeroNumber, zeroNumber)
+            val size = if (isShowSize())
+                Period(
+                    from = checkFieldsForNullability(etSizeFrom),
+                    to = checkFieldsForNullability(etSizeTo)
+                )
+            else
+                Period(zeroNumber, zeroNumber)
+            val mortgage = if (isShowMortgage())
+                Period(
+                    from = checkFieldsForNullability(etMortgageFrom),
+                    to = checkFieldsForNullability(etMortgageTo)
+                )
+            else
+                Period(zeroNumber, zeroNumber)
+            val rent = if (isShowRent())
+                Period(
+                    from = checkFieldsForNullability(etRentFrom),
+                    to = checkFieldsForNullability(etRentTo)
+                )
+            else
+                Period(zeroNumber, zeroNumber)
             return FilterFileData(
                 null,
                 rooms,
                 price,
                 age,
                 size,
-                if (viewModel.getItemType() == MainViewModel.ItemType.SHOW_ALL)
-                    null
-                else
-                    viewModel.getTypeId(viewModel.getItemType()),
+                mortgage,
+                rent,
+                viewModel.getTypeId(viewModel.getItemType()),
                 viewModel.catId,
                 viewModel.subCatId,
                 viewModel.regionId
@@ -254,6 +338,48 @@ class FilterFilesFrag : Fragment() {
         }
         //setFragmentResult(FILTER_RESULT_KEY, bundleOf(DATA to gatheringData()))
         back()
+    }
+
+    fun isShowAge(): Boolean {
+        return viewModel.hasChooseTypeInfos() && isShowAgeField(
+            viewModel.catId ?: 0,
+            viewModel.subCatId ?: 0
+        )
+    }
+
+    fun isShowSize(): Boolean {
+        return viewModel.hasChooseTypeInfos() && isShowSizeField(
+            viewModel.catId ?: 0,
+            viewModel.subCatId ?: 0
+        )
+    }
+
+    fun isShowRooms(): Boolean {
+        return viewModel.hasChooseTypeInfos() && isShowRoomsField(
+            viewModel.catId ?: 0,
+            viewModel.subCatId ?: 0
+        )
+    }
+
+    fun isShowPrice(): Boolean {
+        return viewModel.hasChooseTypeInfos() && isShowTotalPriceField(
+            viewModel.catId ?: 0,
+            viewModel.subCatId ?: 0
+        )
+    }
+
+    fun isShowMortgage(): Boolean {
+        return viewModel.hasChooseTypeInfos() && isShowMortgageField(
+            viewModel.catId ?: 0,
+            viewModel.subCatId ?: 0
+        )
+    }
+
+    fun isShowRent(): Boolean {
+        return viewModel.hasChooseTypeInfos() && isShowRentField(
+            viewModel.catId ?: 0,
+            viewModel.subCatId ?: 0
+        )
     }
 
     fun onChoosingType() {
@@ -447,6 +573,86 @@ class FilterFilesFrag : Fragment() {
                 binding.etPriceToChild.setText(
                     formatNumber(
                         resources.getStringArray(R.array.int_price_list)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun onMortgageFromClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_mortgage).toList())
+        bottomFrag.show(childFragmentManager, MORTGAGE_FROM_TAG)
+        bottomFrag.setFragmentResultListener(MORTGAGE_FROM_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainMortgageFrom.visibility = View.GONE
+                binding.etMortgageFromChild.requestFocus()
+                addLiveSeparator(binding.etMortgageFromChild)
+            } else {
+                binding.etMortgageFromChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_mortgage)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun onMortgageToClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_mortgage).toList())
+        bottomFrag.show(childFragmentManager, MORTGAGE_TO_TAG)
+        bottomFrag.setFragmentResultListener(MORTGAGE_TO_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainMortgageTo.visibility = View.GONE
+                binding.etMortgageToChild.requestFocus()
+                addLiveSeparator(binding.etMortgageToChild)
+            } else {
+                binding.etMortgageToChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_mortgage)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun onRentFromClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_rent).toList())
+        bottomFrag.show(childFragmentManager, RENT_FROM_TAG)
+        bottomFrag.setFragmentResultListener(RENT_FROM_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainRentFrom.visibility = View.GONE
+                binding.etRentFromChild.requestFocus()
+                addLiveSeparator(binding.etRentFromChild)
+            } else {
+                binding.etRentFromChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_rent)[position].toLong()
+                    )
+                )
+            }
+        }
+    }
+
+    fun onRentToClick() {
+        val bottomFrag =
+            BottomSheetUniversalList(resources.getStringArray(R.array.price_list_mortgage).toList())
+        bottomFrag.show(childFragmentManager, RENT_TO_TAG)
+        bottomFrag.setFragmentResultListener(RENT_TO_TAG) { _, positionBundle ->
+            val position = positionBundle.getInt(DATA)
+            if (position == 0) {
+                binding.curtainRentTo.visibility = View.GONE
+                binding.etRentToChild.requestFocus()
+                addLiveSeparator(binding.etRentToChild)
+            } else {
+                binding.etRentToChild.setText(
+                    formatNumber(
+                        resources.getStringArray(R.array.int_price_list_rent)[position].toLong()
                     )
                 )
             }

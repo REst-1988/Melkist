@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.profile.statistics.ProfileStatisticsStaffFrag">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.example.melkist.views.profile.statistics.ProfileStatisticsStaffFrag" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <!--app:layout_scrollFlags="scroll|enterAlways"-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/background_tool_bar">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> fragment.back()}"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center_vertical"
+                        android:text="@string/staff_stat_title"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txt_size_h1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/bar_chart"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/short_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/rank"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/member_name"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/added_files"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/visit"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/super_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/meeting"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/contract"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/conclusion"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/iransans"
+                android:gravity="center"
+                android:text="@string/rank_sum"
+                android:textColor="@color/deep_red"
+                android:textSize="@dimen/very_short_text_size" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/short_margin"
+            android:layout_marginEnd="@dimen/short_margin"
+            android:background="@color/add_btn_main_act_color" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/ll_stat_staff">
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</layout>

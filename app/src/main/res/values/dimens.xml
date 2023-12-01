@@ -34,5 +34,4 @@
     <dimen name="add_btn_main_act">60dp</dimen>
     <dimen name="melkist_card_corner">8dp</dimen>
     <dimen name="calculator_option_size">160dp</dimen>
-
 </resources>

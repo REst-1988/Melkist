@@ -23,4 +23,5 @@
     <style name="Theme.Melkist.Buttons" parent="Theme.Melkist">
         <item name="colorPrimary">@color/main_light_color2</item>
     </style>
+
 </resources>

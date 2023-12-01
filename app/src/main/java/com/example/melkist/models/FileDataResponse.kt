@@ -14,10 +14,10 @@ data class FileData(
     @Json val locations: List<Location>,
     @Json val description: String?,
     @Json(name = "isshowexactaddress") val isShowExactAddress: Boolean?,
-    @Json(name = "meterage") val size: Period,
-    @Json(name = "sleepsnumber") val roomNo: Period,
-    @Json val price: Period,
-    @Json val age: Period,
+    @Json(name = "meterage") val size: Period?,
+    @Json(name = "sleepsnumber") val roomNo: Period?,
+    @Json val price: Period?,
+    @Json val age: Period?,
     @Json(name = "created_at") val created_at: String?,
     @Json(name = "updated_at") val updatedAt: String?,
     @Json val images: List<String>?,
@@ -26,7 +26,18 @@ data class FileData(
     @Json(name = "filetypefilecategoryfilecategorytype") val typeInfo: TypeInfo?,
     @Json var isFav: Boolean?,
     @Json val status: Int?,
-    @Json val mobileNumber: String?
+    @Json val mobileNumber: String?,
+    @Json (name = "ownermobile_id") val ownerMobileId: String?,
+    @Json val mortgage: Period?,
+    @Json val rent: Period?,
+    @Json val suitablefor: Int?,
+    @Json val floor: Int?,
+    @Json val parking: Boolean?,
+    @Json val storeRoom: Boolean?,
+    @Json (name = "balacon") val balcony: Boolean?,
+    @Json val elevator: Boolean?,
+    @Json (name = "administrativedeed") val adminDeed: Boolean?,
+    @Json val deedType: Int?
 ): Serializable
 
 data class Location(

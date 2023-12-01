@@ -547,7 +547,7 @@
                             app:layout_constraintTop_toBottomOf="@id/txt_mortgage_title">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_mortagage_from_child"
+                                android:id="@+id/et_mortgage_from_child"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/background_edit_text"
@@ -729,7 +729,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <!-- floor -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <!--<androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="@{fragment.isShowFloor()}">
@@ -832,7 +832,7 @@
                             android:background="@color/color_boarder"
                             app:layout_constraintTop_toBottomOf="@id/et_floor_to" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
                 </LinearLayout>
 
@@ -866,7 +866,7 @@
 
                 <Button
                     android:id="@+id/btn_commit"
-                    style="@style/Theme.Melkist.Buttons"
+                    android:theme="@style/Theme.Melkist.Buttons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/normal_margin"

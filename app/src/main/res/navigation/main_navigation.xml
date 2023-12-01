@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_navigation_profle_to_profileAiP1"
             app:destination="@id/profileAiP1" />
+        <action
+            android:id="@+id/action_navigation_profle_to_profileStatisticsP1Frag"
+            app:destination="@id/profileStatisticsP1Frag" />
     </fragment>
 
     <fragment
@@ -291,4 +294,37 @@
         android:id="@+id/bottomSheetFileDetailSeekerDialog"
         android:name="com.example.melkist.views.universal.dialog.BottomSheetFileDetailSeekerDialog"
         android:label="BottomSheetFileDetailSeekerDialog" />
+    <fragment
+        android:id="@+id/profileStatisticsP1Frag"
+        android:name="com.example.melkist.views.profile.statistics.ProfileStatisticsP1Frag"
+        android:label="frag_profile_statistics_p1"
+        tools:layout="@layout/frag_profile_statistics_p1" >
+        <action
+            android:id="@+id/action_profileStatisticsP1Frag_to_profileStatisticsStaffFrag"
+            app:destination="@id/profileStatisticsStaffFrag" />
+        <action
+            android:id="@+id/action_profileStatisticsP1Frag_to_profileStatMemberImprovementFrag"
+            app:destination="@id/profileStatMemberImprovementFrag" />
+        <action
+            android:id="@+id/action_profileStatisticsP1Frag_to_profileStatWorkPeaksFragm"
+            app:destination="@id/profileStatWorkPeaksFragm" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileStatisticsStaffFrag"
+        android:name="com.example.melkist.views.profile.statistics.ProfileStatisticsStaffFrag"
+        android:label="frag_profile_statistics_staff"
+        tools:layout="@layout/frag_profile_statistics_staff" />
+    <dialog
+        android:id="@+id/bottomSheetCreateAction"
+        android:name="com.example.melkist.views.universal.dialog.BottomSheetCreateAction"
+        android:label="BottomSheetCreateAction" />
+    <fragment
+        android:id="@+id/profileStatMemberImprovementFrag"
+        android:name="com.example.melkist.views.profile.statistics.ProfileStatMemberImprovementFrag"
+        android:label="ProfileStatMemberImprovementFrag" />
+    <fragment
+        android:id="@+id/profileStatWorkPeaksFragm"
+        android:name="com.example.melkist.views.profile.statistics.ProfileStatWorkPeaksFrag"
+        android:label="frag_profile_stat_work_peaks"
+        tools:layout="@layout/frag_profile_stat_work_peaks" />
 </navigation>

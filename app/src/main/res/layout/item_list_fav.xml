@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:layoutDirection="rtl">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,11 +15,12 @@
             android:layout_marginTop="@dimen/short_margin"
             android:layout_marginEnd="@dimen/short_margin"
             android:layout_marginBottom="@dimen/short_margin">
-
+            <!--img profile-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_img_profile"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
+                app:cardElevation="8dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/short_margin"
@@ -52,16 +52,14 @@
 
                 </RelativeLayout>
 
-
             </androidx.cardview.widget.CardView>
-
-
+            <!--header card-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/spacer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:cardCornerRadius="4dp"
-                app:cardElevation="0dp"
+                app:cardElevation="4dp"
                 app:layout_constraintBottom_toBottomOf="@id/txt_agent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,51 +67,180 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/background_tool_bar" />
+                    android:layout_height="match_parent" />
 
             </androidx.cardview.widget.CardView>
-
+            <!--txt real estate-->
             <TextView
                 android:id="@+id/txt_real_estate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginStart="@dimen/short_margin"
                 android:layout_marginEnd="@dimen/short_margin"
+                android:elevation="6dp"
                 android:fontFamily="@font/iransans"
                 android:padding="@dimen/very_short_text_view_padding"
-                android:textColor="@color/white"
+                android:textColor="@color/text_black_color"
                 android:textSize="@dimen/very_short_text_size"
                 app:layout_constraintStart_toEndOf="@id/card_img_profile"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="املاک جهانی" />
-
+            <!--txt agent-->
             <TextView
                 android:id="@+id/txt_agent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginStart="@dimen/short_margin"
+                android:elevation="6dp"
                 android:fontFamily="@font/iransans"
                 android:padding="@dimen/very_short_text_view_padding"
-                android:textColor="@color/white"
+                android:textColor="@color/text_black_color"
                 android:textSize="@dimen/very_short_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_real_estate"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="رضا استعجاب" />
-
-            <ImageView
-                android:id="@+id/img_main"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <!--img main seeker-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_img_seeker"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/short_margin"
-                android:layout_marginBottom="@dimen/short_margin"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/bg_splash"
-                app:layout_constraintDimensionRatio="1:1"
+                android:layout_marginTop="@dimen/short_margin"
+                android:layoutDirection="rtl"
+                app:cardCornerRadius="@dimen/melkist_card_corner"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spacer" />
+                app:layout_constraintTop_toBottomOf="@id/spacer">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/seeker_curtain"
+                        android:layout_width="24dp"
+                        android:layout_height="0dp"
+                        android:background="@color/main_seeker_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/empty_background_color"
+                        android:padding="@dimen/extra_large_padding"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/logo_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toStartOf="@id/seeker_curtain"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/negative_normal_margin"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:rotation="-90"
+                        android:text="@string/choosing_seeker_header"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/very_short_text_size"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <!--img main owner-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_img_owner"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:layout_marginTop="@dimen/short_margin"
+                android:layoutDirection="rtl"
+                app:cardCornerRadius="@dimen/melkist_card_corner"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spacer">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/owner_curtain"
+                        android:layout_width="24dp"
+                        android:layout_height="0dp"
+                        android:background="@color/main_owner_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/img_main_owner"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toStartOf="@id/owner_curtain"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/negative_normal_margin"
+                        android:fontFamily="@font/iransans"
+                        android:gravity="center"
+                        android:padding="@dimen/very_very_short_text_view_padding"
+                        android:rotation="-90"
+                        android:text="@string/choosing_owner_header"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/short_text_size"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <!--txt sub cat-->
+            <TextView
+                android:id="@+id/txt_sub_cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toBottomOf="@id/txt_agent"
+                tools:text="رهن و اجاره" />
+            <!--txt cat-->
+            <TextView
+                android:id="@+id/txt_cat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/short_margin"
+                android:layout_marginEnd="@dimen/short_margin"
+                android:fontFamily="@font/iransans"
+                android:padding="@dimen/very_short_text_view_padding"
+                android:textColor="@color/normal_text_color"
+                android:textSize="@dimen/very_short_text_size"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toBottomOf="@id/txt_sub_cat"
+                tools:text="آپارتمان" />
+            <!--txt region-->
             <TextView
                 android:id="@+id/txt_region"
                 android:layout_width="wrap_content"
@@ -121,29 +248,14 @@
                 android:layout_marginStart="@dimen/short_margin"
                 android:layout_marginEnd="@dimen/short_margin"
                 android:fontFamily="@font/iransans"
-                android:padding="@dimen/very_very_short_text_view_padding"
+                android:padding="@dimen/very_short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/very_short_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_img_profile"
+                app:layout_constraintStart_toEndOf="@id/card_img_profile"
+                app:layout_constraintTop_toBottomOf="@id/txt_cat"
                 tools:text="معالی آباد" />
 
-            <TextView
-                android:id="@+id/txt_room_no"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/short_margin"
-                android:layout_marginEnd="@dimen/short_margin"
-                android:fontFamily="@font/iransans"
-                android:padding="@dimen/very_very_short_text_view_padding"
-                android:textColor="@color/normal_text_color"
-                android:textSize="@dimen/very_short_text_size"
-                app:layout_constraintEnd_toStartOf="@id/img_main"
-                app:layout_constraintStart_toEndOf="@id/txt_region"
-                app:layout_constraintTop_toBottomOf="@id/card_img_profile"
-                tools:text="2 خواب" />
-
-            <TextView
+            <!--<TextView
                 android:id="@+id/txt_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -167,10 +279,9 @@
                 android:padding="@dimen/very_very_short_text_view_padding"
                 android:textColor="@color/normal_text_color"
                 android:textSize="@dimen/very_short_text_size"
-                app:layout_constraintEnd_toStartOf="@id/img_main"
-                app:layout_constraintStart_toEndOf="@id/txt_size"
-                app:layout_constraintTop_toBottomOf="@id/txt_region"
-                tools:text="8,000,000,000 تومان" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_size"
+                tools:text="8,000,000,000 تومان" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>

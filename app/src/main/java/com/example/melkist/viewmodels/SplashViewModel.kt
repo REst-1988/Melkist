@@ -15,25 +15,20 @@ import com.example.melkist.utils.isOnline
 import kotlinx.coroutines.launch
 
 class SplashViewModel : ViewModel() {
-    private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
+    private val _status = MutableLiveData(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
-    private var _appVersionResponse =
-        MutableLiveData<AppVersionResponse>()
+    private var _appVersionResponse = MutableLiveData<AppVersionResponse>()
     val appVersionResponse: LiveData<AppVersionResponse> = _appVersionResponse
 
     fun callServerAppVersion(
         activity: Activity,
-        userId: Int?,
-        firebaseToken: String?,
         appVersion: String
     ) {
-        Log.e("TAG", "callServerAppVersion: $userId, $firebaseToken, $appVersion", )
+        Log.e("TAG", "callServerAppVersion: $appVersion", )
         if (!isOnline(activity))
             internetProblemDialog(activity) { _, _ ->
                 callServerAppVersion(
                     activity,
-                    userId,
-                    firebaseToken,
                     appVersion
                 )
             }
@@ -43,15 +38,13 @@ class SplashViewModel : ViewModel() {
                 try {
                     _appVersionResponse.value =
                         Api.retrofitService.versionControl(
-                            userId,
-                            firebaseToken,
                             appVersion
                         )
                     Log.e("TAG", "callServerAppVersion: ${_appVersionResponse.value.toString()}")
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
-                    handleSystemException(viewModelScope, "$userId, SplashViewModel, callServerAppVersion, ", e)
+                    handleSystemException(viewModelScope, " SplashViewModel, callServerAppVersion, ", e)
                 }
             }
     }

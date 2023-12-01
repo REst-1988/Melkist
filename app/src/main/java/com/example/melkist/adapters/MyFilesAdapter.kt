@@ -1,6 +1,5 @@
 package com.example.melkist.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,9 @@ import com.example.melkist.models.FileData
 import com.example.melkist.models.FileTypes
 import com.example.melkist.models.Location
 import com.example.melkist.utils.formatNumber
-import com.example.melkist.utils.getPropertyPeriodsPriceText
 import com.example.melkist.views.profile.ProfileMyFilesFrag
 import com.example.melkist.views.profile.ai.ProfileAiSuggestionFilterFrag
+import com.example.melkist.views.universal.dialog.BottomSheetCreateAction
 
 class MyFilesAdapter(private val fragment: Fragment) :
     ListAdapter<FileData, MyFilesAdapter.MyFilesViewHolder>(DiffUtilCallBack) {
@@ -33,16 +32,16 @@ class MyFilesAdapter(private val fragment: Fragment) :
     }
 
     class MyFilesViewHolder(
-        private val context: Context,
+        private val fragment: Fragment,
         private var binding: LayoutItemListMyFilesBinding
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
+        private val context = fragment.requireContext()
         fun bind(data: FileData) {
             data.typeInfo?.apply {
                 if (fileType!!.id == FileTypes().seeker.id)
                     bindSeeker(data)
                 else
-                    bindingOwner(data)
+                    bindOwner(data)
             }
         }
 
@@ -70,16 +69,16 @@ class MyFilesAdapter(private val fragment: Fragment) :
                 txtSubCatSeeker.text = data.typeInfo!!.subCategory!!.title
                 txtCatSeeker.text = data.typeInfo.category!!.title
                 txtRegionSeeker.text = data.locations.getLocationTexts()
-                txtPriceSeeker.text = getPropertyPeriodsPriceText(
+                /*txtPriceSeeker.text = getPropertyPeriodsPriceText(
                     context,
-                    data.price,
+                    data.price!!,
                     R.string.price,
                     R.string.tooman
-                )
+                )*/
             }
         }
 
-        private fun bindingOwner(data: FileData) {
+        private fun bindOwner(data: FileData) {
             binding.apply {
                 layoutSeeker.visibility = View.GONE
                 layoutOwner.visibility = View.VISIBLE
@@ -87,16 +86,28 @@ class MyFilesAdapter(private val fragment: Fragment) :
                 txtSubCatOwner.text = data.typeInfo!!.subCategory!!.title
                 txtCatOwner.text = data.typeInfo.category!!.title
                 txtRegionOwner.text = data.locations[0].region.title
-                txtRoomNoOwner.text =
-                    context.resources.getString(R.string.rooms, data.roomNo.from.toString())
+/*                txtRoomNoOwner.text =
+                    context.resources.getString(R.string.rooms, data.roomNo?.from.toString())
                 txtPriceOwner.text = context.resources.getString(
                     R.string.price_with_variable,
-                    formatNumber((data.price.from?:0L))// TODO: change this data might be different after changing in database
-                )
+                    formatNumber(
+                        (data.price?.from ?: 0L)
+                    )
+                )*/
                 data.images?.let {
                     if (it.isNotEmpty())
                         bindImage(imgMainOwner, it[0])
                     else imgMainOwner.setImageDrawable(null)
+                }
+
+                when (fragment) {
+                    is ProfileAiSuggestionFilterFrag -> binding.ibtnCreateAction.visibility = View.GONE
+                    is ProfileMyFilesFrag -> {
+                        binding.ibtnCreateAction.setOnClickListener {
+                            val bottomSheetDialog = BottomSheetCreateAction(fragment, data.id)
+                            bottomSheetDialog.show(fragment.childFragmentManager, bottomSheetDialog.tag)
+                        }
+                    }
                 }
             }
         }
@@ -120,7 +131,7 @@ class MyFilesAdapter(private val fragment: Fragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyFilesViewHolder {
         return MyFilesViewHolder(
-            fragment.requireContext(),
+            fragment,
             LayoutItemListMyFilesBinding.inflate(LayoutInflater.from(parent.context))
         )
     }

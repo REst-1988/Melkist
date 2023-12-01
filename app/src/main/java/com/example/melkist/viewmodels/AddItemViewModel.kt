@@ -1,6 +1,7 @@
 package com.example.melkist.viewmodels
 
 import android.app.Activity
+import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
@@ -44,8 +45,8 @@ class AddItemViewModel : ViewModel() {
     private val _status = MutableLiveData<ApiStatus>(ApiStatus.DONE)
     val status: LiveData<ApiStatus> = _status
 
-    private val _saveResponse = MutableLiveData<PublicResponseModel>()
-    val saveResponse: LiveData<PublicResponseModel> = _saveResponse
+    private val _saveEditResponse = MutableLiveData<PublicResponseModel>()
+    val saveEditResponse: LiveData<PublicResponseModel> = _saveEditResponse
 
     private var itemType: ItemType = ItemType.CHOOSE
     fun getItemType() = itemType
@@ -59,6 +60,7 @@ class AddItemViewModel : ViewModel() {
         this.crCondition = crCondition
     }
 
+    var fileId: Int? = null
     private var typeId: Int = 0
 
     var catId: Int = 0
@@ -81,6 +83,10 @@ class AddItemViewModel : ViewModel() {
     var lat: Double? = null
     var lng: Double? = null
     var isShowExactAddress: Boolean = true
+
+    var ownerName: String ? = null
+    var ownerPhone: String? = null
+
     var ageFrom: Int? = null
     var ageTo: Int? = null
     var sizeFrom: Int? = null
@@ -95,17 +101,14 @@ class AddItemViewModel : ViewModel() {
     var mortgageTo: Long? = null
     var rentFrom: Long? = null
     var rentTo: Long? = null
-    var suitableForText: String? = null // family , family and bachelor
     var suitableFor: Int? = null // family , family and bachelor
-    var floorFromText: String? = null
-    var floorFrom: Int? = null
-    var floorTo: Int? = null
+    var floor: Int? = null
+    //var floorTo: Int? = null
     var parking: Boolean? = null
     var storeRoom: Boolean? = null
     var balcony: Boolean? = null
     var elevator: Boolean? = null
     var administrativeDeed: Boolean? = null
-    var deedTypeText: String? = null
     var deedType: Int? = null
 
     private var _mapSnapShot = MutableLiveData<Bitmap>()
@@ -132,6 +135,7 @@ class AddItemViewModel : ViewModel() {
         logSendData(userId) // TODO: no need for this this is just for checking
 
         fileSave = FileSave(
+            id = fileId,
             typeId = typeId,
             catId = catId,
             subCatId = subCatId,
@@ -141,6 +145,8 @@ class AddItemViewModel : ViewModel() {
                 Loc(regionId, lat, lng), Loc(region2Id, null, null), Loc(region3Id, null, null)
             ),
             isShowExactAddress = isShowExactAddress,
+            ownerName = ownerName,
+            ownerPhone = ownerPhone,
             size = Period(
                 sizeFrom?.toLong(), getValueFrom(sizeFrom?.toLong(), sizeTo?.toLong())
             ),
@@ -153,6 +159,20 @@ class AddItemViewModel : ViewModel() {
             price = Period(
                 totalPriceFrom, getValueFrom(totalPriceFrom, totalPriceTo)
             ),
+            mortgage = Period(
+                mortgageFrom, getValueFrom(mortgageFrom, mortgageTo)
+            ),
+            rent = Period(
+                rentFrom, getValueFrom(rentFrom, rentTo)
+            ),
+            suitableFor = suitableFor,
+            floor = floor,
+            parking = parking,
+            storeRoom = storeRoom,
+            balcony = balcony,
+            elevator = elevator,
+            adminDeed = administrativeDeed,
+            deedType = deedType,
             description = descriptions,
             images = listOfEncodedImages
         )
@@ -160,6 +180,7 @@ class AddItemViewModel : ViewModel() {
 
     fun splitData(file: FileData) {
         Log.e("TAG", "splitData: $file\n\n\n")
+        fileId = file.id
         file.typeInfo?.apply {
             typeId = fileType?.id ?: 0
             catId = category?.id ?: 0
@@ -189,37 +210,34 @@ class AddItemViewModel : ViewModel() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        lat = file.locations[0].region.lat
-        lng = file.locations[0].region.lng
-        //isShowExactAddress =
-        ageFrom = file.age.from?.toInt()
-        ageTo = file.age.to?.toInt()
-        sizeFrom = file.size.from?.toInt()
-        sizeTo = file.size.to?.toInt()
-        roomFrom = file.roomNo.from?.toInt()
-        roomTo = file.roomNo.to?.toInt()
-        totalPriceFrom = file.price.from
-        totalPriceTo = file.price.to
-        descriptions = file.description
-        listOfImageUrls = file.images
-//
-        /*   TODO:     mortgageFrom =
-                mortgageTo =
-                rentFrom =
-                rentTo =
-                suitableForText =  // family , family and bachelor
-                suitableFor =  // family , family and bachelor
-                floorFromText =
-                floorFrom =
-                floorTo =
-                parking =
-                storeRoom =
-                balcony =
-                elevator =
-                administrativeDeed =
-                deedTypeText =
-                deedType =*/
 
+        file.apply {
+            lat = locations[0].region.lat
+            lng = locations[0].region.lng
+            //isShowExactAddress =
+            ageFrom = age?.from?.toInt()
+            ageTo = age?.to?.toInt()
+            sizeFrom = size?.from?.toInt()
+            sizeTo = size?.to?.toInt()
+            roomFrom = roomNo?.from?.toInt()
+            roomTo = roomNo?.to?.toInt()
+            totalPriceFrom = price?.from
+            totalPriceTo = price?.to
+            descriptions = description
+            listOfImageUrls = images
+            mortgageFrom = mortgage?.from
+            mortgageTo = mortgage?.to
+            rentFrom = rent?.from
+            rentTo = rent?.to
+            suitableFor = this.suitablefor
+            this@AddItemViewModel.floor = this.floor
+            this@AddItemViewModel.parking = this.parking
+            this@AddItemViewModel.storeRoom = this.storeRoom
+            this@AddItemViewModel.balcony = this.balcony
+            this@AddItemViewModel.elevator = this.elevator
+            administrativeDeed = this.adminDeed
+            this@AddItemViewModel.deedType = this.deedType
+        }
         logSendData(1)
     }
 
@@ -239,6 +257,8 @@ class AddItemViewModel : ViewModel() {
                     "            userId = $userId,\n" +
                     "            locations = listOf(Loc($regionId, $lat, $lng),Loc($region2Id, null, null),Loc($region3Id, null, null)),\n" +
                     "            isShowExactAddress = $isShowExactAddress,\n" +
+                    "            ownerName = $ownerName,\n" +
+                    "            ownerMobile = $ownerPhone,\n" +
                     "            size = Period(${sizeFrom?.toLong()}, (${(sizeTo ?: sizeFrom)?.toLong()}),\n" +
                     "            rooms = Period(${roomFrom?.toLong()}, ${roomTo?.toLong()}),\n" +
                     "            age = Period(${ageFrom?.toLong()}, ${ageTo?.toLong()}),\n" +
@@ -249,17 +269,14 @@ class AddItemViewModel : ViewModel() {
                     "            mortgageTo = $mortgageTo,\n" +
                     "            rentFrom = $rentFrom,\n" +
                     "            rentTo = $rentTo,\n" +
-                    "            suitableForText = $suitableForText,\n" +
                     "            suitableFor = $suitableFor,\n" +
-                    "            floorFromText = $floorFromText,\n" +
-                    "            floorFrom = $floorFrom,\n" +
-                    "            floorTo = $floorTo,\n" +
+                    "            floorFrom = $floor,\n" +
+                    //"            floorTo = $floorTo,\n" +
                     "            parking = $parking,\n" +
                     "            storeRoom = $storeRoom,\n" +
                     "            balcony = $balcony,\n" +
                     "            elevator = $elevator,\n" +
                     "            administrativeDeed = $administrativeDeed,\n" +
-                    "            deedTypeText = $deedTypeText,\n" +
                     "            deedType = $deedType,\n" +
                     "            images = listOfImages",
         )
@@ -298,8 +315,35 @@ class AddItemViewModel : ViewModel() {
             viewModelScope.launch {
                 _status.value = ApiStatus.LOADING
                 try {
-                    _saveResponse.value = Api.retrofitService.saveFile(user?.token, fileSave)
-                    Log.e("TAG", "saveFile: ${_saveResponse.value}", )
+                    _saveEditResponse.value = Api.retrofitService.saveFile(user?.token, fileSave)
+                    Log.e("TAG", "saveFile: ${_saveEditResponse.value}", )
+                    _status.value = ApiStatus.DONE
+                } catch (e: Exception) {
+                    _status.value = ApiStatus.ERROR
+                    handleSystemException(
+                        viewModelScope,
+                        "${user?.id}, ${this@AddItemViewModel.javaClass.name}, getRegion, ",
+                        e
+                    )
+                }
+            }
+        }
+    }
+
+
+    fun editFile(activity: Activity, user: User?) {
+        if (!isOnline(activity)) internetProblemDialog(activity) { _, _ ->
+            saveFile(activity, user)
+        }
+        else {
+            user?.apply {
+                gatheringData(id!!)
+            }
+            viewModelScope.launch {
+                _status.value = ApiStatus.LOADING
+                try {
+                    _saveEditResponse.value = Api.retrofitService.editFile(user?.token, fileSave)
+                    Log.e("TAG", "editFile: ${_saveEditResponse.value}", )
                     _status.value = ApiStatus.DONE
                 } catch (e: Exception) {
                     _status.value = ApiStatus.ERROR
@@ -428,20 +472,15 @@ class AddItemViewModel : ViewModel() {
 
     fun isShowSuitableForField(): Boolean {
         val result = com.example.melkist.utils.isShowSuitableForField(catId, subCatId)
-        if (!result) {
+        if (!result)
             suitableFor = null
-            suitableForText = null
-        }
         return result
     }
 
     fun isShowFloorField(): Boolean {
         val result = com.example.melkist.utils.isShowFloorField(catId, subCatId)
-        if (!result) {
-            floorFrom = null
-            floorTo = null
-            floorFromText = null
-        }
+        if (!result)
+            floor = null
         return result
     }
 
@@ -488,7 +527,6 @@ class AddItemViewModel : ViewModel() {
     fun isShowDeedTypeField(): Boolean {
         val result = com.example.melkist.utils.isShowDeedTypeField(catId, subCatId)
         if (!result) {
-            deedTypeText = null
             deedType = null
         }
         return result

@@ -3,6 +3,7 @@ package com.example.melkist.adapters
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -16,8 +17,7 @@ import com.example.melkist.R
 import com.example.melkist.adapters.bindingadapter.bindImage
 import com.example.melkist.databinding.ItemListFavBinding
 import com.example.melkist.models.Fav
-import com.example.melkist.utils.getPropertyPeriodsPriceText
-import com.example.melkist.utils.getPropertyPeriodsText
+import com.example.melkist.models.FileTypes
 import com.example.melkist.views.fav.FavListFrag
 
 class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
@@ -49,31 +49,34 @@ class FavListAdapter(val viewModel: ViewModel, val fragment: Fragment) :
     class FavListViewHolder(private var binding: ItemListFavBinding, private val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Fav) {
-            binding.txtRegion.text = data.locations[0].region.title
-            binding.txtRoomNo.text =
-                getPropertyPeriodsText(context, data.roomNo, R.string.room, R.string.room)
-            binding.txtSize.text =
-                getPropertyPeriodsText(context, data.size, R.string.meterage, R.string.squere_meter)
-            binding.txtPrice.text =
-                getPropertyPeriodsPriceText(context, data.price, R.string.price, R.string.tooman)
-            binding.txtRealEstate.text = String.format(
-                "%s %s",
-                context.resources.getString(R.string.real_estate_title),
-                data.user.realEstate
-            )
-            binding.txtAgent.text = String.format("%s %s", data.user.firstName, data.user.lastName)
-            Log.e("TAG", "bind: ${data.image.isNullOrEmpty()},  ${data.image}")
-            if (data.user.profilePic.isNullOrEmpty()) binding.imgProfile.setImageResource(R.drawable.logo_color)
-            else bindImage(binding.imgProfile, data.user.profilePic)
-            if (data.image.isNullOrEmpty()) {
-                binding.imgMain.setImageResource(R.drawable.logo_color)
-                binding.imgMain.setPadding(28)
-            } else {
-                bindImage(binding.imgMain, data.image)
-                binding.imgMain.setPadding(0)
+            binding.apply {
+                txtCat.text = data.typeInfo?.category?.title
+                txtSubCat.text = data.typeInfo?.subCategory?.title
+                txtRegion.text = data.locations[0].region.title
+                //txtSize.text = ""
+                // getPropertyPeriodsText(context, data.size, R.string.meterage, R.string.squere_meter)
+                //txtPrice.text = ""
+                //getPropertyPeriodsPriceText(context, data.price, R.string.price, R.string.tooman)
+                txtRealEstate.text = String.format(
+                    "%s %s",
+                    context.resources.getString(R.string.real_estate_title),
+                    data.user.realEstate
+                )
+                txtAgent.text = String.format("%s %s", data.user.firstName, data.user.lastName)
+                if (data.user.profilePic.isNullOrEmpty()) imgProfile.setImageResource(R.drawable.logo_color)
+                else bindImage(imgProfile, data.user.profilePic)
+
+                Log.e("TAG", "bind: ${data.image.isNullOrEmpty()},  ${data.image}")
+                if ((data.typeInfo?.fileType?.id ?: 1) == FileTypes().seeker.id) {
+                    cardImgOwner.visibility = View.GONE
+                    cardImgSeeker.visibility = View.VISIBLE
+                } else {
+                    cardImgOwner.visibility = View.VISIBLE
+                    cardImgSeeker.visibility = View.GONE
+                    bindImage(imgMainOwner, data.image)
+                }
+                executePendingBindings()
             }
-            //data.image?: binding.imgMain.setImageDrawable(null)
-            binding.executePendingBindings()
         }
     }
 

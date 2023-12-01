@@ -37,6 +37,7 @@ import com.example.melkist.utils.SUITABLE_FOR_TAG
 import com.example.melkist.utils.UNKNOWN_ERRORS_LIST
 import com.example.melkist.utils.formatNumber
 import com.example.melkist.utils.handleSystemException
+import com.example.melkist.utils.isPhoneNo
 import com.example.melkist.utils.isShowAdminDeedField
 import com.example.melkist.utils.isShowAgeField
 import com.example.melkist.utils.isShowBalconyField
@@ -45,11 +46,11 @@ import com.example.melkist.utils.isShowElevatorField
 import com.example.melkist.utils.isShowFloorField
 import com.example.melkist.utils.isShowMortgageField
 import com.example.melkist.utils.isShowParkingField
-import com.example.melkist.utils.isShowRentField
 import com.example.melkist.utils.isShowRoomsField
 import com.example.melkist.utils.isShowStoreRoomField
 import com.example.melkist.utils.isShowSuitableForField
 import com.example.melkist.utils.isShowTotalPriceField
+import com.example.melkist.utils.isText
 import com.example.melkist.utils.onRequestFalseResult
 import com.example.melkist.utils.showAgeDialog
 import com.example.melkist.utils.showDialogWithMessage
@@ -89,12 +90,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         try {
             imageViews = listOf(
-                binding.img2,
-                binding.img3,
-                binding.img4,
-                binding.img5,
-                binding.img6,
-                binding.img1
+                binding.img2, binding.img3, binding.img4, binding.img5, binding.img6, binding.img1
             )
             imageButtons = listOf(
                 binding.btnDeleteImg2,
@@ -105,14 +101,14 @@ class AddP7DetailsOwnerFrag : Fragment() {
                 binding.btnDeleteImg1
             )
             viewModel.listOfImageUrls?.apply {
-                Log.e("TAG", "onViewCreated: test 1 bitmap list")
                 showImagesForEditing(this)
-                Log.e("TAG", "onViewCreated: test 2 bitmap list")
             }
             viewModel.extra?.apply {
                 binding.txtTitle.text = resources.getString(R.string.edit_detail_page_title)
+                binding.etOwnerName.visibility = View.GONE
+                binding.etOwnerPhoneNo.visibility = View.GONE
             }
-            viewModel.saveResponse.observe(viewLifecycleOwner) {
+            viewModel.saveEditResponse.observe(viewLifecycleOwner) {
                 when (it.result) {
                     true -> showDialogWithMessage(
                         requireContext(), it.message ?: ""
@@ -131,7 +127,6 @@ class AddP7DetailsOwnerFrag : Fragment() {
                         dialogInterface.dismiss()
                     }
                 }
-
             }
             viewModel.bitmapList.clear()
         } catch (e: Exception) {
@@ -162,62 +157,70 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     private fun isDataReady(): Boolean {
-        val age = if (isShowAgeField(viewModel.catId, viewModel.subCatId))
-            viewModel.ageFrom != null
+        var isValidOwnerName = isText(requireContext(), binding.etOwnerName)
+        var isValidOwnerPhone = isPhoneNo(requireContext(), binding.etOwnerPhoneNo)
+        viewModel.extra?.apply {
+            isValidOwnerName = true
+            isValidOwnerPhone = true
+        }
+        val age = if (isShowAgeField(viewModel.catId, viewModel.subCatId)) viewModel.ageFrom != null
+        else true
+        val rooms =
+            if (isShowRoomsField(viewModel.catId, viewModel.subCatId)) viewModel.roomFrom != null
+            else true
+        val totalPrice = if (isShowTotalPriceField(
+                viewModel.catId,
+                viewModel.subCatId
+            )
+        ) viewModel.totalPriceFrom != null
+        else true
+        val mortgage = if (isShowMortgageField(
+                viewModel.catId,
+                viewModel.subCatId
+            )
+        ) viewModel.mortgageFrom != null && viewModel.mortgageFrom!! > 0
+        else true
+        // No need to enter this field
+        /*val rent = if (isShowRentField(viewModel.catId, viewModel.subCatId))
+            viewModel.rentFrom != null && viewModel.rentFrom!! > 0
         else
-            true
-        val rooms = if (isShowRoomsField(viewModel.catId, viewModel.subCatId))
-            viewModel.roomFrom != null
-        else
-            true
-        val totalPrice = if (isShowTotalPriceField(viewModel.catId, viewModel.subCatId))
-            viewModel.totalPriceFrom != null
-        else
-            true
-        val mortgage = if (isShowMortgageField(viewModel.catId, viewModel.subCatId))
-            viewModel.mortgageFrom != null
-        else
-            true
-        val rent = if (isShowRentField(viewModel.catId, viewModel.subCatId))
-            viewModel.rentFrom != null
-        else
-            true
-        val suitableFor = if (isShowSuitableForField(viewModel.catId, viewModel.subCatId))
-            viewModel.suitableFor != null // TODO: check if what is backend needed
-        else
-            true
-        val floor = if (isShowFloorField(viewModel.catId, viewModel.subCatId))
-            viewModel.floorFrom != null
-        else
-            true
-        val parking = if (isShowParkingField(viewModel.catId, viewModel.subCatId))
-            viewModel.parking != null
-        else
-            true
-        val storeRoom = if (isShowStoreRoomField(viewModel.catId, viewModel.subCatId))
-            viewModel.storeRoom != null
-        else
-            true
-        val balcony = if (isShowBalconyField(viewModel.catId, viewModel.subCatId))
-            viewModel.balcony != null
-        else
-            true
-        val elevator = if (isShowElevatorField(viewModel.catId, viewModel.subCatId))
-            viewModel.elevator != null
-        else
-            true
-        val adminDeed = if (isShowAdminDeedField(viewModel.catId, viewModel.subCatId))
-            viewModel.administrativeDeed != null
-        else
-            true
-        val deedType = if (isShowDeedTypeField(viewModel.catId, viewModel.subCatId))
-            viewModel.deedType != null
-        else
-            true
-        return true /* TODO: must uncomment this after completing database
-         age && rooms && totalPrice &&
-         mortgage && rent && suitableFor && floor &&
-        parking && storeRoom && balcony && elevator && adminDeed && deedType*/
+            true*/
+        val suitableFor = if (isShowSuitableForField(
+                viewModel.catId,
+                viewModel.subCatId
+            )
+        ) viewModel.suitableFor != null
+        else true
+        val floor =
+            if (isShowFloorField(viewModel.catId, viewModel.subCatId)) viewModel.floor != null
+            else true
+        val parking =
+            if (isShowParkingField(viewModel.catId, viewModel.subCatId)) viewModel.parking != null
+            else true
+        val storeRoom = if (isShowStoreRoomField(
+                viewModel.catId,
+                viewModel.subCatId
+            )
+        ) viewModel.storeRoom != null
+        else true
+        val balcony =
+            if (isShowBalconyField(viewModel.catId, viewModel.subCatId)) viewModel.balcony != null
+            else true
+        val elevator =
+            if (isShowElevatorField(viewModel.catId, viewModel.subCatId)) viewModel.elevator != null
+            else true
+        val adminDeed = if (isShowAdminDeedField(
+                viewModel.catId,
+                viewModel.subCatId
+            )
+        ) viewModel.administrativeDeed != null
+        else true
+        val deedType =
+            if (isShowDeedTypeField(viewModel.catId, viewModel.subCatId)) viewModel.deedType != null
+            else true
+        return isValidOwnerName && isValidOwnerPhone && age && rooms && totalPrice && mortgage &&
+                //rent &&
+                suitableFor && floor && parking && storeRoom && balcony && elevator && adminDeed && deedType
     }
 
     private fun showImagesForEditing(imgList: List<String?>) {
@@ -264,17 +267,28 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun onCommit() {
-        if (binding.etDescriptions.editText!!.text.isNotEmpty() ||
-            binding.etDescriptions.editText!!.text.toString() != ""
-        )
-            viewModel.descriptions = binding.etDescriptions.editText!!.text.toString()
-        if (isDataReady()) (activity as AddActivity).user.apply {
-            viewModel.saveFile(requireActivity(), this)
-        }
-        else showDialogWithMessage(
-            requireContext(), resources.getString(R.string.complete_all_fields)
-        ) { d, _ ->
-            d.dismiss()
+        try {
+            if (isDataReady()) (activity as AddActivity).user.apply {
+                viewModel.ownerName = binding.etOwnerNameChild.text.toString()
+                viewModel.ownerPhone = binding.etOwnerPhoneNoChild.text.toString()
+                if (binding.etDescriptionsChild.text.toString()
+                        .isNotEmpty()
+                ) viewModel.descriptions = binding.etDescriptionsChild.text.toString()
+                viewModel.extra?.let {
+                    viewModel.editFile(requireActivity(), this)
+                } ?: viewModel.saveFile(requireActivity(), this)
+            }
+            else showDialogWithMessage(
+                requireContext(), resources.getString(R.string.complete_all_fields)
+            ) { d, _ ->
+                d.dismiss()
+            }
+        } catch (e: java.lang.Exception) {
+            handleSystemException(
+                lifecycleScope,
+                "${(activity as AddActivity).user?.id}, AddP7DetailsOwnerFrag, onCommit",
+                e
+            )
         }
     }
 
@@ -308,10 +322,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowAge(): Int {
-        return if (viewModel.isShowAgeField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowAgeField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingAge() {
@@ -334,10 +346,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowSize(): Int {
-        return if (viewModel.isShowSizeField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowSizeField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingSize() {
@@ -364,10 +374,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowRooms(): Int {
-        return if (viewModel.isShowRoomsField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowRoomsField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingRoomCount() {
@@ -394,10 +402,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowTotalPrice(): Int {
-        return if (viewModel.isShowTotalPriceField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowTotalPriceField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingPrice() {
@@ -425,10 +431,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
 
     ///////////////////////////////////////////////////////////////
     fun isShowMortgage(): Int {
-        return if (viewModel.isShowMortgageField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowMortgageField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingMortgage() {
@@ -455,10 +459,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowRent(): Int {
-        return if (viewModel.isShowRentField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowRentField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingRent() {
@@ -485,10 +487,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowSuitableFor(): Int {
-        return if (viewModel.isShowSuitableForField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowSuitableForField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingSuitableFor() {
@@ -498,23 +498,20 @@ class AddP7DetailsOwnerFrag : Fragment() {
         bottomFrag.show(childFragmentManager, SUITABLE_FOR_TAG)
         bottomFrag.setFragmentResultListener(SUITABLE_FOR_TAG) { _, positionBundle ->
             viewModel.suitableFor = positionBundle.getInt(DATA)
-            viewModel.suitableForText = resources.getStringArray(
-                R.array.suitable_for_options
-            )[positionBundle.getInt(DATA)]
-            binding.txtChooseSuitableFor.text = viewModel.suitableForText
+            binding.txtChooseSuitableFor.text = showSuitableForText()
         }
     }
 
     fun showSuitableForText(): String {
-        return if (viewModel.suitableForText == null) resources.getString(R.string.choose)
-        else viewModel.suitableForText!!
+        return if (viewModel.suitableFor == null) resources.getString(R.string.choose)
+        else resources.getStringArray(
+            R.array.suitable_for_options
+        )[viewModel.suitableFor ?: 0]
     }
 
     fun isShowFloor(): Int {
-        return if (viewModel.isShowFloorField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowFloorField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingFloor() {
@@ -522,23 +519,19 @@ class AddP7DetailsOwnerFrag : Fragment() {
             BottomSheetUniversalList(resources.getStringArray(R.array.floor_list).toList())
         bottomFrag.show(childFragmentManager, FLOOR_TAG)
         bottomFrag.setFragmentResultListener(FLOOR_TAG) { _, positionBundle ->
-            viewModel.floorFromText =
-                resources.getStringArray(R.array.floor_list)[positionBundle.getInt(DATA)]
-            viewModel.floorFrom = positionBundle.getInt(DATA)
+            viewModel.floor = positionBundle.getInt(DATA)
             binding.txtChooseFloor.text = showFloorText()
         }
     }
 
     fun showFloorText(): String {
-        return if (viewModel.floorFromText == null) resources.getString(R.string.choose)
-        else viewModel.floorFromText!!
+        return if (viewModel.floor == null) resources.getString(R.string.choose)
+        else resources.getStringArray(R.array.floor_list)[viewModel.floor ?: 0]
     }
 
     fun isShowParking(): Int {
-        return if (viewModel.isShowParkingField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowParkingField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingParking() {
@@ -561,10 +554,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowStoreRoom(): Int {
-        return if (viewModel.isShowStoreRoomField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowStoreRoomField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingStoreRoom() {
@@ -587,10 +578,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowBalcony(): Int {
-        return if (viewModel.isShowBalconyField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowBalconyField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingBalcony() {
@@ -613,10 +602,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowElevator(): Int {
-        return if (viewModel.isShowElevatorField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowElevatorField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingElevator() {
@@ -639,10 +626,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowAdminDeed(): Int {
-        return if (viewModel.isShowAdminDeedField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowAdminDeedField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingAdministrativeDeed() {
@@ -665,10 +650,8 @@ class AddP7DetailsOwnerFrag : Fragment() {
     }
 
     fun isShowDeedType(): Int {
-        return if (viewModel.isShowDeedTypeField())
-            View.VISIBLE
-        else
-            View.GONE
+        return if (viewModel.isShowDeedTypeField()) View.VISIBLE
+        else View.GONE
     }
 
     fun onChoosingDeedType() {
@@ -677,19 +660,14 @@ class AddP7DetailsOwnerFrag : Fragment() {
         )
         bottomFrag.show(childFragmentManager, DEED_TYPE_TAG)
         bottomFrag.setFragmentResultListener(DEED_TYPE_TAG) { _, positionBundle ->
-            viewModel.deedTypeText = resources.getStringArray(
-                R.array.deed_type_options
-            )[positionBundle.getInt(DATA)]
             viewModel.deedType = positionBundle.getInt(DATA)
             binding.txtChooseDeedType.text = showDeedTypeText()
         }
     }
 
     fun showDeedTypeText(): String {
-        return if (viewModel.deedTypeText == null)
-            resources.getString(R.string.choose)
-        else
-            viewModel.deedTypeText!!
+        return if (viewModel.deedType == null) resources.getString(R.string.choose)
+        else resources.getStringArray(R.array.deed_type_options)[viewModel.deedType ?: 0]
     }
 
 //////////////////////////////////////////////////////////////////
@@ -719,8 +697,7 @@ class AddP7DetailsOwnerFrag : Fragment() {
                         binding.imgAddImgAvatar.visibility = View.GONE
 
                     }
-                } else
-                    showToast(requireContext(), getString(R.string.no_data))
+                } else showToast(requireContext(), getString(R.string.no_data))
             }
 
             else -> Log.e("TAG", "onActivityResult: else")

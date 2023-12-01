@@ -23,7 +23,6 @@ import com.example.melkist.models.Roles
 import com.example.melkist.utils.USER_AVATAR
 import com.example.melkist.utils.loginRequiredDialog
 import com.example.melkist.utils.showDialogWith2Actions
-import com.example.melkist.utils.showDialogWithMessage
 import com.example.melkist.utils.showToast
 import com.example.melkist.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
@@ -75,6 +74,15 @@ class ProfileP1Frag : Fragment() {
     override fun onResume() {
         super.onResume()
         interaction?.changBottomNavViewVisibility(View.VISIBLE)
+        (activity as MainActivity).user?.apply {
+            if (roleId == Roles().manager.id || roleId == Roles().supervisor.id) {
+                binding.layoutManageTeam.visibility = View.VISIBLE
+                binding.layoutStatistics.visibility = View.VISIBLE
+            } else {
+                binding.layoutManageTeam.visibility = View.GONE
+                binding.layoutStatistics.visibility = View.GONE
+            }
+        }
     }
 
     private fun extiConfirm() {
@@ -188,11 +196,20 @@ class ProfileP1Frag : Fragment() {
             loginRequiredDialog(requireActivity())
             return
         }
-        showDialogWithMessage(
-            requireContext(),
-            resources.getString(R.string.invalid_permission)
-        ) { d, _ ->
-            d.dismiss()
+        (activity as MainActivity).user?.apply {
+            //if (roleId == Roles().manager.id || roleId == Roles().supervisor.id) { TODO: check this if needed
+            findNavController().navigate(
+                R.id.action_navigation_profle_to_profileStatisticsP1Frag
+            )
+            /*} else {
+                showDialogWithMessage(
+                    requireContext(),
+                    resources.getString(R.string.no_access_for_this)
+                ) { d, _ ->
+                    d.dismiss()
+                }
+            }*/
+            interaction?.changBottomNavViewVisibility(View.GONE)
         }
     }
 

@@ -159,7 +159,7 @@
 
         <Button
             android:id="@+id/btn_commit"
-            style="@style/Theme.Melkist.Buttons"
+            android:theme="@style/Theme.Melkist.Buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

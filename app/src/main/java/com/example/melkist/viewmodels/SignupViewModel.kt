@@ -48,7 +48,7 @@ class SignupViewModel() : ViewModel() {
     var lastName: String? = null
     var mobileNo: String = ""
     var nationalCode: Long = 0L
-    var birthdate: String? = null
+    var birthdate: String = ""
     var email: String? = null
     var password: String = ""
 
@@ -249,7 +249,7 @@ class SignupViewModel() : ViewModel() {
         cityId: Int?,
         mobile: String,
         nationalCode: String,
-        birthdate: String?,
+        birthdate: String,
         email: String?,
         roleId: Int
     ) {
@@ -273,9 +273,9 @@ class SignupViewModel() : ViewModel() {
                 _status.value = ApiStatus.LOADING
                 try {
                     _verificationCodeResponse.value =
-                        Api.retrofitService.checkSignupData( // TODO: add birth date
+                        Api.retrofitService.checkSignupData(
                             name, lastName, title, cityId,
-                            mobile, nationalCode, email, roleId
+                            mobile, nationalCode, birthdate, email, roleId
                         )
                     Log.e(
                         "TAG",

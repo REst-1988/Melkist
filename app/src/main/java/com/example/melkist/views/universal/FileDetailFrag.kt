@@ -78,11 +78,6 @@ class FileDetailFrag : Fragment() {
         initRequireComponnets()
         initListener()
         initObservers()
-
-        // TODO: delete this
-        Log.e("TAG", "onResume: " +
-                "${viewModel.fileAllData.value?.data?.id}\n" +
-                "${viewModel.fileAllData.value?.data?.locations?.get(0)?.region?.title}", )
     }
 
     private fun initRequireComponnets() {

@@ -424,24 +424,24 @@ class AddP6DetailsSeekerFrag : Fragment() {
     }
 
 /*    fun onTxtSuitableForAllClick() {
-        // TODO
+
     }
 
     fun onSuitableForSwitchSelect() {
-        // TODO
+
     }
 
     fun onTxtSuitableForFamilyClick() {
-        // TODO
+
     }*/
 
-    fun isShowFloor(): Int {
+/*    fun isShowFloor(): Int {
         return View.GONE
         //if (viewModel.isShowFloorField())
             // View.VISIBLE
         // else
             //View.GONE
-    }
+    }*/
 
 /*    fun onFloorFromClick() {
         val bottomFrag =

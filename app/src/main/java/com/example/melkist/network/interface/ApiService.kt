@@ -90,6 +90,7 @@ interface ApiService {
         @Query("city_id") cityId: Int?,
         @Query("mobile") mobile: String,
         @Query("nationalcode") nationalCode: String,
+        @Query("birthdate") birthDate: String,
         @Query("email") email: String?,
         @Query("role_id") roleId: Int,
     ): PublicResponseModel
